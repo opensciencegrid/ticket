@@ -308,3 +308,139 @@
 #8 /usr/local/rsv-web/footprint/index.php(30): Zend_Controller_Front->dispatch()
 #9 {main}
 [11-Sep-2008 19:40:25] PHP Warning:  urlencode() expects parameter 1 to be string, object given in /usr/local/rsv-web/footprint/app/httpspost.php on line 17
+[12-Sep-2008 14:55:55] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 15:04:26] PHP Notice:  Undefined variable: resources in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 97
+[12-Sep-2008 15:04:26] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 97
+[12-Sep-2008 15:09:23] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.resource_id' in 'IN/ALL/ANY subquery'
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Statement.php(303): Zend_Db_Statement_Pdo->_execute(Array)
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(405): Zend_Db_Statement->execute(Array)
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Pdo/Abstract.php(205): Zend_Db_Adapter_Abstract->query('select * from r...', Array)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(616): Zend_Db_Adapter_Pdo_Abstract->query('select * from r...', Array)
+#4 /usr/local/rsv-web/footprint/app/models/Resource.php(18): Zend_Db_Adapter_Abstract->fetchAll('select * from r...')
+#5 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(102): Resource->fetchAll('itb')
+#6 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(13): ResourceController->getForm()
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->submitAction()
+#8 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#9 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#10 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#11 {main}
+[12-Sep-2008 15:10:04] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.resource_id' in 'IN/ALL/ANY subquery'
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Statement.php(303): Zend_Db_Statement_Pdo->_execute(Array)
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(405): Zend_Db_Statement->execute(Array)
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Pdo/Abstract.php(205): Zend_Db_Adapter_Abstract->query('select * from r...', Array)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(616): Zend_Db_Adapter_Pdo_Abstract->query('select * from r...', Array)
+#4 /usr/local/rsv-web/footprint/app/models/Resource.php(15): Zend_Db_Adapter_Abstract->fetchAll('select * from r...')
+#5 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(102): Resource->fetchAll('itb')
+#6 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(13): ResourceController->getForm()
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->submitAction()
+#8 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#9 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#10 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#11 {main}
+[12-Sep-2008 15:14:33] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'active' in 'where clause'
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Statement.php(303): Zend_Db_Statement_Pdo->_execute(Array)
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(405): Zend_Db_Statement->execute(Array)
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Pdo/Abstract.php(205): Zend_Db_Adapter_Abstract->query('select * from o...', Array)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(616): Zend_Db_Adapter_Pdo_Abstract->query('select * from o...', Array)
+#4 /usr/local/rsv-web/footprint/app/models/GridType.php(8): Zend_Db_Adapter_Abstract->fetchAll('select * from o...')
+#5 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(98): GridType->fetchAll()
+#6 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(13): ResourceController->getForm()
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->submitAction()
+#8 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#9 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#10 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#11 {main}
+[12-Sep-2008 15:14:42] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'active' in 'where clause'
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Statement.php(303): Zend_Db_Statement_Pdo->_execute(Array)
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(405): Zend_Db_Statement->execute(Array)
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Pdo/Abstract.php(205): Zend_Db_Adapter_Abstract->query('select * from o...', Array)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(616): Zend_Db_Adapter_Pdo_Abstract->query('select * from o...', Array)
+#4 /usr/local/rsv-web/footprint/app/models/GridType.php(8): Zend_Db_Adapter_Abstract->fetchAll('select * from o...')
+#5 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(98): GridType->fetchAll()
+#6 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(13): ResourceController->getForm()
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->submitAction()
+#8 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#9 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#10 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#11 {main}
+[12-Sep-2008 15:14:54] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'itb' in 'where clause'
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Statement.php(303): Zend_Db_Statement_Pdo->_execute(Array)
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(405): Zend_Db_Statement->execute(Array)
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Pdo/Abstract.php(205): Zend_Db_Adapter_Abstract->query('select * from r...', Array)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Db/Adapter/Abstract.php(616): Zend_Db_Adapter_Pdo_Abstract->query('select * from r...', Array)
+#4 /usr/local/rsv-web/footprint/app/models/Resource.php(12): Zend_Db_Adapter_Abstract->fetchAll('select * from r...')
+#5 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(105): Resource->fetchAll('itb')
+#6 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(13): ResourceController->getForm()
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->submitAction()
+#8 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#9 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#10 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#11 {main}
+[12-Sep-2008 15:25:07] PHP Notice:  Undefined variable: gird_type_where in /usr/local/rsv-web/footprint/app/models/Resource.php on line 14
+[12-Sep-2008 15:25:51] PHP Notice:  Undefined variable: gird_type_where in /usr/local/rsv-web/footprint/app/models/Resource.php on line 14
+[12-Sep-2008 15:25:56] PHP Notice:  Undefined variable: gird_type_where in /usr/local/rsv-web/footprint/app/models/Resource.php on line 14
+[12-Sep-2008 15:26:19] PHP Notice:  Undefined variable: gird_type_where in /usr/local/rsv-web/footprint/app/models/Resource.php on line 14
+[12-Sep-2008 16:00:14] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 19:24:31] PHP Fatal error:  Call to a member function setRequired() on a non-object in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 18
+[12-Sep-2008 19:25:21] PHP Fatal error:  Call to a member function setRequired() on a non-object in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 19
+[12-Sep-2008 19:26:25] PHP Parse error:  syntax error, unexpected T_VARIABLE in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 16
+[12-Sep-2008 19:56:38] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[12-Sep-2008 19:56:51] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[12-Sep-2008 20:03:15] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 73
+[12-Sep-2008 20:42:34] PHP Warning:  No view script registered with ViewScript decorator in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 2223
+[12-Sep-2008 20:45:30] PHP Warning:  No view script registered with ViewScript decorator in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 2223
+[12-Sep-2008 20:50:11] PHP Warning:  No view script registered with ViewScript decorator in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 2223
+[12-Sep-2008 20:50:23] PHP Warning:  No view script registered with ViewScript decorator in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 2223
+[12-Sep-2008 20:51:13] PHP Warning:  No view script registered with ViewScript decorator in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 2223
+[12-Sep-2008 20:52:09] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:52:14] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:52:30] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:54:12] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:54:59] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:55:05] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:10] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:12] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:15] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:23] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:24] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:55:26] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:34] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:43] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:55:59] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:02] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:03] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:05] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:09] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:11] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:18] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:20] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:23] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:26] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:27] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:29] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:35] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:36] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:40] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:42] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 20:56:44] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:56:54] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:57:14] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:59:58] PHP Notice:  Undefined variable: form in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 20:59:58] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 21:01:06] PHP Fatal error:  Call to undefined function getAction() in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:02:35] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:02:44] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:02:58] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:04:41] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:04:47] PHP Catchable fatal error:  Object of class Zend_View could not be converted to string in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 2
+[12-Sep-2008 21:05:01] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:06:08] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:11:22] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:12:05] PHP Fatal error:  Call to a member function getAction() on a non-object in /usr/local/rsv-web/footprint/app/views/scripts/resource/form.phtml on line 3
+[12-Sep-2008 21:23:18] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[12-Sep-2008 21:23:22] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39

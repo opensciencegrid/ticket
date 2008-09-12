@@ -11,10 +11,17 @@ class ResourceController extends Zend_Controller_Action
     public function submitAction()
     {
         $form = $this->getForm();
+    
+        //make one of resource_issue field required based on resource_type selection
+        $resource_type = $_REQUEST["resource_type"];
+        $issue_element_name = "resource_id_with_issue_$resource_type";
+        $issue_element = $form->getelement($issue_element_name);
+        $issue_element->setRequired(true);
+
         if($form->isValid($_POST)) {
             //prepare footprint ticket
             $footprint = new Footprint;
-            $footprint->setTitle($this->composeTicketTitle($form->getValue('resource_id_with_issue')));
+            $footprint->setTitle($this->composeTicketTitle($form->getValue($issue_element_name)));
             $footprint->setFirstName($form->getValue('firstname'));
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
@@ -22,7 +29,7 @@ class ResourceController extends Zend_Controller_Action
             $footprint->setDescription($form->getValue('detail'));
 
             $footprint->setVO($form->getValue('vo_id'));
-            $footprint->setResourceWithIssue($form->getValue('resource_id_with_issue'));
+            $footprint->setResourceWithIssue($form->getValue($issue_element_name));
 
             if($footprint->submit()) {
                 $this->render("success", null, true);
@@ -49,6 +56,11 @@ class ResourceController extends Zend_Controller_Action
         $form->setAction(base()."/resource/submit");
         $form->setAttrib("id", "resource_form");
         $form->setMethod("post");
+        $form->setDecorators(array(
+            array('ViewScript', 
+                array('viewScript' => 'resource/form.phtml'),
+                array('class' => 'form element')
+        )));
 
         $firstname = new Zend_Form_Element_Text('firstname');
         $firstname->setLabel("Your First Name");
@@ -90,12 +102,31 @@ class ResourceController extends Zend_Controller_Action
         }
         $form->addElement($vo);
 
-        $resource_model = new Resource;
-        $resources = $resource_model->fetchAll();
-        $element = new Zend_Form_Element_Select('resource_id_with_issue');
-        $element->setLabel("Resource where you are having this issue");
+        $element = new Zend_Form_Element_Select('resource_type');
+        $element->setLabel("Are you having this issue in");
         $element->setRequired(true);
+        $gridtype_model = new GridType;
+        $gridtypes = $gridtype_model->fetchAll();
+        foreach($gridtypes as $gridtype) {
+            $element->addMultiOption($gridtype->grid_type_id, $gridtype->description);
+
+            //add element for this grid type
+        }
+        $form->addElement($element);
+
+        $element = new Zend_Form_Element_Select('resource_id_with_issue_1');
         $element->addMultiOption(null, "(Please Select)");
+        $resource_model = new Resource;
+        $resources = $resource_model->fetchAll(1);
+        foreach($resources as $resource) {
+            $element->addMultiOption($resource->resource_id, $resource->name);
+        }
+        $form->addElement($element);
+
+        $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
+        $element->addMultiOption(null, "(Please Select)");
+        $resource_model = new Resource;
+        $resources = $resource_model->fetchAll(2);
         foreach($resources as $resource) {
             $element->addMultiOption($resource->resource_id, $resource->name);
         }
@@ -106,17 +137,9 @@ class ResourceController extends Zend_Controller_Action
         $detail->setRequired(true);
         $form->addElement($detail);
 
-        /*
-        $form->addDisplayGroup(array('firstname', 'lastname', 'email', 'phone'), "your_info", 
-            array(      "label"=>"Your Information",
-                        "disableLoadDefaultDecorators"=>true));
-        $form->addDisplayGroup(array('detail'), "issue_details", 
-            array("label"=>"Issue Details"));
-        */
-
-        $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Submit");
-        $form->addElement($submit);
+        $element = new Zend_Form_Element_Submit('submit_button');
+        $element->setLabel("Submit");
+        $form->addElement($element);
 
         return $form;
     }

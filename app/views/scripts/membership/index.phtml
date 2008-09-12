@@ -1,0 +1,12 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; OSG Membership Request</div>
+<h2>Ticket Request Form</h2>
+<div class="form">
+<?
+if($this->errors != "") {
+    echo "<p class='errors'>".$this->errors."</p>";
+}
+?>
+<?=$this->form?>
+</div>
+<?include("app/views/scripts/footer.phtml");?>

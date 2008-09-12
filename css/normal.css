@@ -1,0 +1,117 @@
+*
+{
+    margin:0px;
+    padding:0px;
+}
+
+html,body
+{
+font-family: Verdana, 'Trebuchet MS', sans-serif;
+font-size:12px;
+line-height:1.3em;
+}
+
+p
+{
+    margin: 5px;
+}
+
+h1
+{
+    background-color: orange;
+    color: white;
+    padding: 10px;
+    font-size: 20px;
+}
+
+h2
+{
+    background-color: green;
+    color: white;
+    padding: 5px;
+    font-size: 18px;
+}
+
+h3
+{
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    padding-left: 0px;
+}
+
+a
+{
+    color: black;
+    padding: 2px;
+}
+
+a:hover
+{
+    background-color: orange;
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    padding:10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.container .form
+{
+    background:#eee url(../images/bg.gif) repeat-x;
+    padding: 10px;
+}
+
+input[type="submit"]
+{
+    min-width: 100px;
+}
+
+textarea {
+    width: 500px;
+    height: 200px;
+}
+
+input[type="text"]
+{
+    width: 300px;
+}
+
+ul.errors
+{
+    color: red;
+    margin-left:40px;
+}
+
+label
+{
+    font-weight: bold;
+}
+
+dt
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+p.errors
+{
+    color: white;
+    background-color: red;
+    padding: 5px;
+}
+.bread
+{
+    margin-bottom: 5px; 
+}
+.footer
+{
+    padding:10px;
+}
+.indent
+{
+    margin-left: 20px;
+}

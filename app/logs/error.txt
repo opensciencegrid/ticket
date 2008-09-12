@@ -1,0 +1,310 @@
+[09-Sep-2008 20:06:50] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:07:30] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:07:58] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:14:20] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:14:27] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:15:15] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:17:10] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:17:56] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:18:54] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:19:05] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:20:02] PHP Notice:  Undefined variable: post_query in /usr/local/rsv-web/footprint/app/httpspost.php on line 20
+[09-Sep-2008 20:25:02] PHP Notice:  Undefined index:  msg in /usr/local/rsv-web/footprint/app/controls/TestController.php on line 15
+[09-Sep-2008 20:25:03] script 'index/header.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('index/header.ph...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('index/header.ph...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('index/header.ph...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/IndexController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): IndexController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#9 {main}
+[09-Sep-2008 20:30:12] script 'index/header.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('index/header.ph...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('index/header.ph...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('index/header.ph...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/IndexController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): IndexController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#9 {main}
+[09-Sep-2008 20:30:32] PHP Parse error:  syntax error, unexpected ')' in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 209
+[09-Sep-2008 20:31:02] PHP Warning:  require_once(app/httpclient.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 3
+[09-Sep-2008 20:31:02] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'app/httpclient.php' (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 3
+[09-Sep-2008 20:31:28] PHP Warning:  require_once(app/httpclient.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 3
+[09-Sep-2008 20:31:28] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'app/httpclient.php' (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 3
+[09-Sep-2008 20:31:50] PHP Notice:  Undefined variable: pageContents in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 210
+[10-Sep-2008 01:13:42] script 'index/header.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('index/header.ph...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('index/header.ph...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('index/header.ph...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/IndexController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): IndexController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#9 {main}
+[10-Sep-2008 01:14:43] script 'index/header.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('index/header.ph...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('index/header.ph...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('index/header.ph...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/IndexController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): IndexController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#9 {main}
+[10-Sep-2008 01:14:55] script 'index/header.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('index/header.ph...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('index/header.ph...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('index/header.ph...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/IndexController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): IndexController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#9 {main}
+[10-Sep-2008 02:42:51] PHP Warning:  Illegal offset type in isset or empty in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 1466
+[10-Sep-2008 02:42:51] PHP Warning:  Illegal offset type in isset or empty in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 1466
+[10-Sep-2008 02:42:51] PHP Warning:  Illegal offset type in isset or empty in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 1466
+[10-Sep-2008 02:42:51] PHP Warning:  Illegal offset type in isset or empty in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php on line 1466
+[10-Sep-2008 02:42:51] No valid elements specified for display group
+
+#0 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(70): Zend_Form->addDisplayGroup(Array, 'Your Informatio...')
+#1 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(7): ResourceController->getForm()
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->indexAction()
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#4 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#5 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#6 {main}
+[10-Sep-2008 13:50:01] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:26:34] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:26:43] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:26:48] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:07] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:10] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:19] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:22] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:23] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:27:28] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:46:17] PHP Parse error:  syntax error, unexpected T_STRING in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:46:56] PHP Parse error:  syntax error, unexpected T_STRING in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:54:46] PHP Parse error:  syntax error, unexpected T_STRING in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 16:55:05] PHP Parse error:  syntax error, unexpected ')' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 71
+[10-Sep-2008 17:10:18] Plugin by name Label was not found in the registry.
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php(880): Zend_Loader_PluginLoader->load('label')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form.php(812): Zend_Form->createElement('label', 'hello', NULL)
+#2 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(70): Zend_Form->addElement('label', 'hello')
+#3 /usr/local/rsv-web/footprint/app/controls/ResourceController.php(7): ResourceController->getForm()
+#4 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ResourceController->indexAction()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#7 /usr/local/rsv-web/footprint/index.php(29): Zend_Controller_Front->dispatch()
+#8 {main}
+[10-Sep-2008 17:10:39] PHP Warning:  Zend_Loader::include_once(Zend/Form/Element/Label.php) [<a href='zend-loader.include-once'>zend-loader.include-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 17:10:39] PHP Warning:  Zend_Loader::include_once() [<a href='function.include'>function.include</a>]: Failed opening 'Zend/Form/Element/Label.php' for inclusion (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 17:10:39] PHP Fatal error:  Class 'Zend_Form_Element_Label' not found in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 70
+[10-Sep-2008 17:11:48] PHP Fatal error:  Call to undefined method Zend_Form_Element_Text::setDescriptino() in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 63
+[10-Sep-2008 17:16:12] PHP Catchable fatal error:  Argument 1 passed to Zend_Form_Element::setDecorators() must be an array, string given, called in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 64 and defined in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Element.php on line 1535
+[10-Sep-2008 17:23:37] PHP Fatal error:  Call to undefined method Zend_Form_DisplayGroup::getLabel() in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Decorator/Label.php on line 242
+[10-Sep-2008 17:23:53] PHP Fatal error:  Call to undefined method Zend_Form_DisplayGroup::getLabel() in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Decorator/Label.php on line 242
+[10-Sep-2008 17:24:56] PHP Fatal error:  Cannot redeclare Zend_Form_Decorator_Label::getLabel() in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Decorator/Label.php on line 237
+[10-Sep-2008 17:30:43] PHP Parse error:  syntax error, unexpected ';' in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 44
+[10-Sep-2008 17:31:14] PHP Fatal error:  Call to undefined method Zend_Form_DisplayGroup::getLabel() in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Decorator/Label.php on line 242
+[10-Sep-2008 17:31:22] PHP Fatal error:  Call to undefined method Zend_Form_DisplayGroup::getLabel() in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Decorator/Label.php on line 242
+[10-Sep-2008 19:56:45] PHP Notice:  Undefined variable: vo_model in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 67
+[10-Sep-2008 19:56:45] PHP Fatal error:  Call to a member function fetchAll() on a non-object in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 67
+[10-Sep-2008 19:57:03] PHP Notice:  Undefined variable: vo_model in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 67
+[10-Sep-2008 19:57:03] PHP Fatal error:  Call to a member function fetchAll() on a non-object in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 67
+[10-Sep-2008 20:00:25] PHP Warning:  Zend_Loader::include_once(Zend/Form/Element/VO.php) [<a href='zend-loader.include-once'>zend-loader.include-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:00:25] PHP Warning:  Zend_Loader::include_once() [<a href='function.include'>function.include</a>]: Failed opening 'Zend/Form/Element/VO.php' for inclusion (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:00:25] PHP Fatal error:  Class 'Zend_Form_Element_VO' not found in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 68
+[10-Sep-2008 20:00:53] PHP Fatal error:  Cannot use object of type stdClass as array in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 71
+[10-Sep-2008 20:02:43] PHP Fatal error:  Cannot use object of type stdClass as array in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 72
+[10-Sep-2008 20:09:27] PHP Warning:  Zend_Loader::include_once(Zend/Form/Element/Captcha.php) [<a href='zend-loader.include-once'>zend-loader.include-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:09:27] PHP Warning:  Zend_Loader::include_once() [<a href='function.include'>function.include</a>]: Failed opening 'Zend/Form/Element/Captcha.php' for inclusion (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:09:27] PHP Fatal error:  Class 'Zend_Form_Element_Captcha' not found in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 90
+[10-Sep-2008 20:10:28] PHP Warning:  Zend_Loader::include_once(Zend/Form/Element/Captcha.php) [<a href='zend-loader.include-once'>zend-loader.include-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:10:28] PHP Warning:  Zend_Loader::include_once() [<a href='function.include'>function.include</a>]: Failed opening 'Zend/Form/Element/Captcha.php' for inclusion (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[10-Sep-2008 20:10:28] PHP Fatal error:  Class 'Zend_Form_Element_Captcha' not found in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 90
+[10-Sep-2008 20:11:39] PHP Fatal error:  Cannot use object of type stdClass as array in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 73
+[10-Sep-2008 20:17:54] PHP Fatal error:  Cannot redeclare class VO in /usr/local/rsv-web/footprint/app/models/Resource.php on line 4
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[10-Sep-2008 20:18:06] PHP Notice:  Undefined property: stdClass::$id in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 82
+[11-Sep-2008 15:56:48] PHP Fatal error:  Call to undefined method Footprint::lookupFootprintVOName() in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 27
+[11-Sep-2008 15:57:10] PHP Fatal error:  Call to undefined method Zend_Db_Adapter_Pdo_Mysql::fetchRecord() in /usr/local/rsv-web/footprint/app/models/ResourceSite.php on line 8
+[11-Sep-2008 16:42:34] PHP Catchable fatal error:  Object of class User could not be converted to string in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 48
+[11-Sep-2008 17:56:37] PHP Warning:  Zend_Loader::include_once(validator.php) [<a href='zend-loader.include-once'>zend-loader.include-once</a>]: failed to open stream: No such file or directory in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[11-Sep-2008 17:56:37] PHP Warning:  Zend_Loader::include_once() [<a href='function.include'>function.include</a>]: Failed opening 'validator.php' for inclusion (include_path='app/models:lib/zf/library:.:/home/hayashis/app/php/lib/php') in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Loader.php on line 83
+[11-Sep-2008 17:56:37] PHP Fatal error:  Class 'validator' not found in /usr/local/rsv-web/footprint/app/controls/ResourceController.php on line 76
+[11-Sep-2008 18:00:16] PHP Fatal error:  Cannot unset string offsets in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Element.php on line 991
+[11-Sep-2008 18:01:06] PHP Fatal error:  Cannot unset string offsets in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Element.php on line 991
+[11-Sep-2008 18:02:14] PHP Fatal error:  Cannot unset string offsets in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Element.php on line 991
+[11-Sep-2008 18:04:16] PHP Fatal error:  Cannot unset string offsets in /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Form/Element.php on line 991
+[11-Sep-2008 18:08:10] script 'process/index.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('process/index.p...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('process/index.p...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('process/index.p...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/ProcessController.php(7): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): ProcessController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(30): Zend_Controller_Front->dispatch()
+#9 {main}
+[11-Sep-2008 18:16:04] script 'other/index.phtml' not found in path (app/views/scripts/)
+
+#0 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/View/Abstract.php(765): Zend_View_Abstract->_script('other/index.pht...')
+#1 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(895): Zend_View_Abstract->render('other/index.pht...')
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action/Helper/ViewRenderer.php(916): Zend_Controller_Action_Helper_ViewRenderer->renderScript('other/index.pht...', NULL)
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(207): Zend_Controller_Action_Helper_ViewRenderer->render(NULL, NULL, false)
+#4 /usr/local/rsv-web/footprint/app/controls/OtherController.php(8): Zend_Controller_Action->render()
+#5 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): OtherController->indexAction()
+#6 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('indexAction')
+#7 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#8 /usr/local/rsv-web/footprint/index.php(30): Zend_Controller_Front->dispatch()
+#9 {main}
+[11-Sep-2008 19:40:25] PHP Warning:  urlencode() expects parameter 1 to be string, object given in /usr/local/rsv-web/footprint/app/httpspost.php on line 17

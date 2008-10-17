@@ -94,7 +94,6 @@ class OtherController extends BaseController
         $detail->setLabel("Description");
         $detail->setRequired(true);
         $form->addElement($detail);
-/
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Submit");

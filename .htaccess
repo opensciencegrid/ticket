@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteRule !\.(txt|js|ico|gif|jpg|png|css)$ index.php
-RewriteBase /footprint
+RewriteBase /ticket
 

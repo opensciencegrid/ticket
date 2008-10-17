@@ -535,3 +535,21 @@
 [17-Oct-2008 19:37:21] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
 [17-Oct-2008 19:37:21] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
 [17-Oct-2008 19:37:44] PHP Fatal error:  Call to undefined method Footprint::setDescription() in /usr/local/rsv-web/footprint/app/controls/MembershipController.php on line 22
+[17-Oct-2008 19:39:10] PHP Fatal error:  Call to undefined method Footprint::setDescription() in /usr/local/rsv-web/footprint/app/controls/MembershipController.php on line 22
+[17-Oct-2008 19:39:26] Method "sendErrorEmail" does not exist and was not trapped in __call()
+
+#0 [internal function]: Zend_Controller_Action->__call('sendErrorEmail', Array)
+#1 /usr/local/rsv-web/footprint/app/controls/MembershipController.php(31): MembershipController->sendErrorEmail(Object(SoapFault))
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): MembershipController->submitAction()
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#4 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#5 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#6 {main}
+[17-Oct-2008 19:49:24] PHP Notice:  Undefined variable: fp_sc_name in /usr/local/rsv-web/footprint/app/models/Footprint.php on line 52
+[17-Oct-2008 19:53:29] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[17-Oct-2008 19:53:33] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[17-Oct-2008 19:59:30] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[17-Oct-2008 19:59:31] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[17-Oct-2008 19:59:37] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39
+[17-Oct-2008 19:59:38] PHP Parse error:  syntax error, unexpected '/' in /usr/local/rsv-web/footprint/app/controls/OtherController.php on line 97
+[17-Oct-2008 19:59:40] PHP Warning:  Invalid argument supplied for foreach() in /usr/local/rsv-web/footprint/app/db.php on line 39

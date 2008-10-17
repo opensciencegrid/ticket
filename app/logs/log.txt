@@ -33737,3 +33737,850 @@ Now we should see all fields populated.
 )
 
 2008-10-17T19:37:44+00:00 DEBUG (7): 11549@0.018 guest access from 156.56.18.229
+2008-10-17T19:38:32+00:00 INFO (6): 1173@0.004 ----------------------------------------------------------------------
+2008-10-17T19:38:32+00:00 INFO (6): 1173@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 ----------------------------------------------------------------------
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 DB PROFILE
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 Executed 3 queries in 0.0041038990020752 seconds
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 Executed Query: (in 0.0019710063934326)
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 connect
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 Executed Query: (in 0.0014450550079346)
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 Executed Query: (in 0.00068783760070801)
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:38:32+00:00 DEBUG (7): 1173@0.062 ----------------------------------------------------------------------
+2008-10-17T19:38:33+00:00 INFO (6): 1173@0.004 ----------------------------------------------------------------------
+2008-10-17T19:38:33+00:00 INFO (6): 1173@0.004 RSV Viewer session starting.. /footprint/membership
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.004 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.13 ----------------------------------------------------------------------
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.13 DB PROFILE
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.13 Executed 4 queries in 0.0075809955596924 seconds
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 Executed Query: (in 0.0020580291748047)
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 connect
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 Executed Query: (in 0.0018160343170166)
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 Executed Query: (in 0.00091004371643066)
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 Executed Query: (in 0.0027968883514404)
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:38:33+00:00 DEBUG (7): 1173@0.131 ----------------------------------------------------------------------
+2008-10-17T19:38:47+00:00 INFO (6): 20076@0.005 ----------------------------------------------------------------------
+2008-10-17T19:38:47+00:00 INFO (6): 20076@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 16
+    [detail] => 
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.025 Authenticated User: Soichi Hayashi
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.139 ----------------------------------------------------------------------
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.139 DB PROFILE
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.139 Executed 4 queries in 0.0082519054412842 seconds
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 Executed Query: (in 0.0025739669799805)
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 connect
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 Executed Query: (in 0.0018138885498047)
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 Executed Query: (in 0.00096011161804199)
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 Executed Query: (in 0.002903938293457)
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:38:47+00:00 DEBUG (7): 20076@0.14 ----------------------------------------------------------------------
+2008-10-17T19:39:10+00:00 INFO (6): 11544@0.004 ----------------------------------------------------------------------
+2008-10-17T19:39:10+00:00 INFO (6): 11544@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:39:10+00:00 DEBUG (7): 11544@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:39:10+00:00 DEBUG (7): 11544@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:39:26+00:00 INFO (6): 11545@0.005 ----------------------------------------------------------------------
+2008-10-17T19:39:26+00:00 INFO (6): 11545@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:39:26+00:00 ERR (3): 11545@0.417 Method "sendErrorEmail" does not exist and was not trapped in __call()
+
+#0 [internal function]: Zend_Controller_Action->__call('sendErrorEmail', Array)
+#1 /usr/local/rsv-web/footprint/app/controls/MembershipController.php(31): MembershipController->sendErrorEmail(Object(SoapFault))
+#2 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Action.php(502): MembershipController->submitAction()
+#3 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Dispatcher/Standard.php(293): Zend_Controller_Action->dispatch('submitAction')
+#4 /usr/local/rsv-web/footprint/lib/zf-1.5.2/library/Zend/Controller/Front.php(914): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+#5 /usr/local/rsv-web/footprint/index.php(31): Zend_Controller_Front->dispatch()
+#6 {main}
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 ----------------------------------------------------------------------
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 DB PROFILE
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 Executed 4 queries in 0.0056579113006592 seconds
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 Executed Query: (in 0.0019729137420654)
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 connect
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 Executed Query: (in 0.0011298656463623)
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.432 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.433 Executed Query: (in 0.00067806243896484)
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.433 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.433 Executed Query: (in 0.0018770694732666)
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.433 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:39:26+00:00 DEBUG (7): 11545@0.433 ----------------------------------------------------------------------
+2008-10-17T19:40:23+00:00 INFO (6): 1173@0.004 ----------------------------------------------------------------------
+2008-10-17T19:40:23+00:00 INFO (6): 1173@0.004 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:40:23+00:00 DEBUG (7): 1173@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:40:23+00:00 DEBUG (7): 1173@0.025 Authenticated User: Soichi Hayashi
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.453 ----------------------------------------------------------------------
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.453 DB PROFILE
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.453 Executed 4 queries in 0.0078999996185303 seconds
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.453 Executed Query: (in 0.0023660659790039)
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.453 connect
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 Executed Query: (in 0.0019769668579102)
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 Executed Query: (in 0.00089597702026367)
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 Executed Query: (in 0.0026609897613525)
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:40:24+00:00 DEBUG (7): 1173@0.454 ----------------------------------------------------------------------
+2008-10-17T19:42:29+00:00 INFO (6): 11544@0.005 ----------------------------------------------------------------------
+2008-10-17T19:42:29+00:00 INFO (6): 11544@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:42:29+00:00 DEBUG (7): 11544@0.006 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:42:29+00:00 DEBUG (7): 11544@0.027 Authenticated User: Soichi Hayashi
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.464 ----------------------------------------------------------------------
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.464 DB PROFILE
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 Executed 4 queries in 0.0071272850036621 seconds
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 Executed Query: (in 0.0020439624786377)
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 connect
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 Executed Query: (in 0.0018339157104492)
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 Executed Query: (in 0.0008242130279541)
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 Executed Query: (in 0.0024251937866211)
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:42:30+00:00 DEBUG (7): 11544@0.465 ----------------------------------------------------------------------
+2008-10-17T19:43:47+00:00 INFO (6): 17229@0.005 ----------------------------------------------------------------------
+2008-10-17T19:43:47+00:00 INFO (6): 17229@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.024 Authenticated User: Soichi Hayashi
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.06 ----------------------------------------------------------------------
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.06 DB PROFILE
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.06 Executed 3 queries in 0.0047557353973389 seconds
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.06 Executed Query: (in 0.0029609203338623)
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 connect
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 Executed Query: (in 0.001230001449585)
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 Executed Query: (in 0.0005648136138916)
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:43:47+00:00 DEBUG (7): 17229@0.061 ----------------------------------------------------------------------
+2008-10-17T19:43:48+00:00 INFO (6): 17229@0.004 ----------------------------------------------------------------------
+2008-10-17T19:43:48+00:00 INFO (6): 17229@0.004 RSV Viewer session starting.. /footprint/resource
+2008-10-17T19:43:48+00:00 DEBUG (7): 17229@0.004 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:43:48+00:00 DEBUG (7): 17229@0.021 Authenticated User: Soichi Hayashi
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 ----------------------------------------------------------------------
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 DB PROFILE
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 Executed 7 queries in 0.01436710357666 seconds
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 Executed Query: (in 0.0018460750579834)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 connect
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 Executed Query: (in 0.0010349750518799)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 Executed Query: (in 0.00047397613525391)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 Executed Query: (in 0.0019450187683105)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.343 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 Executed Query: (in 0.00047397613525391)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 select * from osg_grid_type order by short_name
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 Executed Query: (in 0.0052609443664551)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 1)) order by name
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 Executed Query: (in 0.0033321380615234)
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 2)) order by name
+2008-10-17T19:43:49+00:00 DEBUG (7): 17229@0.344 ----------------------------------------------------------------------
+2008-10-17T19:44:15+00:00 INFO (6): 11548@0.006 ----------------------------------------------------------------------
+2008-10-17T19:44:15+00:00 INFO (6): 11548@0.006 RSV Viewer session starting.. /footprint/resource/submit
+2008-10-17T19:44:15+00:00 DEBUG (7): 11548@0.006 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id] => 21
+    [resource_type] => 2
+    [resource_id_with_issue_1] => 147
+    [resource_id_with_issue_2] => 54
+    [detail] => (test ticket. Please disregard)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:44:15+00:00 DEBUG (7): 11548@0.027 Authenticated User: Soichi Hayashi
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.723 ----------------------------------------------------------------------
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 DB PROFILE
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed 10 queries in 0.024266004562378 seconds
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed Query: (in 0.0021440982818604)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 connect
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed Query: (in 0.0017871856689453)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed Query: (in 0.00071382522583008)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed Query: (in 0.0031709671020508)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 Executed Query: (in 0.00088310241699219)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.724 select * from osg_grid_type order by short_name
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 Executed Query: (in 0.0069270133972168)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 1)) order by name
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 Executed Query: (in 0.004889965057373)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 2)) order by name
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 Executed Query: (in 0.00052785873413086)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 select name from resource where active = 1 and disable = 0 and resource_id = 54
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 Executed Query: (in 0.0017540454864502)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 select * from rsvextra.View_resourceSiteScPub where resource_id = 54
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 Executed Query: (in 0.0014679431915283)
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 select * from rsvextra.View_PrimaryResourceAdminContactsAll where resource_id = 54
+2008-10-17T19:44:16+00:00 DEBUG (7): 11548@0.725 ----------------------------------------------------------------------
+2008-10-17T19:48:36+00:00 INFO (6): 11545@0.005 ----------------------------------------------------------------------
+2008-10-17T19:48:36+00:00 INFO (6): 11545@0.005 RSV Viewer session starting.. /footprint/resource
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.026 Authenticated User: Soichi Hayashi
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.318 ----------------------------------------------------------------------
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.318 DB PROFILE
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.318 Executed 7 queries in 0.018770217895508 seconds
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.0024261474609375)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 connect
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.0015201568603516)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.00070500373840332)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.0022101402282715)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.00059390068054199)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 select * from osg_grid_type order by short_name
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.319 Executed Query: (in 0.0072200298309326)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.32 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 1)) order by name
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.32 Executed Query: (in 0.0040948390960693)
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.32 select * from resource r where active = 1 and disable = 0 and resource_id IN (select resource_id from resource_resource_group RRG where resource_group_id IN (select resource_group_id from resource_group RG where osg_grid_type_id = 2)) order by name
+2008-10-17T19:48:36+00:00 DEBUG (7): 11545@0.32 ----------------------------------------------------------------------
+2008-10-17T19:48:37+00:00 INFO (6): 11545@0.004 ----------------------------------------------------------------------
+2008-10-17T19:48:37+00:00 INFO (6): 11545@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:48:37+00:00 DEBUG (7): 11545@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:48:37+00:00 DEBUG (7): 11545@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.062 ----------------------------------------------------------------------
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.062 DB PROFILE
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.062 Executed 3 queries in 0.0039792060852051 seconds
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.062 Executed Query: (in 0.0019199848175049)
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.062 connect
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.063 Executed Query: (in 0.0014121532440186)
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.063 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.063 Executed Query: (in 0.00064706802368164)
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.063 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:48:38+00:00 DEBUG (7): 11545@0.063 ----------------------------------------------------------------------
+2008-10-17T19:48:39+00:00 INFO (6): 11545@0.004 ----------------------------------------------------------------------
+2008-10-17T19:48:39+00:00 INFO (6): 11545@0.004 RSV Viewer session starting.. /footprint/membership
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 ----------------------------------------------------------------------
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 DB PROFILE
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 Executed 4 queries in 0.0060648918151855 seconds
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 Executed Query: (in 0.0018949508666992)
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 connect
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 Executed Query: (in 0.0014240741729736)
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 Executed Query: (in 0.00065803527832031)
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.13 Executed Query: (in 0.0020878314971924)
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.131 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:48:39+00:00 DEBUG (7): 11545@0.131 ----------------------------------------------------------------------
+2008-10-17T19:49:02+00:00 INFO (6): 17229@0.008 ----------------------------------------------------------------------
+2008-10-17T19:49:02+00:00 INFO (6): 17229@0.008 RSV Viewer session starting.. /footprint/membership
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.008 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.036 Authenticated User: Soichi Hayashi
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 ----------------------------------------------------------------------
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 DB PROFILE
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 Executed 4 queries in 0.0078718662261963 seconds
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 Executed Query: (in 0.0023097991943359)
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 connect
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 Executed Query: (in 0.0019650459289551)
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 Executed Query: (in 0.00091099739074707)
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.148 Executed Query: (in 0.0026860237121582)
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.149 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:49:02+00:00 DEBUG (7): 17229@0.149 ----------------------------------------------------------------------
+2008-10-17T19:49:08+00:00 INFO (6): 11548@0.005 ----------------------------------------------------------------------
+2008-10-17T19:49:08+00:00 INFO (6): 11548@0.005 RSV Viewer session starting.. /footprint/membership
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.005 Array
+(
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.024 Authenticated User: Soichi Hayashi
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 ----------------------------------------------------------------------
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 DB PROFILE
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 Executed 4 queries in 0.0074512958526611 seconds
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 Executed Query: (in 0.0020160675048828)
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 connect
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 Executed Query: (in 0.001662015914917)
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.133 Executed Query: (in 0.00089907646179199)
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.134 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.134 Executed Query: (in 0.0028741359710693)
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.134 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:49:08+00:00 DEBUG (7): 11548@0.134 ----------------------------------------------------------------------
+2008-10-17T19:49:24+00:00 INFO (6): 11541@0.005 ----------------------------------------------------------------------
+2008-10-17T19:49:24+00:00 INFO (6): 11541@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is a test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.023 Authenticated User: Soichi Hayashi
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.442 ----------------------------------------------------------------------
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 DB PROFILE
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 Executed 4 queries in 0.005779504776001 seconds
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 Executed Query: (in 0.0019462108612061)
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 connect
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 Executed Query: (in 0.0013492107391357)
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 Executed Query: (in 0.00060200691223145)
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 Executed Query: (in 0.0018820762634277)
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:49:24+00:00 DEBUG (7): 11541@0.443 ----------------------------------------------------------------------
+2008-10-17T19:50:18+00:00 INFO (6): 11545@0.004 ----------------------------------------------------------------------
+2008-10-17T19:50:18+00:00 INFO (6): 11545@0.005 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:50:18+00:00 DEBUG (7): 11545@0.005 Array
+(
+    [firstname] => Soichi
+    [lastname] => Hayashi
+    [email] => hayashis@indiana.edu
+    [phone] => 1-812-606-7104
+    [vo_id_requested] => 21
+    [detail] => (This is a test)
+    [submit_button] => Submit
+    [__utma] => 10362678.1312155850979447300.1222311944.1222311944.1222350693.2
+    [__utmz] => 10362678.1222311944.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [SignOnDefault] => IU_E0002474616
+    [PHPSESSID] => cf01153c56db58f4c18f55a0dbb2f76c
+)
+
+2008-10-17T19:50:18+00:00 DEBUG (7): 11545@0.024 Authenticated User: Soichi Hayashi
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 ----------------------------------------------------------------------
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 DB PROFILE
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 Executed 4 queries in 0.0074620246887207 seconds
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 Executed Query: (in 0.0020809173583984)
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 connect
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 Executed Query: (in 0.0017580986022949)
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 select p.*
+                    from oim.certificate_dn c left join oim.person p on
+                        (c.person_id = p.person_id)
+                    where 
+                        c.active = 1 and 
+                        c.disable = 0 and 
+                        dn_string = '/DC=org/DC=doegrids/OU=People/CN=Soichi Hayashi 461343'
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.647 Executed Query: (in 0.00083208084106445)
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.648 select
+            d.auth_type_id as auth_type_id
+            from
+                oim.certificate_dn c left join oim.dn_auth_type d on
+                    (c.dn_id = d.dn_id)
+            where
+                d.active = 1 and
+                c.active = 1 and
+                c.disable = 0 and
+                c.person_id = 238
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.648 Executed Query: (in 0.0027909278869629)
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.648 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:50:19+00:00 DEBUG (7): 11545@0.648 ----------------------------------------------------------------------
+2008-10-17T19:53:29+00:00 INFO (6): 11541@0.005 ----------------------------------------------------------------------
+2008-10-17T19:53:29+00:00 INFO (6): 11541@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.018 guest access from 156.56.18.229
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.056 ----------------------------------------------------------------------
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.057 DB PROFILE
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.057 Executed 0 queries in 0 seconds
+2008-10-17T19:53:29+00:00 DEBUG (7): 11541@0.057 ----------------------------------------------------------------------
+2008-10-17T19:53:33+00:00 INFO (6): 11541@0.004 ----------------------------------------------------------------------
+2008-10-17T19:53:33+00:00 INFO (6): 11541@0.004 RSV Viewer session starting.. /footprint/
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.004 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.017 guest access from 156.56.18.229
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.055 ----------------------------------------------------------------------
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.055 DB PROFILE
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.055 Executed 0 queries in 0 seconds
+2008-10-17T19:53:33+00:00 DEBUG (7): 11541@0.056 ----------------------------------------------------------------------
+2008-10-17T19:53:35+00:00 INFO (6): 11541@0.004 ----------------------------------------------------------------------
+2008-10-17T19:53:35+00:00 INFO (6): 11541@0.004 RSV Viewer session starting.. /footprint/membership
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.017 guest access from 156.56.18.229
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.126 ----------------------------------------------------------------------
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.126 DB PROFILE
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.126 Executed 2 queries in 0.0040738582611084 seconds
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.127 Executed Query: (in 0.0019638538360596)
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.127 connect
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.127 Executed Query: (in 0.0021100044250488)
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.127 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:53:35+00:00 DEBUG (7): 11541@0.127 ----------------------------------------------------------------------
+2008-10-17T19:53:38+00:00 INFO (6): 11541@0.004 ----------------------------------------------------------------------
+2008-10-17T19:53:38+00:00 INFO (6): 11541@0.004 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.005 Array
+(
+    [firstname] => Tim
+    [lastname] => 
+    [email] => 
+    [phone] => 
+    [vo_id_requested] => 
+    [detail] => 
+    [submit_button] => Submit
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.017 guest access from 156.56.18.229
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.128 ----------------------------------------------------------------------
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.128 DB PROFILE
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.128 Executed 2 queries in 0.0039699077606201 seconds
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.129 Executed Query: (in 0.0018990039825439)
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.129 connect
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.129 Executed Query: (in 0.0020709037780762)
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.129 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:53:38+00:00 DEBUG (7): 11541@0.129 ----------------------------------------------------------------------
+2008-10-17T19:54:07+00:00 INFO (6): 11549@0.007 ----------------------------------------------------------------------
+2008-10-17T19:54:07+00:00 INFO (6): 11549@0.007 RSV Viewer session starting.. /footprint/membership/submit
+2008-10-17T19:54:07+00:00 DEBUG (7): 11549@0.007 Array
+(
+    [firstname] => Tim
+    [lastname] => Silvers
+    [email] => tsilver@indiana.edu
+    [phone] => 317-446-3643
+    [vo_id_requested] => 6
+    [detail] => Testing VO membership form.
+    [submit_button] => Submit
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:54:07+00:00 DEBUG (7): 11549@0.021 guest access from 156.56.18.229
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.636 ----------------------------------------------------------------------
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 DB PROFILE
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 Executed 2 queries in 0.0054702758789062 seconds
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 Executed Query: (in 0.002190113067627)
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 connect
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 Executed Query: (in 0.0032801628112793)
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 select * from supportcenter where active = 1 and disable = 0 order by short_name
+2008-10-17T19:54:08+00:00 DEBUG (7): 11549@0.637 ----------------------------------------------------------------------
+2008-10-17T19:59:30+00:00 INFO (6): 11541@0.004 ----------------------------------------------------------------------
+2008-10-17T19:59:30+00:00 INFO (6): 11541@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.018 guest access from 156.56.18.229
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.056 DB PROFILE
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.056 Executed 0 queries in 0 seconds
+2008-10-17T19:59:30+00:00 DEBUG (7): 11541@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:31+00:00 INFO (6): 11549@0.004 ----------------------------------------------------------------------
+2008-10-17T19:59:31+00:00 INFO (6): 11549@0.005 RSV Viewer session starting.. /footprint/process
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.017 guest access from 156.56.18.229
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.056 DB PROFILE
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.056 Executed 0 queries in 0 seconds
+2008-10-17T19:59:31+00:00 DEBUG (7): 11549@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:36+00:00 INFO (6): 11543@0.004 ----------------------------------------------------------------------
+2008-10-17T19:59:36+00:00 INFO (6): 11543@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:59:36+00:00 DEBUG (7): 11543@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:59:37+00:00 DEBUG (7): 11543@0.018 guest access from 156.56.18.229
+2008-10-17T19:59:37+00:00 DEBUG (7): 11543@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:37+00:00 DEBUG (7): 11543@0.056 DB PROFILE
+2008-10-17T19:59:37+00:00 DEBUG (7): 11543@0.056 Executed 0 queries in 0 seconds
+2008-10-17T19:59:37+00:00 DEBUG (7): 11543@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:38+00:00 INFO (6): 11543@0.004 ----------------------------------------------------------------------
+2008-10-17T19:59:38+00:00 INFO (6): 11543@0.004 RSV Viewer session starting.. /footprint/other
+2008-10-17T19:59:38+00:00 DEBUG (7): 11543@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:59:38+00:00 DEBUG (7): 11543@0.017 guest access from 156.56.18.229
+2008-10-17T19:59:40+00:00 INFO (6): 1173@0.004 ----------------------------------------------------------------------
+2008-10-17T19:59:40+00:00 INFO (6): 1173@0.005 RSV Viewer session starting.. /footprint/
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.005 Array
+(
+    [PHPSESSID] => e68a54eb5439bcee950616022e5a871d
+)
+
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.018 guest access from 156.56.18.229
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.056 ----------------------------------------------------------------------
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.056 DB PROFILE
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.056 Executed 0 queries in 0 seconds
+2008-10-17T19:59:40+00:00 DEBUG (7): 1173@0.057 ----------------------------------------------------------------------

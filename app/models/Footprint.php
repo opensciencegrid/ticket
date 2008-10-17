@@ -13,8 +13,13 @@ class Footprint
         $this->description = "";
         $this->permanent_cc = array();
         $this->title = "no title";
+
         $this->assignees = array($this->chooseAssignee()); //remove hayashis later
+
+        //DEBUG
         $this->assignees = array("tsilver");
+        //$this->assignees = array("hayashis");
+
         $this->ab_fields = array();
         $this->project_fields = array();
         $this->project_fields["ENG__bNext__bAction__bItem"] = "ENG Action";
@@ -44,7 +49,9 @@ class Footprint
 
     public function setVORequested($v) { 
         $name = $this->lookupFootprintVOName($v);
-        $this->project_fields["__vo_requested"] = $name;
+        $this->description .= "\n(META) User is requesting a membership at $name";
+        $this->project_fields["Destination__bVO__bSupport__bCenter"]= $name;
+        //$this->assignees[] = $name;
     }
 
     public function setResourceWithIssue($resource_id) { 
@@ -61,7 +68,7 @@ class Footprint
         $prac = $prac_model->fetch($resource_id);
 
         $this->permanent_cc[] = $prac->primary_email;
-        $this->description .= "\n(META) Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n";
+        $this->description .= "(META) Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.";
     }
 
     private function chooseAssignee()

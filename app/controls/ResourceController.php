@@ -51,7 +51,7 @@ class ResourceController extends BaseController
     {
         $resource_model = new Resource();
         $resource_name = $resource_model->fetchName($resource_id);
-        return "(Resource Specific issue on $resource_name)";
+        return "Resource Specific issue on $resource_name";
     }
 
     private function getForm()

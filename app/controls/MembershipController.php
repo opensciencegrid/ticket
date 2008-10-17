@@ -1,6 +1,6 @@
 <?
 
-class MembershipController extends Zend_Controller_Action 
+class MembershipController extends BaseController
 { 
     public function indexAction() 
     { 
@@ -19,7 +19,7 @@ class MembershipController extends Zend_Controller_Action
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
-            $footprint->setDescription($form->getValue('detail'));
+            $footprint->addDescription($form->getValue('detail'));
             $footprint->setVORequested($form->getValue('vo_id_requested'));
 
             try 
@@ -41,7 +41,7 @@ class MembershipController extends Zend_Controller_Action
 
     public function composeTicketTitle()
     {
-        return "(OSG Membership Request)";
+        return "OSG Membership Request";
     }
 
     private function getForm()

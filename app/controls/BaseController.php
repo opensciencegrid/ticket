@@ -7,6 +7,7 @@ class BaseController extends Zend_Controller_Action
         $Name = "GOC Footprint Ticket Form"; //senders name
         $email = "hayashis@indiana.edu"; //senders e-mail adress
         $recipient = "IU-GOC-L@LISTSERV.INDIANA.EDU";
+        $recipient = "hayashis@indiana.edu";
         $mail_body = "Dear Goc,\n\nGOC Ticket Form has received a ticket, but the submittion to Footprint has failed. Please fix the issue, and resubmit the issue on behalf of the user ASAP.\n\n";
         $mail_body .= "[Footprint says]\n";
         $mail_body .= print_r($e, true);

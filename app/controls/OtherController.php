@@ -1,6 +1,6 @@
 <?
 
-class OtherController extends Zend_Controller_Action 
+class OtherController extends BaseController
 { 
     public function indexAction() 
     { 
@@ -19,7 +19,7 @@ class OtherController extends Zend_Controller_Action
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
-            $footprint->setDescription($form->getValue('detail'));
+            $footprint->addDescription($form->getValue('detail'));
 
             $footprint->setVO($form->getValue('vo_id'));
 

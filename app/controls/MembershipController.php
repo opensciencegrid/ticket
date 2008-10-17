@@ -22,11 +22,16 @@ class MembershipController extends Zend_Controller_Action
             $footprint->setDescription($form->getValue('detail'));
             $footprint->setVORequested($form->getValue('vo_id_requested'));
 
-            if($footprint->submit()) {
+            try 
+            {
+                $mrid = $footprint->submit();
+                $this->view->mrid = $mrid;
                 $this->render("success", null, true);
-            } else {
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
                 $this->render("failed", null, true);
             }
+
         } else {
             $this->view->errors = "Please correct following issues.";
             $this->view->form = $form;
@@ -81,7 +86,7 @@ class MembershipController extends Zend_Controller_Action
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
         foreach($vos as $v) {
-            $vo->addMultiOption($v->vo_id, $v->short_name);
+            $vo->addMultiOption($v->sc_id, $v->short_name);
         }
         $form->addElement($vo);
 

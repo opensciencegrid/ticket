@@ -1,285 +1,161 @@
 <?
 
-require_once("app/httpspost.php");
+//require_once("app/httpspost.php");
 
 class Footprint
 {
     public function __construct()
     {
-        $this->values = array();
-        
-        $this->values["PROJECTNUM"] = "71";
-        $this->values["PROJECTNAME"] = "Open Science Grid";
-        $this->values["TO"] = "osg@tick-indy.globalnoc.iu.edu";
-        $this->values["FROM"] = "hayashis@indiana.edu";
-        $this->values["<i>STATUS</i>"] = "Engineering";
-        $this->values["Customer+Impact"] = "4";
+        $this->project_id = "71";
+        $this->project_name  = "Open Science Grid";
+        $this->status = "Engineering";
+        $this->priority_number = "4";
+        $this->description = "";
+        $this->permanent_cc = array();
+        $this->title = "no title";
+        $this->assignees = array($this->chooseAssignee()); //remove hayashis later
+        $this->assignees = array("tsilver");
+        $this->ab_fields = array();
+        $this->project_fields = array();
+        $this->project_fields["ENG__bNext__bAction__bItem"] = "ENG Action";
+        $this->setNextActionTime(time() + 3600*24*7); //set next action time
     }
 
-    public function setTitle($v) { $this->values["TITLE"] = $v; } //ticket title
-    public function setFirstName($v) { $this->values["First__bName"] = $v; }
-    public function setLastName($v) { $this->values["Last__bName"] = $v; }
-    public function setOfficePhone($v) { $this->values["Office__bPhone"] = $v; }
-    public function setEmail($v) { $this->values["Email__baddress"] = $v; }
-    public function setDescription($v) { 
-        dlog($v);
-        $this->values["LONGDESCRIPTION"] = $v; 
+    //AB fields
+    public function setTitle($v) { $this->title = $v; } //ticket title
+    public function setFirstName($v) { $this->ab_fields["First__bName"] = $v; }
+    public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
+    public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
+    public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
+
+    public function addDescription($v) { 
+        $this->description .= $v; 
+    }
+
+    public function setNextActionTime($time)
+    {
+        $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
     }
 
     public function setVO($v) { 
         $name = $this->lookupFootprintVOName($v);
-        $this->values["Originating__bVO__bSupport__bCenter"] = $name; 
-
-        //TODO - remove this when lookup is implemented
-        $this->values["Submitter VO ID"] = $v; 
+        $this->project_fields["Originating__bVO__bSupport__bCenter"] = $name; 
     }
 
     public function setVORequested($v) { 
         $name = $this->lookupFootprintVOName($v);
-        $this->values["__vo_requested"] = $name;
-
-        //TODO - remove this when lookup is implemented
-        $this->values["__vo_requested"] = $v; 
+        $this->project_fields["__vo_requested"] = $name;
     }
 
     public function setResourceWithIssue($resource_id) { 
         $rs_model = new ResourceSite();
         $resource = $rs_model->fetch($resource_id);
-        $this->values["Resource where user is having this issue"] = $resource->resource_name;
-        $this->values["Support Center where the issue resource is supported"] = $resource->sc_name;
-        $fp_sc_name = $this->lookupFootprintVOName($resource->sc_id);
-        $this->values["Destination__bVO__bSupport__bCenter"] = $fp_sc_name;
+        $this->description .= "\n(META) Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n";
 
-        //find primary resource admin
+        $fp_sc_name = $this->lookupFootprintVOName($resource->sc_id);
+        $this->project_fields["Destination__bVO__bSupport__bCenter"] = $fp_sc_name;
+        $this->assignees[] = $fp_sc_name;
+
+        //find primary resource admin email
         $prac_model = new PrimaryResourceAdminContact();
         $prac = $prac_model->fetch($resource_id);
-        $this->values["Primary Admin Email Address"] = $prac->primary_email;
+
+        $this->permanent_cc[] = $prac->primary_email;
+        $this->description .= "\n(META) Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n";
+    }
+
+    private function chooseAssignee()
+    {
+        //randomly pick one of the GOCers
+        $gocers = array("kagross", "echism", "tsiler");
+        $lucky = rand(0, sizeof($gocers)-1);
+        return $gocers[$lucky]; 
+    }
+
+    private function lookupVOName($id)
+    {
+        $vo_model = new VO();
+        $vos = $vo_model->fetchAll();
+        foreach($vos as $vo) {
+            if($vo->vo_id == $id) return $vo->short_name;
+        }
+        return "(unknown vo_id $id)";
     }
 
     private function lookupFootprintVOName($id)
     {
-        //TODO..
-        return "OSG-GOC";
-    }
-
-    private function lookoupFootprintResourceName($id)
-    {
-        //TODO - convert vo_id on OIM to Footprint VO name
-        return "OSG-GOC";
-    }
-
-
+        static $id2name = array(
 /*
-<i>Status</i>   Engineering
-Access__bInformation    
-Activity        Change
-Announcements__bSent__Q Yes
-Attack__bType   Host+Compromise
-CLLI    
-Cell__bPhone    812-606-7104
-City    
-Comments        
-Country 
-Customer+Impact 4
-DATE_TYPE       0
-Day_Acceptance__bDate__b__PUTC__p       
-Day_Activity__bDate__b__PUTC__p 
-Day_ENG__bNext__bAction__bDate__fTime__b__PUTC__p       
-Day_Earliest__bRequested__bDate__b__PUTC__p     09
-Day_Latest__bRequested__bDate__b__PUTC__p       10
-Day_Production__bDate__b__PUTC__p       
-Day_SD__bNext__bAction__bDate__fTime__b__PUTC__p        
-Day_Scheduled__bFSR__bEnd__bTime__b__PUTC__p    
-Day_Scheduled__bFSR__bStart__bTime__b__PUTC__p  
-Day_When__bwas__bPart__bReceived__Q__b__PUTC__p 
-Day_When__bwas__bRMA__bGenerated__Q__b__PUTC__p 
-Day___Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g    
-Day___Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g  
-Day___Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g 10
-Day___Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g       09
-Destination__bTicket__bNumber   
-Destination__bVO__bSupport__bCenter     OSG-GOC
-ENG__bNext__bAction__bItem      
-Email__baddress hayashis@indiana.edu
-Emergency__bMaintenance No
-FROM    hayashis@indiana.edu
-Facility__bOwner        
-First__bName    Soichi
-Hands__band__bEyes__bProvider   
-Hour_ENG__bNext__bAction__bDate__fTime__b__PUTC__p      
-Hour_Earliest__bRequested__bDate__b__PUTC__p    1
-Hour_Latest__bRequested__bDate__b__PUTC__p      0
-Hour_SD__bNext__bAction__bDate__fTime__b__PUTC__p       
-Hour_Scheduled__bFSR__bEnd__bTime__b__PUTC__p   
-Hour_Scheduled__bFSR__bStart__bTime__b__PUTC__p 
-Hour_When__bwas__bPart__bReceived__Q__b__PUTC__p        
-Hour_When__bwas__bRMA__bGenerated__Q__b__PUTC__p        
-Hour___Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g   
-Hour___Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g 
-Hour___Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g        2
-Hour___Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g      3
-Hours   0
-IM__bHandle     
-Infrastructure__bAttack__Q      No
-Inventory__bUpdated__Q  No
-Is__bthis__bNetwork__bImpacting__Q      No
-Job__bTitle     
-LONGDESCRIPTION here+is+my+description.
-Last__bName     Hayashi
-Maintenance__bType      Software
-Manned__bPOP__b__P1__CYes__p    
-Maps__b__7__bDocuments__bModified__Q    No
-Minute_ENG__bNext__bAction__bDate__fTime__b__PUTC__p    
-Minute_Earliest__bRequested__bDate__b__PUTC__p  3
-Minute_Latest__bRequested__bDate__b__PUTC__p    5
-Minute_SD__bNext__bAction__bDate__fTime__b__PUTC__p     
-Minute_Scheduled__bFSR__bEnd__bTime__b__PUTC__p 
-Minute_Scheduled__bFSR__bStart__bTime__b__PUTC__p       
-Minute_When__bwas__bPart__bReceived__Q__b__PUTC__p      
-Minute_When__bwas__bRMA__bGenerated__Q__b__PUTC__p      
-Minute___Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g 
-Minute___Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g       
-Minute___Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g      5
-Minute___Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g    3
-Minutes 0
-Monitoring__bTools__bUpdated__Q No
-Month_Acceptance__bDate__b__PUTC__p     
-Month_Activity__bDate__b__PUTC__p       
-Month_ENG__bNext__bAction__bDate__fTime__b__PUTC__p     
-Month_Earliest__bRequested__bDate__b__PUTC__p   09
-Month_Latest__bRequested__bDate__b__PUTC__p     09
-Month_Production__bDate__b__PUTC__p     
-Month_SD__bNext__bAction__bDate__fTime__b__PUTC__p      
-Month_Scheduled__bFSR__bEnd__bTime__b__PUTC__p  
-Month_Scheduled__bFSR__bStart__bTime__b__PUTC__p        
-Month_When__bwas__bPart__bReceived__Q__b__PUTC__p       
-Month_When__bwas__bRMA__bGenerated__Q__b__PUTC__p       
-Month___Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g  
-Month___Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g        
-Month___Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g       09
-Month___Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g     09
-Network__bAdministration__bNotified__bof__bApplicable__bDates__Q        No
-Network__bImpact        2-High
-Office__bPhone  999-999-9999
-Organization    
-Originating__bTicket__bNumber   
-Originating__bVO__bSupport__bCenter     OSG-GOC
-Outage__bType   Undetermined
-PROJECTNAME     Open+Science+Grid
-PROJECTNUM      71
-Part__bDescription      
-Part__bModel__b__3      
-Part__bSerial__b__3__b__Pnew__p 
-Part__bSerial__b__3__b__Pold__p 
-RFO     what+is+RFO?
-RMA__b__3       11111
-Ready__bto__bClose__Q   No
-Requested__bTime__bFrame        Anytime
-SD__bNext__bAction__bItem       
-Send__bwhich__bdescription__bto__bassignees__Q  No+Choice
-Shipper__bFROM__bSite   
-Shipper__bTO__bSite     
-Shipping__bAddress__b__Pif__bdifferent__p       
-Site__bAddress  
-Site__bDescription      what+site?
-Source__bof__bImpact    Customer
-State   
-Suite   
-Summary__bof__bCurrent__bStatus__bUpdated__Q    No
-TITLE   test+ticket.+Please+assign+this+to+Soichi+Hayashi
-TO      hayashis@indiana.edu
-Ticket__uType   Problem/Request
-Tracking__b__3__bFROM__bSite    
-Tracking__b__3__bTO__bSite      
-Type    Customer+Connection
-Type__bof__bFSR Receive
-Vendor__b1      No+Choice
-Vendor__b1__bCase__b__3 
-Vendor__b2      No+Choice
-Vendor__b2__bCase__b__3 
-Vendor__b3      
-Vendor__b3__bCase__b__3 
-Vendor__bInvolvement    No
-Year_Acceptance__bDate__b__PUTC__p      
-Year_Activity__bDate__b__PUTC__p        
-Year_ENG__bNext__bAction__bDate__fTime__b__PUTC__p      
-Year_Earliest__bRequested__bDate__b__PUTC__p    2008
-Year_Latest__bRequested__bDate__b__PUTC__p      2008
-Year_Production__bDate__b__PUTC__p      
-Year_SD__bNext__bAction__bDate__fTime__b__PUTC__p       
-Year_Scheduled__bFSR__bEnd__bTime__b__PUTC__p   
-Year_Scheduled__bFSR__bStart__bTime__b__PUTC__p 
-Year_When__bwas__bPart__bReceived__Q__b__PUTC__p        
-Year_When__bwas__bRMA__bGenerated__Q__b__PUTC__p        
-Year___Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g   
-Year___Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g 
-Year___Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g        2008
-Year___Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g      2008
-Zip     
-__Gi__gAffected__G__fi__g       
-__Gi__gSummary__bof__bCurrent__bStatus__G__fi__g
+//following SC only exists in Footprint Schema
+CDF 
+GGUS 
+GIP Support 
+GRATIA 
+ILC 
+OSG 
+ReSS-Ops 
+RSV-Ops 
+Troubleshooting 
 */
+2=>"CIGI",
+3=>"CSC",    //"CSC"
+4=>"DOSAR",     //"DOSAR"
+5=>"DZero",     //"DZero"
+6=>"Engagement",     //"Engagement"
+7=>"Fermilab",     //"Fermilab"
+8=>"fGOC",     //"fGOC"
+9=>"GADU",    //"GADU"
+10=>"GLOW-TECH",    //"GLOW-TECH"
+11=>"GPN",    //"GPN"
+12=>"GRASE",    //"GRASE"
+14=>"GUGrid",    //"GUGrid"
+15=>"LBNL-DSD-suppot",    //"LBNL-DSD-support"
+16=>"LIGO",    //"LIGO"
+17=>"mariach-support",    //"mariach-support"
+18=>"nanoHUB",    //"nanoHUB-SC"
+19=>"NERSC",    //"NERSC"
+20=>"NWICG",    //"NWICG"
+21=>"OSG-GOC",    //"OSG-GOC"
+22=>"PROD_SLAC",    //"PROD_SLAC"
+23=>"SBGrid",    //"SBGrid"
+24=>"SDSS",    //"SDSS"
+25=>"STAR",    //"STAR"
+26=>"TIGRE",    //"TIGRE"
+27=>"UC CI",    //"UC CI"
+28=>"UCHC",    //"UCHC"
+29=>"USATLAS",    //"USATLAS"
+30=>"USCMS",    //"USCMS"
+31=>"VDT",    //"VDT"
+34=>"SBGrid",    //"SBGrid"
+        );
+        return $id2name[$id];
+    }
 
     public function submit()
     {
-        $ret = https_post("tick.globalnoc.iu.edu", "/MRcgi/MRProcessIncomingForms.pl", $this->values);
+        $client = new SoapClient(null, array(
+            'location' => "http://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
+            'uri'      => "http://tick.globalnoc.iu.edu/MRWebServices"));
 
-        //TODO.. analyze $ret
-        return true;
+        $ret = $client->__soapCall("MRWebServices__createIssue_goc",
+            array(config()->webapi_user, config()->webapi_password, "",
+                array(
+                    "projectID"=>71,
+                    "submitter"=>"OSG-GOC",
+                    "title" => $this->title,
+                    "assignees" => $this->assignees,
+                    "permanentCCs" => $this->permanent_cc,
+                    "priorityNumber" => $this->priority_number,
+                    "status" => $this->status,
+                    "description" => $this->description,
+                    "abfields" => $this->ab_fields,
+                    "projfields" => $this->project_fields
+                )
+            )
+        );
+
+        return $ret;
     }
 }
 
-/*
-use strict;
-use SOAP::Lite;
-my $USE_PROXY_SERVER = 1;
-my $soap = new SOAP::Lite;
-$soap->uri( 'http://fakeserver.phoneycompany.com:2021/MRWebServices' );
-if( $USE_PROXY_SERVER )
-{
-    $soap->proxy(
-        'http://fakeserver.phoneycompany.com:2021/MRcgi/MRWebServices.pl', 
-        proxy => ['http' => 'http://localhost:8888/'] );
-}
-else
-{
-    $soap->proxy( 'http://fakeserver.phoneycompany.com:2021/MRcgi/MRWebServices.pl' );
-}
-my $soapenv = $soap->MRWebServices__createIssue(
-    'WebServices',
-    'fakepassword',
-    '',
-    {
-        projectID => 78,
-        title => 'Place title of new issue here.',
-        assignees => ['user1', 'user2'],
-        priorityNumber => 1,
-        status => 'Open',
-        description => "Place issue description here.\nFrom PERL code.",
-        abfields =>
-        {
-            Last__bName => 'Doe',
-            First__bName => 'John',
-            Email__baddress => 'johndoe@nowhere.com',
-            Custom__bAB__bField__bOne => 'Value of Custom AB Field One'
-        },
-        projfields =>
-        {
-            Custom__bField__bOne => 'Value of Custom Field One',
-            Custom__bField__bTwo => 'Value of Custom Field Two'
-        }
-    }
-);
-my $result;
-if( $soapenv->fault )
-{
-    print ${$soapenv->fault}{faultstring} . "\n";
-    exit;
-}
-else
-{
-    $result = $soapenv->result;
-}
-print "Issue $result has been created.\n";
-*/
 

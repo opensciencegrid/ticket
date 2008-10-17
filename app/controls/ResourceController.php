@@ -1,6 +1,6 @@
 <?
 
-class ResourceController extends Zend_Controller_Action 
+class ResourceController extends BaseController
 { 
     public function indexAction() 
     { 
@@ -26,14 +26,18 @@ class ResourceController extends Zend_Controller_Action
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
-            $footprint->setDescription($form->getValue('detail'));
+            $footprint->addDescription($form->getValue('detail'));
 
             $footprint->setVO($form->getValue('vo_id'));
             $footprint->setResourceWithIssue($form->getValue($issue_element_name));
 
-            if($footprint->submit()) {
+            try 
+            {
+                $mrid = $footprint->submit();
+                $this->view->mrid = $mrid;
                 $this->render("success", null, true);
-            } else {
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
                 $this->render("failed", null, true);
             }
         } else {
@@ -98,7 +102,7 @@ class ResourceController extends Zend_Controller_Action
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
         foreach($vos as $v) {
-            $vo->addMultiOption($v->vo_id, $v->short_name);
+            $vo->addMultiOption($v->sc_id, $v->short_name);
         }
         $form->addElement($vo);
 

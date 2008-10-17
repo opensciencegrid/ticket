@@ -23,9 +23,13 @@ class OtherController extends Zend_Controller_Action
 
             $footprint->setVO($form->getValue('vo_id'));
 
-            if($footprint->submit()) {
+            try 
+            {
+                $mrid = $footprint->submit();
+                $this->view->mrid = $mrid;
                 $this->render("success", null, true);
-            } else {
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
                 $this->render("failed", null, true);
             }
         } else {
@@ -82,7 +86,7 @@ class OtherController extends Zend_Controller_Action
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
         foreach($vos as $v) {
-            $vo->addMultiOption($v->vo_id, $v->short_name);
+            $vo->addMultiOption($v->sc_id, $v->short_name);
         }
         $form->addElement($vo);
 
@@ -90,14 +94,7 @@ class OtherController extends Zend_Controller_Action
         $detail->setLabel("Description");
         $detail->setRequired(true);
         $form->addElement($detail);
-
-        /*
-        $form->addDisplayGroup(array('firstname', 'lastname', 'email', 'phone'), "your_info", 
-            array(      "label"=>"Your Information",
-                        "disableLoadDefaultDecorators"=>true));
-        $form->addDisplayGroup(array('detail'), "issue_details", 
-            array("label"=>"Issue Details"));
-        */
+/
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Submit");

@@ -62,7 +62,7 @@ a:hover
 
 .container .form
 {
-    background:#eee url(../images/bg.gif) repeat-x;
+    background:#ece9d8 url(../images/bg.gif) repeat-x;
     padding: 10px;
 }
 
@@ -113,6 +113,10 @@ p.errors
     padding:10px;
 }
 .indent
+{
+    margin-left: 20px;
+}
+.hint
 {
     margin-left: 20px;
 }

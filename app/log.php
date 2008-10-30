@@ -18,7 +18,7 @@ function setup_logs()
     Zend_Registry::set("logger", $logger);
 
     slog('----------------------------------------------------------------------');
-    slog('RSV Viewer session starting.. '.$_SERVER["REQUEST_URI"]);
+    slog(config()->app_name. ' session starting.. '.$_SERVER["REQUEST_URI"]);
 
     dlog(print_r($_REQUEST, true));
 }

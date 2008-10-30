@@ -1,0 +1,42 @@
+<form action="<?=$this->escape($this->element->getAction())?>" method="<?=$this->escape($this->element->getMethod())?>">
+<dl>
+
+<dd>
+    <h3>Your Information</h3>
+    <p> Please tell us who you are so that we can send you ticket updates.  </p>
+</dd>
+
+<?=$this->element->firstname?>
+<?=$this->element->lastname?>
+<?=$this->element->email?>
+<?=$this->element->phone?>
+
+<dd><h3>Request Detail</h3></dd>
+
+<?=$this->element->knowvo?>
+</dl>
+    <dl id="vo_id_requested_holder" class="indent hidden">
+    <?=$this->element->vo_id_requested?>
+    </dl>
+<dl>
+
+<?=$this->element->detail?>
+
+<?=$this->element->submit_button?>
+</dl>
+</form>
+
+<script type="text/javascript">
+function showhide_volist() {
+    $("#vo_id_requested_holder").hide();
+    //find currently selected item
+    var knowvo = $("#knowvo").val();
+    if(knowvo == "true") {
+        $("#vo_id_requested_holder").show();
+    } 
+}
+$("#knowvo").change(function() {
+    showhide_volist();
+});
+</script>
+

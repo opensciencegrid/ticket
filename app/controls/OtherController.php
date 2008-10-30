@@ -19,9 +19,8 @@ class OtherController extends BaseController
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
+            $footprint->setOriginatingVO($form->getValue('vo_id'));
             $footprint->addDescription($form->getValue('detail'));
-
-            $footprint->setVO($form->getValue('vo_id'));
 
             try 
             {

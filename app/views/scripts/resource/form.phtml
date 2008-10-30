@@ -1,10 +1,13 @@
 <form action="<?=$this->escape($this->element->getAction())?>"
       method="<?=$this->escape($this->element->getMethod())?>">
+<dl>
 
-<h3>Your Information</h3>
-<p>
-Please tell us who you are so that we can send you ticket updates.
-</p>
+<dd>
+    <h3>Your Information</h3>
+    <p>
+    Please tell us who you are so that we can send you ticket updates.
+    </p>
+</dd>
 
 <?=$this->element->firstname?>
 <?=$this->element->lastname?>
@@ -12,18 +15,39 @@ Please tell us who you are so that we can send you ticket updates.
 <?=$this->element->phone?>
 <?=$this->element->vo_id?>
 
-<br/><br/>
-<h3>Issue Detail</h3>
-<p>
-Now tell us about the issue.
-</p>
+<dd> 
+    <h3>Issue Detail</h3>
+    <p> Now tell us about the issue.  </p>
+</dd>
 
 <?=$this->element->resource_type?>
-<?=$this->element->resource_id_with_issue_1?>
-<?=$this->element->resource_id_with_issue_2?>
+</dl>
+    <dl id="resource_id_with_issue_1_holder" class="hidden">
+    <?=$this->element->resource_id_with_issue_1?>
+    </dl>
+<dl>
+</dl>
+    <dl id="resource_id_with_issue_2_holder" class="hidden">
+    <?=$this->element->resource_id_with_issue_2?>
+    </dl>
+<dl>
+<?=$this->element->admin?>
 <?=$this->element->detail?>
 
-<br/><br/>
 <?=$this->element->submit_button?>
+</dl>
 </form>
 
+<script type="text/javascript">
+function show_resourcelist() {
+    $("#resource_id_with_issue_1_holder").hide();
+    $("#resource_id_with_issue_2_holder").hide();
+    //find currently selected item
+    var grid_type = $("#resource_type").val();
+    $("#resource_id_with_issue_"+grid_type+"_holder").show();
+}
+show_resourcelist();
+$("#resource_type").change(function() {
+    show_resourcelist();
+});
+</script>

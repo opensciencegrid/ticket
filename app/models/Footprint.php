@@ -14,17 +14,21 @@ class Footprint
         $this->permanent_cc = array();
         $this->title = "no title";
 
-        $this->assignees = array($this->chooseAssignee()); //remove hayashis later
+        //add GOC assginee by default
+        $this->assignees = array($this->chooseGOCAssignee());
 
         //DEBUG
         //$this->assignees = array("tsilver");
-        //$this->assignees = array("hayashis");
-        $this->assignees = array("hayashis");
+        //$this->assignees = array("shayas");
 
         $this->ab_fields = array();
         $this->project_fields = array();
         $this->project_fields["ENG__bNext__bAction__bItem"] = "ENG Action";
         $this->setNextActionTime(time() + 3600*24*7); //set next action time
+
+        //since these are required items, let's set to OSG-GOC by default..
+        $this->setOriginatingVO(21); //OSG-GOC
+        $this->setDestinationVO(21); //OSG-GOC
     }
 
     //AB fields
@@ -33,7 +37,6 @@ class Footprint
     public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
-
 
     //1 - critical
     //2 - high
@@ -44,42 +47,33 @@ class Footprint
     public function addDescription($v) { 
         $this->description .= $v; 
     }
+    public function addAssignee($v, $bClear = false) { 
+        if($bClear) {
+            $this->assignees = array();
+        } 
+        $this->assignees[] = $v; 
+    }
 
     public function setNextActionTime($time)
     {
         $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
     }
 
-    public function setVO($v) { 
+    public function setOriginatingVO($v) { 
         $name = $this->lookupFootprintVOName($v);
         $this->project_fields["Originating__bVO__bSupport__bCenter"] = $name; 
     }
 
-    public function setVORequested($v) { 
+    public function setDestinationVO($v) { 
         $name = $this->lookupFootprintVOName($v);
-        $this->description .= "\n(META) User is requesting a membership at $name";
         $this->project_fields["Destination__bVO__bSupport__bCenter"]= $name;
-        //$this->assignees[] = $name;
     }
 
-    public function setResourceWithIssue($resource_id) { 
-        $rs_model = new ResourceSite();
-        $resource = $rs_model->fetch($resource_id);
-        $this->description .= "\n(META) Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n";
-
-        $fp_sc_name = $this->lookupFootprintVOName($resource->sc_id);
-        $this->project_fields["Destination__bVO__bSupport__bCenter"] = $fp_sc_name;
-        $this->assignees[] = $fp_sc_name;
-
-        //find primary resource admin email
-        $prac_model = new PrimaryResourceAdminContact();
-        $prac = $prac_model->fetch($resource_id);
-
-        $this->permanent_cc[] = $prac->primary_email;
-        $this->description .= "(META) Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.";
+    public function addCC($address) {
+        $this->permanent_cc[] = $address;
     }
 
-    private function chooseAssignee()
+    private function chooseGOCAssignee()
     {
         //randomly pick one of the GOCers
         $gocers = array("kagross", "echism", "tsiler");
@@ -97,7 +91,7 @@ class Footprint
         return "(unknown vo_id $id)";
     }
 
-    private function lookupFootprintVOName($id)
+    public function lookupFootprintVOName($id)
     {
         static $id2name = array(
 /*

@@ -1,5 +1,7 @@
 <?
 
+include("lib/MyFormDecoratorCaptcha.php");
+
 class SecurityController extends BaseController
 { 
     public function composeTicketTitle()
@@ -26,12 +28,16 @@ class SecurityController extends BaseController
             $footprint->setEmail($form->getValue('email'));
             $footprint->addDescription($form->getValue('detail'));
 
-            $footprint->setVO($form->getValue('vo_id'));
+            $footprint->setOriginatingVO($form->getValue('vo_id'));
             $footprint->setPriority(1); //set it to critical
+
+            //security ticket is assigned to rob
+            $footprint->addAssignee("rquick", true); 
 
             try 
             {
                 $mrid = $footprint->submit();
+                //var_dump($footprint);
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
             } catch(exception $e) {
@@ -101,6 +107,18 @@ class SecurityController extends BaseController
         //$detail->setLabel("Description");
         $detail->setRequired(true);
         $form->addElement($detail);
+
+        //output captcha element
+        $validatorNotEmpty = new Zend_Validate_NotEmpty();
+        $validatorNotEmpty->setMessage('This field is required, you cannot leave it empty');
+        $captcha = new Zend_Form_Element_Text('captcha');
+        $captcha->setLabel('Type the characters you see in the picture above')
+            ->addValidator(new Zend_Validate_Identical($this->getCaptchaCode()))
+            ->addValidator($validatorNotEmpty, true)->setRequired(true);
+        $captchaDecorator = new My_Form_Decorator_Captcha();
+        $captchaDecorator->setTag('div');
+        $captcha->addDecorator($captchaDecorator);
+        $form->addElement($captcha);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Submit");

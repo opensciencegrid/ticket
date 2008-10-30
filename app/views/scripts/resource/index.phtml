@@ -11,16 +11,4 @@ if($this->errors != "") {
 </div>
 <?include("app/views/scripts/footer.phtml");?>
 
-<script type="text/javascript">
-function show_resourcelist() {
-    $("#resource_id_with_issue_1").hide();
-    $("#resource_id_with_issue_2").hide();
-    //find currently selected item
-    var grid_type = $("#resource_type").val();
-    $("#resource_id_with_issue_"+grid_type).show();
-}
-show_resourcelist();
-$("#resource_type").change(function() {
-    show_resourcelist();
-});
-</script>
+

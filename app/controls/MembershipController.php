@@ -11,6 +11,14 @@ class MembershipController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
+
+        //make vo_id_requested required if voknown is selected
+        $knowvo = $_REQUEST["knowvo"];
+        if($knowvo == "true") {
+            $elem = $form->getelement("vo_id_requested");
+            $elem->setRequired(true);
+        }
+
         if($form->isValid($_POST)) {
             //prepare footprint ticket
             $footprint = new Footprint;
@@ -20,7 +28,16 @@ class MembershipController extends BaseController
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
             $footprint->addDescription($form->getValue('detail'));
-            $footprint->setVORequested($form->getValue('vo_id_requested'));
+
+            if($knowvo == "true") {
+                $void = $form->getValue('vo_id_requested');
+                $footprint->setDestinationVO($void);
+                $voname = $footprint->lookupFootprintVOName($void);
+                $footprint->addDescription("\n(META) User is requesting a membership at $voname");
+                $footprint->addAssignee($voname);
+            } else {
+                $footprint->addDescription("\n(META) User does not know the VO to request membership to.");
+            }
 
             try 
             {
@@ -49,6 +66,12 @@ class MembershipController extends BaseController
         $form = new Zend_Form;
         $form->setAction(base()."/membership/submit");
         $form->setMethod("post");
+        $form->setDecorators(array(
+            array('ViewScript', 
+                array('viewScript' => 'membership/form.phtml'),
+                array('class' => 'form element')
+        )));
+
 
         $firstname = new Zend_Form_Element_Text('firstname');
         $firstname->setLabel("Your First Name");
@@ -79,11 +102,16 @@ class MembershipController extends BaseController
         $phone->setValue(user()->getPersonPhone());
         $form->addElement($phone);
 
+        $element = new Zend_Form_Element_Select('knowvo');
+        $element->setLabel("Do you know which VO you are requesting your membership to?");
+        $element->addMultiOption("false", "I don't know / not sure");
+        $element->addMultiOption("true", "Yes");
+        $form->addElement($element);
+
         $vo_model = new VO;
         $vos = $vo_model->fetchAll();
         $vo = new Zend_Form_Element_Select('vo_id_requested');
-        $vo->setLabel("Suppor Center where you need an access");
-        $vo->setRequired(true);
+        $vo->setLabel("VO where you need an access");
         $vo->addMultiOption(null, "(Please Select)");
         foreach($vos as $v) {
             $vo->addMultiOption($v->sc_id, $v->short_name);

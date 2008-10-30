@@ -27,13 +27,39 @@ class ResourceController extends BaseController
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
             $footprint->addDescription($form->getValue('detail'));
+            $footprint->setOriginatingVO($form->getValue('vo_id'));
 
-            $footprint->setVO($form->getValue('vo_id'));
-            $footprint->setResourceWithIssue($form->getValue($issue_element_name));
+            $admin = $_REQUEST["admin"];
+
+            //lookup service center
+            $resource_id = $form->getValue($issue_element_name);
+            $rs_model = new ResourceSite();
+            $resource = $rs_model->fetch($resource_id);
+
+            //set description destination vo, assignee
+            $footprint->addDescription("\n(META) Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
+
+            if($admin) {
+                //this is their own resource - maybe installation issue..
+                $footprint->addDescription("(META) User is the admin for this resource, and this is an installation issue.");
+
+            } else {
+                //someone else's resource..
+                $footprint->setDestinationVO($resource->sc_id);
+                $voname = $footprint->lookupFootprintVOName($resource->sc_id);
+                $footprint->addAssignee($voname);
+
+                //find primary resource admin email
+                $prac_model = new PrimaryResourceAdminContact();
+                $prac = $prac_model->fetch($resource_id);
+                $footprint->addCC($prac->primary_email);
+                $footprint->addDescription("(META) Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.");
+            }
 
             try 
             {
                 $mrid = $footprint->submit();
+                //var_dump($footprint);
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
             } catch(exception $e) {
@@ -107,7 +133,7 @@ class ResourceController extends BaseController
         $form->addElement($vo);
 
         $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("Are you having this issue in");
+        $element->setLabel("I am having this issue in following resource");
         $element->setRequired(true);
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();
@@ -134,6 +160,10 @@ class ResourceController extends BaseController
         foreach($resources as $resource) {
             $element->addMultiOption($resource->resource_id, $resource->name);
         }
+        $form->addElement($element);
+
+        $element = new Zend_Form_Element_Checkbox('admin');
+        $element->setLabel("Check here if you are the admin for this resource, and this is an installation issue.");
         $form->addElement($element);
 
         $detail = new Zend_Form_Element_Textarea('detail');

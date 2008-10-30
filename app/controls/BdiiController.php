@@ -21,16 +21,20 @@ class BdiiController extends BaseController
             $footprint->setEmail($form->getValue('email'));
             $footprint->addDescription($form->getValue('detail'));
 
-            $footprint->setVO($form->getValue('vo_id'));
+            $footprint->setOriginatingVO($form->getValue('vo_id'));
 
             if($form->getValue("down") == "true") {
                 $footprint->addDescription("(BDII is not responding)");
                 $footprint->setPriority(1); //set it to critical
             }
 
+            //bdii ticket is assigned to arvind
+            $footprint->addAssignee("agopu", true); 
+
             try 
             {
                 $mrid = $footprint->submit();
+                //var_dump($footprint);
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
             } catch(exception $e) {

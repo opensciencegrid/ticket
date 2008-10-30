@@ -18,4 +18,24 @@ class BaseController extends Zend_Controller_Action
         $header = "From: ". $Name . " <" . $email . ">\r\n";
         mail($recipient, $subject, $mail_body, $header); //mail command :) 
     }
+
+    protected function getCaptchaCode()
+    {
+        $session = new Zend_Session_Namespace('captcha');
+
+        //if we have set captcha in the session for this request - use it, else generate new one
+        if (isset($session->registerCaptcha))
+        {
+            $captchaCode = $session->registerCaptcha;
+            dlog("using captchacode: ".$captchaCode);
+        }
+        else
+        {
+            $md5Hash = md5($_SERVER['REQUEST_TIME']);
+            $captchaCode = substr($md5Hash, rand(0, 25), 5);
+            $session->registerCaptcha = $captchaCode ;
+            dlog("generated captchacode: ".$captchaCode);
+        }
+        return $captchaCode;
+    }
 }

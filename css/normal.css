@@ -26,7 +26,7 @@ h1
 
 h2
 {
-    background-color: green;
+    background-color: #c60;
     color: white;
     padding: 5px;
     font-size: 18px;
@@ -39,6 +39,13 @@ h3
     padding: 5px;
     padding-left: 0px;
     color: orange;
+}
+h4
+{
+    font-weight: bold;
+    padding: 5px;
+    font-size: 14px;
+    border-bottom: thin dotted #333;
 }
 
 a
@@ -101,8 +108,19 @@ dt
 p.errors
 {
     color: white;
-    background-color: red;
-    padding: 5px;
+    background-color: #f33;
+    padding: 10px;
+    padding-left: 25px;
+    background-image: url('../images/exclamation.png');
+    background-repeat: no-repeat;
+    background-position: 5px 10px;
+}
+p.warning
+{
+    background-image: url('../images/error.png');
+    background-repeat: no-repeat;
+    background-position: top left;
+    padding-left: 20px;
 }
 .bread
 {
@@ -119,4 +137,31 @@ p.errors
 .hint
 {
     margin-left: 20px;
+}
+
+.sidenote
+{
+    width: 300px;
+    float: right;
+}
+
+blockquote
+{
+padding: 1em;
+margin-bottom: 1.5em;
+background-color: #FFFCD8;
+background-image: url('../images/a5.gif');
+background-repeat: no-repeat;
+background-position: top left;
+border: dotted 1px #DFD999;
+}
+
+blockquote p
+{
+margin-bottom: 0em;
+}
+
+textarea
+{
+    width: 400px;
 }

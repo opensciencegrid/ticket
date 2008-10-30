@@ -1,6 +1,6 @@
 <?
 
-class ResourceController extends BaseController
+class BdiiController extends BaseController
 { 
     public function indexAction() 
     { 
@@ -11,17 +11,10 @@ class ResourceController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
-    
-        //make one of resource_issue field required based on resource_type selection
-        $resource_type = $_REQUEST["resource_type"];
-        $issue_element_name = "resource_id_with_issue_$resource_type";
-        $issue_element = $form->getelement($issue_element_name);
-        $issue_element->setRequired(true);
-
         if($form->isValid($_POST)) {
             //prepare footprint ticket
             $footprint = new Footprint;
-            $footprint->setTitle($this->composeTicketTitle($form->getValue($issue_element_name)));
+            $footprint->setTitle($this->composeTicketTitle());
             $footprint->setFirstName($form->getValue('firstname'));
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
@@ -29,7 +22,11 @@ class ResourceController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
 
             $footprint->setVO($form->getValue('vo_id'));
-            $footprint->setResourceWithIssue($form->getValue($issue_element_name));
+
+            if($form->getValue("down") == "true") {
+                $footprint->addDescription("(BDII is not responding)");
+                $footprint->setPriority(1); //set it to critical
+            }
 
             try 
             {
@@ -47,24 +44,22 @@ class ResourceController extends BaseController
         }
     }
 
-    public function composeTicketTitle($resource_id)
+    public function composeTicketTitle()
     {
-        $resource_model = new Resource();
-        $resource_name = $resource_model->fetchName($resource_id);
-        return "Resource Specific issue on $resource_name";
+        return "BDII Issue";
     }
 
     private function getForm()
     {
         $form = new Zend_Form;
-        $form->setAction(base()."/resource/submit");
-        $form->setAttrib("id", "resource_form");
+        $form->setAction(base()."/bdii/submit");
         $form->setMethod("post");
         $form->setDecorators(array(
             array('ViewScript', 
-                array('viewScript' => 'resource/form.phtml'),
+                array('viewScript' => 'bdii/form.phtml'),
                 array('class' => 'form element')
         )));
+
 
         $firstname = new Zend_Form_Element_Text('firstname');
         $firstname->setLabel("Your First Name");
@@ -106,44 +101,44 @@ class ResourceController extends BaseController
         }
         $form->addElement($vo);
 
-        $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("Are you having this issue in");
-        $element->setRequired(true);
-        $gridtype_model = new GridType;
-        $gridtypes = $gridtype_model->fetchAll();
-        foreach($gridtypes as $gridtype) {
-            $element->addMultiOption($gridtype->grid_type_id, $gridtype->description);
+/*
+        $elem = new Zend_Form_Element_Checkbox('down');
+        $elem->setCheckedValue("true");
+        $elem->setUncheckedValue("false");
+        $elem->setLabel("BDII is not responding");
+        $elem->setDescription("* Selecting this checkbox will cause this ticket to be opened with CRITICAL priority.");
+*/
+        $elem = new Zend_Form_Element_Select('down');
+        $elem->setLabel("Is the BDII responding?");
+        $elem->setRequired(true);
+        $elem->addMultiOption("false", "Yes");
+        $elem->addMultiOption("true", "No");
+        $elem->setDescription("* Selecting \"No\" will cause this ticket to be opened with CRITICAL priority.");
+        $elem->addDecorator("description");
+        $form->addElement($elem);
 
-            //add element for this grid type
-        }
-        $form->addElement($element);
-
-        $element = new Zend_Form_Element_Select('resource_id_with_issue_1');
-        $element->addMultiOption(null, "(Please Select)");
-        $resource_model = new Resource;
-        $resources = $resource_model->fetchAll(1);
-        foreach($resources as $resource) {
-            $element->addMultiOption($resource->resource_id, $resource->name);
-        }
-        $form->addElement($element);
-
-        $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
-        $element->addMultiOption(null, "(Please Select)");
-        $resource_model = new Resource;
-        $resources = $resource_model->fetchAll(2);
-        foreach($resources as $resource) {
-            $element->addMultiOption($resource->resource_id, $resource->name);
-        }
-        $form->addElement($element);
+/*
+        $elem->setDescription("ahahaha");
+        $elem->setDecorators(array(
+            'ViewHelper',
+            'Description',
+            'Errors',
+            array('HtmlTag', array('tag' => 'dd')),
+            array('Label', array('tag' => 'dt')),
+        ));
+*/
+        //$label = $elem->getDecorator('label');
+        //$label->setOption('placement', 'append');
+        $form->addElement($elem);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Description");
         $detail->setRequired(true);
         $form->addElement($detail);
 
-        $element = new Zend_Form_Element_Submit('submit_button');
-        $element->setLabel("Submit");
-        $form->addElement($element);
+        $submit = new Zend_Form_Element_Submit('submit_button');
+        $submit->setLabel("Submit");
+        $form->addElement($submit);
 
         return $form;
     }

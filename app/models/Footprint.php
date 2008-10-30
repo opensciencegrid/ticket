@@ -17,8 +17,9 @@ class Footprint
         $this->assignees = array($this->chooseAssignee()); //remove hayashis later
 
         //DEBUG
-        $this->assignees = array("tsilver");
+        //$this->assignees = array("tsilver");
         //$this->assignees = array("hayashis");
+        $this->assignees = array("hayashis");
 
         $this->ab_fields = array();
         $this->project_fields = array();
@@ -32,6 +33,13 @@ class Footprint
     public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
+
+
+    //1 - critical
+    //2 - high
+    //3 - elevated 
+    //4 - normal 
+    public function setPriority($v) { $this->priority_number = $v; } 
 
     public function addDescription($v) { 
         $this->description .= $v; 
@@ -141,8 +149,8 @@ Troubleshooting
     public function submit()
     {
         $client = new SoapClient(null, array(
-            'location' => "http://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
-            'uri'      => "http://tick.globalnoc.iu.edu/MRWebServices"));
+            'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
+            'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
 
         $ret = $client->__soapCall("MRWebServices__createIssue_goc",
             array(config()->webapi_user, config()->webapi_password, "",

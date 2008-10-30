@@ -1,0 +1,27 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>">
+
+<h3>Your Information</h3>
+<p>
+Please tell us who you are so that we can send you ticket updates.
+</p>
+
+<?=$this->element->firstname?>
+<?=$this->element->lastname?>
+<?=$this->element->email?>
+<?=$this->element->phone?>
+<?=$this->element->vo_id?>
+
+<br/><br/>
+<h3>Issue Detail</h3>
+
+<div class="sidenote">
+<?=$this->render("what_does_critical_mean.phtml", true)?>
+</div>
+<?=$this->element->down?>
+<?=$this->element->detail?>
+
+<br/><br/>
+<?=$this->element->submit_button?>
+</form>
+

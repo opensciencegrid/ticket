@@ -12,6 +12,7 @@ class User
         $this->person_lastname = "";
         $this->person_email = "";
         $this->person_phone = "";
+        $this->dn = $dn;
 
         $this->guest = true;
         if($dn !== null) {
@@ -85,4 +86,5 @@ class User
     public function getPersonLastName() { return $this->person_lastname; }
     public function getPersonEmail() { return $this->person_email; }
     public function getPersonPhone() { return $this->person_phone; }
+    public function getDN() { return $this->dn; }
 }

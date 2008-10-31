@@ -11,23 +11,28 @@ class Footprint
         $this->status = "Engineering";
         $this->priority_number = "4";
         $this->description = "";
+        $this->meta = "";
         $this->permanent_cc = array();
         $this->title = "no title";
 
         //add GOC assginee by default
-        $this->assignees = array($this->chooseGOCAssignee());
+        $this->assignees = array(
+            "OSG__bGOC__bSupport__bTeam", 
+            "OSG__bSupport__bCenters",
+            $this->chooseGOCAssignee());
 
         //DEBUG
         //$this->assignees = array("tsilver");
-        //$this->assignees = array("shayas");
+        //$this->assignees = array("hayashis");
 
         $this->ab_fields = array();
         $this->project_fields = array();
         $this->project_fields["ENG__bNext__bAction__bItem"] = "ENG Action";
-        $this->setNextActionTime(time() + 3600*24*7); //set next action time
+        //$this->setNextActionTime(time() + 3600*24); //set next action time
+        $this->setNextActionTime(time());
 
         //since these are required items, let's set to OSG-GOC by default..
-        $this->setOriginatingVO(21); //OSG-GOC
+        $this->setOriginatingVO(2); //CSC
         $this->setDestinationVO(21); //OSG-GOC
     }
 
@@ -47,11 +52,28 @@ class Footprint
     public function addDescription($v) { 
         $this->description .= $v; 
     }
+    public function addMeta($v) { 
+        $this->meta .= $v;
+    }
     public function addAssignee($v, $bClear = false) { 
         if($bClear) {
             $this->assignees = array();
         } 
         $this->assignees[] = $v; 
+    }
+
+
+    //from the current db, I see following ticket types
+/*
+NULL
+Problem__fRequest
+Provision__fModify__fDecom
+Scheduled__bMaintenance
+Security
+Unscheduled__bOutage
+*/
+    public function setTicketType($type) {
+        $this->project_fields["Ticket__uType"] = $type;
     }
 
     public function setNextActionTime($time)
@@ -76,7 +98,7 @@ class Footprint
     private function chooseGOCAssignee()
     {
         //randomly pick one of the GOCers
-        $gocers = array("kagross", "echism", "tsiler");
+        $gocers = array("kagross", "echism", "tsilver");
         $lucky = rand(0, sizeof($gocers)-1);
         return $gocers[$lucky]; 
     }
@@ -91,6 +113,7 @@ class Footprint
         return "(unknown vo_id $id)";
     }
 
+    //I am really confusing vo v.s. sc..
     public function lookupFootprintVOName($id)
     {
         static $id2name = array(
@@ -106,6 +129,7 @@ ReSS-Ops
 RSV-Ops 
 Troubleshooting 
 */
+-1=>"CSC", //(for I don't know.. I couldn't find "other" SC)
 2=>"CIGI",
 3=>"CSC",    //"CSC"
 4=>"DOSAR",     //"DOSAR"
@@ -142,28 +166,41 @@ Troubleshooting
 
     public function submit()
     {
-        $client = new SoapClient(null, array(
-            'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
-            'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-
-        $ret = $client->__soapCall("MRWebServices__createIssue_goc",
-            array(config()->webapi_user, config()->webapi_password, "",
-                array(
-                    "projectID"=>71,
-                    "submitter"=>"OSG-GOC",
-                    "title" => $this->title,
-                    "assignees" => $this->assignees,
-                    "permanentCCs" => $this->permanent_cc,
-                    "priorityNumber" => $this->priority_number,
-                    "status" => $this->status,
-                    "description" => $this->description,
-                    "abfields" => $this->ab_fields,
-                    "projfields" => $this->project_fields
-                )
-            )
+        $desc = $this->description;
+        if($this->meta != "") {
+            $desc .= "\n\n[META Information]\n";
+            $desc .= $this->meta;
+        }
+        $params = array(
+            "projectID"=>71,
+            "submitter"=>"OSG-GOC",
+            "title" => $this->title,
+            "assignees" => $this->assignees,
+            "permanentCCs" => $this->permanent_cc,
+            "priorityNumber" => $this->priority_number,
+            "status" => $this->status,
+            "description" => $desc,
+            "abfields" => $this->ab_fields,
+            "projfields" => $this->project_fields
         );
 
-        return $ret;
+        if(config()->simulate) {
+            //simulation doesn't submit the ticket - just dump the content out..
+            echo "<pre>";
+            var_dump($params);
+            echo "<\pre>";
+            return 999; //bogus ticket id
+        } else {
+            //submit the ticket!
+            $client = new SoapClient(null, array(
+                'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
+                'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
+
+            $ret = $client->__soapCall("MRWebServices__createIssue_goc",
+                array(config()->webapi_user, config()->webapi_password, "", $params));
+
+            return $ret;
+        }
     }
 }
 

@@ -2,17 +2,14 @@
       method="<?=$this->escape($this->element->getMethod())?>">
 <dl>
 
-<p class="warning">This form will open a ticket with <b>CRITICAL</b> priority.</p>
-<?=$this->render("what_does_critical_mean.phtml", true)?>
-
 <?=$this->render("yourinfo.phtml", true)?>
 
-<h3>Issue Detail</h3>
+<dd> 
+    <h3>Issue Detail</h3>
+    <p> Now tell us about the issue.  </p>
+</dd>
 <?=$this->element->detail?>
-<br/><br/>
-
-<?=$this->element->captcha?>
 <?=$this->element->submit_button?>
+
 </dl>
 </form>
-

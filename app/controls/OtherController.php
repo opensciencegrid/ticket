@@ -12,6 +12,8 @@ class OtherController extends BaseController
     {
         $form = $this->getForm();
         if($form->isValid($_POST)) {
+            $footprint = $this->initSubmit($form);
+/*
             //prepare footprint ticket
             $footprint = new Footprint;
             $footprint->setTitle($this->composeTicketTitle());
@@ -20,6 +22,8 @@ class OtherController extends BaseController
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
             $footprint->setOriginatingVO($form->getValue('vo_id'));
+*/
+
             $footprint->addDescription($form->getValue('detail'));
 
             try 
@@ -38,13 +42,15 @@ class OtherController extends BaseController
         }
     }
 
-    public function composeTicketTitle()
+    public function composeTicketTitle($form)
     {
-        return "(Other Issues)";
+        return "Other Issues";
     }
 
     private function getForm()
     {
+        $form = $this->initForm("other");
+/*
         $form = new Zend_Form;
         $form->setAction(base()."/other/submit");
         $form->setMethod("post");
@@ -78,16 +84,18 @@ class OtherController extends BaseController
         $phone->setValue(user()->getPersonPhone());
         $form->addElement($phone);
 
-        $vo_model = new VO;
+        $vo_model = new SC;
         $vos = $vo_model->fetchAll();
         $vo = new Zend_Form_Element_Select('vo_id');
         $vo->setLabel("Your Suppor Center");
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
+        $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
         foreach($vos as $v) {
             $vo->addMultiOption($v->sc_id, $v->short_name);
         }
         $form->addElement($vo);
+*/
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Description");

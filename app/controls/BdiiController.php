@@ -12,6 +12,8 @@ class BdiiController extends BaseController
     {
         $form = $this->getForm();
         if($form->isValid($_POST)) {
+            $footprint = $this->initSubmit($form);
+/*
             //prepare footprint ticket
             $footprint = new Footprint;
             $footprint->setTitle($this->composeTicketTitle());
@@ -19,13 +21,15 @@ class BdiiController extends BaseController
             $footprint->setLastName($form->getValue('lastname'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
+            $footprint->setOriginatingVO($form->getValue('vo_id'));
+*/
             $footprint->addDescription($form->getValue('detail'));
 
-            $footprint->setOriginatingVO($form->getValue('vo_id'));
-
             if($form->getValue("down") == "true") {
-                $footprint->addDescription("(BDII is not responding)");
+                $footprint->addMeta("BDII is not responding!!");
                 $footprint->setPriority(1); //set it to critical
+                //$footprint->setNextActionTime(time());//immediate..
+                $footprint->setTicketType("Unscheduled__bOutage");
             }
 
             //bdii ticket is assigned to arvind
@@ -48,13 +52,15 @@ class BdiiController extends BaseController
         }
     }
 
-    public function composeTicketTitle()
+    public function composeTicketTitle($form)
     {
         return "BDII Issue";
     }
 
     private function getForm()
     {
+        $form = $this->initForm("bdii");
+/*
         $form = new Zend_Form;
         $form->setAction(base()."/bdii/submit");
         $form->setMethod("post");
@@ -94,16 +100,18 @@ class BdiiController extends BaseController
         $phone->setValue(user()->getPersonPhone());
         $form->addElement($phone);
 
-        $vo_model = new VO;
+        $vo_model = new SC;
         $vos = $vo_model->fetchAll();
         $vo = new Zend_Form_Element_Select('vo_id');
         $vo->setLabel("Your Suppor Center");
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
+        $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
         foreach($vos as $v) {
             $vo->addMultiOption($v->sc_id, $v->short_name);
         }
         $form->addElement($vo);
+*/
 
 /*
         $elem = new Zend_Form_Element_Checkbox('down');

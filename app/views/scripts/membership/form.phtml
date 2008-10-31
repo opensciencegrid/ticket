@@ -1,27 +1,17 @@
 <form action="<?=$this->escape($this->element->getAction())?>" method="<?=$this->escape($this->element->getMethod())?>">
 <dl>
 
-<dd>
-    <h3>Your Information</h3>
-    <p> Please tell us who you are so that we can send you ticket updates.  </p>
-</dd>
-
-<?=$this->element->firstname?>
-<?=$this->element->lastname?>
-<?=$this->element->email?>
-<?=$this->element->phone?>
+<?=$this->render("yourinfo.phtml", true)?>
 
 <dd><h3>Request Detail</h3></dd>
-
 <?=$this->element->knowvo?>
 </dl>
-    <dl id="vo_id_requested_holder" class="indent hidden">
+    <dl id="vo_id_requested_holder" class="indent">
     <?=$this->element->vo_id_requested?>
     </dl>
 <dl>
 
 <?=$this->element->detail?>
-
 <?=$this->element->submit_button?>
 </dl>
 </form>
@@ -35,6 +25,7 @@ function showhide_volist() {
         $("#vo_id_requested_holder").show();
     } 
 }
+showhide_volist();
 $("#knowvo").change(function() {
     showhide_volist();
 });

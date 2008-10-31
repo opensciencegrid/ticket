@@ -1,6 +1,7 @@
 <?include("app/views/scripts/header.phtml");?>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; Success!</div>
 <p>Your ticket has been submitted successfully.</p>
 <p>Please sit back and relax as we take care of your request.</p>
 <br/><br/>
-<p>Your Ticket ID is <a href="https://tick.globalnoc.iu.edu/osg/view.cgi?tick=<?=$this->mrid?>&proj=71"><?=$this->mrid?></a>(* Ticket viewer provided by GRNOC)</p>
+<p>Your Ticket ID is <a target="_blank" href="https://tick.globalnoc.iu.edu/osg/view.cgi?tick=<?=$this->mrid?>&proj=71"><?=$this->mrid?></a>(* Ticket viewer provided by GRNOC)</p>
 <?include("app/views/scripts/footer.phtml");?>

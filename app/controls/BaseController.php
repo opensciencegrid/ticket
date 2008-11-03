@@ -97,12 +97,12 @@ abstract class BaseController extends Zend_Controller_Action
 
         return $form;
     }
-    protected abstract function composeTicketTitle($form);
-    protected function initSubmit($form, $title)
+    //protected abstract function composeTicketTitle($form);
+    protected function initSubmit($form)
     {
         //prepare footprint ticket
         $footprint = new Footprint;
-        $footprint->setTitle($this->composeTicketTitle($form));
+        //$footprint->setTitle($this->composeTicketTitle($form));
         $footprint->setFirstName($form->getValue('firstname'));
         $footprint->setLastName($form->getValue('lastname'));
         $footprint->setOfficePhone($form->getValue('phone'));
@@ -110,10 +110,22 @@ abstract class BaseController extends Zend_Controller_Action
 
         $void = $form->getValue('vo_id');
         if($void == -1) {
-            $footprint->addMeta("User doesn't know his SC.\n");
+            $footprint->addMeta("Submitter doesn't know his/her SC.\n");
         }
         $footprint->setOriginatingVO($form->getValue('vo_id'));
 
         return $footprint;
+    }
+
+    protected function dumprecord($rec)
+    {
+        $out = "";
+
+        $vars = get_object_vars($rec);
+        foreach($vars as $key=>$value) {
+            $out .= "[$key]\n\t$value\n";
+        }
+
+        return $out;
     }
 }

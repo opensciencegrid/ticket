@@ -18,10 +18,12 @@ p
 
 h1
 {
-    background-color: orange;
     color: white;
     padding: 10px;
     font-size: 20px;
+height:40px;
+background: #195866 url('../images/n1.gif') repeat-x;
+
 }
 
 h2
@@ -34,11 +36,12 @@ h2
 
 h3
 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     padding: 5px;
     padding-left: 0px;
-    color: orange;
+    color: #f90;
+    border-bottom: 4px solid #f90;
 }
 h4
 {
@@ -78,14 +81,19 @@ input[type="submit"]
     min-width: 100px;
 }
 
-textarea {
-    width: 500px;
-    height: 200px;
-}
 
-input[type="text"]
+
+input[type="text"], select
 {
     width: 300px;
+}
+input[type="text"], select, textarea
+{
+    padding: 3px;
+}
+
+textarea {
+    height: 200px;
 }
 
 ul.errors
@@ -160,13 +168,32 @@ blockquote p
 {
 margin-bottom: 0em;
 }
-
-textarea
+blockquote .author
 {
-    width: 400px;
+    float: right;
+    color: #f90;
 }
-
 .hidden
 {
     display: none;
 }
+
+td.header
+{
+    font-weight: bold;
+    width: 150px;
+}
+td
+{
+    vertical-align: top;
+    padding: 3px;
+}
+
+
+.button
+{
+    padding: 3px;
+    cursor: pointer;
+}
+
+

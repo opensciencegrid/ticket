@@ -4,11 +4,12 @@ include("lib/MyFormDecoratorCaptcha.php");
 
 class SecurityController extends BaseController
 { 
+/*
     public function composeTicketTitle($form)
     {
         return "Security Issue";
     }
-
+*/
     public function indexAction() 
     { 
         $this->view->form = $this->getForm();
@@ -19,11 +20,12 @@ class SecurityController extends BaseController
     {
         $form = $this->getForm();
         if($form->isValid($_POST)) {
-            $title = $this->composeTicketTitle();
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
             $footprint->setPriority(1); //set it to critical
             $footprint->addAssignee("rquick", true);//security ticket is assigned to rob
+            $footprint->setTicketType("Security");
+            $footprint->setTitle("Security Issue");
 
             try 
             {

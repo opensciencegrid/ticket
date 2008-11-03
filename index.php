@@ -10,6 +10,7 @@ Zend_Loader::registerAutoload();
 Zend_Session::start();
 
 //load our stuff
+require_once("app/views/helper.php");
 require_once("app/roles.php");
 require_once("config.php");
 require_once("app/base.php");

@@ -1,0 +1,70 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; Ticket Viewer</div>
+<h2><?=$this->page_title?></h2>
+
+<div style="float: right">
+<h3>Ticket Info</h3>
+<table>
+<tr><td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td></tr>
+<tr><td class="header">Status:</td><td><?=$this->status?></td></tr>
+<tr><td class="header">Priority:</td><td><?=$this->priority?></td></tr>
+<tr><td class="header">Assignees:</td><td><?=$this->assignees?></td></tr>
+<tr><td class="header">Destination SC:</td><td><?=$this->destination_sc?></td></tr>
+<tr><td class="header">Next Action Deadline:</td><td><?=$this->nad?></td></tr>
+<tr><td class="header">Ready To Close:</td><td><?=$this->ready_to_close?></td></tr>
+</table>
+</div>
+
+<div>
+<h3>Submitter</h3>
+<table>
+<tr><td class="header">Name:</td><td><?=$this->submitter_name?> (<?=$this->submitter_email?>)</td></tr>
+<tr><td class="header">Phone:</td><td><?=$this->submitter_phone?></td></tr>
+<tr><td class="header">Support Center:</td><td><?=$this->submitter_sc?></td></tr>
+</table>
+</div>
+
+<div style="clear: both;">
+<h3>Updates</h3>
+<br/>
+<?
+foreach($this->descs as $desc)
+{
+    $header = trim($desc[0]);
+    $content = trim($desc[1]);
+
+    //suppress metainfo..
+    $metapos = strpos($content, config()->metatag);
+    if($metapos !== FALSE) {
+        //has metainfo.. replace it with filtered versionme
+        $content = substr($content, 0, $metapos);
+    }
+
+    echo "<blockquote>";
+    echo "<div class=\"author\">$header</div>";
+    $lines = split("\n", $content);
+    if(count($lines) > 15) {
+        //display first 10 lines
+        $i = 0;
+        echo "<pre>";
+        for(;$i < 10; $i++) {
+            echo $lines[$i]."\n";
+        }
+        echo "</pre>";
+        //and toggle the rest..
+        $out = "";
+        $out .= "<pre>";
+        for(;$i < count($lines);$i++) {
+            $out .= $lines[$i]."\n";
+        }
+        $out .= "</pre>\n";
+        echo outputToggle("Show More", "", $out);
+    } else {
+        //display all at once.
+        echo "<pre>$content</pre>";
+    }
+    echo "</blockquote>";
+}
+?>
+</div>
+<?include("app/views/scripts/footer.phtml");?>

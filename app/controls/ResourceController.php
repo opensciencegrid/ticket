@@ -12,10 +12,13 @@ class ResourceController extends BaseController
     {
         $form = $this->getForm();
     
+/*
         //make one of resource_issue field required based on resource_type selection
         $resource_type = $_REQUEST["resource_type"];
         $issue_element_name = "resource_id_with_issue_$resource_type";
         $issue_element = $form->getelement($issue_element_name);
+*/
+        $issue_element = $this->getIssueElement($form);
         $issue_element->setRequired(true);
 
         if($form->isValid($_POST)) {
@@ -23,18 +26,19 @@ class ResourceController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
 
             //lookup service center
-            $resource_id = $form->getValue($issue_element_name);
+            //$resource_id = $form->getValue($issue_element_name);
+            $resource_id = $issue_element->getValue();
             $rs_model = new ResourceSite();
             $resource = $rs_model->fetch($resource_id);
 
             //set description destination vo, assignee
             $footprint->addMeta("Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
+            $footprint->setTitle("Resource Specific Issue on ".$resource->resource_name);
 
             $admin = $_REQUEST["admin"];
             if($admin) {
                 //this is their own resource - maybe installation issue..
                 $footprint->addMeta("User is the admin for this resource, and this is an installation issue.\n");
-
             } else {
                 //someone else's resource..
                 $footprint->setDestinationVO($resource->sc_id);
@@ -46,7 +50,7 @@ class ResourceController extends BaseController
                 $prac = $prac_model->fetch($resource_id);
                 $footprint->addCC($prac->primary_email);
                 $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
-                $footprint->addMeta("Primary Admin Info: \n ".print_r($prac, true)."\n");
+                $footprint->addMeta("Primary Admin Info\n".$this->dumprecord($prac)."\n");
             }
 
             try 
@@ -65,9 +69,25 @@ class ResourceController extends BaseController
         }
     }
 
+/*
     public function composeTicketTitle($form)
     {
-        return "Resource Specific Issue";
+        //lookup resource name
+        $issue_element = $this->getIssueElement($form);
+        $resource_id = $issue_element->getValue();
+        $rs_model = new ResourceSite();
+        $resource = $rs_model->fetch($resource_id);
+        return "Resource Specific Issue on ".$resource->resource_name;
+    }
+*/
+    public function getIssueElement($form)
+    {
+        //make one of resource_issue field required based on resource_type selection
+        $resource_type = $_REQUEST["resource_type"];
+        $issue_element_name = "resource_id_with_issue_$resource_type";
+        $issue_element = $form->getelement($issue_element_name);
+        return $issue_element;
+
     }
 
     private function getForm()

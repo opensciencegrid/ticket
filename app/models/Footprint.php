@@ -14,16 +14,7 @@ class Footprint
         $this->meta = "";
         $this->permanent_cc = array();
         $this->title = "no title";
-
-        //add GOC assginee by default
-        $this->assignees = array(
-            "OSG__bGOC__bSupport__bTeam", 
-            "OSG__bSupport__bCenters",
-            $this->chooseGOCAssignee());
-
-        //DEBUG
-        //$this->assignees = array("tsilver");
-        //$this->assignees = array("hayashis");
+        $this->resetAssignee();
 
         $this->ab_fields = array();
         $this->project_fields = array();
@@ -34,6 +25,18 @@ class Footprint
         //since these are required items, let's set to OSG-GOC by default..
         $this->setOriginatingVO(2); //CSC
         $this->setDestinationVO(21); //OSG-GOC
+    }
+
+    public function resetAssignee()
+    {
+        $this->assignees = array(
+            "OSG__bGOC__bSupport__bTeam", 
+            "OSG__bSupport__bCenters",
+            $this->chooseGOCAssignee());
+
+        //DEBUG
+        //$this->assignees = array("tsilver");
+        //$this->assignees = array("hayashis");
     }
 
     //AB fields
@@ -48,6 +51,15 @@ class Footprint
     //3 - elevated 
     //4 - normal 
     public function setPriority($v) { $this->priority_number = $v; } 
+    static public function priority2str($p) {
+        switch($p) {
+        case 1: return "Critical";
+        case 2: return "High";
+        case 3: return "Elevated";
+        case 4: return "Normal";
+        }
+        return "(Unknown)";
+    }
 
     public function addDescription($v) { 
         $this->description .= $v; 
@@ -57,7 +69,8 @@ class Footprint
     }
     public function addAssignee($v, $bClear = false) { 
         if($bClear) {
-            $this->assignees = array();
+            $this->resetAssignee();
+            //$this->assignees = array();
         } 
         $this->assignees[] = $v; 
     }
@@ -129,7 +142,7 @@ ReSS-Ops
 RSV-Ops 
 Troubleshooting 
 */
--1=>"CSC", //(for I don't know.. I couldn't find "other" SC)
+-1=>"other", 
 2=>"CIGI",
 3=>"CSC",    //"CSC"
 4=>"DOSAR",     //"DOSAR"
@@ -168,7 +181,7 @@ Troubleshooting
     {
         $desc = $this->description;
         if($this->meta != "") {
-            $desc .= "\n\n[META Information]\n";
+            $desc .= "\n\n".config()->metatag."\n";
             $desc .= $this->meta;
         }
         $params = array(
@@ -201,6 +214,13 @@ Troubleshooting
 
             return $ret;
         }
+    }
+    static public function parse($str)
+    {
+        $str = str_replace("__u", "-", $str);
+        $str = str_replace("__b", " ", $str);
+        $str = str_replace("__f", "/", $str);
+        return $str;
     }
 }
 

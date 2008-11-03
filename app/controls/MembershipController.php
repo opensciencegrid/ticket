@@ -22,6 +22,7 @@ class MembershipController extends BaseController
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
+
             if($knowvo == "true") {
                 $void = $form->getValue('vo_id_requested');
 
@@ -31,21 +32,23 @@ class MembershipController extends BaseController
 
                 $footprint->setDestinationVO($info->sc_id);
                 $voname = $footprint->lookupFootprintVOName($void);
-                $footprint->addMeta("User is requesting a membership at $voname\n");
+                $footprint->addMeta("Submitter is requesting a membership at $voname\n");
                 $footprint->addAssignee($voname);
 
-                $footprint->addMeta("VO Detail\n".print_r($info, true)."\n");
+                $footprint->addMeta("VO Detail for $voname\n".$this->dumprecord($info)."\n");
+                $footprint->setTitle("OSG Membership Request for $voname");
             
             } else {
-                $footprint->addMeta("User does not know the VO to request membership to.\n");
+                $footprint->addMeta("Submitter does not know the VO to request membership to.\n");
+                $footprint->setTitle("OSG Membership Request (VO unknown)");
             }
 
             //add DN as meta
             $dn = user()->getDN();
             if($dn == null) {
-                $footprint->addMeta("User's DN is unknown.\n");
+                $footprint->addMeta("Submitter's DN is unknown.\n");
             } else {
-                $footprint->addMeta("User's DN: $dn\n");
+                $footprint->addMeta("Submitter's DN: $dn\n");
             }
 
             try 
@@ -65,11 +68,12 @@ class MembershipController extends BaseController
         }
     }
 
+/*
     public function composeTicketTitle($form)
     {
         return "OSG Membership Request";
     }
-
+*/
     private function getForm()
     {
         $form = $this->initForm("membership");
@@ -82,6 +86,22 @@ class MembershipController extends BaseController
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Submit");
         $form->addElement($submit);
+
+        $element = new Zend_Form_Element_Select('knowvo');
+        $element->setLabel("Do you know which VO you are requesting your membership to?");
+        $element->addMultiOption("false", "I don't know / not sure");
+        $element->addMultiOption("true", "Yes");
+        $form->addElement($element);
+
+        $vo_model = new VO;
+        $vos = $vo_model->fetchAll();
+        $vo = new Zend_Form_Element_Select('vo_id_requested');
+        $vo->setLabel("VO where you need an access");
+        $vo->addMultiOption(null, "(Please Select)");
+        foreach($vos as $v) {
+            $vo->addMultiOption($v->sc_id, $v->short_name);
+        }
+        $form->addElement($vo);
 
         return $form;
     }

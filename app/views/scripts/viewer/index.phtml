@@ -18,8 +18,14 @@
 <div>
 <h3>Submitter</h3>
 <table>
-<tr><td class="header">Name:</td><td><?=$this->submitter_name?> (<?=$this->submitter_email?>)</td></tr>
-<tr><td class="header">Phone:</td><td><?=$this->submitter_phone?></td></tr>
+<tr><td class="header">Name:</td><td><?=$this->submitter_name?></td></tr>
+<tr><td class="header">Email:</td><td><?=$this->submitter_email?></td></tr>
+<?
+    if(user()->getPersonID() !== null) {
+        echo "<tr><td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td></tr>";
+    }
+?>
+
 <tr><td class="header">Support Center:</td><td><?=$this->submitter_sc?></td></tr>
 </table>
 </div>

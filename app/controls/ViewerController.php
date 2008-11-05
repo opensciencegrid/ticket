@@ -34,6 +34,7 @@ class ViewerController extends Zend_Controller_Action
         $this->view->priority = Footprint::priority2str($detail->priority);
         $this->view->assignees = "";
         foreach(split(" ", $detail->assignees) as $a) {
+            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) continue;//skip CC:xxx line
             $this->view->assignees.= Footprint::parse($a)."<br/>";
         }
         $this->view->destination_sc= Footprint::parse($detail->Destination__bVO__bSupport__bCenter);

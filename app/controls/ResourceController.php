@@ -11,13 +11,6 @@ class ResourceController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
-    
-/*
-        //make one of resource_issue field required based on resource_type selection
-        $resource_type = $_REQUEST["resource_type"];
-        $issue_element_name = "resource_id_with_issue_$resource_type";
-        $issue_element = $form->getelement($issue_element_name);
-*/
         $issue_element = $this->getIssueElement($form);
         $issue_element->setRequired(true);
 
@@ -39,11 +32,21 @@ class ResourceController extends BaseController
             if($admin) {
                 //this is their own resource - maybe installation issue..
                 $footprint->addMeta("User is the admin for this resource, and this is an installation issue.\n");
+                $footprint->setDestinationVO("OSG-GOC");
             } else {
                 //someone else's resource..
-                $footprint->setDestinationVO($resource->sc_id);
-                $voname = $footprint->lookupFootprintVOName($resource->sc_id);
-                $footprint->addAssignee($voname);
+
+                //lookup SC name
+                $sc_model = new SC;
+                $sc = $sc_model->get($resource->sc_id);
+                $scname = $sc->short_name;
+                $footprint->addMeta("This resource is supported at SC:$scname\n");
+
+                if($footprint->isValidFPSC($scname)) {
+                    $footprint->addAssignee($scname);
+                } else {
+                    $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                }
 
                 //find primary resource admin email
                 $prac_model = new PrimaryResourceAdminContact();

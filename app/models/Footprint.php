@@ -14,7 +14,9 @@ class Footprint
         $this->meta = "";
         $this->permanent_cc = array();
         $this->title = "no title";
+
         $this->resetAssignee();
+        $this->addAssignee($this->chooseGOCAssignee());
 
         $this->ab_fields = array();
         $this->project_fields = array();
@@ -22,17 +24,19 @@ class Footprint
         //$this->setNextActionTime(time() + 3600*24); //set next action time
         $this->setNextActionTime(time());
 
-        //since these are required items, let's set to OSG-GOC by default..
-        $this->setOriginatingVO(2); //CSC
-        $this->setDestinationVO(21); //OSG-GOC
+        //since these are required items, let's set to other
+        $this->setOriginatingVO("other"); 
+        $this->setDestinationVO("other"); 
+
+        $this->setTicketType("Problem__fRequest");
+        $this->setReadyToClose("No");
     }
 
     public function resetAssignee()
     {
         $this->assignees = array(
             "OSG__bGOC__bSupport__bTeam", 
-            "OSG__bSupport__bCenters",
-            $this->chooseGOCAssignee());
+            "OSG__bSupport__bCenters");
 
         //DEBUG
         //$this->assignees = array("tsilver");
@@ -70,7 +74,6 @@ class Footprint
     public function addAssignee($v, $bClear = false) { 
         if($bClear) {
             $this->resetAssignee();
-            //$this->assignees = array();
         } 
         $this->assignees[] = $v; 
     }
@@ -89,19 +92,30 @@ Unscheduled__bOutage
         $this->project_fields["Ticket__uType"] = $type;
     }
 
+    //"Yes" or "No"
+    public function setReadyToClose($close) {
+        $this->project_fields["Ready__bto__bClose__Q"] = $close;
+    }
+
     public function setNextActionTime($time)
     {
         $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
     }
 
-    public function setOriginatingVO($v) { 
-        $name = $this->lookupFootprintVOName($v);
-        $this->project_fields["Originating__bVO__bSupport__bCenter"] = $name; 
+    public function setOriginatingVO($voname) { 
+        if(!$this->isValidFPOriginatingVO($voname)) {
+            $this->addMeta("Couldn't set Originating VO to $voname - No such VO in FP (please sync!)\n");
+            $voname = "other";
+        }
+        $this->project_fields["Originating__bVO__bSupport__bCenter"] = Footprint::unparse($voname);
     }
 
-    public function setDestinationVO($v) { 
-        $name = $this->lookupFootprintVOName($v);
-        $this->project_fields["Destination__bVO__bSupport__bCenter"]= $name;
+    public function setDestinationVO($voname) { 
+        if(!$this->isValidFPDestinationVO($voname)) {
+            $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
+            $voname = "other";
+        }
+        $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
     }
 
     public function addCC($address) {
@@ -126,55 +140,44 @@ Unscheduled__bOutage
         return "(unknown vo_id $id)";
     }
 
-    //I am really confusing vo v.s. sc..
-    public function lookupFootprintVOName($id)
+    public function isValidFPOriginatingVO($name)
     {
-        static $id2name = array(
-/*
-//following SC only exists in Footprint Schema
-CDF 
-GGUS 
-GIP Support 
-GRATIA 
-ILC 
-OSG 
-ReSS-Ops 
-RSV-Ops 
-Troubleshooting 
-*/
--1=>"other", 
-2=>"CIGI",
-3=>"CSC",    //"CSC"
-4=>"DOSAR",     //"DOSAR"
-5=>"DZero",     //"DZero"
-6=>"Engagement",     //"Engagement"
-7=>"Fermilab",     //"Fermilab"
-8=>"fGOC",     //"fGOC"
-9=>"GADU",    //"GADU"
-10=>"GLOW-TECH",    //"GLOW-TECH"
-11=>"GPN",    //"GPN"
-12=>"GRASE",    //"GRASE"
-14=>"GUGrid",    //"GUGrid"
-15=>"LBNL-DSD-suppot",    //"LBNL-DSD-support"
-16=>"LIGO",    //"LIGO"
-17=>"mariach-support",    //"mariach-support"
-18=>"nanoHUB",    //"nanoHUB-SC"
-19=>"NERSC",    //"NERSC"
-20=>"NWICG",    //"NWICG"
-21=>"OSG-GOC",    //"OSG-GOC"
-22=>"PROD_SLAC",    //"PROD_SLAC"
-23=>"SBGrid",    //"SBGrid"
-24=>"SDSS",    //"SDSS"
-25=>"STAR",    //"STAR"
-26=>"TIGRE",    //"TIGRE"
-27=>"UC CI",    //"UC CI"
-28=>"UCHC",    //"UCHC"
-29=>"USATLAS",    //"USATLAS"
-30=>"USCMS",    //"USCMS"
-31=>"VDT",    //"VDT"
-34=>"SBGrid",    //"SBGrid"
-        );
-        return $id2name[$id];
+        $schema_model = new Schema();
+        $vos = $schema_model->getoriginatingvos();
+        foreach($vos as $vo) {
+            $vo2 = Footprint::parse($vo);    
+            if($name == $vo2) return true;
+        } 
+        return false;
+    }
+
+    public function isValidFPDestinationVO($name)
+    {
+        $schema_model = new Schema();
+        $vos = $schema_model->getdestinationvos();
+        foreach($vos as $vo) {
+            $vo2 = Footprint::parse($vo);    
+            if($name == $vo2) return true;
+        } 
+        return false;
+    }
+
+    public function isValidFPSC($name)
+    {
+        $schema_model = new Schema();
+        $teams = $schema_model->getteams();
+        foreach($teams as $team) {
+            if($team->team == "OSG__bSupport__bCenters") {
+                $fp_scs = split(",", $team->members);
+                foreach($fp_scs as $fp_sc) {
+                    $sc = Footprint::parse($fp_sc);    
+                    if($sc == $name) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public function submit()
@@ -220,6 +223,13 @@ Troubleshooting
         $str = str_replace("__u", "-", $str);
         $str = str_replace("__b", " ", $str);
         $str = str_replace("__f", "/", $str);
+        return $str;
+    }
+    static public function unparse($str)
+    {
+        $str = str_replace("-", "__u", $str);
+        $str = str_replace(" ", "__b", $str);
+        $str = str_replace("/", "__f", $str);
         return $str;
     }
 }

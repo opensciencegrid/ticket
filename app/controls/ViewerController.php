@@ -24,7 +24,7 @@ class ViewerController extends Zend_Controller_Action
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;
 
         $this->view->submitter_email = $detail->Email__baddress;
-        $this->view->submitter_email = str_replace("@", " _at_ ", $this->view->submitter_email);
+        //$this->view->submitter_email = str_replace("@", " _at_ ", $this->view->submitter_email);
 
         $this->view->submitter_phone = $detail->Office__bPhone;
         $this->view->submitter_sc = Footprint::parse($detail->Originating__bVO__bSupport__bCenter);

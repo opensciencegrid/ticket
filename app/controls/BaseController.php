@@ -82,20 +82,21 @@ abstract class BaseController extends Zend_Controller_Action
         $phone->setValue(user()->getPersonPhone());
         $form->addElement($phone);
 
-        $vo_model = new SC;
+        $vo_model = new VO;
         $vos = $vo_model->fetchAll();
         $vo = new Zend_Form_Element_Select('vo_id');
-        $vo->setLabel("Your Suppor Center");
+        $vo->setLabel("Your Virtual Organization");
         $vo->setRequired(true);
         $vo->addMultiOption(null, "(Please Select)");
         $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
         foreach($vos as $v) {
-            $vo->addMultiOption($v->sc_id, $v->short_name);
+            $vo->addMultiOption($v->vo_id, $v->short_name);
         }
         $form->addElement($vo);
 
         return $form;
     }
+
     //protected abstract function composeTicketTitle($form);
     protected function initSubmit($form)
     {
@@ -110,8 +111,12 @@ abstract class BaseController extends Zend_Controller_Action
         $void = $form->getValue('vo_id');
         if($void == -1) {
             $footprint->addMeta("Submitter doesn't know his/her SC.\n");
+        } else {
+            $vo_model = new VO();
+            $info = $vo_model->get($void);
+            $footprint->setOriginatingVO($info->short_name);
+
         }
-        $footprint->setOriginatingVO($form->getValue('vo_id'));
 
         return $footprint;
     }

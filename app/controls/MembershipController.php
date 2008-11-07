@@ -30,16 +30,25 @@ class MembershipController extends BaseController
                 $vo_model = new VO();
                 $info = $vo_model->get($void);
 
-                $footprint->setDestinationVO($info->sc_id);
-                $voname = $footprint->lookupFootprintVOName($void);
-                $footprint->addMeta("Submitter is requesting a membership at $voname\n");
-                $footprint->addAssignee($voname);
+                $footprint->setDestinationVO($info->short_name);
 
-                $footprint->addMeta("VO Detail for $voname\n".$this->dumprecord($info)."\n");
-                $footprint->setTitle("OSG Membership Request for $voname");
-            
+                //lookup SC name
+                $sc_model = new SC;
+                $sc = $sc_model->get($info->sc_id);
+                $scname = $sc->short_name;
+
+                $footprint->addMeta("Submitter is requesting a membership at VO:".$info->short_name."\n");
+                $footprint->addMeta("This VO is supported at SC:$scname\n");
+
+                if($footprint->isValidFPSC($scname)) {
+                    $footprint->addAssignee($scname);
+                } else {
+                    $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                }
+
+                $footprint->addMeta("VO Detail for ".$info->short_name."\n".$this->dumprecord($info)."\n");
             } else {
-                $footprint->addMeta("Submitter does not know the VO to request membership to.\n");
+                $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
                 $footprint->setTitle("OSG Membership Request (VO unknown)");
             }
 
@@ -68,12 +77,6 @@ class MembershipController extends BaseController
         }
     }
 
-/*
-    public function composeTicketTitle($form)
-    {
-        return "OSG Membership Request";
-    }
-*/
     private function getForm()
     {
         $form = $this->initForm("membership");
@@ -93,13 +96,13 @@ class MembershipController extends BaseController
         $element->addMultiOption("true", "Yes");
         $form->addElement($element);
 
-        $vo_model = new VO;
-        $vos = $vo_model->fetchAll();
         $vo = new Zend_Form_Element_Select('vo_id_requested');
         $vo->setLabel("VO where you need an access");
         $vo->addMultiOption(null, "(Please Select)");
+        $vo_model = new VO;
+        $vos = $vo_model->fetchAll();
         foreach($vos as $v) {
-            $vo->addMultiOption($v->sc_id, $v->short_name);
+            $vo->addMultiOption($v->vo_id, $v->short_name);
         }
         $form->addElement($vo);
 

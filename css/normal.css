@@ -149,7 +149,7 @@ p.warning
 
 .sidenote
 {
-    width: 300px;
+    width: 350px;
     float: right;
 }
 
@@ -187,6 +187,10 @@ td
 {
     vertical-align: top;
     padding: 3px;
+}
+th
+{
+    text-align: left;
 }
 
 

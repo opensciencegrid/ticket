@@ -1,0 +1,63 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; Show OIM/FP Match</div>
+<h2>OIM/FP Match</h2>
+
+<h3>Originating VOS</h3>
+<table>
+<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<?
+foreach($this->error_origvos as $error) {
+    $note = $error[0];
+    $fp = $error[1];
+    $oim = $error[2];
+    echo "<tr><td>$oim</td><td>$fp</td><td><font color='red'>$note</font></td></tr>";
+}
+?>
+</table>
+
+<h3>Destination VOS</h3>
+<table>
+<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<?
+foreach($this->error_destvos as $error) {
+    $note = $error[0];
+    $fp = $error[1];
+    $oim = $error[2];
+    echo "<tr><td>$oim</td><td>$fp</td><td><font color='red'>$note</font></td></tr>";
+}
+?>
+</table>
+
+<h3>Support Centers</h3>
+<table>
+<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<?
+foreach($this->error_sc as $error) {
+    $note = $error[0];
+    $fp = $error[1];
+    $oim = $error[2];
+    echo "<tr><td>$oim</td><td>$fp</td><td><font color='red'>$note</font></td></tr>";
+}
+?>
+</table>
+
+<h3>Email Address</h3>
+<table>
+<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<?
+foreach($this->error_email as $error) {
+    $oim_sc = $error[0];
+    $oim_email  = $error[1];
+    $fp_sc = $error[2];
+    $fp_email  = $error[3];
+    $note = $error[4];
+    echo "<tr><td>$oim_sc($oim_email)</td><td>$fp_sc($fp_email)</td><td><font color='red'>$note</font></td></tr>";
+}
+?>
+</table>
+
+
+
+<?include("app/views/scripts/footer.phtml");?>
+
+

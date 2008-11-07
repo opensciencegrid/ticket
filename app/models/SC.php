@@ -12,9 +12,9 @@ class SC
         $vos = db()->fetchAll($sql);
         return $vos;
     }
-    public function get($void) 
+    public function get($scid) 
     {
-        $sql = $this->sql()." and sc_id = $void";
+        $sql = $this->sql()." and sc_id = $scid";
         return db()->fetchRow($sql);
     }
     

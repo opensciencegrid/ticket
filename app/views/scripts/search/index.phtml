@@ -1,0 +1,19 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; Search Tickets</div>
+<h2>Tickets</h2>
+
+<?
+foreach($this->tickets as $ticket)
+{
+    $id = $ticket->mrid;
+    $title = $ticket->mrtitle;
+    $url = base()."/viewer?id=$id";
+    $status = Footprint::parse($ticket->mrstatus);
+
+    echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+}
+?>
+
+<?include("app/views/scripts/footer.phtml");?>
+
+

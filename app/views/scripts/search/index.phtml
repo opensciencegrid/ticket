@@ -3,14 +3,31 @@
 <h2>Tickets</h2>
 
 <?
+
+//group by status
+$grouped = array();
 foreach($this->tickets as $ticket)
 {
-    $id = $ticket->mrid;
-    $title = $ticket->mrtitle;
-    $url = base()."/viewer?id=$id";
-    $status = Footprint::parse($ticket->mrstatus);
+    if(!isset($grouped[$ticket->mrstatus])) {
+        $grouped[$ticket->mrstatus] = array();
+    }
+    $grouped[$ticket->mrstatus][] = $ticket;
+}
 
-    echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+
+foreach($grouped as $status=>$tickets) {
+    $status = Footprint::parse($status);
+    if($status == "_DELETED_") continue; //don't show deleted tickets
+    echo "<h3>$status</h3>";
+        
+    foreach($tickets as $ticket)
+    {
+        $id = $ticket->mrid;
+        $title = $ticket->mrtitle;
+        $url = base()."/viewer?id=$id";
+
+        echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+    }
 }
 ?>
 

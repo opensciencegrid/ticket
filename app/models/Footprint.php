@@ -125,7 +125,7 @@ Unscheduled__bOutage
     private function chooseGOCAssignee()
     {
         //randomly pick one of the GOCers
-        $gocers = array("kagross", "echism", "tsilver");
+        $gocers = array("kagross", "echism");
         $lucky = rand(0, sizeof($gocers)-1);
         return $gocers[$lucky]; 
     }

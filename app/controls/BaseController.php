@@ -2,14 +2,15 @@
 
 abstract class BaseController extends Zend_Controller_Action 
 { 
+    //send email & sms
     protected function sendErrorEmail($e)
     {
-        $Name = "GOC Footprint Ticket Form"; //senders name
-        $email = "hayashis@indiana.edu"; //senders e-mail adress
+        $Name = config()->app_name;
+        $email = "hayashis@indiana.edu"; //senders e-mail adress (needs to be valid GOC user?)
         $recipient = config()->error_email_to;
         $mail_body = "Dear Goc,\n\nGOC Ticket Form has received a ticket, but the submission to Footprint has failed. Please fix the issue, and resubmit the issue on behalf of the user ASAP.\n\n";
         $mail_body .= "[Footprint says]\n";
-        $mail_body .= print_r($e, true);
+        $mail_body .= $e->faultstring;
 
         $mail_body .= "\n[User has submitted following]\n";
         $mail_body .= print_r($_REQUEST, true);
@@ -17,12 +18,12 @@ abstract class BaseController extends Zend_Controller_Action
         $header = "From: ". $Name . " <" . $email . ">\r\n";
         mail($recipient, $subject, $mail_body, $header);
 
-        //also send SMS notification (without the large body)
-        $recipient = config()->error_sms_to;
+        //also send SMS
         $subject = "GOC Ticket submission failure";
-        $mail_body = "GOC Ticket form submission error has occured.";
-        mail($recipient, $subject, $mail_body, $header);
+        $body = "GOC Ticket form submission error has occured.";
+        sendSMS(config()->error_sms_to, $subject, $body);
     }
+
 
     protected function getCaptchaCode()
     {

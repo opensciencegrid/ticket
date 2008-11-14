@@ -182,6 +182,9 @@ Unscheduled__bOutage
 
     public function submit()
     {
+        //debug..
+        //$this->assignees = array("hoge", "hayashis");
+
         $desc = $this->description;
         if($this->meta != "") {
             $desc .= "\n\n".config()->metatag."\n";
@@ -205,18 +208,41 @@ Unscheduled__bOutage
             echo "<pre>";
             var_dump($params);
             echo "<\pre>";
-            return 999; //bogus ticket id
+
+            //overide assginee to myself (to suppress SMS)
+            $params["assignees"] = array("hoge", "hayashis");
+
+            $id = 999;
         } else {
             //submit the ticket!
             $client = new SoapClient(null, array(
                 'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                 'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
 
-            $ret = $client->__soapCall("MRWebServices__createIssue_goc",
+            $id = $client->__soapCall("MRWebServices__createIssue_goc",
                 array(config()->webapi_user, config()->webapi_password, "", $params));
 
-            return $ret;
         }
+
+        //send SMS notification to assignees
+        $sms_users = config()->sms_notification[$this->priority_number];
+        $subject = "";
+        $body = "";
+        switch($this->priority_number) {
+        case 1: $subject .= "CRITICAL ";
+                break;
+        case 2: $subject .= "HIGH Priority ";
+                break;
+        case 3: $subject .= "ELEVATED ";
+                break;
+        case 4: $subject .= "";
+                break;
+        }
+        $subject .= "GOC Ticket has been submitted";
+        $body .= $this->title;
+        sendSMS($sms_users, $subject, $body);
+
+        return $id;
     }
     static public function parse($str)
     {

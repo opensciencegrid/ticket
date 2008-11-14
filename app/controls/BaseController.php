@@ -15,7 +15,13 @@ abstract class BaseController extends Zend_Controller_Action
         $mail_body .= print_r($_REQUEST, true);
         $subject = "[ticket_form] Submission Failed";
         $header = "From: ". $Name . " <" . $email . ">\r\n";
-        mail($recipient, $subject, $mail_body, $header); //mail command :) 
+        mail($recipient, $subject, $mail_body, $header);
+
+        //also send SMS notification (without the large body)
+        $recipient = config()->error_sms_to;
+        $subject = "GOC Ticket submission failure";
+        $mail_body = "GOC Ticket form submission error has occured.";
+        mail($recipient, $subject, $mail_body, $header);
     }
 
     protected function getCaptchaCode()

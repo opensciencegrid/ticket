@@ -30,14 +30,14 @@ class MembershipController extends BaseController
                 $vo_model = new VO();
                 $info = $vo_model->get($void);
 
-                $footprint->setDestinationVO($info->short_name);
+                $footprint->setDestinationVO($info->footprints_id);
 
                 //lookup SC name
                 $sc_model = new SC;
                 $sc = $sc_model->get($info->sc_id);
-                $scname = $sc->short_name;
+                $scname = $sc->footprints_id;
 
-                $footprint->addMeta("Submitter is requesting a membership at VO:".$info->short_name."\n");
+                $footprint->addMeta("Submitter is requesting a membership at VO:".$info->footprints_id."\n");
                 $footprint->addMeta("This VO is supported at SC:$scname\n");
 
                 if($footprint->isValidFPSC($scname)) {
@@ -46,7 +46,7 @@ class MembershipController extends BaseController
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
 
-                $footprint->addMeta("VO Detail for ".$info->short_name."\n".$this->dumprecord($info)."\n");
+                $footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
             } else {
                 $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
                 $footprint->setTitle("OSG Membership Request (VO unknown)");

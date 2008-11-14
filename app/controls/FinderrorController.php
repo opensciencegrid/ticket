@@ -31,9 +31,9 @@ class FinderrorController extends Zend_Controller_Action
             //find it in the oim_vo
             $found = false;
             foreach($oim_vos as $oim_vo) {
-                if($oim_vo->short_name == $orig_vo2) {
+                if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
-                    $this->view->error_origvos[] = array("", $orig_vo, $oim_vo->short_name);
+                    $this->view->error_origvos[] = array("", $orig_vo, $oim_vo->footprints_id."(".$oim_vo->short_name.")");
                     break;
                 }
             }
@@ -48,13 +48,13 @@ class FinderrorController extends Zend_Controller_Action
             $found = false;
             foreach($orig_vos as $orig_vo) {
                 $orig_vo2 = Footprint::parse($orig_vo);
-                if($oim_vo->short_name == $orig_vo2) {
+                if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
                     break;
                 }
             }
             if(!$found) {
-                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->short_name);
+                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->footprints_id."(".$oim_vo->short_name.")");
             }
         } 
 
@@ -68,9 +68,9 @@ class FinderrorController extends Zend_Controller_Action
             //find it in the oim_vo
             $found = false;
             foreach($oim_vos as $oim_vo) {
-                if($oim_vo->short_name == $dest_vo2) {
+                if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
-                    $this->view->error_destvos[] = array("", $dest_vo, $oim_vo->short_name);
+                    $this->view->error_destvos[] = array("", $dest_vo, $oim_vo->footprints_id."(".$oim_vo->short_name.")");
                     break;
                 }
             }
@@ -85,13 +85,13 @@ class FinderrorController extends Zend_Controller_Action
             $found = false;
             foreach($dest_vos as $dest_vo) {
                 $dest_vo2 = Footprint::parse($dest_vo);
-                if($oim_vo->short_name == $dest_vo2) {
+                if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
                     break;
                 }
             }
             if(!$found) {
-                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->short_name);
+                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->footprints_id."(".$oim_vo->short_name.")");
             }
         } 
 
@@ -112,9 +112,9 @@ class FinderrorController extends Zend_Controller_Action
         foreach($fp_scs as $fp_sc) {
             $found = false;
             foreach($oim_scs as $oim_sc) {
-                if($oim_sc->short_name == $fp_sc) {
+                if($oim_sc->footprints_id == $fp_sc) {
                     //found match
-                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->short_name);
+                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->footprints_id);
                     $found = true;
                     break;
                 }
@@ -126,13 +126,13 @@ class FinderrorController extends Zend_Controller_Action
         foreach($oim_scs as $oim_sc) {
             $found = false;
             foreach($fp_scs as $fp_sc) {
-                if($oim_sc->short_name == $fp_sc) {
+                if($oim_sc->footprints_id== $fp_sc) {
                     $found = true;
                     break;
                 }
             }
             if(!$found) {
-                $this->view->error_sc[] = array("only in oim", "", $oim_sc->short_name);
+                $this->view->error_sc[] = array("only in oim", "", $oim_sc->footprints_id);
             }
         }
 
@@ -155,18 +155,18 @@ class FinderrorController extends Zend_Controller_Action
             
             $found = false;
             foreach($emails as $email) {
-                if($email->user == $oim_sc->short_name) {
+                if($email->user == $oim_sc->footprints_id) {
                     $found = true;
                     if($op_contact_email == $email->email) {
                         //found email match
-                        $this->view->error_email[] = array($oim_sc->short_name, $op_contact_email, $email->user, $email->email, "");
+                        $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "");
                     } else {
-                        $this->view->error_email[] = array($oim_sc->short_name, $op_contact_email, $email->user, $email->email, "* Email address doesn't match");
+                        $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "* Email address doesn't match");
                     }
                 }
             }
             if(!$found) {
-                $this->view->error_email[] = array($oim_sc->short_name, $op_contact_email, "", "", "* No such user ID in FP.");
+                $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, "", "", "* No such user ID in FP.");
             }
         }
 

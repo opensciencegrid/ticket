@@ -4,7 +4,7 @@ class Tickets
 {
     public function getopen()
     {
-        $ret = $this->dosearch("where mrSTATUS in ('Engineering', 'Support__bAgency', 'Customer') order by mrID");
+        $ret = $this->dosearch("where mrSTATUS in ('Engineering', 'Support__bAgency', 'Customer') order by mrDEST, mrID DESC");
         return $ret;
     }
 
@@ -18,7 +18,7 @@ class Tickets
     {
         $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
         $ret = $client->__soapCall("MRWebServices__search_goc",
-            array(config()->webapi_user, config()->webapi_password, "", "select mrID, mrSTATUS, mrTITLE from MASTER71 ".$query));
+            array(config()->webapi_user, config()->webapi_password, "", "select mrID, mrSTATUS, mrTITLE, Destination__bVO__bSupport__bCenter as mrDEST from MASTER71 ".$query));
         return $ret;
     }
 }

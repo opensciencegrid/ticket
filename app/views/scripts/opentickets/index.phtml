@@ -3,14 +3,17 @@
 <h2>Open Tickets</h2>
 
 <?
-foreach($this->tickets as $ticket)
+foreach($this->tickets as $dest=>$tickets)
 {
-    $id = $ticket->mrid;
-    $title = $ticket->mrtitle;
-    $url = base()."/viewer?id=$id";
-    $status = Footprint::parse($ticket->mrstatus);
+    echo "<h3>$dest</h3>";
+    foreach($tickets as $ticket) {
+        $id = $ticket->mrid;
+        $title = $ticket->mrtitle;
+        $url = base()."/viewer?id=$id";
+        $status = Footprint::parse($ticket->mrstatus);
 
-    echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+        echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+    }
 }
 ?>
 

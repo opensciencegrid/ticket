@@ -114,7 +114,7 @@ abstract class BaseController extends Zend_Controller_Action
         } else {
             $vo_model = new VO();
             $info = $vo_model->get($void);
-            $footprint->setOriginatingVO($info->short_name);
+            $footprint->setOriginatingVO($info->footprints_id);
 
         }
 

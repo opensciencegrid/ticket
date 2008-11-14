@@ -203,6 +203,8 @@ Unscheduled__bOutage
             "projfields" => $this->project_fields
         );
 
+        dlog(print_r($params, true));
+
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out..
             echo "<pre>";
@@ -226,22 +228,37 @@ Unscheduled__bOutage
 
         //send SMS notification to assignees
         $sms_users = config()->sms_notification[$this->priority_number];
-        $subject = "";
-        $body = "";
-        switch($this->priority_number) {
-        case 1: $subject .= "CRITICAL ";
-                break;
-        case 2: $subject .= "HIGH Priority ";
-                break;
-        case 3: $subject .= "ELEVATED ";
-                break;
-        case 4: $subject .= "";
-                break;
+        $sms_to = array();
+        //pick users to send to..
+        //dlog("assignees: ".print_r($params["assignees"], true));
+        //dlog("sms registration :".print_r($sms_users, true));
+        foreach($params["assignees"] as $ass) {
+            //dlog("testing $ass");
+            if(in_array($ass, $sms_users)) {
+                //dlog("'$ass' is registered to receive sms notification");
+                $sms_to[] = $ass;
+            } else {
+                //dlog("'$ass' is not registered to receive sms notification");
+            }
         }
-        $subject .= "GOC Ticket has been submitted";
-        $body .= $this->title;
-        sendSMS($sms_users, $subject, $body);
-
+        if(count($sms_to) > 0) {
+            dlog("sending SMS notification to ".print_r($sms_to, true));
+            $subject = "";
+            $body = "";
+            switch($this->priority_number) {
+            case 1: $subject .= "CRITICAL ";
+                    break;
+            case 2: $subject .= "HIGH Priority ";
+                    break;
+            case 3: $subject .= "ELEVATED ";
+                    break;
+            case 4: $subject .= "";
+                    break;
+            }
+            $subject .= "GOC Ticket ID:$id has been submitted";
+            $body .= $this->title;
+            sendSMS($sms_to, $subject, $body);
+        }
         return $id;
     }
     static public function parse($str)

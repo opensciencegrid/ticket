@@ -6,11 +6,14 @@
     <div class="sidenote">
     Search tickets by a keyword or ticket ID ...
     <br/><br/>
-    <?$url = base()."/search";?>
-    <form action="<?=$url?>" method="post">
-    <input type="text" name="query" style="width: 200px"/>
-    <input type="submit" value="Search"/>
-    </form>
+
+<form target="_blank" method="get" action="http://www.google.com/search">
+<input type="text"  name="q" maxlength="255" value="" />
+<input type="submit" value="Search" />
+<input type="hidden"  name="sitesearch" value="oim.grid.iu.edu/gocticket/viewer" />
+</form>
+
+
     <br/><br/>
     <a href="opentickets">Show All Open Ticket</a>
     </div>

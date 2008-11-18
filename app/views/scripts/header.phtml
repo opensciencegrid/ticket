@@ -4,7 +4,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="<?=base()?>/css/normal.css" type="text/css" media="screen"/>
     <script type="text/javascript" src="<?=base()?>/lib/jquery/jquery.js"></script>
-    <title><?=config()->app_name?></title>
+    <?
+    if(isset($this->page_title)) {
+        echo "<title>".$this->page_title."</title>";
+    } else {
+        echo "<title>".config()->app_name."</title>";
+    }
+    ?>
 </head>
 <body>
 <h1><?=config()->app_name?></h1>

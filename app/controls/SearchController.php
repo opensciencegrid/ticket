@@ -10,7 +10,7 @@ class SearchController extends Zend_Controller_Action
         }
 
         $dirty_query = trim($_REQUEST["query"]);
-        $query = mysql_real_escape_string($dirty_query);
+        $query = addslashes($dirty_query);
 
         $model = new Tickets();
         $this->view->tickets = $model->search($query);

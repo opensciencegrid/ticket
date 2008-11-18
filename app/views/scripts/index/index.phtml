@@ -6,9 +6,11 @@
     <div class="sidenote">
     Search tickets by a keyword or ticket ID ...
     <br/><br/>
-    <input type="text" name="search" id="query" style="width: 200px"/>
     <?$url = base()."/search";?>
-    <input type="submit" onclick="document.location='<?=$url?>?query='+$('#query').val();"/>
+    <form action="<?=$url?>" method="post">
+    <input type="text" name="query" style="width: 200px"/>
+    <input type="submit" value="Search"/>
+    </form>
     <br/><br/>
     <a href="opentickets">Show All Open Ticket</a>
     </div>

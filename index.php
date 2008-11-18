@@ -1,6 +1,5 @@
 <?php
 
-
 //init zend framework
 set_include_path('lib/zf/library' . PATH_SEPARATOR . get_include_path());  
 set_include_path('app/models' . PATH_SEPARATOR . get_include_path());  

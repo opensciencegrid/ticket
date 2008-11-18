@@ -10,9 +10,13 @@ class SearchController extends Zend_Controller_Action
         }
 
         $dirty_query = trim($_REQUEST["query"]);
-        $query = addslashes($dirty_query);
+
+        //let's rely on magic quote (we will replace this with Google search)
+        $query = $dirty_query;
+        //$query = addslashes($dirty_query);
 
         $model = new Tickets();
+        dlog("query passed [$query]");
         $this->view->tickets = $model->search($query);
 
         $this->render();

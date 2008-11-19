@@ -7,6 +7,11 @@ class Tickets
         $ret = $this->dosearch("where mrSTATUS in ('Engineering', 'Support__bAgency', 'Customer') order by mrDEST, mrID DESC");
         return $ret;
     }
+    public function getall()
+    {
+        $ret = $this->dosearch("where mrSTATUS <> '_DELETED_' order by mrDEST, mrID DESC");
+        return $ret;
+    }
 
     public function search($query)
     {

@@ -52,6 +52,16 @@ SSL_SERVER_CERT         XXXXXXXXXXXXXXXX
 SSL_CLIENT_CERT         XXXXXXXXXXXXXXXX
 */
 
+function isbot()
+{
+    foreach(config()->botlist as $bot) {
+        if(ereg($bot, $HTTP_USER_AGENT)) {
+            return true;
+        }
+    }
+    return false; 
+}
+
 //do the db lookup against SSL cert. Store User object to the registry.
 //I am not sure if we are going to store this on session instead, 
 //and do authentication if it's not done already..
@@ -64,8 +74,8 @@ function cert_authenticate()
     }
 
     if(!isset($_SERVER["HTTPS"])) {
-        if(config()->force_https) {
-            //reload as https
+        if(config()->force_https and !isbot()) {
+            //reload as https (if not bot)
             $SERVER_NAME=$_SERVER["SERVER_NAME"];
             $REQUEST_URI=$_SERVER["REQUEST_URI"];
             header ("Location: https://$SERVER_NAME$REQUEST_URI");

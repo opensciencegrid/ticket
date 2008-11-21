@@ -255,8 +255,12 @@ Unscheduled__bOutage
             case 4: $subject .= "";
                     break;
             }
-            $subject .= "GOC Ticket ID:$id has been submitted";
-            $body .= $this->title;
+            $subject .= "Ticket ID:$id has been submitted";
+            $body .= $this->title."\n".$this->description;
+
+            //truncate body
+            $body = substr($body, 0, 256);
+
             sendSMS($sms_to, $subject, $body);
         }
         return $id;

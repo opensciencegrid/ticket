@@ -7,12 +7,15 @@
     Search tickets by a keyword or ticket ID ...
     <br/><br/>
 
-<form target="_blank" method="get" action="http://www.google.com/search">
-<input type="text"  name="q" maxlength="255" value="" />
-<input type="submit" value="Search" />
-<input type="hidden"  name="sitesearch" value="oim.grid.iu.edu/gocticket/viewer" />
+<form action="http://www.google.com/cse" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="016752695275174109936:9u1k_fz_bag" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
 </form>
-
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
 
     <br/><br/>
     <a href="opentickets">Show All Open Ticket</a>

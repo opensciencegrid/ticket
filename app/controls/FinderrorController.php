@@ -33,7 +33,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
-                    $this->view->error_origvos[] = array("", $orig_vo, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                    $this->view->error_origvos[] = array("", $orig_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }
@@ -70,7 +70,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
-                    $this->view->error_destvos[] = array("", $dest_vo, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                    $this->view->error_destvos[] = array("", $dest_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }

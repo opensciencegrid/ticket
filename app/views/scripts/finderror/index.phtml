@@ -4,7 +4,7 @@
 
 <h3>Originating VOS</h3>
 <table>
-<tr><th>OIM FP(OIM short_name)</th><th>Footprint</th><th></th></tr>
+<tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
 <?
 foreach($this->error_origvos as $error) {
     $note = $error[0];
@@ -17,7 +17,7 @@ foreach($this->error_origvos as $error) {
 
 <h3>Destination VOS</h3>
 <table>
-<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
 <?
 foreach($this->error_destvos as $error) {
     $note = $error[0];
@@ -30,7 +30,7 @@ foreach($this->error_destvos as $error) {
 
 <h3>Support Centers</h3>
 <table>
-<tr><th>OIM</th><th>Footprint</th><th></th></tr>
+<tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
 <?
 foreach($this->error_sc as $error) {
     $note = $error[0];

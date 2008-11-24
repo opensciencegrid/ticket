@@ -33,7 +33,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
-                    $this->view->error_origvos[] = array("", $orig_vo, $oim_vo->footprints_id."(".$oim_vo->short_name.")");
+                    $this->view->error_origvos[] = array("", $orig_vo, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }
@@ -54,7 +54,7 @@ class FinderrorController extends Zend_Controller_Action
                 }
             }
             if(!$found) {
-                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->footprints_id."(".$oim_vo->short_name.")");
+                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
             }
         } 
 
@@ -70,7 +70,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
-                    $this->view->error_destvos[] = array("", $dest_vo, $oim_vo->footprints_id."(".$oim_vo->short_name.")");
+                    $this->view->error_destvos[] = array("", $dest_vo, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }
@@ -91,7 +91,7 @@ class FinderrorController extends Zend_Controller_Action
                 }
             }
             if(!$found) {
-                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->footprints_id."(".$oim_vo->short_name.")");
+                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
             }
         } 
 
@@ -114,7 +114,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_scs as $oim_sc) {
                 if($oim_sc->footprints_id == $fp_sc) {
                     //found match
-                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->footprints_id);
+                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->short_name."(".$oim_sc->footprints_id.")");
                     $found = true;
                     break;
                 }

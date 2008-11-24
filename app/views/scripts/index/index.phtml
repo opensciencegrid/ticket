@@ -1,9 +1,9 @@
 <?include("app/views/scripts/header.phtml");?>
 <div class="bread">Home</div>
 <h3>Please select from following options</h3>
-<div class="form">
+<div class="menu">
 
-    <div class="sidenote">
+    <div class="sidenote" style="background-color: #ccc; padding: 10px">
 
     Search Ticket:
     <br/>
@@ -11,15 +11,15 @@
   <div>
     <input type="hidden" name="cx" value="016752695275174109936:9u1k_fz_bag" />
     <input type="hidden" name="ie" value="UTF-8" />
-    <input type="text" name="q" style="width: 150px;"/>
-    <input type="submit" name="sa" value="Search" />
+    <input type="text" name="q"/>
+    <input type="submit" name="sa" value="Search" style="min-width: 100px;"/>
   </div>
 </form>
 <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
 
     <br/>
     View Ticket by ID:<br/>
-    <input type="text" id="ticketid" style="width: 70px;"/><br/>
+    <input type="text" id="ticketid" style="width: 70px;"/>
     <input type="button" value="Open" style="min-width: 100px;" onclick="document.location='<?=fullbase()."/viewer?id="?>'+$('#ticketid').val();"/>
 
     <br/><br/>

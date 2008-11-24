@@ -70,29 +70,27 @@ a:hover
     padding-right: 20px;
 }
 
-.container .form
+.container .form, .menu
 {
     background:#ece9d8 url(../images/bg.gif) repeat-x;
     padding: 10px;
 }
 
-input[type="submit"]
+.form input[type="submit"]
 {
     min-width: 100px;
 }
 
-
-
-input[type="text"], select
+.form input[type="text"], select
 {
     width: 300px;
 }
-input[type="text"], select, textarea
+.form input[type="text"], select, textarea
 {
     padding: 3px;
 }
 
-textarea {
+.form textarea {
     height: 200px;
 }
 

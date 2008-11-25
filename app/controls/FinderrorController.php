@@ -157,7 +157,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($emails as $email) {
                 if($email->user == $oim_sc->footprints_id) {
                     $found = true;
-                    if($op_contact_email == $email->email) {
+                    if(strcasecmp($op_contact_email, $email->email) == 0) {
                         //found email match
                         $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "");
                     } else {

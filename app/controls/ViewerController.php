@@ -2,6 +2,10 @@
 
 class ViewerController extends Zend_Controller_Action 
 { 
+    public function init()
+    {
+        $this->view->submenu_selected = "view";
+    }    
     public function indexAction() 
     { 
         $dirty_id = $_REQUEST["id"];
@@ -19,8 +23,10 @@ class ViewerController extends Zend_Controller_Action
             return;
         }
         
-        //submitter 
+        $this->view->ticket_id = $id;
         $this->view->page_title = "[$id] ".$detail->title;
+
+        //submitter 
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;
 
         $this->view->submitter_email = $detail->Email__baddress;

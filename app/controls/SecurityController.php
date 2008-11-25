@@ -4,12 +4,10 @@ include("lib/MyFormDecoratorCaptcha.php");
 
 class SecurityController extends BaseController
 { 
-/*
-    public function composeTicketTitle($form)
+    public function init()
     {
-        return "Security Issue";
+        $this->view->submenu_selected = "open";
     }
-*/
     public function indexAction() 
     { 
         $this->view->form = $this->getForm();

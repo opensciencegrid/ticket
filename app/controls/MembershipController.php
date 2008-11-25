@@ -2,6 +2,10 @@
 
 class MembershipController extends BaseController
 { 
+    public function init()
+    {
+        $this->view->submenu_selected = "open";
+    }
     public function indexAction() 
     { 
         $this->view->form = $this->getForm();

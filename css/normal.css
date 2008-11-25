@@ -208,3 +208,31 @@ pre
     padding: 5px;
 }
 
+.submenu
+{
+background-color: black;
+padding: 0.3em 2.5em 0.3em 28px;
+}
+.submenu span
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.submenu a
+{
+font-size: 12px;
+font-weight: bold;
+color: #888;
+text-decoration: none;
+}
+.submenu a:hover
+{
+color: #7e6B09;
+text-decoration: underline;
+background-color: black;
+}
+.submenu span.selected a
+{
+    color: #fff;
+}
+

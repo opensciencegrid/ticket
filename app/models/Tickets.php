@@ -4,7 +4,12 @@ class Tickets
 {
     public function getopen()
     {
-        $ret = $this->dosearch("where mrSTATUS in ('Engineering', 'Support__bAgency', 'Customer') order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS not in ('Closed', '_DELETED_', '_SOLVED_', 'Resolved') order by mrDEST, mrID DESC");
+        return $ret;
+    }
+    public function getclosed()
+    {
+        $ret = $this->dosearch("where mrSTATUS in ('Closed', '_SOLVED_', 'Resolved') order by mrDEST, mrID DESC");
         return $ret;
     }
     public function getall()

@@ -1,6 +1,6 @@
 <?
 
-class OpenticketsController extends Zend_Controller_Action 
+class ClosedticketsController extends Zend_Controller_Action 
 { 
     public function init()
     {
@@ -10,7 +10,7 @@ class OpenticketsController extends Zend_Controller_Action
     public function indexAction() 
     { 
         $model = new Tickets();
-        $tickets = $model->getopen();
+        $tickets = $model->getclosed();
 
         //group tickets by destination VO
         $this->view->tickets = array();

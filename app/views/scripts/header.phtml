@@ -15,4 +15,13 @@
 </head>
 <body>
 <h1><?=config()->app_name?></h1>
+<div class="submenu" id="submenu_rsv">
+    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1" title="">Open Ticket</a></span>
+    <span id="submenu_search"><a href="<?=base()?>/search" accesskey="2" title="">Search Ticket</a></span>
+    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="3" title="">View Tickets</a></span>
+</div>
+<script type="text/javascript">
+    $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
+</script>
+
 <div class="container">

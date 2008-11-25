@@ -27,6 +27,10 @@ class MembershipController extends BaseController
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
 
+            $firstname = $form->getValue('firstname');
+            $lastname = $form->getValue('lastname');
+            $title = $firstname. " ".$lastname. " requesting VO membership to ";
+
             if($knowvo == "true") {
                 $void = $form->getValue('vo_id_requested');
 
@@ -49,12 +53,13 @@ class MembershipController extends BaseController
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
-
                 $footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
+                $title .= $info->short_name;
             } else {
                 $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
-                $footprint->setTitle("OSG Membership Request (VO unknown)");
+                $title .= "unknown vo";
             }
+            $footprint->setTitle($title);
 
             //add DN as meta
             $dn = user()->getDN();

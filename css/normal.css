@@ -181,6 +181,11 @@ td.header
     font-weight: bold;
     width: 150px;
 }
+td.personal
+{
+    color: red;
+}
+
 td
 {
     vertical-align: top;

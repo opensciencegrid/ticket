@@ -31,19 +31,24 @@ class ViewerController extends Zend_Controller_Action
 
         $this->view->submitter_email = $detail->Email__baddress;
         //$this->view->submitter_email = str_replace("@", " _at_ ", $this->view->submitter_email);
+        $this->view->cc = $detail->Email__baddress;
 
         $this->view->submitter_phone = $detail->Office__bPhone;
-        $this->view->submitter_sc = Footprint::parse($detail->Originating__bVO__bSupport__bCenter);
+        $this->view->submitter_vo = Footprint::parse($detail->Originating__bVO__bSupport__bCenter);
 
         //ticket info
         $this->view->status = Footprint::parse($detail->status);
         $this->view->priority = Footprint::priority2str($detail->priority);
         $this->view->assignees = "";
+        $this->view->cc = "";
         foreach(split(" ", $detail->assignees) as $a) {
-            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) continue;//skip CC:xxx line
+            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
+                $this->view->cc .= substr($a, 3)."<br/>";
+                continue;
+            }
             $this->view->assignees.= Footprint::parse($a)."<br/>";
         }
-        $this->view->destination_sc= Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
+        $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
         $this->view->nad = $detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p;
         $this->view->ready_to_close = $detail->Ready__bto__bClose__Q;
         $this->view->ticket_type = Footprint::parse($detail->Ticket__uType);

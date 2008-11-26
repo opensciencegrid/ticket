@@ -9,7 +9,14 @@
 <tr><td class="header">Status:</td><td><?=$this->status?></td></tr>
 <tr><td class="header">Priority:</td><td><?=$this->priority?></td></tr>
 <tr><td class="header">Assignees:</td><td><?=$this->assignees?></td></tr>
-<tr><td class="header">Destination SC:</td><td><?=$this->destination_sc?></td></tr>
+<?
+    if(user()->getPersonID() !== null) {
+?>
+<tr><td class="header personal">CC:</td><td><?=$this->cc?></td></tr>
+<?
+    }
+?>
+<tr><td class="header">Destination VO:</td><td><?=$this->destination_vo?></td></tr>
 <tr><td class="header">Next Action Deadline:</td><td><?=$this->nad?></td></tr>
 <tr><td class="header">Ready To Close:</td><td><?=$this->ready_to_close?></td></tr>
 </table>
@@ -19,11 +26,11 @@
 <h3>Submitter</h3>
 <table>
 <tr><td class="header">Name:</td><td><?=$this->submitter_name?></td></tr>
-<tr><td class="header">Support Center:</td><td><?=$this->submitter_sc?></td></tr>
+<tr><td class="header">VO:</td><td><?=$this->submitter_vo?></td></tr>
 <?
     if(user()->getPersonID() !== null) {
-        echo "<tr><td class=\"header\">Email:</td><td>".$this->submitter_email."</td></tr>";
-        echo "<tr><td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td></tr>";
+        echo "<tr><td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td></tr>";
+        echo "<tr><td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td></tr>";
     }
 ?>
 

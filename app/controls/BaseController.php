@@ -1,6 +1,6 @@
 <?
 
-abstract class BaseController extends Zend_Controller_Action 
+class BaseController extends Zend_Controller_Action 
 { 
     //send email & sms
     protected function sendErrorEmail($e)
@@ -99,12 +99,14 @@ abstract class BaseController extends Zend_Controller_Action
         foreach($vos as $v) {
             $vo->addMultiOption($v->vo_id, $v->short_name);
         }
+        if(in_array(role::$goc_admin, user()->roles)) {
+            $vo->setValue(25); //MIS
+        }
         $form->addElement($vo);
 
         return $form;
     }
 
-    //protected abstract function composeTicketTitle($form);
     protected function initSubmit($form)
     {
         //prepare footprint ticket
@@ -121,8 +123,11 @@ abstract class BaseController extends Zend_Controller_Action
         } else {
             $vo_model = new VO();
             $info = $vo_model->get($void);
-            $footprint->setOriginatingVO($info->footprints_id);
-
+            if($info->footprints_id === null) {
+                $footprint->addMeta("Submitter's VO is ".$info->short_name. " but its footprints_id is not set in OIM. Please set it.");
+            } else {
+                $footprint->setOriginatingVO($info->footprints_id);
+            }
         }
 
         return $footprint;

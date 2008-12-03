@@ -1,0 +1,25 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>">
+<dl>
+
+<?=$this->render("yourinfo.phtml", true)?>
+
+<dd> 
+    <h3>Request Detail</h3>
+    <p>Type of Request</p>
+<?=$this->element->req_type?>
+<?=$this->element->req_id?>
+<br/>
+
+    <p>Information about the requestor</p>
+</dd>
+<?=$this->element->req_sponsor?>
+<?=$this->element->req_name?>
+<?=$this->element->req_email?>
+<?=$this->element->req_phone?>
+<?=$this->element->req_dn?>
+
+<?=$this->element->submit_button?>
+
+</dl>
+</form>

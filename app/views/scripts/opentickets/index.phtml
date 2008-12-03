@@ -1,19 +1,10 @@
 <?include("app/views/scripts/header.phtml");?>
 <div class="bread">You are here &gt; View Tickets</div>
-<style type="text/css">
-<?include("app/views/scripts/tab11.css");?>
-</style>
-<div class="tabarea">
-                <div id="tabs11">
-                <ul>
-                                <!-- CSS Tabs -->
-<li id="current"><a href="#"><span>Open Tickets</span></a></li>
-<li><a href="<?=fullbase()?>/closedtickets"><span>Closed Tickets</span></a></li>
-
-                        </ul>
-                </div>
+<ul class="subsection_tabs">
+    <li class="tab"><a class="active" href="#"><span>Open&nbsp;Tickets</span></a></li>
+    <li class="tab"><a href="<?=fullbase()?>/closedtickets"><span>Closed&nbsp;Tickets</span></a></li>
+</ul>
 <div class="tabcontent">
-<br/>
 <?
 foreach($this->tickets as $dest=>$tickets)
 {
@@ -28,7 +19,6 @@ foreach($this->tickets as $dest=>$tickets)
     }
 }
 ?>
-</div>
 </div>
 
 <?include("app/views/scripts/footer.phtml");?>

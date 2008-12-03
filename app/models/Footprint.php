@@ -206,15 +206,11 @@ Unscheduled__bOutage
         dlog(print_r($params, true));
 
         if(config()->simulate) {
-            //simulation doesn't submit the ticket - just dump the content out..
-            echo "<pre>";
-            var_dump($params);
-            echo "<\pre>";
+            //simulation doesn't submit the ticket - just dump the content out.. (and no id..)
+            $id = print_r($params, true);
 
             //overide assginee to myself (to suppress SMS)
             $params["assignees"] = array("hoge", "hayashis");
-
-            $id = 999;
         } else {
             //submit the ticket!
             $client = new SoapClient(null, array(
@@ -230,15 +226,9 @@ Unscheduled__bOutage
         $sms_users = config()->sms_notification[$this->priority_number];
         $sms_to = array();
         //pick users to send to..
-        //dlog("assignees: ".print_r($params["assignees"], true));
-        //dlog("sms registration :".print_r($sms_users, true));
         foreach($params["assignees"] as $ass) {
-            //dlog("testing $ass");
             if(in_array($ass, $sms_users)) {
-                //dlog("'$ass' is registered to receive sms notification");
                 $sms_to[] = $ass;
-            } else {
-                //dlog("'$ass' is not registered to receive sms notification");
             }
         }
         if(count($sms_to) > 0) {
@@ -259,7 +249,7 @@ Unscheduled__bOutage
             $body .= $this->title."\n".$this->description;
 
             //truncate body
-            $body = substr($body, 0, 256);
+            $body = substr($body, 0, 100)."...";
 
             sendSMS($sms_to, $subject, $body);
         }

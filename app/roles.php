@@ -16,5 +16,5 @@ class role
     public static $test = 0;
 
     //view admin email address and able to open OS email client.
-    public static $view_admin_email = 1;
+    public static $goc_admin = 1;
 }

@@ -3,5 +3,14 @@
 <p>Your ticket has been submitted successfully.</p>
 <p>Please sit back and relax as we take care of your request.</p>
 <br/><br/>
-<p>Your Ticket ID is <a href="<?=base()?>/viewer?id=<?=$this->mrid?>"><?=$this->mrid?></a></p>
+<?
+if(!config()->simulate) {?>
+    <p>Your Ticket ID is <a href="<?=base()?>/viewer?id=<?=$this->mrid?>"><?=$this->mrid?></a></p>
+<?} else {
+    echo "<h3>Simulation Dump</h3>";
+    echo "<p>Running in simulation mode. The ticket was not actually created. Following is what would've been sent to FP in real mode.</p>";
+    echo "<pre style=\"background-color: #ccc;\">";
+    echo htmlspecialchars($this->mrid);
+    echo "</pre>";
+}?>
 <?include("app/views/scripts/footer.phtml");?>

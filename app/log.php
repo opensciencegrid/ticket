@@ -20,7 +20,7 @@ function setup_logs()
     slog('----------------------------------------------------------------------');
     slog(config()->app_name. ' session starting.. '.$_SERVER["REQUEST_URI"]);
 
-    dlog(print_r($_REQUEST, true));
+    dlog("REQUEST: ".print_r($_REQUEST, true));
 }
 
 function log_format($str)

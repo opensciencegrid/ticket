@@ -13,9 +13,23 @@
     <br/>
     <p><a href="other">Any Others Issue</a>
     </div>
+
     <br/></br>
     <br clear=all>
 </div>
+
+<?if(in_array(role::$goc_admin, user()->roles)) {?>
+<br/>
+<h3>OSG GOC staff forms</h3>
+<div class="menu">
+    <div>
+    You are authorized to do following as well ...
+    <br><br>
+    <p><a href="ra">Send certificate request email</a></p>
+    </div>
+</div>
+<?}?> 
+
 <?include("app/views/scripts/footer.phtml");?>
 
 

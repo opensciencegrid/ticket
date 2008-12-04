@@ -1,5 +1,10 @@
 <?include("app/views/scripts/header.phtml");?>
 <div class="bread">You are here &gt; <a href="<?=base()?>/opentickets">View Tickets</a> &gt; <?=$this->ticket_id?></div>
+<?
+if(isset($this->warning)) {
+    echo "<p class=\"warning\">".$this->warning."</p>";
+}
+?>
 <h2><?=$this->page_title?></h2>
 
 <div style="float: right">

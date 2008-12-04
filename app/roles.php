@@ -17,4 +17,6 @@ class role
 
     //view admin email address and able to open OS email client.
     public static $goc_admin = 1;
+
+    public static $see_security_ticket = 2;
 }

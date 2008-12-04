@@ -19,8 +19,13 @@ class ViewerController extends Zend_Controller_Action
 
         //prevent security ticket to be accessible
         if($detail->Ticket__uType == "Security") {
-            $this->render("security");
-            return;
+            //only certain users can see security ticket
+            if(!in_array(role::$see_security_ticket, user()->roles)) {
+                $this->render("security");
+                return;
+            } else {
+                $this->view->warning = "You are authorized to see the security ticket";
+            }
         }
         
         $this->view->ticket_id = $id;

@@ -55,11 +55,7 @@ class RaController extends BaseController
             $ra->setSponsorName($sp_name);
             $ra->setSponsorEmail($sp_email);
             $ra->setID($form->getvalue('req_id'));
-/*
-            if($form->getValue('req_ligo') == "true") {
-                $ra->setLigo();
-            }
-*/
+
             $email_content = $ra->getBody();
             $email_header = $ra->getHeader();
             $email_recipient = $ra->getRecipient();
@@ -105,15 +101,6 @@ class RaController extends BaseController
         $e->addMultiOption("personal", "Personal Certificate");
         $e->addMultiOption("host", "Host/Service Certificate");
         $form->addElement($e);
-
-        /*
-        $elem = new Zend_Form_Element_Select('req_ligo');
-        $elem->setLabel("Is this for LIGO? (TODO: what is a good question to ask here -- and can this question be eliminated by looking up vo contact for sponsor?)");
-        $elem->setRequired(true);
-        $elem->addMultiOption("false", "No");
-        $elem->addMultiOption("true", "Yes");
-        $form->addElement($elem);
-        */
 
         $e= new Zend_Form_Element_Text('req_id');
         $e->setLabel("Request ID");
@@ -161,7 +148,6 @@ class RaEmail
 {
     function __construct()
     {
-        $this->ligo = false;
     }
 
     public function setType($val) { $this->type = $val; }
@@ -176,8 +162,6 @@ class RaEmail
     public function setFromPhone($val) { $this->from_phone = $val; }
     public function setID($val) { $this->id = $val; }
 
-    public function setLigo() { $this->ligo = true; }
-
     public function getRecipient()
     {
         return $this->sponsor_name. " <".$this->sponsor_email.">";
@@ -188,9 +172,6 @@ class RaEmail
         $header .= "From: ". $this->from_name. " <" . $this->from_email . ">\r\n";
         $header .= "Cc: ". $this->name. " <".$this->email.">, ";
         $header .= "Robert E Quick <rquick@iupui.edu>, Elizabeth Chism <echism@iupui.edu>, Kyle Gross <kagross@indiana.edu>";
-        if($this->ligo) {
-            $header .= ", Albert Lazzarini <lazz@ligo.caltech.edu>";
-        }
         return $header;
     }
 
@@ -224,32 +205,17 @@ class RaEmail
 
     private function getTemplate()
     {
-        if($this->ligo) {
-            $instruction = "- You need to have a secure communication with the requestor and
-  verify that he or she has indeed requested a certificate from the
-  DOEGrids CA with the subject name as shown above.
 
-- You and Albert Lazzarini need to have a secure communication where
-  you convey to Albert that you and the requestor have communicated
-  securely and that the request has been verified.--
-
-- Albert and I need to have a secure communication where Albert
-  conveys the verification to me.";
-            $note = "Please verify the authenticity of the request and then phone Albert
-Lazzarini at (626) 395-8444 to let him know that you have verified the
-request.";
-        } else {
-            $instruction = "- You need to have a secure communication with the requestor and
-  verify that he or she has indeed requested a certificate from the
-  DOEGrids CA with the subject name as shown above.
+        $instruction = "- You need to have a secure communication with the requestor and
+verify that he or she has indeed requested a certificate from the
+DOEGrids CA with the subject name as shown above.
 
 - You and I need to have a secure communication where you convey to me
-  that you and the requestor have communicated securely and that the
-  request has been verified.";
-            $note = "Please verify the authenticity of the request and then either send me
+that you and the requestor have communicated securely and that the
+request has been verified.";
+        $note = "Please verify the authenticity of the request and then either send me
 a digitally-signed email or phone me at __FROM_PHONE__ to let me know
 you have verified the request.";
-        }
 
         $template = "Hello __SPONSOR_NAME__,
 

@@ -65,14 +65,6 @@ class ViewerController extends Zend_Controller_Action
             $descs[] = array($info, trim($desc)); 
         }
         $this->view->descs = $descs;
-
-        //debug
-/*
-        foreach($detail as $key=>$value) {
-            echo $key."<br/>";
-            echo "<blockquote><pre>".$value."</pre></blockquote>";
-        }
-*/
     }
 
     public function getDetail($id)

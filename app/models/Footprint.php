@@ -75,7 +75,7 @@ class Footprint
         if($bClear) {
             $this->resetAssignee();
         } 
-        $this->assignees[] = $v; 
+        $this->assignees[] = $v;//no unparsing necessary
     }
 
 

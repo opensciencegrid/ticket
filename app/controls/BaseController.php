@@ -45,8 +45,10 @@ class BaseController extends Zend_Controller_Action
         return $captchaCode;
     }
 
-    protected function initForm($page)
+    protected function initForm($page, $has_yourinfo = true)
     {  
+        $this->has_yourinfo = $has_yourinfo;
+
         //init form
         $form = new Zend_Form;
         $form->setAction(base()."/$page/submit");
@@ -58,51 +60,51 @@ class BaseController extends Zend_Controller_Action
                 array('class' => 'form element')
         )));
 
-        //add "Your information"
+        if($has_yourinfo) {
+            $firstname = new Zend_Form_Element_Text('firstname');
+            $firstname->setLabel("Your First Name");
+            $firstname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
+            $firstname->setRequired(true);
+            $firstname->setValue(user()->getPersonFirstName());
+            $form->addElement($firstname);
 
-        $firstname = new Zend_Form_Element_Text('firstname');
-        $firstname->setLabel("Your First Name");
-        $firstname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
-        $firstname->setRequired(true);
-        $firstname->setValue(user()->getPersonFirstName());
-        $form->addElement($firstname);
+            $lastname = new Zend_Form_Element_Text('lastname');
+            $lastname->setLabel("Your Last Name");
+            $lastname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
+            $lastname->setRequired(true);
+            $lastname->setValue(user()->getPersonLastName());
+            $form->addElement($lastname);
 
-        $lastname = new Zend_Form_Element_Text('lastname');
-        $lastname->setLabel("Your Last Name");
-        $lastname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
-        $lastname->setRequired(true);
-        $lastname->setValue(user()->getPersonLastName());
-        $form->addElement($lastname);
+            $email = new Zend_Form_Element_Text('email');
+            $email->setLabel("Your Email Address");
+            $email->addValidator(new Zend_Validate_EmailAddress());
+            $email->setRequired(true);
+            $email->setValue(user()->getPersonEmail());
+            $form->addElement($email);
 
-        $email = new Zend_Form_Element_Text('email');
-        $email->setLabel("Your Email Address");
-        $email->addValidator(new Zend_Validate_EmailAddress());
-        $email->setRequired(true);
-        $email->setValue(user()->getPersonEmail());
-        $form->addElement($email);
+            $phone = new Zend_Form_Element_Text('phone');
+            $phone->setLabel("Your Phone Number");
+            $phone->addValidator('regex', false, validator::$phone);
+            $phone->setRequired(true);
+            //$phone->setDescription("(Format: 123-123-1234)");
+            $phone->setValue(user()->getPersonPhone());
+            $form->addElement($phone);
 
-        $phone = new Zend_Form_Element_Text('phone');
-        $phone->setLabel("Your Phone Number");
-        $phone->addValidator('regex', false, validator::$phone);
-        $phone->setRequired(true);
-        //$phone->setDescription("(Format: 123-123-1234)");
-        $phone->setValue(user()->getPersonPhone());
-        $form->addElement($phone);
-
-        $vo_model = new VO;
-        $vos = $vo_model->fetchAll();
-        $vo = new Zend_Form_Element_Select('vo_id');
-        $vo->setLabel("Your Virtual Organization");
-        $vo->setRequired(true);
-        $vo->addMultiOption(null, "(Please Select)");
-        $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
-        foreach($vos as $v) {
-            $vo->addMultiOption($v->vo_id, $v->short_name);
+            $vo_model = new VO;
+            $vos = $vo_model->fetchAll();
+            $vo = new Zend_Form_Element_Select('vo_id');
+            $vo->setLabel("Your Virtual Organization");
+            $vo->setRequired(true);
+            $vo->addMultiOption(null, "(Please Select)");
+            $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
+            foreach($vos as $v) {
+                $vo->addMultiOption($v->vo_id, $v->short_name);
+            }
+            if(in_array(role::$goc_admin, user()->roles)) {
+                $vo->setValue(25); //MIS
+            }
+            $form->addElement($vo);
         }
-        if(in_array(role::$goc_admin, user()->roles)) {
-            $vo->setValue(25); //MIS
-        }
-        $form->addElement($vo);
 
         return $form;
     }
@@ -111,22 +113,24 @@ class BaseController extends Zend_Controller_Action
     {
         //prepare footprint ticket
         $footprint = new Footprint;
-        //$footprint->setTitle($this->composeTicketTitle($form));
-        $footprint->setFirstName($form->getValue('firstname'));
-        $footprint->setLastName($form->getValue('lastname'));
-        $footprint->setOfficePhone($form->getValue('phone'));
-        $footprint->setEmail($form->getValue('email'));
 
-        $void = $form->getValue('vo_id');
-        if($void == -1) {
-            $footprint->addMeta("Submitter doesn't know his/her SC.\n");
-        } else {
-            $vo_model = new VO();
-            $info = $vo_model->get($void);
-            if($info->footprints_id === null) {
-                $footprint->addMeta("Submitter's VO is ".$info->short_name. " but its footprints_id is not set in OIM. Please set it.");
+        if($this->has_yourinfo) {
+            $footprint->setFirstName($form->getValue('firstname'));
+            $footprint->setLastName($form->getValue('lastname'));
+            $footprint->setOfficePhone($form->getValue('phone'));
+            $footprint->setEmail($form->getValue('email'));
+
+            $void = $form->getValue('vo_id');
+            if($void == -1) {
+                $footprint->addMeta("Submitter doesn't know his/her SC.\n");
             } else {
-                $footprint->setOriginatingVO($info->footprints_id);
+                $vo_model = new VO();
+                $info = $vo_model->get($void);
+                if($info->footprints_id === null) {
+                    $footprint->addMeta("Submitter's VO is ".$info->short_name. " but its footprints_id is not set in OIM. Please set it.");
+                } else {
+                    $footprint->setOriginatingVO($info->footprints_id);
+                }
             }
         }
 

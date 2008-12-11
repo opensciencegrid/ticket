@@ -1,0 +1,84 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>">
+<dl>
+<dd> 
+    <h3>Message Detail</h3>
+    <p>Send Security Email. No Footprint ticket will be created.</p>
+</dd>
+
+<dd> 
+    <h4>To</h4>
+</dd>
+
+<?
+function checked($e)
+{
+    if($e->checked) return "checked=checked";
+}
+?>
+
+<dd>
+<p>Security Contacts:</p>
+<blockquote>
+    <input type="hidden" name="rsecurity" value="0">
+    <input type="checkbox" name="rsecurity" id="rsecurity" value="1" <?=checked($this->element->rsecurity)?>>
+    Resource Security Contacts&nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="vsecurity" value="0">
+    <input type="checkbox" name="vsecurity" id="vsecurity" value="1" <?=checked($this->element->vsecurity)?>>
+    VO Security Contacts&nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="ssecurity" value="0">
+    <input type="checkbox" name="ssecurity" id="ssecurity" value="1" <?=checked($this->element->ssecurity)?>>
+    SC Security Contacts&nbsp;&nbsp;&nbsp;
+</blockquote>
+</dd>
+
+<dd> 
+    <p>Mailing Lists:</p>
+<blockquote>
+    <input type="hidden" name="support" value="0">
+    <input type="checkbox" name="support" id="support" value="1" <?=checked($this->element->support)?>>
+    Support Centers&nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="general" value="0">
+    <input type="checkbox" name="general" id="general" value="1" <?=checked($this->element->general)?>>
+    OSG-General&nbsp;&nbsp;&nbsp;
+ 
+    <input type="hidden" name="operations" value="0">
+    <input type="checkbox" name="operations" id="operations" value="1" <?=checked($this->element->operations)?>>
+    OSG-Operations&nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="sites" value="0">
+    <input type="checkbox" name="sites" id="sites" value="1" <?=checked($this->element->sites)?>>
+    OSG-Sites&nbsp;&nbsp;&nbsp;
+</blockquote>
+</dd>
+
+<?=$this->element->subject?>
+<?=$this->element->ticket?>
+<?=$this->element->body?>
+<?=$this->element->rss?>
+</dl>
+    <dl id="description_area">
+    <?=$this->element->description?>
+    </dl>
+<dl>
+
+<?=$this->element->submit_button?>
+</dl>
+</form>
+
+<script type="text/javascript">
+
+$("#rss").change(showhide_desc);
+showhide_desc();
+function showhide_desc() {
+    var rss  = $("#rss").attr("checked");
+    if(rss == 0) {
+        $("#description_area").hide();
+    } else {
+        $("#description_area").show("fast");
+    }
+}
+</script>

@@ -12,11 +12,8 @@ class authtype
 
 class role
 {
-    //role to debug authorization issues
-    public static $test = 0;
-
-    //view admin email address and able to open OS email client.
-    public static $goc_admin = 1;
-
+    public static $test = 0; //role to debug authorization issues
+    public static $goc_admin = 1; //view admin email address and able to open OS email client.
     public static $see_security_ticket = 2;
+    public static $security_admin = 3;
 }

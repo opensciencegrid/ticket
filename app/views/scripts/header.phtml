@@ -15,16 +15,29 @@
 </head>
 <body>
 <h1><?=config()->app_name?></h1>
+<?
+function submenutitle($id)
+{
+    switch($id) {
+    case "open":
+        return "Submit A Ticket";
+    case "view":
+        return "List Tickets";
+    }
+}
+?>
 <div class="submenu" id="submenu_rsv">
-    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1" title="">Open A Ticket</a></span>
-    <span id="submenu_search"><a href="<?=base()?>/search" accesskey="2" title="">Search Tickets</a></span>
-    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="3" title="">View Tickets</a></span>
-    <?if(in_array(role::$goc_admin, user()->roles)) {?>
-        <span id="submenu_gocadmin"><a href="<?=base()?>/gocadmin" accesskey="4" title="">GOC Administration</a></span>
-    <?}?>
+    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1" title=""><?=submenutitle("open")?></a></span>
+    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="3" title=""><?=submenutitle("view")?></a></span>
 </div>
 <script type="text/javascript">
     $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
 </script>
 
 <div class="container">
+
+<?include("app/views/scripts/search.phtml");?>
+
+<?if(config()->simulate) {
+    echo "<p class=\"warning\">Simulation Mode - No email / ticket will be actually created</p>";
+}?>

@@ -5,7 +5,7 @@ class FinderrorController extends Zend_Controller_Action
     public function indexAction() 
     { 
         if(user()->getPersonID() === null) {
-            $this->render("error/404", true, "error");
+            $this->render("error/404", null, true);
             return;
         }
 

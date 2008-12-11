@@ -1,5 +1,7 @@
 <?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; Open A Ticket </div>
+
+
+<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
 <h3>Please select from following options</h3>
 <div class="menu">
 
@@ -23,10 +25,23 @@
 <h3>OSG GOC staff forms</h3>
 <div class="menu">
     <div>
-    You are authorized to do following as well ...
+    You are authorized to do following as OSG GOC Staff...
     <br><br>
     <p><a href="ra">Send certificate request email</a></p>
     <p><a href="rsv">Submit RSV related trouble ticket</a></p>
+    </div>
+</div>
+<?}?> 
+
+<?if(in_array(role::$security_admin, user()->roles)) {?>
+<br/>
+<h3>OSG security staff forms</h3>
+<div class="menu">
+    <div>
+    You are authorized to do following as OSG Security Staff...
+    <br><br>
+    <p><a href="notify">Security Form</a></p>
+    <p><a href="https://goc.grid.iu.edu/internal/notify/">Security Form (external)</a></p>
     </div>
 </div>
 <?}?> 

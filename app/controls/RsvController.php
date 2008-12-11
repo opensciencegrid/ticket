@@ -80,9 +80,8 @@ class RsvController extends BaseController
         //make one of resource_issue field required based on resource_type selection
         $resource_type = $_REQUEST["resource_type"];
         $issue_element_name = "resource_id_with_issue_$resource_type";
-        $issue_element = $form->getelement($issue_element_name);
+        $issue_element = $form->getElement($issue_element_name);
         return $issue_element;
-
     }
 
     private function getForm()

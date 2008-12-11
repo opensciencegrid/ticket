@@ -19,7 +19,7 @@ class MembershipController extends BaseController
         //make vo_id_requested required if voknown is selected
         $knowvo = $_REQUEST["knowvo"];
         if($knowvo == "true") {
-            $elem = $form->getelement("vo_id_requested");
+            $elem = $form->getElement("vo_id_requested");
             $elem->setRequired(true);
         }
 

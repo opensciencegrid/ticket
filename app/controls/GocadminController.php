@@ -7,7 +7,7 @@ class GocadminController extends BaseController
         $this->view->submenu_selected = "gocadmin";
         //only goc users are allowed
         if(!in_array(role::$goc_admin, user()->roles)) {
-            $this->render("404", true);
+            $this->render("error/404", null, true);
             return;
         }
     }

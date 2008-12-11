@@ -46,8 +46,9 @@ h3
 h4
 {
     font-weight: bold;
-    padding: 5px;
-    font-size: 14px;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+    font-size: 12px;
     border-bottom: thin dotted #333;
 }
 
@@ -282,3 +283,15 @@ ul.subsection_tabs li.tab a.active {
     padding-right: 10px;
     border: 1px solid #f90;
 }
+
+.searchbox
+{
+    margin-top: 4px;
+    margin-right: 5px;
+    color: white;
+    text-align: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+

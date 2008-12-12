@@ -48,8 +48,9 @@ if(isset($this->warning)) {
 <?
 foreach($this->descs as $desc)
 {
-    $header = trim($desc[0]);
-    $content = trim($desc[1]);
+    $time = trim($desc["time"]);
+    $by = trim($desc["by"]);
+    $content = trim($desc["desc"]);
 
     //suppress metainfo..
     $metapos = strpos($content, config()->metatag);
@@ -59,8 +60,22 @@ foreach($this->descs as $desc)
     }
 
     echo "<blockquote>";
-    echo "<div class=\"author\">$header</div>";
-    $lines = split("\n", $content);
+    if($time > time() - 60*60*24) {
+        //show in "ago" format
+        $human_time = agoCalculation($time). " ago";
+    } else {
+        $human_time = date(config()->date_format_full, $time);
+    }
+    echo "<div class=\"author\">By <b>$by</b><br/>$human_time</div>";
+    $lines_raw = split("\n", $content);
+    $lines = array();
+    foreach($lines_raw as $line) {
+        $line = trim($line);
+        if(strpos($line, "&#62") === 0) {
+            $line = "<font color='#7F7E6F'>$line</font>";
+        }
+        $lines[] = $line;
+    }
     if(count($lines) > 15) {
         //display first 10 lines
         $i = 0;

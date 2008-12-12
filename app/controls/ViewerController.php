@@ -65,9 +65,15 @@ class ViewerController extends Zend_Controller_Action
         foreach($alldescs as $desc) {
             if($desc == "") continue;
             $desc_lines = split("\n", $desc);
-            $info = $desc_lines[0];
+            $info = trim($desc_lines[0]);
             $desc = strstr($desc, "\n");
-            $descs[] = array($info, trim($desc)); 
+
+            //parse out time and by..
+            $info_a = split(" by ", $info);
+            $time = strtotime(str_replace(" at ", "", $info_a[0]));
+            $by = str_replace(":", "", $info_a[1]);
+
+            $descs[] = array("time"=>$time, "by"=>$by, "desc"=>trim($desc)); 
         }
         $this->view->descs = $descs;
     }

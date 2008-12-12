@@ -300,13 +300,13 @@ ul.subsection_tabs li.tab a.active {
 {
     padding-bottom: 10px; 
     border: 1px solid #f90;
+    margin-bottom: 6px;
 }
 
 .update_history
 {
     background-color: #ccc;
     margin-bottom: 6px;
-    padding-left: 30px;
 }
 
 .update_history .header

@@ -67,11 +67,10 @@ foreach($this->descs as $time=>$desc)
     }
 
     if($type == "history") {
-        $out = "";
-        $out .= "<div class='update_history'>";
-        $out .= "<pre>$content</pre>";
-        $out .= "</div>";
+        echo "<div class='update_history'>";
+        $out = "<pre>$content</pre>";
         echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
+        echo "</div>";
     }
     
     if($type == "description") {

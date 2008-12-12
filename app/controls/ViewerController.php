@@ -73,9 +73,36 @@ class ViewerController extends Zend_Controller_Action
             $time = strtotime(str_replace(" at ", "", $info_a[0]));
             $by = str_replace(":", "", $info_a[1]);
 
-            $descs[] = array("time"=>$time, "by"=>$by, "desc"=>trim($desc)); 
+            if(isset($descs[$time])) {
+                $descs[$time]["content"].= "\n".$desc;
+            } else {
+                $descs[$time] = array("type"=>"description", "by"=>$by, "content"=>$desc); 
+            }
         }
+
+        if(user()->getPersonID() !== null) {
+            //history
+            $history = split("\n", $detail->history);
+            foreach($history as $hist) {
+                $fields = split("____________history", $hist);
+
+                //parse out fields
+                $time = strtotime($fields[0].$fields[1]);
+                $by = $fields[2];
+                $action = $fields[3];
+                $action = str_replace(";", "\n", $action);
+
+                if(isset($descs[$time])) {
+                    $descs[$time]["content"].= "\n".$action;
+                } else {
+                    $descs[$time] = array("type"=>"history", "by"=>$by, "content"=>$action); 
+                }
+            }
+        }
+
+        krsort($descs);
         $this->view->descs = $descs;
+
     }
 
     public function getDetail($id)
@@ -89,3 +116,11 @@ class ViewerController extends Zend_Controller_Action
     }
 
 }
+
+/*
+function cmp_desc($a, $b)
+{
+    if($a["time"] == $b["time"]) return 0;
+    return ($a["time"] > $b["time"]) ? -1 : 1;
+}
+*/

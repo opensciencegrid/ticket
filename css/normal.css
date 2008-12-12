@@ -296,3 +296,30 @@ ul.subsection_tabs li.tab a.active {
     right: 0px;
 }
 
+.update_description
+{
+    padding-bottom: 10px; 
+    border: 1px solid #f90;
+}
+
+.update_history
+{
+    background-color: #ccc;
+    margin-bottom: 6px;
+    padding-left: 30px;
+}
+
+.update_history .header
+{
+    padding: 3px;
+}
+.update_history pre
+{
+    font-size: 12px;
+}
+
+.update_description .header
+{
+    padding: 3px;
+    background-color: #f90;
+}

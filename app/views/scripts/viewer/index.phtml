@@ -46,11 +46,11 @@ if(isset($this->warning)) {
 <h3>Updates</h3>
 <br/>
 <?
-foreach($this->descs as $desc)
+foreach($this->descs as $time=>$desc)
 {
-    $time = trim($desc["time"]);
-    $by = trim($desc["by"]);
-    $content = trim($desc["desc"]);
+    $by = $desc["by"];
+    $content = $desc["content"];
+    $type = $desc["type"];
 
     //suppress metainfo..
     $metapos = strpos($content, config()->metatag);
@@ -59,44 +59,57 @@ foreach($this->descs as $desc)
         $content = substr($content, 0, $metapos);
     }
 
-    echo "<blockquote>";
     if($time > time() - 60*60*24) {
         //show in "ago" format
         $human_time = agoCalculation($time). " ago";
     } else {
         $human_time = date(config()->date_format_full, $time);
     }
-    echo "<div class=\"author\">By <b>$by</b><br/>$human_time</div>";
-    $lines_raw = split("\n", $content);
-    $lines = array();
-    foreach($lines_raw as $line) {
-        $line = trim($line);
-        if(strpos($line, "&#62") === 0) {
-            $line = "<font color='#7F7E6F'>$line</font>";
-        }
-        $lines[] = $line;
-    }
-    if(count($lines) > 15) {
-        //display first 10 lines
-        $i = 0;
-        echo "<pre>";
-        for(;$i < 10; $i++) {
-            echo $lines[$i]."\n";
-        }
-        echo "</pre>";
-        //and toggle the rest..
+
+    if($type == "history") {
         $out = "";
-        $out .= "<pre>";
-        for(;$i < count($lines);$i++) {
-            $out .= $lines[$i]."\n";
-        }
-        $out .= "</pre>\n";
-        echo outputToggle("Show More", "", $out);
-    } else {
-        //display all at once.
-        echo "<pre>$content</pre>";
+        $out .= "<div class='update_history'>";
+        $out .= "<pre>$content</pre>";
+        $out .= "</div>";
+        echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
     }
-    echo "</blockquote>";
+    
+    if($type == "description") {
+        echo "<div class='update_description'>";
+        echo "<div class='header'>$human_time by <b>$by</b></div>";
+        $lines_raw = split("\n", $content);
+        $lines = array();
+        foreach($lines_raw as $line) {
+            $line = trim($line);
+            if(strpos($line, "&#62;") === 0) {
+                $line = "<font color='#7F7E6F'>$line</font>";
+            }
+            $lines[] = $line;
+        }
+        $content = implode("\n", $lines);
+        if(count($lines) > 15) {
+            //display first 10 lines
+            $i = 0;
+            echo "<pre>";
+            for(;$i < 10; $i++) {
+                echo $lines[$i]."\n";
+            }
+            echo "</pre>";
+            //and toggle the rest..
+            $out = "";
+            $out .= "<pre>";
+            for(;$i < count($lines);$i++) {
+                $out .= $lines[$i]."\n";
+            }
+            $out .= "</pre>\n";
+            echo outputToggle("Show More", "", $out);
+        } else {
+            //display all at once.
+            echo "<pre>$content</pre>";
+        }
+        echo "</div>";
+    }
+
 }
 ?>
 </div>

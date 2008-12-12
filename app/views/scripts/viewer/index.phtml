@@ -7,39 +7,52 @@ if(isset($this->warning)) {
 ?>
 <h2><?=$this->page_title?></h2>
 
-<div style="float: right">
-<h3>Ticket Info</h3>
-<table>
-<tr><td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td></tr>
-<tr><td class="header">Status:</td><td><?=$this->status?></td></tr>
-<tr><td class="header">Priority:</td><td><?=$this->priority?></td></tr>
-<tr><td class="header">Assignees:</td><td><?=$this->assignees?></td></tr>
-<?
-    if(user()->getPersonID() !== null) {
-?>
-<tr><td class="header personal">CC:</td><td><?=$this->cc?></td></tr>
-<?
-    }
-?>
-<tr><td class="header">Destination VO:</td><td><?=$this->destination_vo?></td></tr>
-<tr><td class="header">Next Action Deadline:</td><td><?=$this->nad?></td></tr>
-<tr><td class="header">Ready To Close:</td><td><?=$this->ready_to_close?></td></tr>
-</table>
-</div>
-
 <div>
-<h3>Submitter</h3>
-<table>
-<tr><td class="header">Name:</td><td><?=$this->submitter_name?></td></tr>
-<tr><td class="header">VO:</td><td><?=$this->submitter_vo?></td></tr>
+<table width="100%">
+<tr>
+    <td colspan="4"><h3>Submitter</h3></td>
+</tr>
+<tr>
+    <td class="header">Name:</td><td><?=$this->submitter_name?></td>
+    <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+</tr>
 <?
     if(user()->getPersonID() !== null) {
-        echo "<tr><td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td></tr>";
-        echo "<tr><td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td></tr>";
+        echo "<tr>";
+        echo "<td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td>";
+        echo "<td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td>";
+        echo "</tr>";
     }
 ?>
+<tr>
+    <td colspan="4"><h3>Ticket Info</h3></td>
+</tr>
+<tr>
+    <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
+    <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
+</tr>
 
+<tr>
+    <td class="header">Priority:</td><td><?=$this->priority?></td>
+    <td class="header personal">CC:</td>
+    <td>
+    <?
+        if(user()->getPersonID() !== null) {
+            echo $this->cc;
+        }
+    ?>
+    </td>
+</tr>
+
+<tr>
+    <td class="header">Status:</td><td><?=$this->status?></td>
+    <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
+</tr>
+<tr>
+    <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
+</td>
 </table>
+
 </div>
 
 <div style="clear: both;">

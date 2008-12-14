@@ -22,25 +22,27 @@
 
 <?if(in_array(role::$goc_admin, user()->roles)) {?>
 <br/>
-<h3>OSG GOC staff forms</h3>
+<h3>OSG GOC staff</h3>
 <div class="menu">
     <div>
     You are authorized to do following as OSG GOC Staff...
     <br><br>
     <p><a href="ra">Send certificate request email</a></p>
     <p><a href="rsv">Submit RSV related trouble ticket</a></p>
+    <br/>
+    <p><a href="finderror">Analyze Footprint related errors</a></p>
     </div>
 </div>
 <?}?> 
 
 <?if(in_array(role::$security_admin, user()->roles)) {?>
 <br/>
-<h3>OSG security staff forms</h3>
+<h3>OSG security staff</h3>
 <div class="menu">
     <div>
     You are authorized to do following as OSG Security Staff...
     <br><br>
-    <p><a href="notify">Security Form</a></p>
+    <p><a href="notify">Send Security Notification</a></p>
     </div>
 </div>
 <?}?> 

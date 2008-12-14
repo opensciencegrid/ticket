@@ -46,12 +46,33 @@ class ViewerController extends Zend_Controller_Action
         $this->view->priority = Footprint::priority2str($detail->priority);
         $this->view->assignees = "";
         $this->view->cc = "";
+
+        $aka_model = new AKA();
+        $model = new Schema();
+        $teams = array();
+        foreach($model->getteams() as $team) {
+            $team = Footprint::parse($team->team);
+            $teams[] = $team;
+        } 
+
         foreach(split(" ", $detail->assignees) as $a) {
             if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
                 $this->view->cc .= substr($a, 3)."<br/>";
                 continue;
             }
-            $this->view->assignees.= Footprint::parse($a)."<br/>";
+    
+            //lookup AKA
+            $ass = Footprint::parse($a);
+            $aka = $aka_model->lookupName($ass);
+            if($aka !== null) $ass = $aka;
+
+            //lookup team
+            if(in_array($ass, $teams)) {
+                //this is a team name
+                $this->view->assignees .= "<h4>".$ass."</h4>";
+            } else {
+                $this->view->assignees .= $ass."<br/>";
+            }
         }
         $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
         $this->view->nad = $detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p;
@@ -107,14 +128,15 @@ class ViewerController extends Zend_Controller_Action
 
     public function getDetail($id)
     {
+        dlog("getDetail::soap - $id");
         $client = new SoapClient(null, 
             array(      'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                         'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
         $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc", 
             array(config()->webapi_user, config()->webapi_password, "", 71, $id));
+        dlog("done");
         return $ret;
     }
-
 }
 
 /*

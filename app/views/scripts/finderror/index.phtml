@@ -1,5 +1,15 @@
 <?include("app/views/scripts/header.phtml");?>
-<div class="bread"><a href="<?=base()?>">Home</a> &gt; Show OIM/FP Match</div>
+<div class="bread"><a href="<?=base()?>">Home</a> &gt; Find Error</div>
+
+<h2>GOC Ticket Issues</h2>
+
+<h3>Open Tickets with no GOC member assignments</h3>
+<?
+foreach($this->na_assignments as $na) {
+    echo "<p><a href=\"".fullbase()."/viewer?id=".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
+}
+?>
+
 <h2>OIM/FP Match</h2>
 
 <h3>Originating VOS</h3>
@@ -55,7 +65,6 @@ foreach($this->error_email as $error) {
 }
 ?>
 </table>
-
 
 
 <?include("app/views/scripts/footer.phtml");?>

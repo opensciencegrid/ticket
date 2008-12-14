@@ -46,8 +46,8 @@ h3
 h4
 {
     font-weight: bold;
-    padding-bottom: 3px;
-    margin-bottom: 5px;
+    padding-bottom: 2px;
+    margin-bottom: 2px;
     font-size: 12px;
     border-bottom: thin dotted #333;
 }
@@ -213,6 +213,7 @@ pre
  white-space: -o-pre-wrap;    /* Opera 7 */
  word-wrap: break-word;       /* Internet Explorer 5.5+ */
     padding: 5px;
+    font-size: 10pt;
 }
 
 .submenu
@@ -313,13 +314,10 @@ ul.subsection_tabs li.tab a.active {
 {
     padding: 3px;
 }
-.update_history pre
-{
-    font-size: 12px;
-}
 
 .update_description .header
 {
     padding: 3px;
     background-color: #f90;
 }
+

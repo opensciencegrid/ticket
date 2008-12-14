@@ -2,35 +2,40 @@
 
 class FinderrorController extends Zend_Controller_Action 
 { 
-    public function indexAction() 
-    { 
+    public function init()
+    {
         if(user()->getPersonID() === null) {
             $this->render("error/404", null, true);
             return;
         }
 
-        $schema_model = new Schema();
+        $this->schema_model = new Schema();
+        $model = new VO();
+        $this->oim_vos = $model->fetchAll();
 
         $this->view->error_origvos = array();
         $this->view->error_destvos = array();
+    }
 
-        /////////////////////////////////////////////////////////////////////////////////
-        //analyze vo errors
+    public function indexAction() 
+    { 
+        $this->analyze_vo_originating();
+        $this->analyze_vo_destination();
+        $this->analyze_sc();
+        $this->analyze_scemail();
+        $this->analyze_ticket_assignment();
+    }
 
-        $model = new VO();
-        $oim_vos = $model->fetchAll();
-
-        ////////////////////////////////////////////////////////////////
-        //originating
-
-        $orig_vos = $schema_model->getoriginatingvos();
+    public function analyze_vo_originating()
+    { 
+        $orig_vos = $this->schema_model->getoriginatingvos();
 
         //find FP only
         foreach($orig_vos as $orig_vo) {
             $orig_vo2 = Footprint::parse($orig_vo);
             //find it in the oim_vo
             $found = false;
-            foreach($oim_vos as $oim_vo) {
+            foreach($this->oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
                     $this->view->error_origvos[] = array("", $orig_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
@@ -43,7 +48,7 @@ class FinderrorController extends Zend_Controller_Action
             }
         } 
         //find oim only
-        foreach($oim_vos as $oim_vo) {
+        foreach($this->oim_vos as $oim_vo) {
             //find it in the oim_vo
             $found = false;
             foreach($orig_vos as $orig_vo) {
@@ -57,17 +62,18 @@ class FinderrorController extends Zend_Controller_Action
                 $this->view->error_origvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
             }
         } 
+    }
 
-        ////////////////////////////////////////////////////////////////
-        //destination
-        $dest_vos = $schema_model->getdestinationvos();
+    public function analyze_vo_destination()
+    { 
+        $dest_vos = $this->schema_model->getdestinationvos();
 
         //find FP only
         foreach($dest_vos as $dest_vo) {
             $dest_vo2 = Footprint::parse($dest_vo);
             //find it in the oim_vo
             $found = false;
-            foreach($oim_vos as $oim_vo) {
+            foreach($this->oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
                     $this->view->error_destvos[] = array("", $dest_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
@@ -80,7 +86,7 @@ class FinderrorController extends Zend_Controller_Action
             }
         } 
         //find oim only
-        foreach($oim_vos as $oim_vo) {
+        foreach($this->oim_vos as $oim_vo) {
             //find it in the oim_vo
             $found = false;
             foreach($dest_vos as $dest_vo) {
@@ -94,11 +100,12 @@ class FinderrorController extends Zend_Controller_Action
                 $this->view->error_destvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
             }
         } 
+    }
 
-        /////////////////////////////////////////////////////////////////////////////////
-        //analyze sc errors
+    public function analyze_sc()
+    { 
         $this->view->error_sc = array();
-        $teams = $schema_model->getteams();
+        $teams = $this->schema_model->getteams();
         //find suppor centers
         $fp_scs = array();
         foreach($teams as $team) {
@@ -135,18 +142,15 @@ class FinderrorController extends Zend_Controller_Action
                 $this->view->error_sc[] = array("only in oim", "", $oim_sc->footprints_id);
             }
         }
-
-        /////////////////////////////////////////////////////////////////////////////////
-        //analyze sc email addresses
+    }
+    
+    public function analyze_scemail()
+    { 
         $this->view->error_email = array();
 
         $model = new SC();
         $oim_scs = $model->fetchAll();
-        //var_dump($oim_scs); 
-
-        $emails = $schema_model->getemail();
-        //var_dump($emails); 
-
+        $emails = $this->schema_model->getemail();
         $model = new PrimarySCContact;
         foreach($oim_scs as $oim_sc) {
             //pull primary admin
@@ -169,16 +173,36 @@ class FinderrorController extends Zend_Controller_Action
                 $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, "", "", "* No such user ID in FP.");
             }
         }
-
-        $this->render();
     }
-
-    private function voerrors($fp_vos, $oim_vos)
+    public function analyze_ticket_assignment()
     {
-        $fp_only = array();
-        $oim_only = array();
-        
-        var_dump($fp_vos);
-        var_dump($oim_vos);
+        $teams = $this->schema_model->getteams();
+        $members = array();
+        foreach($teams as $team_entry) {
+            $team = Footprint::parse($team_entry->team);
+            if($team == "OSG GOC Support Team" || $team == "OSG Operations Infrastructure") {
+                $members = array_merge($members, split(",", $team_entry->members));
+            }
+        }
+
+        //pull all open tickets
+        $model = new Tickets();
+        $tickets = $model->getopen();
+
+        //find tickets with no $members assignees
+        $this->view->na_assignments = array();
+        foreach($tickets as $ticket) {
+            $found = false;
+            foreach(split(" ",$ticket->mrassignees) as $ass) {
+                if(in_array($ass, $members)) {
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found) {
+                $id = $ticket->mrid;
+                $this->view->na_assignments[] = $ticket;
+            }
+        }
     }
 } 

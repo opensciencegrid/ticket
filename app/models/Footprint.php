@@ -219,7 +219,6 @@ Unscheduled__bOutage
 
             $id = $client->__soapCall("MRWebServices__createIssue_goc",
                 array(config()->webapi_user, config()->webapi_password, "", $params));
-
         }
 
         //send SMS notification to assignees

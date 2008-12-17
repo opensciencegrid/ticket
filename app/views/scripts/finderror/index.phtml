@@ -5,12 +5,35 @@
 
 <h3>Open Tickets with no GOC member assignments</h3>
 <?
-foreach($this->na_assignments as $na) {
-    echo "<p><a href=\"".fullbase()."/viewer?id=".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
+if(count($this->na_assignments) == 0) {
+    echo "Congulatulations. All ticket has GOC member assignments.";
+} else {
+    foreach($this->na_assignments as $na) {
+        echo "<p><a href=\"".fullbase()."/viewer?id=".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
+    }
+    echo "<blockquote>In order to fix this issue, assign at least one GOC member to these tickets via FP. </blockquote>";
 }
 ?>
 
 <h2>OIM/FP Match</h2>
+<blockquote>
+<p>GOC Ticket submitter pulls information from OIM and submit tickets on FP system which means that certain types of information needs to be synchronized in order to prevent melt down of the system (or I should say, un-defined behavior..) </p>
+<p>
+Following lists shows any records that needs to be synclonized and they are marked in <font color='red'>RED</font>. If you don't see any notes in red, everything is synchronized correctly.
+</p>
+<p>
+Here is how it works.. First, GOC Ticket pulls information from OIM. Each records in OIM has a field called "footprints_id" which are the FP counterpart of that record. GOC Ticket forms uses that footprint_id values to submit ticket to FP.
+</p>
+<br/>
+<p>
+<font color='red'>only in oim</font> means that the record is in OIM but not yet added to the FP. Please go to FP/administration page and add that value to appropriate schema. It could be, that you just need to remove that value from OIM.
+</p>
+<p>
+<font color='red'>only in fp</font> means that the record is in FP but either it doesn't exist in OIM or mapping for footprints_id is not correct. If could also means that the record needs to be removed from FP.
+</p>
+<br/>
+<p>More instructions below..</p>
+</blockquote>
 
 <h3>Originating VOS</h3>
 <table>
@@ -24,6 +47,10 @@ foreach($this->error_origvos as $error) {
 }
 ?>
 </table>
+<blockquote>
+<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
+<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Field Maintenance &gt; Select "Originating VO Support Center", click EDIT. Do the same process for "Destination VO Support Center".</p>
+</blockquote>
 
 <h3>Destination VOS</h3>
 <table>
@@ -37,6 +64,10 @@ foreach($this->error_destvos as $error) {
 }
 ?>
 </table>
+<blockquote>
+<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
+<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Field Maintenance &gt; Select "Destination VO Support Center", click EDIT</p>
+</blockquote>
 
 <h3>Support Centers</h3>
 <table>
@@ -50,6 +81,10 @@ foreach($this->error_sc as $error) {
 }
 ?>
 </table>
+<blockquote>
+<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
+<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents</p>
+</blockquote>
 
 <h3>Email Address</h3>
 <table>
@@ -65,6 +100,10 @@ foreach($this->error_email as $error) {
 }
 ?>
 </table>
+<blockquote>
+<p>In order to update these entries on OIM, go to OIM &gt; Administravive &gt; Edit All SCs &gt; (Click SC name to edit) &gt; Click "Change Contact" on Primary Operations Contact (Ticketing)</p>
+<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents, select Agent, click GO, and look under primary email address</p>
+</blockquote>
 
 
 <?include("app/views/scripts/footer.phtml");?>

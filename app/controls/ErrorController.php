@@ -15,14 +15,22 @@ class ErrorController extends Zend_Controller_Action
                 break;
             default:
                 //application error !!
-                $this->view->content = "Encountered an application error.\n\nDetail of this error has been sent to the development team for further analysis.";
-
-                //send error log
                 $exception = $errors->exception;
                 $log = $exception->getMessage()."\n\n";
-                $log  .= $exception->getTraceAsString();
-                elog($log);
+                $log .= $exception->getTraceAsString();
 
+                if(config()->debug) {
+                    $this->view->content = "<pre>".$log."</pre>";
+                } else {
+                    $this->view->content = "Encountered an application error.\n\n";
+                    if(config()->elog_email) {
+                        $user = $_ENV["USER"];
+                        mail(config()->elog_email_address, "[myosg] error has occurerd", $log, "From: $user");
+                        $this->view->content .= "Detail of this error has been sent to the development team for further analysis.";
+                    }
+                }
+
+                elog($log);
                 break;
         }
     } 

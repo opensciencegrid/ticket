@@ -46,10 +46,6 @@ function elog($str)
 {
     Zend_Registry::get("logger")->log(log_format($str), Zend_Log::ERR);
 
-    if(config()->elog_email) {
-        error_log($str, 1,config()->elog_email_address);
-    }
-
     //send to error_log as well
     // 0) message is sent to PHP's system logger, using the Operating System's 
     // system logging mechanism or a file, depending on what the error_log  

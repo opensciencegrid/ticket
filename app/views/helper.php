@@ -69,9 +69,9 @@ function agoCalculation($timestamp)
 }
 function humanDuration($ago)
 {
-    if($ago < 60) return $ago." seconds";
-    if($ago < 60*60) return floor($ago/60)." minutes";
-    if($ago < 60*60*24) return floor($ago/(60*60))." hours";
+    if($ago < 60 * 2) return $ago." seconds";
+    if($ago < 60*60 * 2) return floor($ago/60)." minutes";
+    if($ago < 60*60*24 * 2) return floor($ago/(60*60))." hours";
     return floor($ago/(60*60*24))." days";
 }
 

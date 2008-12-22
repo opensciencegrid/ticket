@@ -123,7 +123,6 @@ class ViewerController extends Zend_Controller_Action
 
         krsort($descs);
         $this->view->descs = $descs;
-
     }
 
     public function getDetail($id)

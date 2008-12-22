@@ -2,17 +2,26 @@
 
 class Schema
 {
+    private function cache($token) {
+        //returns list of users and their current email addresses
+        $c = new Cache("/tmp/goctiket.".$token);
+        if($c->isFresh(600)) { //10 minutes..
+            return $c->get();
+        } else {
+            $ret = $this->doget($token);
+            $c->set($ret);
+            return $ret;
+        }
+    }
+
     public function getemail()
     {
-        //returns list of users and their current email addresses
-        $ret = $this->doget("email");
-        return $ret;
+        return $this->cache("email");
     }
 
     public function getteams()
     {
-        $ret = $this->doget("teams");
-        return $ret;
+        return $this->cache("teams");
     }
 
     public function getvos()

@@ -41,9 +41,13 @@ class ResourceController extends BaseController
                 //someone else's resource..
 
                 //lookup SC name
-                $sc_model = new SC;
-                $sc = $sc_model->get($resource->sc_id);
-                $scname = $sc->footprints_id;
+                if($resource === false) {
+                    $scname = "OSG-GOC";
+                } else {
+                    $sc_model = new SC;
+                    $sc = $sc_model->get($resource->sc_id);
+                    $scname = $sc->footprints_id;
+                }
                 $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
 
                 if($footprint->isValidFPSC($scname)) {

@@ -78,7 +78,6 @@ class Footprint
         $this->assignees[] = $v;//no unparsing necessary
     }
 
-
     //from the current db, I see following ticket types
 /*
 NULL

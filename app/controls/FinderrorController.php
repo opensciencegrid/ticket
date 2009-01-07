@@ -25,6 +25,7 @@ class FinderrorController extends Zend_Controller_Action
         $this->analyze_sc();
         $this->analyze_scemail();
         $this->analyze_ticket_assignment();
+        $this->analyze_resource_sc_link();
     }
 
     public function analyze_vo_originating()
@@ -204,6 +205,39 @@ class FinderrorController extends Zend_Controller_Action
                 $id = $ticket->mrid;
                 $this->view->na_assignments[] = $ticket;
             }
+        }
+    }
+
+    public function analyze_resource_sc_link()
+    {
+        //all active resources should have coresponding SC
+        $model = new Resource();
+        $resources = $model->fetchAll();
+
+        $sc_model = new SC();
+        $rs_model = new ResourceSite();
+
+        $this->view->resource_sclink = array();
+        foreach($resources as $r) {
+            $note = "";
+            $site = $rs_model->fetch($r->resource_id);
+            $name = $model->fetchName($r->resource_id);
+            $sc_id = null;
+            $sc_name = null;
+            if($site !== false) {
+                $sc_id = $site->sc_id;
+                $sc = $sc_model->get($site->sc_id); 
+                $sc_name = $sc->footprints_id;
+            } else {
+                $note .= "Failed to find this resource in rsvextra.View_resourceSiteScPub";
+            }
+            $this->view->resource_sclink[] = array(
+                "resource_name"=>$name,
+                "resource_id"=>$r->resource_id,
+                "sc_id"=>$sc_id,
+                "sc_name"=>$sc_name,
+                "note"=>$note
+            );
         }
     }
 } 

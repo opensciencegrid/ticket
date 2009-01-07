@@ -9,8 +9,8 @@ echo "<"."?xml version=\"1.0\" encoding=\"UTF-8\"?".">\n";
         $id = $ticket->mrid;
         $url = fullbase()."/viewer?id=".$id;
 
-        $freq = "hourly";
-        if($ticket->mrstatus == "Closed") $freq = "weekly";
+        $freq = "daily";
+        if($ticket->mrstatus == "Closed") $freq = "monthly";
 ?>
    <url>
       <loc><?=$url?></loc>

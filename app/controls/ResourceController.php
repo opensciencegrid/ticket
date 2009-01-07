@@ -43,12 +43,13 @@ class ResourceController extends BaseController
                 //lookup SC name
                 if($resource === false) {
                     $scname = "OSG-GOC";
+                    $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
                 } else {
                     $sc_model = new SC;
                     $sc = $sc_model->get($resource->sc_id);
                     $scname = $sc->footprints_id;
+                    $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
                 }
-                $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
 
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);

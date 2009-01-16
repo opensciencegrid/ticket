@@ -1,0 +1,22 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Ticket Clustering</div>
+
+<h2>Ticket Clustering</h2>
+<br/>
+<blockquote>
+Following are groupings of similar tickets that are modified withtin last 30 days. Only groups with more than 3 tickets are displayed.
+</blockquote>
+<?
+foreach($this->groups as $group) 
+{
+    $tickets = $group->ticket;
+    if(count($tickets) > 2) {
+        echo "<hr><p>";
+        foreach($tickets as $ticket) {
+            echo "<a href='$ticket->url'>$ticket->id</a> $ticket->title ($ticket->status)<br/>";
+        }
+        echo "</p>";
+    }
+}
+?>
+<?include("app/views/scripts/footer.phtml");?>

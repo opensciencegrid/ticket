@@ -4,33 +4,35 @@ class AdminController extends Zend_Controller_Action
 { 
     public function init()
     {
+        //don't use this - we are really doing 2 things here..
+        //1) rendering the real admin page via browser
+        //2) accepting request from cron from localhost
+    }
+
+    public function indexAction()
+    {
         $this->view->submenu_selected = "admin";
+
         if(!in_array(role::$goc_admin, user()->roles)) {
             $this->render("error/404", null, true);
             return;
         }
     }
 
-    public function indexAction()
-    {
-
-    }
-
-    private function load()
+    private function accesscheck()
     {
         //make sure the request originated from localhost
         if($_SERVER["REMOTE_ADDR"] != $_SERVER["SERVER_ADDR"]) {
             //pretend that this page doesn't exist
             $this->getResponse()->setRawHeader('HTTP/1.1 404 Not Found');
-            echo "404";
+            echo "local access only";
             exit;
         }
-
-        $this->view->submenu_selected = "open";
     }
     public function logrotateAction()
     {
-        $this->load();
+        $this->accesscheck();
+
         dlog("Writing config file for logrotate...");
         $root = getcwd()."/";
         $statepath = "/tmp/ticket.rotate.state";
@@ -51,6 +53,8 @@ class AdminController extends Zend_Controller_Action
 
     public function groupticketAction()
     {
+        $this->accesscheck();
+
         $model = new Tickets();
         $tickets = $model->getrecent();
         header('content-type: text/xml');
@@ -92,6 +96,9 @@ class AdminController extends Zend_Controller_Action
     {
         echo "<ticket>";
         echo "<id>$ticket->mrid</id>";
+        echo "<title>".htmlentities($ticket->mrtitle)."</title>";
+        echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
+        echo "<dest>$ticket->mrdest</dest>";
         echo "<url>https://oim.grid.iu.edu/gocticket/viewer?id=$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
         echo "</ticket>";
@@ -130,6 +137,7 @@ RSS: http://www.grid.iu.edu/news";
         return $desc;
     }    
 
+/*
     public function syncAction()
     {
         $names = array(
@@ -227,4 +235,5 @@ RSS: http://www.grid.iu.edu/news";
 
         $this->render("none", true);
     }
+*/
 } 

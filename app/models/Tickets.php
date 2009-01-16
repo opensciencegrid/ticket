@@ -35,7 +35,7 @@ class Tickets
     public function dosearch($query, $bIncludeDesc = false)
     {
         $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
-        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, Destination__bVO__bSupport__bCenter as mrDEST";
+        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, Destination__bVO__bSupport__bCenter as mrDEST";
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";
         }

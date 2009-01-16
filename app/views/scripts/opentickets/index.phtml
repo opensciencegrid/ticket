@@ -7,6 +7,8 @@
 </ul>
 <div class="tabcontent">
 <?
+
+echo "<span style='float: right; color: gray;'>Update Time</span>";
 foreach($this->tickets as $dest=>$tickets)
 {
     echo "<h3>$dest</h3>";
@@ -15,8 +17,12 @@ foreach($this->tickets as $dest=>$tickets)
         $title = $ticket->mrtitle;
         $url = base()."/viewer?id=$id";
         $status = Footprint::parse($ticket->mrstatus);
+        $moddate = $ticket->mrupdatedate;
 
-        echo "<p><a href='$url'>$id</a>$title ($status)<p>";
+        echo "<p>";
+        echo "<span style='float: right; color: gray;'>$moddate</span>";
+        echo "<a href='$url'>$id</a>$title ($status)";
+        echo "<p>";
     }
 }
 ?>

@@ -234,5 +234,8 @@ class SecurityEmail
             $this->subject, 
             $this->body,
             "From: " . $this->from . " \nBcc: " . $this->bcc);
+
+        slog("[submit] Security Email Sent with following content --------------------------");
+        slog(print_r($this, true));
     }
 }

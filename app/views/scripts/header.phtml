@@ -23,13 +23,20 @@ function submenutitle($id)
     case "open":
         return "Submit A Ticket";
     case "view":
-        return "List Tickets";
+        return "View Tickets";
+    case "admin":
+        return "Administration";
     }
 }
 ?>
 <div class="submenu" id="submenu_rsv">
-    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1" title=""><?=submenutitle("open")?></a></span>
-    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="3" title=""><?=submenutitle("view")?></a></span>
+    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1"><?=submenutitle("open")?></a></span>
+    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="2"><?=submenutitle("view")?></a></span>
+<?
+if(in_array(role::$goc_admin, user()->roles)) {
+?>
+    <span id="submenu_admin"><a href="<?=base()?>/admin" accesskey="3"><?=submenutitle("admin")?></a></span>
+<?}?>
 </div>
 <script type="text/javascript">
     $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
@@ -39,6 +46,11 @@ function submenutitle($id)
 
 <?include("app/views/scripts/search.phtml");?>
 
-<?if(config()->simulate) {
+<?
+if(config()->simulate) {
     echo "<p class=\"warning\">Simulation Mode - No email / ticket will be actually created</p>";
-}?>
+}
+
+if(config()->debug) {
+    echo "<p class=\"warning\">Running in Debug mode</p>";
+}

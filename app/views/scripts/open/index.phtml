@@ -1,6 +1,5 @@
 <?include("app/views/scripts/header.phtml");?>
 
-
 <div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
 <h3>Please select from following options</h3>
 <div class="menu">
@@ -15,9 +14,6 @@
     <br/>
     <p><a href="other">Any Others Issue</a>
     </div>
-
-    <br/></br>
-    <br clear=all>
 </div>
 
 <?if(in_array(role::$goc_admin, user()->roles)) {?>
@@ -29,8 +25,6 @@
     <br><br>
     <p><a href="ra">Send certificate request email</a></p>
     <p><a href="rsv">Submit RSV related trouble ticket</a></p>
-    <br/>
-    <p><a href="finderror">Analyze Footprint related errors</a></p>
     </div>
 </div>
 <?}?> 

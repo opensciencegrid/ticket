@@ -202,7 +202,8 @@ Unscheduled__bOutage
             "projfields" => $this->project_fields
         );
 
-        dlog(print_r($params, true));
+        slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
+        slog(print_r($params, true));
 
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)

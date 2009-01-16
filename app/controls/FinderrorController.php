@@ -4,7 +4,7 @@ class FinderrorController extends Zend_Controller_Action
 { 
     public function init()
     {
-        $this->view->submenu_selected = "open";
+        $this->view->submenu_selected = "admin";
         if(!in_array(role::$goc_admin, user()->roles)) {
             $this->render("error/404", null, true);
             return;

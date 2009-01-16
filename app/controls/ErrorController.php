@@ -16,8 +16,17 @@ class ErrorController extends Zend_Controller_Action
             default:
                 //application error !!
                 $exception = $errors->exception;
-                $log = $exception->getMessage()."\n\n";
-                $log .= $exception->getTraceAsString();
+                $log = "";
+                $log .= "Error Message ---------------------------------------\n";
+                $log .= $exception->getMessage()."\n\n";
+
+                $log .= "Stack Trace -----------------------------------------\n";
+                $log .= $exception->getTraceAsString()."\n\n";
+
+                $log .= dump_db_profile()."\n\n";
+
+                $log .= "Server Parameter ------------------------------------\n";
+                $log .= print_r($_SERVER, true)."\n\n";
 
                 if(config()->debug) {
                     $this->view->content = "<pre>".$log."</pre>";

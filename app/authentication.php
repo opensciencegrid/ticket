@@ -70,7 +70,7 @@ function cert_authenticate()
     function _setguest() {
         $guest = new User(null);
         Zend_Registry::set("user", $guest);
-        dlog("guest access from ".$_SERVER["REMOTE_ADDR"]);
+        slog("guest access from ".$_SERVER["REMOTE_ADDR"]);
     }
 
     if(!isset($_SERVER["HTTPS"])) {
@@ -90,11 +90,11 @@ function cert_authenticate()
             $user = new User($dn);
             if($user->getPersonID()) {
                 Zend_Registry::set("user", $user);
-                dlog("Authenticated User: ".$user->getPersonFullName());
+                slog("Authenticated User: ".$user->getPersonFullName());
             } else {
                 //unknown, non-active, or expired cert?
                 _setguest();
-                dlog("Authenticated User as a Guest");
+                slog("Authenticated User as a Guest");
             }
         } else {
             //no client cert provided

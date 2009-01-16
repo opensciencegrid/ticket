@@ -23,30 +23,31 @@ function connect_db()
 }
 function db() { global $g_db; return $g_db; }
 
-function log_db_profile()
+function dump_db_profile()
 {
-    $profiler = db()->getProfiler();
+    $out = "";
 
-    $totalTime    = $profiler->getTotalElapsedSecs();
-    $queryCount   = $profiler->getTotalNumQueries();
-    $longestTime  = 0;
-    $longestQuery = null;
+    if(Zend_Registry::isRegistered('db')) {
+        $db = Zend_Registry::get('db');
+        $profiler = $db->getProfiler();
 
-    dlog('----------------------------------------------------------------------');
-    dlog('DB PROFILE');
-    dlog('Executed ' . $queryCount . ' queries in ' . $totalTime . ' seconds');
+        $totalTime    = round($profiler->getTotalElapsedSecs(), 2);
+        $queryCount   = $profiler->getTotalNumQueries();
+        $longestTime  = 0;
+        $longestQuery = null;
 
-    $profiles = $profiler->getQueryProfiles();
-    if(is_array($profiles)) {
-        foreach ($profiles as $query) {
-            if ($query->getElapsedSecs() > $longestTime) {
-                $longestTime  = $query->getElapsedSecs();
-                $longestQuery = $query->getQuery();
+        if($profiler->getQueryProfiles()) {
+            $out .= "DB PROFILE ----------------------------------------------------------------------\n";
+            $out .= "Executed $queryCount queries in $totalTime seconds.\n";
+
+            foreach ($profiler->getQueryProfiles() as $query) {
+                if ($query->getElapsedSecs() > $longestTime) {
+                    $longestTime  = $query->getElapsedSecs();
+                    $longestQuery = $query->getQuery();
+                }
+                $out .= "[".round($query->getElapsedSecs(),2)." seconds]\n\t".$query->getQuery()."\n";
             }
-            dlog("Executed Query: (in ".$query->getElapsedSecs().")");
-            dlog($query->getQuery());
         }
     }
-
-    dlog('----------------------------------------------------------------------');
+    return $out;
 }

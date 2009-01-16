@@ -134,6 +134,10 @@ RSS: http://www.grid.iu.edu/news";
         $sig = "/\n\[META Information for OSG GOC Support Staff\](.|\n)*/";
         $desc = preg_replace($sig, "", $desc);
 
+        //remove GGUS Info
+        $sig = "/Other GGUS Ticket Info:(.|\n)*/";
+        $desc = preg_replace($sig, "", $desc);
+
         return $desc;
     }    
 

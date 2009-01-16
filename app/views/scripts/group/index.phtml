@@ -3,19 +3,30 @@
 
 <h2>Ticket Clustering</h2>
 <br/>
-<blockquote>
+<p>
 Following are groupings of similar tickets that are modified withtin last 30 days. Only groups with more than 3 tickets are displayed.
-</blockquote>
+</p>
 <?
 foreach($this->groups as $group) 
 {
     $tickets = $group->ticket;
     if(count($tickets) > 2) {
-        echo "<hr><p>";
+        $first = true;
         foreach($tickets as $ticket) {
-            echo "<a href='$ticket->url'>$ticket->id</a> $ticket->title ($ticket->status)<br/>";
+            if($first) {
+                $first = false;
+                $desc = $ticket->desc;
+                echo "<h3><a href='$ticket->url'>$ticket->id</a> $ticket->title</h3>";
+                echo "<div class='indent'>";
+                echo "<blockquote>";
+                echo "<pre>$desc</pre>";
+                echo "</blockquote>";
+                echo "<h4>Similar Tickets</h4>";
+            } else {
+                echo "<a href='$ticket->url'>[$ticket->id] $ticket->title ($ticket->status)</a><br/>";
+            }
         }
-        echo "</p>";
+        echo "</div><br/><br/>";
     }
 }
 ?>

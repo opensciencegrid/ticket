@@ -68,14 +68,14 @@ class AdminController extends Zend_Controller_Action
                 continue;
             }
 
-            $master_desc = $this->grabdesc($master);
+            $master_desc = $this->grabwhatmatters($master);
             $master_size = strlen($master_desc);
             $date = $master->mrupdatedate;
             echo "<group>";
             $this->outputgroup($master, $master_desc);
             foreach($tickets as $ticket) {
                 if(!in_array($ticket->mrid, $grouped)) {
-                    $ticket_desc = $this->grabdesc($ticket);
+                    $ticket_desc = $this->grabwhatmatters($ticket);
                     $ticket_size = strlen($ticket_desc);
                     similar_text($master_desc, $ticket_desc, $p);
                     $p = round($p, 2);
@@ -96,7 +96,7 @@ class AdminController extends Zend_Controller_Action
     {
         echo "<ticket>";
         echo "<id>$ticket->mrid</id>";
-        echo "<title>".htmlentities($ticket->mrtitle)."</title>";
+        echo "<title>".$this->formattitle($ticket->mrtitle)."</title>";
         echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
         echo "<dest>$ticket->mrdest</dest>";
         echo "<url>https://oim.grid.iu.edu/gocticket/viewer?id=$ticket->mrid</url>";
@@ -104,14 +104,24 @@ class AdminController extends Zend_Controller_Action
         echo "</ticket>";
     }
 
-    private function grabdesc($ticket)
+    private function formattitle($title)
+    {
+        $title = preg_replace('/[^(\x20-\x7F)]*/','', $title);
+        $title = htmlentities($title, ENT_QUOTES);
+        return $title;
+    }
+
+    private function grabwhatmatters($ticket)
     {
         $desc_all = $ticket->mralldescriptions;
 
         //use the first description
         $desc_sections = preg_split("/<! [^>]* >/", $desc_all, 2, PREG_SPLIT_NO_EMPTY);
         $desc = trim($desc_sections[0]);
+
+        //clean up some html ness
         $desc = html_entity_decode($desc, ENT_QUOTES);
+        //$desc = preg_replace("/&[a-z]+;/", "?", $desc);
 
         //truncate if it's too long
         $desc = substr($desc, 0, 1000);

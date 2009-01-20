@@ -14,7 +14,7 @@ class Tickets
     }
     public function getall()
     {
-        $ret = $this->dosearch("where mrSTATUS <> '_DELETED_' order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS <> '_DELETED_' order by mrID DESC");
         return $ret;
     }
 

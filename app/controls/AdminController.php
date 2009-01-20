@@ -72,7 +72,7 @@ class AdminController extends Zend_Controller_Action
             $master_size = strlen($master_desc);
             $date = $master->mrupdatedate;
             echo "<group>";
-            $this->outputgroup($master, $master_desc);
+            $this->outputgroup($master, $master_desc, 100); //master get 100% score
             foreach($tickets as $ticket) {
                 if(!in_array($ticket->mrid, $grouped)) {
                     $ticket_desc = $this->grabwhatmatters($ticket);
@@ -80,7 +80,7 @@ class AdminController extends Zend_Controller_Action
                     similar_text($master_desc, $ticket_desc, $p);
                     $p = round($p, 2);
                     if($p > 40) {
-                        $this->outputgroup($ticket, $ticket_desc);
+                        $this->outputgroup($ticket, $ticket_desc, $p);
                         $grouped[] = $ticket->mrid;
                     }
                 }
@@ -92,7 +92,7 @@ class AdminController extends Zend_Controller_Action
         $this->render("none", true);
     }
 
-    private function outputgroup($ticket, $content) 
+    private function outputgroup($ticket, $content, $p) 
     {
         echo "<ticket>";
         echo "<id>$ticket->mrid</id>";
@@ -101,6 +101,7 @@ class AdminController extends Zend_Controller_Action
         echo "<dest>$ticket->mrdest</dest>";
         echo "<url>https://oim.grid.iu.edu/gocticket/viewer?id=$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
+        echo "<score>$p</score>";
         echo "</ticket>";
     }
 

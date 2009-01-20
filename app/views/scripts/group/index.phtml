@@ -23,7 +23,7 @@ foreach($this->groups as $group)
                 echo "</blockquote>";
                 echo "<h4>Similar Tickets</h4>";
             } else {
-                echo "<a href='$ticket->url'>[$ticket->id] $ticket->title ($ticket->status)</a><br/>";
+                echo "<a href='$ticket->url'>[$ticket->id] $ticket->score% $ticket->title ($ticket->status)</a><br/>";
             }
         }
         echo "</div><br/><br/>";

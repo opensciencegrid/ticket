@@ -19,6 +19,11 @@ class Resource
         $sql = "select name from resource where active = 1 and disable = 0 and resource_id = $resource_id";
         return db()->fetchOne($sql);
     }
+    public function fetchID($resource_name)
+    {
+        $sql = "select resource_id from resource where name = '$resource_name'";
+        return db()->fetchOne($sql);
+    }
 }
 
 ?>

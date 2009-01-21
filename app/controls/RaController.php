@@ -51,6 +51,7 @@ class RaController extends BaseController
             $ra->setName($form->getValue('req_name'));
             $ra->setEmail($form->getvalue('req_email'));
             $ra->setPhone($form->getvalue('req_phone'));
+            $ra->setVO($form->getvalue('vo'));
             $ra->setDN($form->getvalue('req_dn'));
             $ra->setSponsorName($sp_name);
             $ra->setSponsorEmail($sp_email);
@@ -108,6 +109,14 @@ class RaController extends BaseController
         $e->setRequired(true);
         $form->addElement($e);
 
+        $e = new Zend_Form_Element_Select('vo');
+        $e->setLabel("VO");
+        $e->setRequired(true);
+        $e->addMultiOption("OSG", "OSG");
+        $e->addMultiOption("MIS", "MIS");
+        $e->addMultiOption("OSGEDU", "OSGEDU");
+        $form->addElement($e);
+
         $name = new Zend_Form_Element_Text('req_name');
         $name->setLabel("Requestor Name");
         $name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
@@ -154,6 +163,7 @@ class RaEmail
     public function setName($val) { $this->name = $val; }
     public function setEmail($val) { $this->email = $val; }
     public function setPhone($val) { $this->phone = $val; }
+    public function setVO($val) { $this->vo = $val; }
     public function setDN($val) { $this->dn = $val; }
     public function setSponsorName($val) { $this->sponsor_name = $val; }
     public function setSponsorEmail($val) { $this->sponsor_email = $val; }
@@ -177,7 +187,7 @@ class RaEmail
 
     public function getSubject()
     {
-        return "[OSG RA: OSG/OSG] Certificate Request to the DOEGrids CA ".$this->id;
+        return "[OSG RA: OSG/$this->vo] Certificate Request to the DOEGrids CA ".$this->id;
     }
 
     public function getBody()

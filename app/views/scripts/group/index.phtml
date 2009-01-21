@@ -16,14 +16,15 @@ foreach($this->groups as $group)
             if($first) {
                 $first = false;
                 $desc = $ticket->desc;
-                echo "<h3><a href='$ticket->url'>$ticket->id</a> $ticket->title</h3>";
-                echo "<div class='indent'>";
+                echo "<h3><a href='$ticket->url'>[$ticket->id]</a> $ticket->title</h3>";
                 echo "<blockquote>";
                 echo "<pre>$desc</pre>";
                 echo "</blockquote>";
+                echo "<div class='indent'>";
                 echo "<h4>Similar Tickets</h4>";
             } else {
-                echo "<a href='$ticket->url'>[$ticket->id] $ticket->score% $ticket->title ($ticket->status)</a><br/>";
+                $score = round($ticket->score);
+                echo "<a href='$ticket->url' style='opacity: .$score;'>[$ticket->id] $score% $ticket->title ($ticket->status)</a><br/>";
             }
         }
         echo "</div><br/><br/>";

@@ -78,6 +78,7 @@ function cert_authenticate()
             //reload as https (if not bot)
             $SERVER_NAME=$_SERVER["SERVER_NAME"];
             $REQUEST_URI=$_SERVER["REQUEST_URI"];
+            slog("Forwarding to HTTPS");
             header ("Location: https://$SERVER_NAME$REQUEST_URI");
             exit;
         } else {

@@ -18,6 +18,13 @@ class Tickets
         return $ret;
     }
 
+    public function getoriginating($id)
+    {
+        $ret = $this->dosearch("where Originating__bTicket__bNumber = $id");
+        return $ret;
+    }
+
+
     public function getrecent()
     {
         $start_time = time() - 3600*24*30; //30 days

@@ -17,6 +17,10 @@ class VO
         $sql = $this->sql()." and vo_id = $void";
         return db()->fetchRow($sql);
     }
+    public function getfromsc($sc_id) {
+        $sql = $this->sql()." and sc_id = $sc_id";
+        return db()->fetchAll($sql);
+    }
 }
 
 ?>

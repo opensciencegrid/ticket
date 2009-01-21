@@ -13,6 +13,15 @@ class GroupController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        $this->view->groups = new SimpleXmlElement(file_get_contents("/tmp/gocticket.groupticket.xml"), LIBXML_NOCDATA);
+        $xml_file = "/tmp/gocticket.groupticket.xml";
+        try {
+            $this->view->groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);
+        } catch(exception $e) {
+            ob_start();
+            passthru("xsltproc $xml_file 2>&1");
+            $xslt_out = ob_get_contents();
+            ob_end_clean();
+            throw new exception($e->getMessage()."\n\n".$xslt_out);
+        }
     }
 } 

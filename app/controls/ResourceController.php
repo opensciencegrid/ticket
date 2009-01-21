@@ -45,10 +45,7 @@ class ResourceController extends BaseController
                     $scname = "OSG-GOC";
                     $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
                 } else {
-                    $sc_model = new SC;
-                    $sc = $sc_model->get($resource->sc_id);
-                    $scname = $sc->footprints_id;
-                    $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
+                    $scname = $footprint->setDestinationVOFromSC($resource->sc_id);
                 }
 
                 if($footprint->isValidFPSC($scname)) {
@@ -62,7 +59,7 @@ class ResourceController extends BaseController
                 $prac = $prac_model->fetch($resource_id);
                 $footprint->addCC($prac->primary_email);
                 $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
-                $footprint->addMeta("Primary Admin Info\n".$this->dumprecord($prac)."\n");
+                //$footprint->addMeta("Primary Admin Info\n".$this->dumprecord($prac)."\n");
             }
 
             try 

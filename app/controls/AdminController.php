@@ -1,6 +1,6 @@
 <?
 
-class AdminController extends Zend_Controller_Action 
+class AdminController extends BaseController
 { 
     public function init()
     {
@@ -146,109 +146,162 @@ RSS: http://www.grid.iu.edu/news";
         $desc = preg_replace($sig, "", $desc);
 
         //remove GGUS Info
-        $sig = "/Other GGUS Ticket Info:(.|\n)*/";
+        $sig = "/Other GGUS Ticket Info:(.|\n)*/"; //old format
+        $desc = preg_replace($sig, "", $desc);
+        $sig = "/\n\[Other GGUS Ticket Info\](.|\n)*/"; //new format
         $desc = preg_replace($sig, "", $desc);
 
         return $desc;
     }    
 
-/*
-    public function syncAction()
+    public function ggussubmitAction()
     {
-        $names = array(
-        "Marc Baarmand" => "baarmand@fit.edu",
-        "Mats Rynge" => "rynge@renci.org",
-        "Eva Halkiadakis" => "evah@fnal.gov",
-        "Edmund Berry" => "eberry@Princeton.edu",
-        "Peter Loch" => "loch@physics.arizona.edu",
-        "Dave Christian" => "dcc@fnal.gov",
-        "Tiberiu Stef-Praun" => "tiberius@ci.uchicago.edu",
-        "Don Holmgren" => "djholm@fnal.gov",
-        "Guenakh Mitselmakher" => "mitselmakher@phys.ufl.edu",
-        "Rob Quick" => "rquick@iupui.edu",
-        "Dick Greenwood" => "greenw@phys.latech.edu",
-        "Sridhar Gullapalli" => "sridhar@isi.edu",
-        "Roy Williams" => "roy@cacr.caltech.edu",
-        "Doug Olson" => "dlolson@lbl.gov",
-        "Kent Blackburn" => "kent@ligo.caltech.edu",
-        "Alan Sill" => "Alan.Sill@ttu.edu",
-        "John Whelan" => "jtwhelan@loyno.edu",
-        "Doug Benjamin" => "benjamin@phy.duke.edu",
-        "Preston Smith" => "psmith@physics.purdue.edu",
-        "Scott Koranda" => "skoranda@uwm.edu",
-        "Patrick Brady" => "patrick@gravity.phys.uwm.edu",
-        "Jim Williams" => "william@indiana.edu",
-        "Ian Foster"=> "foster@mcs.anl.gov",
-        "Larry Price"=> "lprice@anl.gov",
-        "Jim Shank"=> "shank@bu.edu",
-        "Torre Wenaus"=> "torre@wenaus.com",
-        "Julian Bunn"=> "julian@cacr.caltech.edu",
-        "Harvey Newman"=> "newman@hep.caltech.edu",
-        "Ruth Pordes"=> "ruth@fnal.gov",
-        "Rick Thies"=> "ret@fnal.gov",
-        "Keith Baker"=> "baker@jlab.org",
-        "John Huth"=> "huth@physics.harvard.edu",
-        "Valerie Taylor"=> "taylor@cs.tamu.edu",
-        "Tim Olson"=> "tim_olson@skc.edu",
-        "Reagan Moore"=> "moore@sdsc.edu",
-        "Richard Mount"=> "richard.mount@slac.stanford.edu",
-        "Alex Szalay"=> "szalay@jhu.edu",
-        "Paul Avery"=> "avery@phys.ufl.edu",
-        "Bockjoo Kim"=> "bockjoo@phys.ufl.edu",
-        "Laura Pearlman"=> "laura@isi.edu",
-        "Soumya D. Mohanty"=> "mohanty@phys.utb.edu",
-        "Miron Livny"=> "miron@cs.wisc.edu",
-        "Keith Riles"=> "kriles@umich.edu",
-        "Rob Gardner"=> "rwg@hep.uchicago.edu",
-        "Robert Gardner"=> "rwg@hep.uchicago.edu",
-        "Albert Lazzarini"=> "lazz@ligo.caltech.edu",
-        "Lothar Bauerdick"=> "bauerdick@fnal.gov",
-        "Ewa Deelman"=> "deelman@isi.edu",
-        "Richard Cavanaugh"=> "cavanaug@phys.ufl.edu",
-        "Paul Sheldon"=> "paul.sheldon@vanderbilt.edu",
-        "Jens Voeckler"=> "voeckler@cs.uchicago.edu",
-        "Shawn McKee"=> "smckee@umich.edu",
-        "Horst Severini"=> "hs@nhn.ou.edu",
-        "Gaurang Mehta"=> "gmehta@isi.edu",
-        "Alain Roy"=> "roy@cs.wisc.edu",
-        "Ian Fisk"=> "ifisk@fnal.gov",
-        "Gabriela Gonzalez"=> "gonzalez@lsu.edu",
-        "Bernard Whiting"=> "bernard@phys.ufl.edu",
-        "Jon Smillie"=> "Jon.Smillie@anu.edu.au",
-        "Jorge Rodriguez"=> "jorge@phys.ufl.edu",
-        "Saul Youssef"=> "youssef@bu.edu",
-        "Kaushik De"=> "kaushik@uta.edu",
-        "Gyorgy Fekete"=> "gfekete@pha.jhu.edu",
-        "Nelson Christensen"=>"nchriste@carleton.edu",
-        "David Strom"=>"strom@physics.uoregon.edu",
-        "Terrence Martin"=>"tmartin@physics.ucsd.edu",
-        "Shaowen Wang"=>"shaowen@uiuc.edu",
-        "Steve Gallo"=>"smgallo@ccr.buffalo.edu",
-        "Sebastien Goasguen"=>"sebgoa@clemson.edu",
-        "Alina Bejan"=>"abejan@ci.uchicago.edu"
-        );    
-        //check email address
-        echo "Email mis-match";
-        foreach($names as $name=>$email) {
-            list($first_name, $middle_name, $last_name) = split(" ", $name);
-            if($last_name === null) {
-                $last_name = $middle_name;
-                $middle_name = "";
+        //TODO - restrict action to tick-indy server
+
+        if(isset($_REQUEST["xml"])) {
+            $xml_content = $_REQUEST["xml"];
+            $xml = new SimpleXMLElement($xml_content);
+
+            $footprint = new Footprint;
+
+            $node = "GHD_Request-ID";
+            $id = (int)$xml->$node;
+            $footprint->setOriginatingTicketNumber($id);
+
+            //check if the ticket is already in FP
+            $model = new Tickets(); 
+            dlog("searching for $id");
+            $orig = $model->getoriginating($id);
+            if(count($orig) == 0) {
+                slog("inserting new FP ticket $id");
+                $footprint->addDescription($xml->GHD_Description);
+                $desc = "\n
+[Other GGUS Ticket Info]
+Date GGUS Ticket Opened: $xml->GHD_Date_Time_Of_Problem
+GGUS Ticket ID:          $id
+Short Description:       $xml->GHD_Short_Description
+Solution:                $xml->GHD_Short_Solution
+Experiment:              $xml->GHD_Experiment
+Affected Site:           $xml->GHD_Affected_Site
+Responsible Unit:        $xml->GHD_Responsible_Unit";
+                $footprint->addDescription($desc);
+            } else {
+                //cause FP ticket update by setting ticket ID.
+                $fpid = $orig[0]->mrid;
+                slog(print_r($orig, true));
+                slog("Originating ticket $id already exists in FP as $fpid . Doing Update..");
+
+                //I don't know which one of these fields really contain the update-description..
+                $footprint->addDescription($xml->GHD_Public_Diary);
+                $footprint->addDescription($xml->GHD_Diary_Of_Steps); 
+                $footprint->addDescription($xml->GHD_Internal_Diary);
+
+                $footprint->setID($fpid);
             }
-            $sql = "select * from oim.person where first_name = '$first_name' and last_name = '$last_name' and primary_email = '$email'";
-            $rec = db()->fetchAll($sql);
-            if(count($rec) == 0) {     
-                echo "<h2>$first_name $last_name</h2>";
-                echo "<blockquote>";
-                echo "<b>RA script address</b><br/>$email<br/>";
-                $sql = "select primary_email from oim.person where first_name = '$first_name' and last_name = '$last_name'";
-                $rec = db()->fetchOne($sql);
-                echo "<b>OIM primary_email</b><br/>$rec<br/>";
-                echo "</blockquote>";
+
+            //populate ticket info
+            $this->populateGGUSTicket($footprint, $xml);
+
+            //send data to FP
+            try
+            {
+                $mrid = $footprint->submit();
+                dlog("GGUS Ticket insert / update success - FP Ticket ID $mrid");
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
             }
         }
-
         $this->render("none", true);
     }
+
+    private function populateGGUSTicket($footprint, $xml)
+    {
+        //contact info
+        $fullname = split(" ", $xml->GHD_Name);
+        $footprint->setFirstName($fullname[0]);
+        $footprint->setLastName($fullname[1]);
+        $footprint->setOfficePhone((string)$xml->GHD_Phone);
+        $node = "GHD_E-Mail";
+        $footprint->setEmail((string)$xml->$node);
+        $footprint->setSubmitter("ggus");
+
+        //title
+        $title = str_replace("\n", "", $xml->GHD_Short_Description);
+        $footprint->setTitle($title);
+
+        $footprint->setOriginatingVO("Ops"); 
+        $footprint->setNextAction("Operator Review");
+
+        //lookup resource from resource name
+        if(isset($xml->GHD_Affected_Site)) {
+            dlog("setting affected resource info");
+
+            $model = new Resource();
+            $name = (string)$xml->GHD_Affected_Site;
+            $resource_id = $model->fetchID($name);
+            if($resource_id === false) {
+                $footprint->addMeta("Resource '$name' as specified in the GHD_Affected_Site field couldn't be found in OIM.");
+            } else {
+                $rs_model = new ResourceSite();
+                $resource = $rs_model->fetch($resource_id);
+
+                //set description destination vo, assignee
+                $footprint->addMeta("Resource where user is having this issue: ".$name."($resource_id)\n");
+
+                //lookup SC name
+                if($resource === false) {
+                    $scname = "OSG-GOC";
+                    $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
+                } else {
+                    $scname = $footprint->setDestinationVOFromSC($resource->sc_id);
+                }
+
+                if($footprint->isValidFPSC($scname)) {
+                    $footprint->addAssignee($scname);
+                } else {
+                    $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                }
+
+                //find primary resource admin email
+                $prac_model = new PrimaryResourceAdminContact();
+                $prac = $prac_model->fetch($resource_id);
+                $footprint->addCC($prac->primary_email);
+                $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
+            }
+        }
+    }
+
+/*
+<GHD_Request-ID>606</GHD_Request-ID>
+<GHD_Loginname>/O=GermanGrid/OU=FZK/CN=Guenter
+Grein</GHD_Loginname>
+<GHD_Name>Guenter Grein</GHD_Name>
+<GHD_E-Mail>guenter.grein@iwr.fzk.de</GHD_E-Mail>
+<GHD_Phone></GHD_Phone>
+<GHD_Experiment>atlas</GHD_Experiment>
+<GHD_Responsible_Unit>OSG</GHD_Responsible_Unit>
+<GHD_Status>assigned</GHD_Status>
+<GHD_Priority>less urgent</GHD_Priority>
+<GHD_Short_Description>new test</GHD_Short_Description>
+<GHD_Description>new test</GHD_Description>
+
+<GHD_Experiment_Specific_Problem>No</GHD_Experiment_Specific_Problem>
+<GHD_Type_Of_Problem>GGUS Internal Tests</GHD_Type_Of_Problem>
+<GHD_Date_Time_Of_Problem>2009-01-12
+14:12:17</GHD_Date_Time_Of_Problem>
+<GHD_Diary_Of_Steps></GHD_Diary_Of_Steps>
+<GHD_Public_Diary></GHD_Public_Diary>
+<GHD_Short_Solution></GHD_Short_Solution>
+<GHD_Detailed_Solution></GHD_Detailed_Solution>
+<GHD_Internal_Diary></GHD_Internal_Diary>
+<GHD_Origin_ID></GHD_Origin_ID>
+<GHD_Last_Modifier>Paul Mustermann</GHD_Last_Modifier>
+<GHD_Affected_Site>BNL_ATLAS_1</GHD_Affected_Site>
+</Ticket>
+
+I guess the most important information for you is
+<GHD_Experiment>atlas</GHD_Experiment>
+<GHD_Affected_Site>BNL_ATLAS_1</GHD_Affected_Site>
+<GHD_Responsible_Unit>OSG</GHD_Responsible_Unit>
 */
 } 

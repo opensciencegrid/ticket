@@ -6,7 +6,10 @@ class Footprint
 {
     public function __construct()
     {
+        $this->id = null; //if this is not null, we will do edit instead of insert
+
         $this->project_id = "71";
+        $this->submitter = "OSG-GOC";
         $this->project_name  = "Open Science Grid";
         $this->status = "Engineering";
         $this->priority_number = "4";
@@ -20,8 +23,7 @@ class Footprint
 
         $this->ab_fields = array();
         $this->project_fields = array();
-        $this->project_fields["ENG__bNext__bAction__bItem"] = "ENG Action";
-        //$this->setNextActionTime(time() + 3600*24); //set next action time
+        $this->setNextAction("ENG Action");
         $this->setNextActionTime(time());
 
         //since these are required items, let's set to other
@@ -37,14 +39,11 @@ class Footprint
         $this->assignees = array(
             "OSG__bGOC__bSupport__bTeam", 
             "OSG__bSupport__bCenters");
-
-        //DEBUG
-        //$this->assignees = array("tsilver");
-        //$this->assignees = array("hayashis");
     }
 
     //AB fields
     public function setTitle($v) { $this->title = $v; } //ticket title
+    public function setSubmitter($v) { $this->submitter = $v; }
     public function setFirstName($v) { $this->ab_fields["First__bName"] = $v; }
     public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
@@ -78,6 +77,12 @@ class Footprint
         $this->assignees[] = $v;//no unparsing necessary
     }
 
+    //setting this means that we are doing ticket update
+    public function setID($id)
+    {
+        $this->id = $id;
+    }
+
     //from the current db, I see following ticket types
 /*
 NULL
@@ -91,11 +96,15 @@ Unscheduled__bOutage
         $this->project_fields["Ticket__uType"] = $type;
     }
 
+
     //"Yes" or "No"
     public function setReadyToClose($close) {
         $this->project_fields["Ready__bto__bClose__Q"] = $close;
     }
 
+    public function setNextAction($action) {
+        $this->project_fields["ENG__bNext__bAction__bItem"] = $action;
+    }
     public function setNextActionTime($time)
     {
         $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
@@ -107,6 +116,36 @@ Unscheduled__bOutage
             $voname = "other";
         }
         $this->project_fields["Originating__bVO__bSupport__bCenter"] = Footprint::unparse($voname);
+    }
+
+    public function setOriginatingTicketNumber($id)
+    {
+        $this->project_fields["Originating__bTicket__bNumber"] = $id;
+    }
+
+    public function setDestinationVOFromSC($sc_id)
+    {
+        $sc_model = new SC;
+        $sc = $sc_model->get($sc_id);
+        $scname = $sc->footprints_id;
+
+        //lookup VOs associated with this sc
+        $vomodel = new VO();
+        $vos = $vomodel->getfromsc($sc_id);
+        if($vos === false or count($vos) == 0) {
+            $this->addMeta("No VOs are associated with Support Center=$scname where this resource belongs.\n");
+        } else {
+            $this->addMeta("Following VOs are associated with Support Center=$scname where this resource belongs.\n");
+            foreach($vos as $vo) {
+                $this->addMeta("\t".$vo->short_name."\n");
+            }
+            $fpvo = $vos[0]->footprints_id;
+            $oimvo = $vos[0]->short_name;
+            $this->addMeta("Selecting $oimvo for Destination VO - just the first one in the list..\n");
+            $this->setDestinationVO($fpvo);
+        }
+
+        return $scname;
     }
 
     public function setDestinationVO($voname) { 
@@ -181,17 +220,15 @@ Unscheduled__bOutage
 
     public function submit()
     {
-        //debug..
-        //$this->assignees = array("hoge", "hayashis");
-
         $desc = $this->description;
         if($this->meta != "") {
             $desc .= "\n\n".config()->metatag."\n";
             $desc .= $this->meta;
         }
         $params = array(
+            "mrID"=>$this->id,
             "projectID"=>71,
-            "submitter"=>"OSG-GOC",
+            "submitter"=>$this->submitter,
             "title" => $this->title,
             "assignees" => $this->assignees,
             "permanentCCs" => $this->permanent_cc,
@@ -202,30 +239,44 @@ Unscheduled__bOutage
             "projfields" => $this->project_fields
         );
 
+        //debug
+        $params["assignees"] = array("hayashis", "agopu");
+        $params["permanentCCs"] = array("soichih@gmail.com");
+
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));
 
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)
             $id = print_r($params, true);
-
-            //overide assginee to myself (to suppress SMS)
-            $params["assignees"] = array("hoge", "hayashis");
         } else {
             //submit the ticket!
             $client = new SoapClient(null, array(
                 'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                 'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
 
-            $id = $client->__soapCall("MRWebServices__createIssue_goc",
-                array(config()->webapi_user, config()->webapi_password, "", $params));
+            //determine if we are going create or edit..
+            if($this->id === null) {
+                $call = "MRWebServices__createIssue_goc";
+            } else {
+                $call = "MRWebServices__editIssue_goc";
+            }
+            slog("calling $call");
+            $id = $client->__soapCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+
+            $this->send_notification($params["assignees"], $id);
         }
 
+        return $id;
+    }
+
+    private function send_notification($assignees, $id) 
+    {
         //send SMS notification to assignees
         $sms_users = config()->sms_notification[$this->priority_number];
         $sms_to = array();
         //pick users to send to..
-        foreach($params["assignees"] as $ass) {
+        foreach($assignees as $ass) {
             if(in_array($ass, $sms_users)) {
                 $sms_to[] = $ass;
             }
@@ -252,8 +303,8 @@ Unscheduled__bOutage
 
             sendSMS($sms_to, $subject, $body);
         }
-        return $id;
     }
+
     static public function parse($str)
     {
         $str = str_replace("__u", "-", $str);

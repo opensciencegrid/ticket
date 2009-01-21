@@ -83,6 +83,8 @@ class ViewerController extends Zend_Controller_Action
         $alldesc = $detail->alldescs;
         $alldescs = split("Entered on", $alldesc);
         $descs = array();
+
+        dlog($alldescs);
         foreach($alldescs as $desc) {
             if($desc == "") continue;
             $desc_lines = split("\n", $desc);
@@ -91,7 +93,8 @@ class ViewerController extends Zend_Controller_Action
 
             //parse out time and by..
             $info_a = split(" by ", $info);
-            $time = strtotime(str_replace(" at ", "", $info_a[0]));
+            $date_str = str_replace(" at ", " ", $info_a[0]);
+            $time = strtotime($date_str);
             $by = str_replace(":", "", $info_a[1]);
 
             if(isset($descs[$time])) {

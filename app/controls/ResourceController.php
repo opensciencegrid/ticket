@@ -57,9 +57,12 @@ class ResourceController extends BaseController
                 //find primary resource admin email
                 $prac_model = new PrimaryResourceAdminContact();
                 $prac = $prac_model->fetch($resource_id);
-                $footprint->addCC($prac->primary_email);
-                $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
-                //$footprint->addMeta("Primary Admin Info\n".$this->dumprecord($prac)."\n");
+                if($prac === false) {
+                    $footprint->addMeta("Primary Admin for ".$resource->resource_name." couldn't be found in the OIM");
+                } else {
+                    $footprint->addCC($prac->primary_email);
+                    $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
+                }
             }
 
             try 

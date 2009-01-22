@@ -19,13 +19,17 @@ class AdminController extends BaseController
         }
     }
 
-    private function accesscheck()
+    private function accesscheck($remote_addr = null)
     {
+        if($remote_addr === null) {
+            $remote_addr = $_SERVER["SERVER_ADDR"];
+        }
+
         //make sure the request originated from localhost
-        if($_SERVER["REMOTE_ADDR"] != $_SERVER["SERVER_ADDR"]) {
+        if($_SERVER["REMOTE_ADDR"] != $remote_addr) {
             //pretend that this page doesn't exist
             $this->getResponse()->setRawHeader('HTTP/1.1 404 Not Found');
-            echo "local access only";
+            echo "access denided";
             exit;
         }
     }
@@ -153,15 +157,10 @@ RSS: http://www.grid.iu.edu/news";
 
         return $desc;
     }    
-    public function quoteAction()
-    {
-        echo $_REQUEST["xml"];
-        $this->render("none", true);
-    }
 
     public function ggussubmitAction()
     {
-        //TODO - restrict action to tick-indy server
+        $this->accesscheck("134.68.107.18");//tick-indy.globalnoc.iu.edu
 
         if(isset($_REQUEST["xml"])) {
             $xml_content = $_REQUEST["xml"];

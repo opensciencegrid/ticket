@@ -240,8 +240,8 @@ Unscheduled__bOutage
         );
 
         //debug
-        $params["assignees"] = array("hayashis", "agopu");
-        $params["permanentCCs"] = array("soichih@gmail.com");
+        //$params["assignees"] = array("hayashis", "agopu");
+        //$params["permanentCCs"] = array("soichih@gmail.com");
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));

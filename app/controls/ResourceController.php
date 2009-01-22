@@ -53,16 +53,7 @@ class ResourceController extends BaseController
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
-
-                //find primary resource admin email
-                $prac_model = new PrimaryResourceAdminContact();
-                $prac = $prac_model->fetch($resource_id);
-                if($prac === false) {
-                    $footprint->addMeta("Primary Admin for ".$resource->resource_name." couldn't be found in the OIM");
-                } else {
-                    $footprint->addCC($prac->primary_email);
-                    $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
-                }
+                $footprint->addPrimaryAdminContact($resource_id);
             }
 
             try 

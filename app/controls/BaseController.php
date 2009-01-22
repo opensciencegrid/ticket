@@ -23,8 +23,7 @@ class BaseController extends Zend_Controller_Action
         $body = "GOC Ticket form submission error has occured.";
         sendSMS(config()->error_sms_to, $subject, $body);
     }
-
-
+    
     protected function getCaptchaCode()
     {
         $session = new Zend_Session_Namespace('captcha');

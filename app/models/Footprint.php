@@ -156,6 +156,21 @@ Unscheduled__bOutage
         $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
     }
 
+    public function addPrimaryAdminContact($resource_id)
+    {
+        $model = new Resource();
+        $resource_name = $model->fetchName($resource_id);
+
+        $prac_model = new PrimaryResourceAdminContact();
+        $prac = $prac_model->fetch($resource_id);
+        if($prac === false) {
+            $footprint->addMeta("Primary Admin for ".$resource_name." couldn't be found in the OIM");
+        } else {
+            $this->addCC($prac->primary_email);
+            $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
+        }
+    }
+
     public function addCC($address) {
         $this->permanent_cc[] = $address;
     }

@@ -49,14 +49,7 @@ class RsvController extends BaseController
             } else {
                 $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
             }
-
-            //find primary resource admin email
-            $prac_model = new PrimaryResourceAdminContact();
-            $prac = $prac_model->fetch($resource_id);
-            $footprint->addCC($prac->primary_email);
-            $footprint->addMeta("Primary Admin for ".$resource->resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
-            $footprint->addMeta("Primary Admin Info\n".$this->dumprecord($prac)."\n");
-
+            $footprint->addPrimaryAdminContact($resource_id);
             $footprint->addAssignee("RSV-Ops");
 
             try 

@@ -25,7 +25,13 @@ function connect_db()
 
     $g_db = $db;
 }
-function db() { global $g_db; return $g_db; }
+function db() { 
+    global $g_db; 
+    if($g_db == null) {
+        connect_db();
+    }
+    return $g_db; 
+}
 
 /*
 function dump_db_profile()

@@ -153,6 +153,11 @@ RSS: http://www.grid.iu.edu/news";
 
         return $desc;
     }    
+    public function quoteAction()
+    {
+        echo $_REQUEST["xml"];
+        $this->render("none", true);
+    }
 
     public function ggussubmitAction()
     {

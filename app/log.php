@@ -24,12 +24,6 @@ function setup_logs()
     Zend_Registry::set("fb_logger", $logger);
 }
 
-function greet()
-{
-    slog('----------------------------------------------------------------------');
-    slog(config()->app_name. ' session starting.. '.$_SERVER["REQUEST_URI"]);
-    slog("REQUEST: ".print_r($_REQUEST, true));
-}
 
 function log_format($str)
 {

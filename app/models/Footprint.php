@@ -240,23 +240,30 @@ Unscheduled__bOutage
             $desc .= "\n\n".config()->metatag."\n";
             $desc .= $this->meta;
         }
-        $params = array(
-            "mrID"=>$this->id,
-            "projectID"=>71,
-            "submitter"=>$this->submitter,
-            "title" => $this->title,
-            "assignees" => $this->assignees,
-            "permanentCCs" => $this->permanent_cc,
-            "priorityNumber" => $this->priority_number,
-            "status" => $this->status,
-            "description" => $desc,
-            "abfields" => $this->ab_fields,
-            "projfields" => $this->project_fields
-        );
 
-        //debug
-        //$params["assignees"] = array("hayashis", "agopu");
-        //$params["permanentCCs"] = array("soichih@gmail.com");
+        //determine if we are doing create or update
+        if($this->id === null) {
+            $call = "MRWebServices__createIssue_goc";
+            $params = array(
+                "mrID"=>$this->id,
+                "projectID"=>71,
+                "submitter"=>$this->submitter,
+                "title" => $this->title,
+                "assignees" => $this->assignees,
+                "permanentCCs" => $this->permanent_cc,
+                "priorityNumber" => $this->priority_number,
+                "status" => $this->status,
+                "description" => $desc,
+                "abfields" => $this->ab_fields,
+                "projfields" => $this->project_fields
+            );
+        } else {
+            $call = "MRWebServices__editIssue_goc";
+            $params = array(
+                "mrID"=>$this->id,
+                "description" => $desc
+            );
+         }
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));
@@ -269,17 +276,9 @@ Unscheduled__bOutage
             $client = new SoapClient(null, array(
                 'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                 'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-
-            //determine if we are going create or edit..
-            if($this->id === null) {
-                $call = "MRWebServices__createIssue_goc";
-            } else {
-                $call = "MRWebServices__editIssue_goc";
-            }
             slog("calling $call");
             $id = $client->__soapCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
-
-            $this->send_notification($params["assignees"], $id);
+            $this->send_notification($params["assignees"], $id); //TODO - this only works for ticket create..
         }
 
         return $id;

@@ -260,6 +260,7 @@ Unscheduled__bOutage
             $params = array(
                 "mrID"=>$this->id,
                 "projectID"=>71,
+                "submitter"=>$this->submitter,
                 "description" => $desc
             );
          }

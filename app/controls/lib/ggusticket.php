@@ -5,6 +5,9 @@ function ggus2footprint($xml_content)
     $xml = new SimpleXMLElement($xml_content);
     $footprint = new Footprint;
 
+    //TODO - if I don't set submitter parameter, the web api will say "An error page was displayed to the Web Services user.  Details: Submitter 'goc' is not a valid user."
+    $footprint->setSubmitter("ggus");
+
     $node = "GHD_Request-ID";
     $id = (int)$xml->$node;
     $footprint->setOriginatingTicketNumber($id);
@@ -41,7 +44,6 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         $footprint->setOfficePhone((string)$xml->GHD_Phone);
         $node = "GHD_E-Mail";
         $footprint->setEmail((string)$xml->$node);
-        $footprint->setSubmitter("ggus");
 
         //title
         $title = str_replace("\n", "", $xml->GHD_Short_Description);

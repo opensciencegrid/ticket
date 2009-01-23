@@ -94,7 +94,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
 
         //only set description field to be updated
         //I don't know which one of these fields really contain the update-description..
-        $footprint->addDescription($xml->GHD_Public_Diary);
+        //$footprint->addDescription($xml->GHD_Public_Diary);
         $footprint->addDescription($xml->GHD_Diary_Of_Steps); 
         $footprint->addDescription($xml->GHD_Internal_Diary);
     }

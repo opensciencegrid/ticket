@@ -5,23 +5,33 @@ class BaseController extends Zend_Controller_Action
     //send email & sms
     protected function sendErrorEmail($e)
     {
-        $Name = config()->app_name;
-        $email = "hayashis@indiana.edu"; //senders e-mail adress (needs to be valid GOC user?)
-        $recipient = config()->error_email_to;
-        $mail_body = "Dear Goc,\n\nGOC Ticket Form has received a ticket, but the submission to Footprint has failed. Please fix the issue, and resubmit the issue on behalf of the user ASAP.\n\n";
-        $mail_body .= "[Footprint says]\n";
-        $mail_body .= $e->faultstring;
+        //construct message body
+        $mail_body = "GOC Ticket Form has received a ticket, but the submission to Footprint has failed. Please fix the issue, and resubmit the issue on behalf of the user ASAP.\n\n";
+        $mail_body .= "[Exception Message]\n";
+        $mail_body .= $e->getMessage()."\n";
+
+        $mail_body .= "[Stack Trace]\n";
+        $mail_body .= $e->getTraceAsString()."\n\n";
 
         $mail_body .= "\n[User has submitted following]\n";
         $mail_body .= print_r($_REQUEST, true);
-        $subject = "[ticket_form] Submission Failed";
-        $header = "From: ". $Name . " <" . $email . ">\r\n";
-        mail($recipient, $subject, $mail_body, $header);
 
-        //also send SMS
-        $subject = "GOC Ticket submission failure";
-        $body = "GOC Ticket form submission error has occured.";
-        sendSMS(config()->error_sms_to, $subject, $body);
+        if(config()->elog_email) {
+            $Name = config()->app_name;
+            $email = "hayashis@indiana.edu"; //senders e-mail adress (needs to be valid GOC user?)
+            $recipient = config()->error_email_to;
+            $subject = "[ticket_form] Submission Failed";
+            $header = "From: ".$_ENV["USER"]."@".$_SERVER["HTTP_HOST"]."\r\n";
+
+            //now, send the email
+            mail($recipient, $subject, $mail_body, $header);
+
+            //also send SMS
+            $subject = "GOC Ticket submission failure";
+            $body = "GOC Ticket form submission error has occured.";
+            sendSMS(config()->error_sms_to, $subject, $body);
+        }
+        elog($mail_body);
     }
     
     protected function getCaptchaCode()

@@ -94,7 +94,7 @@ class ViewerController extends Zend_Controller_Action
             //parse out time and by..
             $info_a = split(" by ", $info);
             $date_str = str_replace(" at ", " ", $info_a[0]);
-            $time = strtotime($date_str);
+            $time = strtotime($date_str) + 3600;
             $by = str_replace(":", "", $info_a[1]);
 
             if(isset($descs[$time])) {
@@ -111,7 +111,7 @@ class ViewerController extends Zend_Controller_Action
                 $fields = split("____________history", $hist);
 
                 //parse out fields
-                $time = strtotime($fields[0].$fields[1]);
+                $time = strtotime($fields[0].$fields[1]) + 3600;
                 $by = $fields[2];
                 $action = $fields[3];
                 $action = str_replace(";", "\n", $action);

@@ -8,9 +8,7 @@ class Footprint
     {
         $this->id = null; //if this is not null, we will do edit instead of insert
 
-        $this->project_id = "71";
         $this->submitter = "OSG-GOC";
-        $this->project_name  = "Open Science Grid";
         $this->status = "Engineering";
         $this->priority_number = "4";
         $this->description = "";
@@ -261,6 +259,7 @@ Unscheduled__bOutage
             $call = "MRWebServices__editIssue_goc";
             $params = array(
                 "mrID"=>$this->id,
+                "projectID"=>71,
                 "description" => $desc
             );
          }

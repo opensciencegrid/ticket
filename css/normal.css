@@ -49,7 +49,7 @@ h4
     padding-bottom: 2px;
     margin-bottom: 2px;
     font-size: 12px;
-    border-bottom: thin dotted #333;
+    border-bottom: thin solid #333;
 }
 
 a
@@ -160,7 +160,7 @@ background-color: #FFFCD8;
 background-image: url('../images/a5.gif');
 background-repeat: no-repeat;
 background-position: top left;
-border: dotted 1px #DFD999;
+border: solid 1px #DFD999;
 }
 
 blockquote p

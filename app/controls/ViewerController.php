@@ -38,6 +38,9 @@ class ViewerController extends Zend_Controller_Action
         //$this->view->submitter_email = str_replace("@", " _at_ ", $this->view->submitter_email);
         $this->view->cc = $detail->Email__baddress;
 
+        //originating ticket ID
+        $this->view->originating_ticket_id = $detail->Originating__bTicket__bNumber;
+
         $this->view->submitter_phone = $detail->Office__bPhone;
         $this->view->submitter_vo = Footprint::parse($detail->Originating__bVO__bSupport__bCenter);
 

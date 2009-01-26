@@ -23,6 +23,13 @@ if(isset($this->warning)) {
         echo "<td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td>";
         echo "</tr>";
     }
+
+    if($this->originating_ticket_id != "") {
+        echo "<tr>";
+        echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
+        echo "<td class=\"header\"></td><td></td>";
+        echo "</tr>";
+    }
 ?>
 <tr>
     <td colspan="4"><h3>Ticket Info</h3></td>

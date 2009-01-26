@@ -103,6 +103,34 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
 }
 
 /*
+GGUS Ticket Fields explanation
+<Ticket>
+    <GHD_Request-ID>GGUS Request-ID</GHD_Request-ID>
+    <GHD_Loginname>DN string or login name of ticket submitter</GHD_Loginname>
+    <GHD_Name>name of ticket submitter</GHD_Name>
+    <GHD_E-Mail>email address of ticket submitter</GHD_E-Mail>
+    <GHD_Phone>phone number of ticket submitter</GHD_Phone>
+    <GHD_Experiment>VO affected by problem reported</GHD_Experiment>
+    <GHD_Responsible_Unit>Support Unit to which ticket is assigned</GHD_Responsible_Unit>
+    <GHD_Status>status of ticket</GHD_Status>
+    <GHD_Priority>priority of ticket</GHD_Priority>
+    <GHD_Short_Description>short description of problem (max.255 chars)</GHD_Short_Description>
+    <GHD_Description>detailed description of problem (max. 4000 chars)</GHD_Description>
+    <GHD_Experiment_Specific_Problem>is problem VO specific? Yes|No</GHD_Experiment_Specific_Problem>
+    <GHD_Type_Of_Problem>type of problem reported</GHD_Type_Of_Problem>
+    <GHD_Date_Time_Of_Problem>date and time the problem occured</GHD_Date_Time_Of_Problem>
+    <GHD_Diary_Of_Steps>mail replies from user and comments on automatic updates done by the system</GHD_Diary_Of_Steps>
+    <GHD_Public_Diary>comment sent to the user by mail</GHD_Public_Diary>
+    <GHD_Short_Solution>short solution of problem (max.255 chars)</GHD_Short_Solution>
+    <GHD_Detailed_Solution>detailed solution of problem (max. 4000 chars)</GHD_Detailed_Solution>
+    <GHD_Internal_Diary>internal comment not shown to the user</GHD_Internal_Diary>
+    <GHD_Origin_ID>ID of ticket in a different system than GGUS; these tickets are routed from any other system via GGUS to OSG</GHD_Origin_ID>
+    <GHD_Last_Modifier>name of person who modified the ticket last</GHD_Last_Modifier>
+    <GHD_Affected_Site>name of the affected site</GHD_Affected_Site>
+</Ticket>
+
+Sample Ticket
+
 <GHD_Request-ID>606</GHD_Request-ID>
 <GHD_Loginname>/O=GermanGrid/OU=FZK/CN=Guenter
 Grein</GHD_Loginname>
@@ -128,11 +156,10 @@ Grein</GHD_Loginname>
 <GHD_Origin_ID></GHD_Origin_ID>
 <GHD_Last_Modifier>Paul Mustermann</GHD_Last_Modifier>
 <GHD_Affected_Site>BNL_ATLAS_1</GHD_Affected_Site>
-</Ticket>
 
-I guess the most important information for you is
 <GHD_Experiment>atlas</GHD_Experiment>
 <GHD_Affected_Site>BNL_ATLAS_1</GHD_Affected_Site>
 <GHD_Responsible_Unit>OSG</GHD_Responsible_Unit>
+</Ticket>
 */
 

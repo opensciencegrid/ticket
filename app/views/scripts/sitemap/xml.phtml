@@ -10,7 +10,7 @@ echo "<"."?xml version=\"1.0\" encoding=\"UTF-8\"?".">\n";
         $url = fullbase()."/viewer?id=".$id;
 
         $freq = "daily";
-        if($ticket->mrstatus == "Closed") $freq = "monthly";
+        if($ticket->mrstatus == "Closed") $freq = "yearly";
 ?>
    <url>
       <loc><?=$url?></loc>

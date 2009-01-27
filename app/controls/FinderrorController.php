@@ -29,8 +29,9 @@ class FinderrorController extends Zend_Controller_Action
             if($this->berror) {
                 $msg = "Dear GOC,\n\nFinderror page is reporting some issues. Please fix.\n\n".fullbase()."/finderror";
                 $user = $_ENV["USER"];
-                mail(config()->finderror_address, "[gocticket] A friendly reminder for footprint issues", $msg, "From: $user");
-                echo "Detected error - Sent error email";
+                $emailto = config()->finderror_address;
+                mail($emailto, "[gocticket] A friendly reminder for footprint issues", $msg, "From: $user");
+                echo "Detected error - Sent error email to $emailto";
             } else {
                 echo "No error detected - not sending error email";
             }

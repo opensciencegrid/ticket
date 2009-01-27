@@ -1,6 +1,6 @@
 <?
 
-class BaseController extends Zend_Controller_Action 
+class BaseController extends Zend_Controller_Action
 { 
     //send email & sms
     protected function sendErrorEmail($e)

@@ -5,7 +5,7 @@ class FinderrorController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "admin";
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
             $this->render("error/404", null, true);
             return;
         }
@@ -14,8 +14,30 @@ class FinderrorController extends Zend_Controller_Action
         $model = new VO();
         $this->oim_vos = $model->fetchAll();
 
+        $this->berror = false;
+
         $this->view->error_origvos = array();
         $this->view->error_destvos = array();
+        $this->view->error_sc = array();
+        $this->view->error_email = array();
+    }
+
+    public function emailerrorAction()
+    {
+        if(islocal()) {
+            $this->indexAction();
+            if($this->berror) {
+                $msg = "Dear GOC,\n\nFinderror page is reporting some issues. Please fix.\n\n".fullbase()."/finderror";
+                $user = $_ENV["USER"];
+                mail(config()->finderror_address, "[gocticket] A friendly reminder for footprint issues", $msg, "From: $user");
+                echo "Detected error - Sent error email";
+            } else {
+                echo "No error detected - not sending error email";
+            }
+        } else {
+            echo "localhost only";
+        }
+        $this->render("none", null, true);
     }
 
     public function indexAction() 
@@ -47,6 +69,7 @@ class FinderrorController extends Zend_Controller_Action
             if(!$found) {
                 if($orig_vo2 == "other") continue;
                 $this->view->error_origvos[] = array("only in fp", $orig_vo2, "");
+                $this->berror = true;
             }
         } 
         //find oim only
@@ -62,6 +85,7 @@ class FinderrorController extends Zend_Controller_Action
             }
             if(!$found) {
                 $this->view->error_origvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                $this->berror = true;
             }
         } 
     }
@@ -85,6 +109,7 @@ class FinderrorController extends Zend_Controller_Action
             if(!$found) {
                 if($dest_vo2 == "other") continue;
                 $this->view->error_destvos[] = array("only in fp", $dest_vo2, "");
+                $this->berror = true;
             }
         } 
         //find oim only
@@ -100,13 +125,13 @@ class FinderrorController extends Zend_Controller_Action
             }
             if(!$found) {
                 $this->view->error_destvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                $this->berror = true;
             }
         } 
     }
 
     public function analyze_sc()
     { 
-        $this->view->error_sc = array();
         $teams = $this->schema_model->getteams();
         //find suppor centers
         $fp_scs = array();
@@ -130,6 +155,7 @@ class FinderrorController extends Zend_Controller_Action
             }
             if(!$found) {
                 $this->view->error_sc[] = array("only in fp", $fp_sc, "");
+                $this->berror = true;
             }
         } 
         foreach($oim_scs as $oim_sc) {
@@ -142,14 +168,13 @@ class FinderrorController extends Zend_Controller_Action
             }
             if(!$found) {
                 $this->view->error_sc[] = array("only in oim", "", $oim_sc->footprints_id);
+                $this->berror = true;
             }
         }
     }
     
     public function analyze_scemail()
     { 
-        $this->view->error_email = array();
-
         $model = new SC();
         $oim_scs = $model->fetchAll();
         $emails = $this->schema_model->getemail();
@@ -168,11 +193,13 @@ class FinderrorController extends Zend_Controller_Action
                         $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "");
                     } else {
                         $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "* Email address doesn't match");
+                        $this->berror = true;
                     }
                 }
             }
             if(!$found) {
                 $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, "", "", "* No such user ID in FP.");
+                $this->berror = true;
             }
         }
     }
@@ -204,6 +231,7 @@ class FinderrorController extends Zend_Controller_Action
             if(!$found) {
                 $id = $ticket->mrid;
                 $this->view->na_assignments[] = $ticket;
+                $this->berror = true;
             }
         }
     }
@@ -230,6 +258,7 @@ class FinderrorController extends Zend_Controller_Action
                 $sc_name = $sc->footprints_id;
             } else {
                 $note .= "Failed to find this resource in rsvextra.View_resourceSiteScPub";
+                $this->berror = true;
             }
             $this->view->resource_sclink[] = array(
                 "resource_name"=>$name,

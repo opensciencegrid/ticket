@@ -22,7 +22,7 @@ class AdminController extends BaseController
     private function accesscheck($remote_addr = null)
     {
         //make sure the request originated from localhost
-        if($_SERVER["REMOTE_ADDR"] != $remote_addr and $_SERVER["REMOTE_ADDR"] != $_SERVER["SERVER_ADDR"]) {
+        if($_SERVER["REMOTE_ADDR"] != $remote_addr and !islocal()) {
             //pretend that this page doesn't exist
             $this->getResponse()->setRawHeader('HTTP/1.1 404 Not Found');
             echo "access denided";

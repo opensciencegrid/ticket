@@ -62,6 +62,14 @@ function isbot()
     return false; 
 }
 
+function islocal()
+{
+    if($_SERVER["REMOTE_ADDR"] == $_SERVER["SERVER_ADDR"]) {
+        return true;
+    }
+    return false;
+}
+
 //do the db lookup against SSL cert. Store User object to the registry.
 //I am not sure if we are going to store this on session instead, 
 //and do authentication if it's not done already..

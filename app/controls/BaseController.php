@@ -21,7 +21,7 @@ class BaseController extends Zend_Controller_Action
             $email = "hayashis@indiana.edu"; //senders e-mail adress (needs to be valid GOC user?)
             $recipient = config()->error_email_to;
             $subject = "[ticket_form] Submission Failed";
-            $header = "From: ".$_ENV["USER"]."@".$_SERVER["HTTP_HOST"]."\r\n";
+            $header = "From: ".config()->email_from."\r\n";
 
             //now, send the email
             mail($recipient, $subject, $mail_body, $header);

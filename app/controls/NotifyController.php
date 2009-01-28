@@ -57,7 +57,6 @@ class NotifyController extends BaseController
                 $e->addAddress("osg-sites@opensciencegrid.org");
             }
             $e->setTo('goc@opensciencegrid.org');
-            $e->setFrom('goc@opensciencegrid.org');
             $body = $form->getValue('body');
             $e->setBody($body);
             $subject = $form->getValue('subject');
@@ -93,6 +92,14 @@ class NotifyController extends BaseController
         }
     }
 
+/*
+    public function testAction()
+    {
+        $r = new RSSFeed();
+        $r->insert("First Post", null, "Some desc..", "Here is the first post from GOC Ticket application.");
+        $this->render("none", null, true);
+    }
+*/
     private function getForm()
     {
         $form = $this->initForm("notify", false); //false - no contact information necessary
@@ -176,7 +183,6 @@ class SecurityEmail
     }
 
     public function setTo($val) { $this->to = $val; }
-    public function setFrom($val) { $this->from = $val; }
     public function setSubject($val) { $this->subject = $val; }
     public function setBody($val) { $this->body = $val; }
 
@@ -221,7 +227,7 @@ class SecurityEmail
     public function dump()
     {
         echo "<hr><p>To: ".$this->to."\n\n";
-        echo "<hr><p>From: ".$this->from."\n\n";
+        echo "<hr><p>From: ".config()->email_from."\n\n";
         echo "<hr><p>Subject: ".$this->subject."\n\n";
         echo "<hr><p>BCC: ".$this->bcc."\n\n";
         echo "<hr><p>Body: ".$this->body."\n\n";
@@ -233,7 +239,7 @@ class SecurityEmail
         mail($this->to, 
             $this->subject, 
             $this->body,
-            "From: " . $this->from . " \nBcc: " . $this->bcc);
+            "From: " . config()->email_from . " \nBcc: " . $this->bcc);
 
         slog("[submit] Security Email Sent with following content --------------------------");
         slog(print_r($this, true));

@@ -60,25 +60,9 @@ function checked($e)
 <?=$this->element->body?>
 <?=$this->element->rss?>
 </dl>
-    <dl id="description_area">
-    <?=$this->element->description?>
-    </dl>
-<dl>
 
+<dl>
 <?=$this->element->submit_button?>
 </dl>
 </form>
 
-<script type="text/javascript">
-
-$("#rss").change(showhide_desc);
-showhide_desc();
-function showhide_desc() {
-    var rss  = $("#rss").attr("checked");
-    if(rss == 0) {
-        $("#description_area").hide();
-    } else {
-        $("#description_area").show("fast");
-    }
-}
-</script>

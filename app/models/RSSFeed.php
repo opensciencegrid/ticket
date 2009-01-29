@@ -2,7 +2,7 @@
 
 class RSSFeed
 {
-    public function insert($subject, $ticket_id, $description, $body)
+    public function insert($subject, $ticket_id, $body)
     {
         $ticket_id = (int)$ticket_id;
 
@@ -12,7 +12,6 @@ class RSSFeed
         $row = array(
             'title' => $subject,
             'ticket' => $ticket_id,
-            'description' => $description,
             'date' => time(),
             'body' => $body
         );

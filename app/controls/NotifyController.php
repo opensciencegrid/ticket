@@ -27,10 +27,12 @@ class NotifyController extends BaseController
 
         $form = $this->getForm();
 
+/*
         if($do_rss) {
             $e = $form->getElement("description");
             $e->setRequired(true);
         }
+*/
 
         if($form->isValid($_POST)) {
             //construct security email object
@@ -75,9 +77,9 @@ class NotifyController extends BaseController
                 } else {
                     $e->send();
                     if($do_rss) {
-                        $description = $form->getValue('description');
+                        //$description = $form->getValue('description');
                         $r = new RSSFeed();
-                        $r->insert($subject, $ticket_id, $description, $body);
+                        $r->insert($subject, $ticket_id, $body);
                     }
                     $this->render("processed", null, true);
                 }
@@ -96,10 +98,11 @@ class NotifyController extends BaseController
     public function testAction()
     {
         $r = new RSSFeed();
-        $r->insert("First Post", null, "Some desc..", "Here is the first post from GOC Ticket application.");
+        $r->insert("Second Post <test> & !@#$%", null, "Second Post content '\"<test> !@%$");
         $this->render("none", null, true);
     }
 */
+
     private function getForm()
     {
         $form = $this->initForm("notify", false); //false - no contact information necessary
@@ -143,11 +146,13 @@ class NotifyController extends BaseController
         $e->setLabel("Publish to RSS");
         $form->addElement($e);
 
+/*
         $e = new Zend_Form_Element_Text('description');
         $e->setLabel("RSS Description");
         $e->setDescription("* For RSS Feed");
         $e->addDecorator("description");
         $form->addElement($e);
+*/
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Send Email");

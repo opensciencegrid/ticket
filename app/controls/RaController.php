@@ -76,7 +76,7 @@ class RaController extends BaseController
             {
                 $this->view->mrid = $footprint->submit();
                 if(!config()->simulate) {
-                    //Send generated email..
+                    //Send email..
                     mail($email_recipient, $email_subject, $email_content, $email_header);
                 }
                 $this->render("success", null, true);

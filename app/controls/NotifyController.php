@@ -21,6 +21,7 @@ class NotifyController extends BaseController
 
     public function submitAction()
     {
+        $do_rss = false;
         if($_REQUEST["rss"] == 1) {
             $do_rss = true;
         }
@@ -248,12 +249,15 @@ class SecurityEmail
 
     public function send()
     {
+/*
         mail($this->to, 
             $this->subject, 
             $this->body,
             "From: " . $this->from . " \nBcc: " . $this->bcc);
+*/
+        signedmail($this->to, $this->subject, $this->body, "Bcc: ".$this->bcc);
 
-        slog("[submit] Security Email Sent with following content --------------------------");
+        slog("[submit] Signed notification email sent with following content --------------------------");
         slog(print_r($this, true));
     }
 }

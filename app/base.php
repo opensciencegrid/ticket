@@ -42,3 +42,27 @@ function sendSMS($users, $subject, $body)
     dlog("Sent SMS notification to $recipient user:".print_r($users, true));
 }
 
+function signedmail($to, $subject, $body, $header = "")
+{
+    $key = config()->signed_email_key;
+    $cert = config()->signed_email_cert;
+
+    //store the original body (so that openssl can process it)
+    $original_body = tempnam("/tmp", "gocticket");
+    $handle = fopen($original_body, "w");
+    fwrite($handle, $body);
+    fclose($handle);
+
+    //sign the body
+    $signed_body = tempnam("/tmp", "gocticket");
+    system("openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body");
+
+    //insert the signed content and my header to $header
+    $header .= "\r\nFrom: " . config()->signed_email_from."\r\n";
+    $header .= file_get_contents($signed_body);
+
+    //send everything from $header
+    slog($header);
+    return mail($to, $subject, "", $header);
+}
+

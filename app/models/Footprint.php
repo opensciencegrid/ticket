@@ -180,7 +180,7 @@ Unscheduled__bOutage
     private function chooseGOCAssignee()
     {
         //randomly pick one of the GOCers
-        $gocers = array("kagross", "echism");
+        $gocers = config()->goc_assignees;
         $lucky = rand(0, sizeof($gocers)-1);
         return $gocers[$lucky]; 
     }

@@ -97,6 +97,13 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         //$footprint->addDescription($xml->GHD_Public_Diary);
         $footprint->addDescription($xml->GHD_Diary_Of_Steps); 
         $footprint->addDescription($xml->GHD_Internal_Diary);
+        switch($xml->GHD_Status) {
+        case "solved":
+        case "verified":
+            $footprint->setStatus("Closed");
+            $footprint->sendNoAEmail();
+            break;
+        }
     }
 
     return $footprint;

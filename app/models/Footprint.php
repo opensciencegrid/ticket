@@ -30,6 +30,8 @@ class Footprint
 
         $this->setTicketType("Problem__fRequest");
         $this->setReadyToClose("No");
+
+        $this->send_no_ae = false;
     }
 
     public function resetAssignee()
@@ -46,6 +48,8 @@ class Footprint
     public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
+    public function setStatus($v) { $this->status = $v; }
+    public function sendNoAEmail() { $this->send_no_ae = true; }
 
     //1 - critical
     //2 - high
@@ -255,15 +259,23 @@ Unscheduled__bOutage
                 "abfields" => $this->ab_fields,
                 "projfields" => $this->project_fields
             );
+
+
         } else {
             $call = "MRWebServices__editIssue_goc";
             $params = array(
                 "mrID"=>$this->id,
                 "projectID"=>71,
                 "submitter"=>$this->submitter,
+                "status" => $this->status,
                 "description" => $desc
             );
-         }
+        }
+
+        if($this->send_no_ae) {
+            //don't sent email to assignee
+            $params["mail"] = array("assignees"=>0);
+        }
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));

@@ -27,13 +27,6 @@ class NotifyController extends BaseController
 
         $form = $this->getForm();
 
-/*
-        if($do_rss) {
-            $e = $form->getElement("description");
-            $e->setRequired(true);
-        }
-*/
-
         if($form->isValid($_POST)) {
             //construct security email object
             $e = new SecurityEmail();
@@ -58,6 +51,16 @@ class NotifyController extends BaseController
             if($form->getValue('sites')) {
                 $e->addAddress("osg-sites@opensciencegrid.org");
             }
+
+            $model = new Person();
+            $person_id = $form->getValue('email_from');
+            if($person_id != "") {
+                $person = $model->fetchPerson($person_id);
+                $e->setFrom($person->first_name." ".$person->last_name." <".$person->primary_email.">");
+            } else {
+                $e->setFrom(config()->email_from);
+            }
+
             $e->setTo('goc@opensciencegrid.org');
             $body = $form->getValue('body');
             $e->setBody($body);
@@ -122,6 +125,16 @@ class NotifyController extends BaseController
         $e = new Zend_Form_Element_Checkbox('operations');
         $form->addElement($e);
 
+        $e = new Zend_Form_Element_Select('email_from');
+        $e->setLabel("Sender Address");
+        $e->addMultiOption(null, config()->email_from);
+        $model = new PrimaryEmail();
+        $contacts = $model->fetchAll(4);
+        foreach($contacts as $contact) {
+            $e->addMultiOption($contact->person_id, $contact->first_name." ".$contact->last_name." <".$contact->primary_email.">");
+        }
+        $form->addElement($e);
+
         $e = new Zend_Form_Element_Text('subject');
         $e->setLabel("Subject");
         $e->setRequired(true);
@@ -145,14 +158,6 @@ class NotifyController extends BaseController
         $e = new Zend_Form_Element_Checkbox('rss');
         $e->setLabel("Publish to RSS");
         $form->addElement($e);
-
-/*
-        $e = new Zend_Form_Element_Text('description');
-        $e->setLabel("RSS Description");
-        $e->setDescription("* For RSS Feed");
-        $e->addDecorator("description");
-        $form->addElement($e);
-*/
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("Send Email");
@@ -185,8 +190,10 @@ class SecurityEmail
         $this->h_email = array();
         $this->bcc = "";
         $this->pa_model = new PrimaryAddress();
+        $this->from = config()->email_from;
     }
 
+    public function setFrom($val) { $this->from = $val; }
     public function setTo($val) { $this->to = $val; }
     public function setSubject($val) { $this->subject = $val; }
     public function setBody($val) { $this->body = $val; }
@@ -231,12 +238,12 @@ class SecurityEmail
     }
     public function dump()
     {
-        echo "<hr><p>To: ".$this->to."\n\n";
-        echo "<hr><p>From: ".config()->email_from."\n\n";
-        echo "<hr><p>Subject: ".$this->subject."\n\n";
-        echo "<hr><p>BCC: ".$this->bcc."\n\n";
-        echo "<hr><p>Body: ".$this->body."\n\n";
-        echo "<hr><p>\n\n";
+        echo "<hr>To: ".$this->to."\n\n";
+        echo "<hr>From: ".htmlentities($this->from)."\n\n";
+        echo "<hr>Subject: ".$this->subject."\n\n";
+        echo "<hr>BCC: ".$this->bcc."\n\n";
+        echo "<hr>Body:<pre> ".$this->body."</pre>\n\n";
+        echo "<hr>\n\n";
     }
 
     public function send()
@@ -244,7 +251,7 @@ class SecurityEmail
         mail($this->to, 
             $this->subject, 
             $this->body,
-            "From: " . config()->email_from . " \nBcc: " . $this->bcc);
+            "From: " . $this->from . " \nBcc: " . $this->bcc);
 
         slog("[submit] Security Email Sent with following content --------------------------");
         slog(print_r($this, true));

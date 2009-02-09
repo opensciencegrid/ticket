@@ -2,12 +2,7 @@
       method="<?=$this->escape($this->element->getMethod())?>">
 <dl>
 <dd> 
-    <h3>Message Detail</h3>
-    <p>Send Security Email. No Footprint ticket will be created.</p>
-</dd>
-
-<dd> 
-    <h4>To</h4>
+    <h3>Send To</h3>
 </dd>
 
 <?
@@ -34,7 +29,7 @@ function checked($e)
 </blockquote>
 </dd>
 
-<dd> 
+<dd>
     <p>Mailing Lists:</p>
 <blockquote>
     <input type="hidden" name="support" value="0">
@@ -44,7 +39,7 @@ function checked($e)
     <input type="hidden" name="general" value="0">
     <input type="checkbox" name="general" id="general" value="1" <?=checked($this->element->general)?>>
     OSG-General&nbsp;&nbsp;&nbsp;
- 
+
     <input type="hidden" name="operations" value="0">
     <input type="checkbox" name="operations" id="operations" value="1" <?=checked($this->element->operations)?>>
     OSG-Operations&nbsp;&nbsp;&nbsp;
@@ -54,6 +49,12 @@ function checked($e)
     OSG-Sites&nbsp;&nbsp;&nbsp;
 </blockquote>
 </dd>
+
+<dd>
+<h3>Message</h3>
+</dd>
+
+<?=$this->element->email_from?>
 
 <?=$this->element->subject?>
 <?=$this->element->ticket?>

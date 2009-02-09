@@ -82,7 +82,7 @@ class RsvController extends BaseController
         $form = $this->initForm("rsv", false); //false is for no-yourinfo
 
         $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("I am having this issue in following resource");
+        $element->setLabel("I am having RSV related issue in following resource");
         $element->setRequired(true);
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();

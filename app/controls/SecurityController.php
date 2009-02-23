@@ -23,7 +23,7 @@ class SecurityController extends BaseController
             $footprint->setPriority(1); //set it to critical
             $footprint->addAssignee("rquick", true);//security ticket is assigned to rob
             $footprint->setTicketType("Security");
-            $footprint->setTitle("Security Issue");
+            $footprint->setTitle($form->getValue('title'));
 
             try 
             {
@@ -44,6 +44,13 @@ class SecurityController extends BaseController
     private function getForm()
     {
         $form = $this->initForm("security");
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("Security Issue");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setRequired(true);

@@ -64,7 +64,8 @@ class NotifyController extends BaseController
 
             $e->setTo('goc@opensciencegrid.org');
             $body = $form->getValue('body');
-            $e->setBody($body);
+            $sig = $form->getValue('sig');
+            $e->setBody($body."\n".$sig);
             $subject = $form->getValue('subject');
             $ticket_id = $form->getValue('ticket');
             if($ticket_id != "") { 
@@ -81,7 +82,6 @@ class NotifyController extends BaseController
                 } else {
                     $e->send();
                     if($do_rss) {
-                        //$description = $form->getValue('description');
                         $r = new RSSFeed();
                         $r->insert($subject, $ticket_id, $body);
                     }
@@ -97,15 +97,6 @@ class NotifyController extends BaseController
             $this->render("index");
         }
     }
-
-/*
-    public function testAction()
-    {
-        $r = new RSSFeed();
-        $r->insert("Second Post <test> & !@#$%", null, "Second Post content '\"<test> !@%$");
-        $this->render("none", null, true);
-    }
-*/
 
     private function getForm()
     {
@@ -153,8 +144,13 @@ class NotifyController extends BaseController
         $detail->addValidator(new Zend_Validate_StringLength(1, 1024*1024*16)); //max 16M for MEDIUMTEXT
         $detail->setLabel("Body");
         $detail->setRequired(true);
-        $detail->setValue($this->getTemplate());
         $form->addElement($detail);
+
+        $e = new Zend_Form_Element_Textarea('sig');
+        $e->setLabel("Email Signature");
+        $e->setRequired(true);
+        $e->setValue($this->getSigTemplate());
+        $form->addElement($e);
 
         $e = new Zend_Form_Element_Checkbox('rss');
         $e->setLabel("Publish to RSS");
@@ -166,20 +162,18 @@ class NotifyController extends BaseController
 
         return $form;
     }
-    private function getTemplate()
+    private function getSigTemplate()
     {
-        return "(ENTER MESSAGE HERE)
-
+        return "
 Please submit problems, requests, and questions at:
 https://oim.grid.iu.edu/gocticket/
-
 
 Thank You,
 OSG Grid Operations Center (GOC)
 Submit a GOC ticket: https://oim.grid.iu.edu/gocticket
 Email/Phone: goc@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
-RSS Feed: http://www.grid.iu.edu/news
+RSS Feed: http://osggoc.blogspot.com
 ";
     }
 } 
@@ -249,12 +243,6 @@ class SecurityEmail
 
     public function send()
     {
-/*
-        mail($this->to, 
-            $this->subject, 
-            $this->body,
-            "From: " . $this->from . " \nBcc: " . $this->bcc);
-*/
         signedmail($this->to, $this->subject, $this->body, "Bcc: ".$this->bcc);
 
         slog("[submit] Signed notification email sent with following content --------------------------");

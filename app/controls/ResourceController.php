@@ -30,7 +30,7 @@ class ResourceController extends BaseController
 
             //set description destination vo, assignee
             $footprint->addMeta("Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
-            $footprint->setTitle("Resource Specific Issue on ".$resource->resource_name);
+            $footprint->setTitle($form->getValue('title'));
 
             $admin = $_REQUEST["admin"];
             if($admin) {
@@ -97,6 +97,7 @@ class ResourceController extends BaseController
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_1');
+        $element->setLabel("Resource Name");
         $element->addMultiOption(null, "(Please Select)");
         $resource_model = new Resource;
         $resources = $resource_model->fetchAll(1);
@@ -106,6 +107,7 @@ class ResourceController extends BaseController
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
+        $element->setLabel("Resource Name");
         $element->addMultiOption(null, "(Please Select)");
         $resource_model = new Resource;
         $resources = $resource_model->fetchAll(2);
@@ -117,6 +119,13 @@ class ResourceController extends BaseController
         $element = new Zend_Form_Element_Checkbox('admin');
         $element->setLabel("Check here if you are the admin for this resource, and this is an installation issue.");
         $form->addElement($element);
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("(TBD)");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Description");

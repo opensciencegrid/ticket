@@ -10,7 +10,11 @@
     <?=$this->element->vo_id_requested?>
     </dl>
 <dl>
-
+</dl>
+    <dl id="title_holder">
+    <?=$this->element->title?>
+    </dl>
+<dl>
 <?=$this->element->detail?>
 <?=$this->element->submit_button?>
 </dl>
@@ -25,9 +29,23 @@ function showhide_volist() {
         $("#vo_id_requested_holder").show();
     } 
 }
+function settitle() 
+{
+    var id = this.selectedIndex;
+    var rname = this.options[id].text;
+    $("#title").attr("value", "Request for OSG membership at "+rname);
+    $("#title_holder").show();
+}
 showhide_volist();
 $("#knowvo").change(function() {
     showhide_volist();
+});
+$("#vo_id_requested").change(settitle);
+$("#knowvo").change(function() {
+    var id = this.selectedIndex;
+    if(id == 0) {
+        $("#title").attr("value", "Request for OSG membership");
+    } 
 });
 </script>
 

@@ -17,3 +17,5 @@ class role
     public static $see_security_ticket = 2;
     public static $security_admin = 3;
 }
+
+//role / authtype matrix is in app/config.php

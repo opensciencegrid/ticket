@@ -28,10 +28,8 @@ background: #195866 url('../images/n1.gif') repeat-x;
 
 h2
 {
-    background-color: #c60;
-    color: white;
-    padding: 5px;
-    font-size: 18px;
+    font-weight: normal;
+    font-size: 13px;
 }
 
 h3
@@ -77,16 +75,16 @@ a:hover
     padding: 10px;
 }
 
-.form input[type="submit"]
+.form input[type=submit]
 {
     min-width: 100px;
 }
 
-.form input[type="text"], select
+.form input[type=text], select
 {
     width: 300px;
 }
-.form input[type="text"], select, textarea
+.form input[type=text], select, textarea
 {
     padding: 3px;
 }
@@ -218,13 +216,14 @@ pre
 
 .submenu
 {
+font-family:"trebuchet ms",sans-serif;
 background-color: black;
 padding: 0.3em 2.5em 0.3em 28px;
 }
 .submenu span
 {
-    padding-left: 10px;
-    padding-right: 10px;
+padding-left: 10px;
+padding-right: 10px;
 }
 .submenu a
 {
@@ -320,4 +319,3 @@ ul.subsection_tabs li.tab a.active {
     padding: 3px;
     background-color: #f90;
 }
-

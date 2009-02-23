@@ -59,7 +59,7 @@ class MembershipController extends BaseController
                 $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
                 $title .= "unknown vo";
             }
-            $footprint->setTitle($title);
+            $footprint->setTitle($form->getValue('title'));
 
             //add DN as meta
             $dn = user()->getDN();
@@ -89,6 +89,13 @@ class MembershipController extends BaseController
     private function getForm()
     {
         $form = $this->initForm("membership");
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("Request for OSG membership");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Please describe why you are requesting this membership");

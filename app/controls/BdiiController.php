@@ -19,7 +19,7 @@ class BdiiController extends BaseController
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
-            $footprint->setTitle("BDII Issue");
+            $footprint->setTitle($form->getValue('title'));
 
             if($form->getValue("down") == "true") {
                 $footprint->addMeta("BDII is not responding!!");
@@ -48,15 +48,16 @@ class BdiiController extends BaseController
         }
     }
 
-/*
-    public function composeTicketTitle($form)
-    {
-        return "BDII Issue";
-    }
-*/
     private function getForm()
     {
         $form = $this->initForm("bdii");
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("BDII Issue");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $elem = new Zend_Form_Element_Select('down');
         $elem->setLabel("Is the BDII responding?");

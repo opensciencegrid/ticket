@@ -5,7 +5,11 @@
     <meta name="robots" content="noarchive">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="<?=base()?>/css/normal.css" type="text/css" media="screen"/>
+
+    <link rel="stylesheet" href="<?=base()?>/lib/jquery/theme/ui.all.css" type="text/css" media="screen"/>
     <script type="text/javascript" src="<?=base()?>/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="<?=base()?>/lib/jquery/jquery.ui.all.js"></script>
+
     <?
     if(isset($this->page_title)) {
         echo "<title>".$this->page_title."</title>";
@@ -31,7 +35,7 @@ function submenutitle($id)
 ?>
 <div class="submenu" id="submenu_rsv">
     <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1"><?=submenutitle("open")?></a></span>
-    <span id="submenu_view"><a href="<?=base()?>/opentickets" accesskey="2"><?=submenutitle("view")?></a></span>
+    <span id="submenu_view"><a href="<?=base()?>/navigator" accesskey="2"><?=submenutitle("view")?></a></span>
 <?
 if(in_array(role::$goc_admin, user()->roles)) {
 ?>

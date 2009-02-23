@@ -21,7 +21,5 @@ class ClosedticketsController extends Zend_Controller_Action
             }
             $this->view->tickets[$destination_vo][] = $ticket;
         }
-
-        $this->render();
     }
 } 

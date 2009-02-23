@@ -18,7 +18,7 @@ class OtherController extends BaseController
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
-            $footprint->setTitle("Other Issues");
+            $footprint->setTitle($form->getValue('title'));
 
             try 
             {
@@ -35,15 +35,17 @@ class OtherController extends BaseController
             $this->render("index");
         }
     }
-/*
-    public function composeTicketTitle($form)
-    {
-        return "Other Issues";
-    }
-*/
+
     private function getForm()
     {
         $form = $this->initForm("other");
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("Other Issues");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Description");

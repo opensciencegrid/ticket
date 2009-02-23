@@ -25,14 +25,13 @@ class RsvController extends BaseController
             $footprint->setOriginatingVO("MIS");
 
             //lookup service center
-            //$resource_id = $form->getValue($issue_element_name);
             $resource_id = $issue_element->getValue();
             $rs_model = new ResourceSite();
             $resource = $rs_model->fetch($resource_id);
 
             //set description destination vo, assignee
             $footprint->addMeta("Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
-            $footprint->setTitle("RSV issue on ".$resource->resource_name);
+            $footprint->setTitle($form->getValue("title"));
 
             $template = $form->getValue('detail');
             $template = str_replace("__RESOURCE_NAME__", $resource->resource_name, $template);
@@ -108,6 +107,13 @@ class RsvController extends BaseController
             $element->addMultiOption($resource->resource_id, $resource->name);
         }
         $form->addElement($element);
+
+        $e = new Zend_Form_Element_Text('title');
+        $e->setAttribs(array('size'=>50));
+        $e->setLabel("Title");
+        $e->setValue("(TBD)");
+        $e->setRequired(true);
+        $form->addElement($e);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Template");

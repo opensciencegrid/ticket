@@ -1,0 +1,22 @@
+<?include("app/views/scripts/header.phtml");?>
+
+<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+
+<div id="tabs">
+    <ul>
+        <li><a href="<?=base()?>/navigator/open">Opened Ticket by Destination VO</a></li>
+        <li><a href="<?=base()?>/navigator/openassign">Opened Tickets by GOC Assignee</a></li>
+        <li><a href="<?=base()?>/navigator/close">Closed Ticket</a></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tabs').tabs();
+    $('#tabs').tabs('select', '#tab_<?=$this->listtype?>');
+});
+</script>
+
+<?include("app/views/scripts/footer.phtml");?>
+
+

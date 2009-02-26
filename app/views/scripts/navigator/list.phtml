@@ -1,0 +1,17 @@
+<?
+foreach($this->tickets as $dest=>$tickets)
+{
+    echo "<h3>$dest</h3>";
+    foreach($tickets as $ticket) {
+        $id = $ticket->mrid;
+        $title = $ticket->mrtitle;
+        $url = base()."/viewer?id=$id";
+        $status = Footprint::parse($ticket->mrstatus);
+        $moddate = $ticket->mrupdatedate;
+
+        echo "<p>";
+        echo "<span style='float: right; color: gray;'>$moddate</span>";
+        echo "<a href='$url'>$id</a>$title ($status)";
+        echo "<p>";
+    }
+}

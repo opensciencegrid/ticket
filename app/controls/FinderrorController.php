@@ -161,13 +161,13 @@ class FinderrorController extends Zend_Controller_Action
         foreach($oim_scs as $oim_sc) {
             $found = false;
             foreach($fp_scs as $fp_sc) {
-                if($oim_sc->footprints_id== $fp_sc) {
+                if($oim_sc->footprints_id == $fp_sc) {
                     $found = true;
                     break;
                 }
             }
             if(!$found) {
-                $this->view->error_sc[] = array("only in oim", "", $oim_sc->footprints_id);
+                $this->view->error_sc[] = array("only in oim", "", $oim_sc->short_name."(".$oim_sc->footprints_id.")");
                 $this->berror = true;
             }
         }

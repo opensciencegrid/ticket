@@ -2,20 +2,47 @@
 
 <div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
 
-<div id="tabs">
-    <ul>
-        <li><a href="<?=base()?>/navigator/open">Opened Ticket by Destination VO</a></li>
-        <li><a href="<?=base()?>/navigator/openassign">Opened Tickets by GOC Assignee</a></li>
-        <li><a href="<?=base()?>/navigator/close">Closed Ticket</a></li>
-    </ul>
-</div>
-
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#tabs').tabs();
-    $('#tabs').tabs('select', '#tab_<?=$this->listtype?>');
+    $('#tabs').tabs({
+        select: function(event, ui) {
+            location.href = "<?=fullbase()?>/navigator/"+ui.tab.id;
+            return false;
+        }
+    });
+    $('#tabs li').removeClass("ui-tabs-selected");
+    $('#tabs li').removeClass("ui-state-active");
+    //select current tab
+    $($('#tabs a[id=<?=$this->activetab?>]').parents()[0]).addClass("ui-tabs-selected").addClass("ui-state-active");
 });
 </script>
+
+<div id="tabs">
+  <ul class="tabNavigation">
+    <li><a id="open" href="#open_ref">Opened Ticket by Destination VO</a></li>
+    <li><a id="openassign" href="#openassign_ref">Opened Tickets by GOC Assignee</a></li>
+    <li><a id="close" href="#close_ref">Closed Ticket</a></li>
+  </ul>
+    <?
+    foreach($this->tickets as $dest=>$tickets)
+    {
+        echo "<h3>$dest</h3>";
+        foreach($tickets as $ticket) {
+            $id = $ticket->mrid;
+            $title = $ticket->mrtitle;
+            $url = base()."/viewer?id=$id";
+            $status = Footprint::parse($ticket->mrstatus);
+            $moddate = $ticket->mrupdatedate;
+
+            echo "<p>";
+            echo "<span style='float: right; color: gray;'>$moddate</span>";
+            echo "<a href='$url'>$id</a>$title ($status)";
+            echo "<p>";
+        }
+    }
+    ?>
+</div>
+
 
 <?include("app/views/scripts/footer.phtml");?>
 

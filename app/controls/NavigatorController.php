@@ -9,21 +9,10 @@ class NavigatorController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $model = new Tickets();
-
-        //determine listtype
-        $dirty_listtype = "open";
-        if(isset($_REQUEST["listtype"])) {
-            $dirty_listtype = $_REQUEST["listtype"];
-        }
-        switch($dirty_listtype) {
-        case "open":
-        case "openassign":
-        case "close":
-            $this->view->listtype = $dirty_listtype;
-            break;
-        default:
-            throw new exception("Unknown listtype");
+        if(in_array(role::$goc_admin, user()->roles)) {
+            $this->openassignAction();
+        } else {
+            $this->openAction();
         }
     }
 
@@ -31,34 +20,25 @@ class NavigatorController extends Zend_Controller_Action
     {
         $model = new Tickets();
         $tickets = $model->getopen();
+        $this->view->activetab = "open";
         $this->view->tickets = $this->groupby("mrdest", $tickets);
-        $this->render("list");
+        $this->render("index");
     }
     public function openassignAction()
     {
         $model = new Tickets();
         $tickets = $model->getopen();
-
-/*
-        //load teams (used to group by mrassignees)
-        $aka_model = new AKA();
-        $model = new Schema();
-        $this->teams = array();
-        foreach($model->getteams() as $team) {
-            $team = Footprint::parse($team->team);
-            $this->teams[] = $team;
-        } 
-*/
-
-        $this->view->tickets = $this->groupby("mrassignees", $tickets);
-        $this->render("list");
+        $this->view->activetab = "openassign";
+        $this->view->tickets  = $this->groupby("mrassignees", $tickets);
+        $this->render("index");
     }
     public function closeAction()
     {
         $model = new Tickets();
         $tickets = $model->getclosed();
-        $this->view->tickets = $this->groupby("mrdest", $tickets);
-        $this->render("list");
+        $this->view->activetab = "close";
+        $this->view->tickets  = $this->groupby("mrdest", $tickets);
+        $this->render("index");
     }
 
     protected function groupby($type, $tickets) 
@@ -70,9 +50,8 @@ class NavigatorController extends Zend_Controller_Action
         //find suppor centers
         $fp_scs = array();
         foreach($teams as $team) {
-            //var_dump($team->team);
-            //if($team->team == "OSG__bSupport__bCenters") {
-            if($team->team == "OSG__bGOC__bSupport__bTeam" or
+            if(
+                $team->team == "OSG__bGOC__bSupport__bTeam" or
                 $team->team == "OSG__bOperations__bInfrastructure" or 
                 $team->team == "OSG__bGOC__bManagement" or
                 $team->team == "OSG__bGOC__bService__bDesk") {

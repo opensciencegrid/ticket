@@ -319,3 +319,17 @@ ul.subsection_tabs li.tab a.active {
     padding: 3px;
     background-color: #f90;
 }
+
+table.tab
+{
+width:100%;
+background-color: #70571a; 
+border-collapse: collapse;
+}
+
+table.tab td.tab
+{
+background-color: white;
+border-left: 5px solid #70571a;
+text-align: center;
+}

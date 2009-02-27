@@ -56,6 +56,8 @@ class AdminController extends BaseController
     {
         $this->accesscheck();
 
+        set_time_limit(120);
+
         $model = new Tickets();
         $tickets = $model->getrecent();
         header('content-type: text/xml');

@@ -5,10 +5,6 @@ class FinderrorController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "admin";
-        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
-            $this->render("error/404", null, true);
-            return;
-        }
 
         $this->schema_model = new Schema();
         $model = new VO();
@@ -24,6 +20,10 @@ class FinderrorController extends Zend_Controller_Action
 
     public function emailerrorAction()
     {
+        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
+            $this->render("error/access", null, true);
+            return;
+        }
         if(islocal()) {
             $this->indexAction();
             if($this->berror) {
@@ -42,6 +42,10 @@ class FinderrorController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
+        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
+            $this->render("error/access", null, true);
+            return;
+        }
         $this->analyze_vo_originating();
         $this->analyze_vo_destination();
         $this->analyze_sc();

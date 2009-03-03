@@ -14,7 +14,7 @@ class AdminController extends BaseController
         $this->view->submenu_selected = "admin";
 
         if(!in_array(role::$goc_admin, user()->roles)) {
-            $this->render("error/404", null, true);
+            $this->render("error/access", null, true);
             return;
         }
     }

@@ -5,12 +5,6 @@ class RaController extends BaseController
     public function init()
     {
         $this->view->submenu_selected = "open";
-        //only goc users are allowed
-        if(!in_array(role::$goc_admin, user()->roles)) {
-            $this->render("error/404", null, true);
-            return;
-        }
-
         //load sponsor list
         $model = new Sponsor();
         $this->sponsors = $model->fetchall();
@@ -19,12 +13,24 @@ class RaController extends BaseController
 
     public function indexAction() 
     { 
+        //only goc users are allowed
+        if(!in_array(role::$goc_admin, user()->roles)) {
+            $this->render("error/access", null, true);
+            return;
+        }
+
         $this->view->form = $this->getForm();
         $this->render();
     }
 
     public function submitAction()
     {
+        //only goc users are allowed
+        if(!in_array(role::$goc_admin, user()->roles)) {
+            $this->render("error/access", null, true);
+            return;
+        }
+
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             //validate sponsor (just in case)

@@ -6,21 +6,28 @@ class NotifyController extends BaseController
     {
         $this->view->submenu_selected = "open";
 
-        //only security admin are allowed to access this form
-        if(!in_array(role::$security_admin, user()->roles)) {
-            $this->render("error/404", null, true);
-            return;
-        }
     }
 
     public function indexAction() 
     { 
+        //only security admin are allowed to access this form
+        if(!in_array(role::$security_admin, user()->roles)) {
+            $this->render("error/access", null, true);
+            return;
+        }
+
         $this->view->form = $this->getForm();
         $this->render();
     }
 
     public function submitAction()
     {
+        //only security admin are allowed to access this form
+        if(!in_array(role::$security_admin, user()->roles)) {
+            $this->render("error/access", null, true);
+            return;
+        }
+
         $do_rss = false;
         if($_REQUEST["rss"] == 1) {
             $do_rss = true;

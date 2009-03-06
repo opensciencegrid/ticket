@@ -116,7 +116,7 @@ class RaController extends BaseController
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Select('vo');
-        $e->setLabel("VO");
+        $e->setLabel("Use following VO in the email title");
         $e->setRequired(true);
         $e->addMultiOption("OSG", "OSG");
         $e->addMultiOption("MIS", "MIS");

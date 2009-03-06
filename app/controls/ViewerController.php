@@ -16,7 +16,6 @@ class ViewerController extends Zend_Controller_Action
             $this->render("nosuchticket");
             return;
         } 
-        var_dump($detail);
 
         //prevent security ticket to be accessible
         if($detail->Ticket__uType == "Security") {

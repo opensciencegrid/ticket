@@ -3,12 +3,80 @@
 Please tell us who you are so that we can send you ticket updates.
 </p>
 
+<table>
+<tr>
+<td>
 <?=$this->element->firstname?>
 <?=$this->element->lastname?>
 <?=$this->element->email?>
 <?=$this->element->phone?>
 <?=$this->element->vo_id?>
-
+</td>
+<?
+if(in_array(role::$goc_admin, user()->roles)) {
+    ?>
+<td style="vertical-align: middle;">
 <br/><br/>
-
+<img src="<?=base()?>/images/orange_arrow.png">
+</td>
+<td style="vertical-align: middle;">
+<div class="orange-round">
+Populate from someone else's contact information<br/>
+<label class="required" for="careof">Name</label><br/>
+    <?
+    echo "<input type='text' id=\"careof\"/>";
+    echo "<script type='text/javascript'>";
+    $model = new Person();
+    $persons = $model->fetchAll();
+    $persons_json = "";
+    foreach($persons as $person) 
+    {
+        $fullname = trim($person->first_name. " ".$person->last_name);
+        $fname = $person->first_name;
+        $lname = $person->last_name;
+        $email = $person->primary_email;
+        $phone = $person->primary_phone;
+        if($persons_json != "") $persons_json .= ",\n";
+        $persons_json .= "{ fullname: \"$fullname\", 
+            id: \"$id\",
+            firstname: \"$fname\",
+            lastname: \"$lname\",
+            email: \"$email\",
+            phone: \"$phone\"}";
+    }
+    ?>
+    var persons = [
+        <?=$persons_json?>
+    ];
+    $(document).ready(function() {
+        $("#careof").autocomplete(persons, {
+            mustMatch: true,
+            matchContains: true,
+            width: 500,
+            formatItem: function(row, i, max) {
+                return row.fullname + "<br/>Email: " + row.email;
+            },
+            formatMatch: function(row, i, max) {
+                return row.fullname + " " + row.email;
+            },
+            formatResult: function(row) {
+                return row.fullname;
+            }
+        });
+        $("#careof").result(function(event, data, formatted) {
+            $("#firstname").val(data.firstname);
+            $("#lastname").val(data.lastname);
+            $("#email").val(data.email);
+            $("#phone").val(data.phone);
+            $("#vo_id").val(-1); //reset vo to i-don-know
+        });
+    });
+    </script>
+    </div>
+    </td>
+    <?
+}
+?>
+</table>
+<br/><br/>
 

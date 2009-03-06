@@ -75,6 +75,29 @@ a:hover
     padding: 10px;
 }
 
+.menu
+{
+-moz-border-radius-topleft: 0px;
+-moz-border-radius-topright: 0px;
+-moz-border-radius-bottomright: 15px;
+-moz-border-radius-bottomleft: 15px;
+-webkit-border-top-left-radius: 0px;
+-webkit-border-top-right-radius: 0px;
+-webkit-border-bottom-left-radius: 15px;
+-webkit-border-bottom-right-radius: 15px;
+}
+
+.form
+{
+-moz-border-radius-topleft: 15px;
+-moz-border-radius-topright: 15px;
+-moz-border-radius-bottomright: 15px;
+-moz-border-radius-bottomleft: 15px;
+-webkit-border-top-left-radius: 15px;
+-webkit-border-top-right-radius: 15px;
+-webkit-border-bottom-left-radius: 15px;
+-}
+
 .form input[type=submit]
 {
     min-width: 100px;
@@ -301,6 +324,16 @@ ul.subsection_tabs li.tab a.active {
     padding-bottom: 10px; 
     border: 1px solid #f90;
     margin-bottom: 6px;
+
+-moz-border-radius-topleft: 0px;
+-moz-border-radius-topright: 0px;
+-moz-border-radius-bottomright: 15px;
+-moz-border-radius-bottomleft: 15px;
+-webkit-border-top-left-radius: 0px;
+-webkit-border-top-right-radius: 0px;
+-webkit-border-bottom-left-radius: 15px;
+-webkit-border-bottom-right-radius: 15px;
+
 }
 
 .update_history
@@ -318,6 +351,20 @@ ul.subsection_tabs li.tab a.active {
 {
     padding: 3px;
     background-color: #f90;
+}
+
+.orange-round
+{
+-moz-border-radius-topleft: 15px;
+-moz-border-radius-topright: 15px;
+-moz-border-radius-bottomright: 15px;
+-moz-border-radius-bottomleft: 15px;
+-webkit-border-top-left-radius: 15px;
+-webkit-border-top-right-radius: 15px;
+-webkit-border-bottom-left-radius: 15px;
+-webkit-border-bottom-right-radius: 15px;
+padding: 10px;
+background-color: orange;
 }
 
 table.tab

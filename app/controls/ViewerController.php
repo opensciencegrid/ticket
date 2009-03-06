@@ -137,8 +137,8 @@ class ViewerController extends Zend_Controller_Action
         $client = new SoapClient(null, 
             array(      'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                         'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc", 
-            array(config()->webapi_user, config()->webapi_password, "", 71, $id));
+        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc_itb", 
+            array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         dlog("done");
         return $ret;
     }

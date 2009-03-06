@@ -46,8 +46,10 @@ class Tickets
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";
         }
+        $projectid = config()->project_id;
         $ret = $client->__soapCall("MRWebServices__search_goc",
-            array(config()->webapi_user, config()->webapi_password, "", "select $column from MASTER71 ".$query));
+				   //            array(config()->webapi_user, config()->webapi_password, "", "select $column from MASTER71 ".$query)); // agopu testing ITB project
+            array(config()->webapi_user, config()->webapi_password, "", "select $column from MASTER$projectid ".$query));
         dlog("Ticket::dosearch($query)");
         return $ret;
     }

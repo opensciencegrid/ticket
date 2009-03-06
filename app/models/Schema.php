@@ -44,7 +44,7 @@ class Schema
     {
         dlog("Schema::doget($what)");
         $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
-        $ret = $client->__soapCall("MRWebServices__schema_goc_itb", array(config()->webapi_user, config()->webapi_password, "", $what));
+        $ret = $client->__soapCall("MRWebServices__schema_goc", array(config()->webapi_user, config()->webapi_password, "", $what));
         dlog("Schema::doget($what) -- done");
         return $ret;
     }

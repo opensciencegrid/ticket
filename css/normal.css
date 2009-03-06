@@ -16,20 +16,26 @@ p
     margin: 5px;
 }
 
-h1
+
+#header
 {
-    color: white;
-    padding: 10px;
-    font-size: 20px;
-height:40px;
+padding-left: 30px;
 background: #195866 url('../images/n1.gif') repeat-x;
-
+height:60px;
+font-family: 'Trebuchet MS';
 }
-
-h2
+#header h1
 {
-    font-weight: normal;
-    font-size: 13px;
+color: white;
+padding-top: 8px;
+padding-bottom: 8px;
+font-size: 14pt;
+}
+#header h2
+{
+color: #EfE8C2;
+font-weight: normal;
+font-size: 13pt;
 }
 
 h3
@@ -241,12 +247,14 @@ pre
 {
 font-family:"trebuchet ms",sans-serif;
 background-color: black;
-padding: 0.3em 2.5em 0.3em 28px;
+padding: 6px 2.5em 4px 28px;
 }
 .submenu span
 {
 padding-left: 10px;
 padding-right: 10px;
+padding-bottom: 4px;
+padding-top: 3px;
 }
 .submenu a
 {
@@ -261,9 +269,23 @@ color: #7e6B09;
 text-decoration: underline;
 background-color: black;
 }
-.submenu span.selected a
+.submenu span.selected
 {
-    color: #fff;
+    color: #7e6b09;
+    background-color: white;
+-moz-border-radius-topleft: 5px;
+-moz-border-radius-topright: 5px;
+-moz-border-radius-bottomright: 0px;
+-moz-border-radius-bottomleft: 0px;
+-webkit-border-top-left-radius: 5px;
+-webkit-border-top-right-radius: 5px;
+-webkit-border-bottom-left-radius: 0px;
+-webkit-border-bottom-right-radius: 0px;
+}
+.submenu span.selected a:hover
+{
+color: inherit;
+background-color: inherit;
 }
 
 ul.subsection_tabs {
@@ -379,4 +401,10 @@ table.tab td.tab
 background-color: white;
 border-left: 5px solid #70571a;
 text-align: center;
+}
+
+.ticket_update
+{
+    text-align: right;
+    padding: 2px; 
 }

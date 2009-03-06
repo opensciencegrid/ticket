@@ -16,6 +16,7 @@ class ViewerController extends Zend_Controller_Action
             $this->render("nosuchticket");
             return;
         } 
+        var_dump($detail);
 
         //prevent security ticket to be accessible
         if($detail->Ticket__uType == "Security") {
@@ -137,7 +138,7 @@ class ViewerController extends Zend_Controller_Action
         $client = new SoapClient(null, 
             array(      'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                         'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc_itb", 
+        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc", 
             array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         dlog("done");
         return $ret;

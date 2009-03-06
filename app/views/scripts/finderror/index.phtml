@@ -1,21 +1,30 @@
 <?include("app/views/scripts/header.phtml");?>
 <div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Find Error</div>
 
-<h2>GOC Ticket Issues</h2>
-
 <h3>Open Tickets with no GOC member assignments</h3>
 <?
 if(count($this->na_assignments) == 0) {
-    echo "Congulatulations. All ticket has GOC member assignments.";
+    echo "<p>Congulatulations. All ticket has GOC member assignments.</p>";
 } else {
     foreach($this->na_assignments as $na) {
         echo "<p><a href=\"".fullbase()."/viewer?id=".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
     }
-    echo "<blockquote>In order to fix this issue, assign at least one GOC member to these tickets via FP. </blockquote>";
+    echo "<blockquote>In order to fix this issue, assign at least one GOC member to these tickets via FP.";
+    echo "</blockquote>";
+}
+
+echo "<h3>Team Dump</h3>";
+var_dump($this->teams);
+foreach($this->teams as $team_entry) {
+    $team = Footprint::parse($team_entry->team);
+    if($team == "OSG GOC Support Team" || $team == "OSG Operations Infrastructure" || $team == "OSG GOC Management") {
+        echo "<h4>$team</h4>";
+        echo $team_entry->members;
+    }
 }
 ?>
 
-<h2>OIM/FP Match</h2>
+<h3>OIM/FP Match</h3>
 <blockquote>
 <p>GOC Ticket submitter pulls information from OIM and submit tickets on FP system which means that certain types of information needs to be synchronized in order to prevent melt down of the system (or I should say, un-defined behavior..) </p>
 <p>

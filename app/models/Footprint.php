@@ -245,7 +245,7 @@ Unscheduled__bOutage
 
         //determine if we are doing create or update
         if($this->id === null) {
-            $call = "MRWebServices__createIssue_goc_itb";
+            $call = "MRWebServices__createIssue_goc";
             $params = array(
                 "mrID"=>$this->id,
                 "projectID"=>config()->project_id,
@@ -262,7 +262,7 @@ Unscheduled__bOutage
 
 
         } else {
-            $call = "MRWebServices__editIssue_goc_itb";
+            $call = "MRWebServices__editIssue_goc";
             $params = array(
                 "mrID"=>$this->id,
                 "projectID"=>config()->project_id,

@@ -5,8 +5,7 @@ if(isset($this->warning)) {
     echo "<p class=\"warning\">".$this->warning."</p>";
 }
 ?>
-<h2><?=$this->page_title?></h2>
-
+<b><?=$this->page_title?></b>
 <div>
 <table width="100%">
 <tr>
@@ -64,7 +63,10 @@ if(isset($this->warning)) {
 
 <div style="clear: both;">
 <h3>Updates</h3>
-<br/>
+<?
+$subject = "ISSUE=".$this->ticket_id." PROJ=".config()->project_id;
+?>
+<div class="ticket_update"><a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>&body=[Please attach files on this email]">Add Attachments via Email</a></div>
 <?
 foreach($this->descs as $time=>$desc)
 {

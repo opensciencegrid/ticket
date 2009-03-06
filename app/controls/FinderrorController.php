@@ -210,6 +210,7 @@ class FinderrorController extends Zend_Controller_Action
     public function analyze_ticket_assignment()
     {
         $teams = $this->schema_model->getteams();
+        $this->view->teams = $teams;
         $members = array();
         foreach($teams as $team_entry) {
             $team = Footprint::parse($team_entry->team);

@@ -37,12 +37,7 @@ Populate from someone else's contact information<br/>
         $email = trim($person->primary_email);
         $phone = trim($person->primary_phone);
         if($persons_json != "") $persons_json .= ",\n";
-        $persons_json .= "{ fullname: \"$fullname\", 
-            id: \"$id\",
-            firstname: \"$fname\",
-            lastname: \"$lname\",
-            email: \"$email\",
-            phone: \"$phone\"}";
+        $persons_json .= "{ fullname: \"$fullname\", firstname: \"$fname\", lastname: \"$lname\", email: \"$email\", phone: \"$phone\"}";
     }
     ?>
     var persons = [

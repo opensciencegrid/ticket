@@ -1,5 +1,20 @@
 <?
 
+function status2style($status)
+{
+    switch($status)
+    {
+        case "Open": return "ticketid_open";
+        case "Engineering": return "ticketid_engineering";
+        case "Customer": return "ticketid_customer";
+        case "Network Administration": return "ticketid_networkadministration";
+        case "Support Agency": return "ticketid_supportagency";
+        case "Vendor": return "ticketid_vendor";
+        case "Resolved": return "ticketid_resolved";
+        case "Closed": return "ticketid_closed";
+    }
+}
+
 //returns a unique id number for div element (only valid for each session - don't store!)
 function getuid()
 {

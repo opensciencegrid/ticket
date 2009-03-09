@@ -4,8 +4,8 @@
 if(isset($this->warning)) {
     echo "<p class=\"warning\">".$this->warning."</p>";
 }
+echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
 ?>
-<b><?=$this->page_title?></b>
 <div>
 <table width="100%">
 <tr>
@@ -40,7 +40,53 @@ if(isset($this->warning)) {
 
 <tr>
     <td class="header">Priority:</td><td><?=$this->priority?></td>
-    <td class="header personal">CC:</td>
+    <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
+</tr>
+
+<tr>
+    <td class="header">Status:</td><td>
+<?
+    $style = status2style($this->status);
+    echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
+?>
+    <?
+    if(!in_array(role::$goc_admin, user()->roles)) {
+        echo $this->status;
+    } else {
+        echo "<select onchange=\"changeStatus(this);\">";
+        foreach(Footprint::GetStatusList() as $status) {
+            $selected = "";
+            if($status == $this->status) $selected = "selected=selected";
+            $style = status2style($status);
+            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+        }
+        echo "</select>";
+?>
+<script type="text/javascript">
+function changeStatus(node)
+{
+    status = $(node).val();
+    $.post("<?=fullbase()?>/update/status", { id: "<?=$this->ticket_id?>", status: status },
+        function(reply){
+            //alert(reply);
+        });
+    newclass = $(node).find("option[value="+status+"]").attr("class");
+    $("#status_flag").attr("class", newclass);
+}
+</script>
+<?
+    }
+    ?>
+    </td>
+    <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
+</tr>
+<tr>
+    <td class="header personal"><?
+        if(user()->getPersonID() !== null) {
+            echo "CC:";
+        }
+    ?>
+    </td>
     <td>
     <?
         if(user()->getPersonID() !== null) {
@@ -48,14 +94,6 @@ if(isset($this->warning)) {
         }
     ?>
     </td>
-</tr>
-
-<tr>
-    <td class="header">Status:</td><td><?=$this->status?></td>
-    <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
-</tr>
-<tr>
-    <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
 </td>
 </table>
 
@@ -66,7 +104,12 @@ if(isset($this->warning)) {
 <?
 $subject = "ISSUE=".$this->ticket_id." PROJ=".config()->project_id;
 ?>
-<div class="ticket_update"><a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>&body=[Please attach files on this email]">Add Attachments via Email</a></div>
+<div class="ticket_update">
+    <img src="<?=base()?>/images/pencil.png">
+    <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">
+    Add Update Via Email
+    </a>
+</div>
 <?
 foreach($this->descs as $time=>$desc)
 {

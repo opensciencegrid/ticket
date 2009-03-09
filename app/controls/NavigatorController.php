@@ -35,7 +35,7 @@ class NavigatorController extends Zend_Controller_Action
     public function closeAction()
     {
         $model = new Tickets();
-        $tickets = $model->getclosed();
+        $tickets = $model->getclosed(time()-3600*24*90);
         $this->view->activetab = "close";
         $this->view->tickets  = $this->groupby("mrdest", $tickets);
         $this->render("index");

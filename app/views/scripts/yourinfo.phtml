@@ -32,10 +32,10 @@ Populate from someone else's contact information<br/>
     foreach($persons as $person) 
     {
         $fullname = trim($person->first_name. " ".$person->last_name);
-        $fname = $person->first_name;
-        $lname = $person->last_name;
-        $email = $person->primary_email;
-        $phone = $person->primary_phone;
+        $fname = trim($person->first_name);
+        $lname = trim($person->last_name);
+        $email = trim($person->primary_email);
+        $phone = trim($person->primary_phone);
         if($persons_json != "") $persons_json .= ",\n";
         $persons_json .= "{ fullname: \"$fullname\", 
             id: \"$id\",

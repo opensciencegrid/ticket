@@ -48,9 +48,23 @@ class Footprint
     public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
-    public function setStatus($v) { $this->status = $v; }
-    public function sendNoAEmail() { $this->send_no_ae = true; }
+    public function sendNoAEmail() { $this->send_no_ae = true; } //set to not send assignee emails
 
+    static public function GetStatusList()
+    {
+        return array(
+            "Open", 
+            "Engineering",
+            "Customer", 
+            "Network Administration",
+            "Support Agency",
+            "Vendor",
+            "Resolved",
+            "Closed");
+    }
+    public function setStatus($v) { $this->status = $v; }
+
+    //priority-----------
     //1 - critical
     //2 - high
     //3 - elevated 

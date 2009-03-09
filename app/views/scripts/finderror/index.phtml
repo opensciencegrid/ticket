@@ -15,6 +15,7 @@ if(count($this->na_assignments) == 0) {
 
 echo "<h3>Team Dump</h3>";
 echo "<blockquote>Please note that the team information is cached for about 10 minutes</blockquote>";
+echo "<p>";
 foreach($this->teams as $team_entry) {
     $team = Footprint::parse($team_entry->team);
     if($team == "OSG GOC Support Team" || $team == "OSG Operations Infrastructure" || $team == "OSG GOC Management") {
@@ -22,7 +23,9 @@ foreach($this->teams as $team_entry) {
         echo $team_entry->members;
     }
 }
+echo "</p>";
 ?>
+<br/><br/>
 
 <h3>OIM/FP Match</h3>
 <blockquote>

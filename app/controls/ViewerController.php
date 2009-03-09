@@ -11,11 +11,18 @@ class ViewerController extends Zend_Controller_Action
         $dirty_id = $_REQUEST["id"];
         $id = (int)$dirty_id;
         
-        $detail = $this->getDetail($id);
+        $model = new Tickets();
+        $detail = $model->getDetail($id);
         if($detail === "") {
             $this->render("nosuchticket");
             return;
         } 
+
+        /*
+        //pull list of attachments
+        $attachments = $model->getAttachments($id);
+        var_dump($attachments);
+        */
 
         //prevent security ticket to be accessible
         if($detail->Ticket__uType == "Security") {
@@ -29,6 +36,7 @@ class ViewerController extends Zend_Controller_Action
         }
         
         $this->view->ticket_id = $id;
+        $this->view->title = $detail->title;
         $this->view->page_title = "[$id] ".$detail->title;
 
         //submitter 
@@ -131,17 +139,6 @@ class ViewerController extends Zend_Controller_Action
         $this->view->descs = $descs;
     }
 
-    public function getDetail($id)
-    {
-        dlog("getDetail::soap - $id");
-        $client = new SoapClient(null, 
-            array(      'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
-                        'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc", 
-            array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
-        dlog("done");
-        return $ret;
-    }
 }
 
 /*

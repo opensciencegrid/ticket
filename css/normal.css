@@ -19,8 +19,8 @@ p
 
 #header
 {
-padding-left: 30px;
-background: #195866 url('../images/n1.gif') repeat-x;
+padding-left: 105px;
+background-image: url('../images/purple_flower-trans.png');
 height:60px;
 font-family: 'Trebuchet MS';
 }
@@ -40,20 +40,32 @@ font-size: 13pt;
 
 h3
 {
-    font-size: 17px;
+    border-top: 1px solid orange;
+    background-color: #fdb;
+    font-size: 13px;
     font-weight: bold;
-    padding: 5px;
-    padding-left: 0px;
-    color: #f90;
-    border-bottom: 2px solid #f90;
+    padding: 2px;
+    color: #630;
 }
 h4
 {
+    color: #630;
+    background-color: #fdb;
     font-weight: bold;
-    padding-bottom: 2px;
-    margin-bottom: 2px;
+    padding :2px;
+    padding-left: 5px;
     font-size: 12px;
-    border-bottom: thin solid #333;
+}
+h4, p.errors, p.warning
+{
+-moz-border-radius-topleft: 5px;
+-moz-border-radius-topright: 5px;
+-moz-border-radius-bottomright: 5px;
+-moz-border-radius-bottomleft: 5px;
+-webkit-border-top-left-radius: 5px;
+-webkit-border-top-right-radius: 5px;
+-webkit-border-bottom-left-radius: 5px;
+-webkit-border-bottom-right-radius: 5px;
 }
 
 a
@@ -73,6 +85,13 @@ a:hover
     padding:10px;
     padding-left: 20px;
     padding-right: 20px;
+
+/*
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: white;
+*/
 }
 
 .container .form, .menu
@@ -109,11 +128,11 @@ a:hover
     min-width: 100px;
 }
 
-.form input[type=text], select
+.form input[type=text], .form select
 {
     width: 300px;
 }
-.form input[type=text], select, textarea
+.form input[type=text], .form select, .form textarea
 {
     padding: 3px;
 }
@@ -141,6 +160,8 @@ dt
 
 p.errors
 {
+    margin: 0px;
+    margin-bottom: 5px;
     color: white;
     background-color: #f33;
     padding: 10px;
@@ -218,7 +239,8 @@ td.personal
 td
 {
     vertical-align: top;
-    padding: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 th
 {
@@ -344,7 +366,6 @@ ul.subsection_tabs li.tab a.active {
 .update_description
 {
     padding-bottom: 10px; 
-    border: 1px solid #f90;
     margin-bottom: 6px;
 
 -moz-border-radius-topleft: 0px;
@@ -355,7 +376,7 @@ ul.subsection_tabs li.tab a.active {
 -webkit-border-top-right-radius: 0px;
 -webkit-border-bottom-left-radius: 15px;
 -webkit-border-bottom-right-radius: 15px;
-
+    background:#ece9d8 url(../images/bg.gif) repeat-x;
 }
 
 .update_history
@@ -372,7 +393,7 @@ ul.subsection_tabs li.tab a.active {
 .update_description .header
 {
     padding: 3px;
-    background-color: #f90;
+    background-color: orange;
 }
 
 .orange-round
@@ -386,14 +407,18 @@ ul.subsection_tabs li.tab a.active {
 -webkit-border-bottom-left-radius: 15px;
 -webkit-border-bottom-right-radius: 15px;
 padding: 10px;
-background-color: orange;
+background-color: #fdb;
+}
+
+table
+{
+border-collapse: collapse;
 }
 
 table.tab
 {
 width:100%;
 background-color: #70571a; 
-border-collapse: collapse;
 }
 
 table.tab td.tab
@@ -408,3 +433,43 @@ text-align: center;
     text-align: right;
     padding: 2px; 
 }
+
+a.nodeco
+{
+    text-decoration: none;
+}
+
+.ticketid
+{
+    background-repeat: no-repeat;
+    padding-left: 28px;
+    min-height: 20px;
+}
+
+.ticketid_open { background-image: url('../images/tag_red.png'); }
+.ticketid_engineering { background-image: url('../images/tag_green.png'); }
+.ticketid_customer { background-image: url('../images/tag_yellow.png'); }
+.ticketid_supportagency { background-image: url('../images/tag_blue.png'); }
+.ticketid_resolved { background-image: url('../images/tag_purple.png'); }
+.ticketid_closed { background-image: url('../images/tag_black.png'); }
+
+.ticketid_vendor { background-image: url('../images/tag_orange.png'); }
+.ticketid_networkadministration { background-image: url('../images/tag_lime.png'); }
+
+tr[onclick]
+{
+cursor: pointer;
+}
+
+tr[onclick]:hover
+{
+background-color: orange;
+}
+
+#logo
+{
+position: absolute;
+top: 2px;
+left: 4px;
+}
+

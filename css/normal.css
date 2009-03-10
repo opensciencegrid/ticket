@@ -20,7 +20,7 @@ p
 #header
 {
 padding-left: 105px;
-background-image: url('../images/purple_flower-trans.png');
+background-image: url('../images/orange_back.png');
 height:60px;
 font-family: 'Trebuchet MS';
 }
@@ -36,6 +36,12 @@ font-size: 14pt;
 color: #EfE8C2;
 font-weight: normal;
 font-size: 13pt;
+}
+#logo
+{
+position: absolute;
+top: 2px;
+left: 2px;
 }
 
 h3
@@ -466,10 +472,5 @@ tr[onclick]:hover
 background-color: orange;
 }
 
-#logo
-{
-position: absolute;
-top: 2px;
-left: 4px;
-}
+
 

@@ -6,175 +6,173 @@ if(isset($this->warning)) {
 }
 echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
 ?>
-<div>
-<table width="100%">
-<tr>
-    <td colspan="4"><h3>Submitter</h3></td>
-</tr>
-<tr>
-    <td class="header">Name:</td><td><?=$this->submitter_name?></td>
-    <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
-</tr>
-<?
-    if(user()->getPersonID() !== null) {
-        echo "<tr>";
-        echo "<td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td>";
-        echo "<td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td>";
-        echo "</tr>";
-    }
 
-    if($this->originating_ticket_id != "") {
-        echo "<tr>";
-        echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
-        echo "<td class=\"header\"></td><td></td>";
-        echo "</tr>";
-    }
-?>
-<tr>
-    <td colspan="4"><h3>Ticket Info</h3></td>
-</tr>
-<tr>
-    <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
-    <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
-</tr>
-
-<tr>
-    <td class="header">Priority:</td><td><?=$this->priority?></td>
-    <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
-</tr>
-
-<tr>
-    <td class="header">Status:</td><td>
-<?
-    $style = status2style($this->status);
-    echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
-?>
-    <?
-    if(!in_array(role::$goc_admin, user()->roles)) {
-        echo $this->status;
-    } else {
-        echo "<select onchange=\"changeStatus(this);\">";
-        foreach(Footprint::GetStatusList() as $status) {
-            $selected = "";
-            if($status == $this->status) $selected = "selected=selected";
-            $style = status2style($status);
-            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
-        }
-        echo "</select>";
-?>
-<script type="text/javascript">
-function changeStatus(node)
-{
-    status = $(node).val();
-    $.post("<?=fullbase()?>/update/status", { id: "<?=$this->ticket_id?>", status: status },
-        function(reply){
-            //alert(reply);
-        });
-    newclass = $(node).find("option[value="+status+"]").attr("class");
-    $("#status_flag").attr("class", newclass);
-}
-</script>
-<?
-    }
-    ?>
-    </td>
-    <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
-</tr>
-<tr>
-    <td class="header personal"><?
-        if(user()->getPersonID() !== null) {
-            echo "CC:";
-        }
-    ?>
-    </td>
-    <td>
+<div id="information_table">
+    <table width="100%">
+    <tr>
+        <td colspan="4"><h3>Submitter</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Name:</td><td><?=$this->submitter_name?></td>
+        <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+    </tr>
     <?
         if(user()->getPersonID() !== null) {
-            echo $this->cc;
+            echo "<tr>";
+            echo "<td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td>";
+            echo "<td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td>";
+            echo "</tr>";
+        }
+
+        if($this->originating_ticket_id != "") {
+            echo "<tr>";
+            echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
+            echo "<td class=\"header\"></td><td></td>";
+            echo "</tr>";
         }
     ?>
-    </td>
-</td>
-</table>
+    <tr>
+        <td colspan="4"><h3>Ticket Info</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
+        <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
+    </tr>
 
-</div>
+    <tr>
+        <td class="header">Priority:</td><td><?=$this->priority?></td>
+        <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
+    </tr>
 
-<div style="clear: both;">
-<h3>Updates</h3>
-<?
-$subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
-?>
-<div class="ticket_update">
-    <img src="<?=base()?>/images/pencil.png">
-    <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">
-    Add Update Via Email
-    </a>
-</div>
-<?
-foreach($this->descs as $time=>$desc)
-{
-    $by = $desc["by"];
-    $content = $desc["content"];
-    $type = $desc["type"];
-
-    //suppress metainfo..
-    $metapos = strpos($content, config()->metatag);
-    if($metapos !== FALSE) {
-        //has metainfo.. replace it with filtered versionme
-        $content = substr($content, 0, $metapos);
-    }
-
-    if($time > time() - 60*60*24) {
-        //show in "ago" format
-        $human_time = agoCalculation($time). " ago";
-    } else {
-        $human_time = date(config()->date_format_full, $time);
-    }
-
-    if($type == "history") {
-        echo "<div class='update_history'>";
-        $out = "<pre>$content</pre>";
-        echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
-        echo "</div>";
-    }
-    
-    if($type == "description") {
-        echo "<div class='update_description'>";
-        echo "<div class='header'>$human_time by <b>$by</b></div>";
-        $lines_raw = split("\n", $content);
-        $lines = array();
-        foreach($lines_raw as $line) {
-            $line = trim($line);
-            if(strpos($line, "&#62;") === 0) {
-                $line = "<font color='#7F7E6F'>$line</font>";
-            }
-            $lines[] = $line;
-        }
-        $content = implode("\n", $lines);
-        if(count($lines) > 15) {
-            //display first 10 lines
-            $i = 0;
-            echo "<pre>";
-            for(;$i < 10; $i++) {
-                echo $lines[$i]."\n";
-            }
-            echo "</pre>";
-            //and toggle the rest..
-            $out = "";
-            $out .= "<pre>";
-            for(;$i < count($lines);$i++) {
-                $out .= $lines[$i]."\n";
-            }
-            $out .= "</pre>\n";
-            echo outputToggle("Show More", "", $out);
+    <tr>
+        <td class="header">Status:</td><td>
+        <?
+        $style = status2style($this->status);
+        echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
+        if(!in_array(role::$goc_admin, user()->roles)) {
+            echo $this->status;
         } else {
-            //display all at once.
-            echo "<pre>$content</pre>";
+            echo "<select onchange=\"changeStatus(this);\">";
+            foreach(Footprint::GetStatusList() as $status) {
+                $selected = "";
+                if($status == $this->status) $selected = "selected=selected";
+                $style = status2style($status);
+                echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+            }
+            echo "</select>";
+            ?>
+            <script type="text/javascript">
+            function changeStatus(node)
+            {
+                status = $(node).val();
+                $.post("<?=fullbase()?>/update/status", { id: "<?=$this->ticket_id?>", status: status },
+                    function(reply){
+                        //alert(reply);
+                    });
+                newclass = $(node).find("option[value="+status+"]").attr("class");
+                $("#status_flag").attr("class", newclass);
+            }
+            </script>
+            <?
         }
-        echo "</div>";
-    }
+        ?>
+        </td>
+        <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
+    </tr>
+    <tr>
+        <td class="header personal"><?
+            if(user()->getPersonID() !== null) {
+                echo "CC:";
+            }
+        ?>
+        </td>
+        <td>
+        <?
+            if(user()->getPersonID() !== null) {
+                echo $this->cc;
+            }
+        ?>
+        </td>
+    </td>
+    </table>
+</div>
 
-}
-?>
+<div id="updates" style="clear: both;">
+    <h3>Updates</h3>
+    <?
+    $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
+    ?>
+    <div class="ticket_update">
+        <img src="<?=base()?>/images/pencil.png">
+        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">
+        Add Update Via Email
+        </a>
+    </div>
+    <?
+    foreach($this->descs as $time=>$desc)
+    {
+        $by = $desc["by"];
+        $content = $desc["content"];
+        $type = $desc["type"];
+
+        //suppress metainfo..
+        $metapos = strpos($content, config()->metatag);
+        if($metapos !== FALSE) {
+            //has metainfo.. replace it with filtered versionme
+            $content = substr($content, 0, $metapos);
+        }
+
+        if($time > time() - 60*60*24) {
+            //show in "ago" format
+            $human_time = agoCalculation($time). " ago";
+        } else {
+            $human_time = date(config()->date_format_full, $time);
+        }
+
+        if($type == "history") {
+            echo "<div class='update_history'>";
+            $out = "<pre>$content</pre>";
+            echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
+            echo "</div>";
+        }
+        
+        if($type == "description") {
+            echo "<div class='update_description'>";
+            echo "<div class='header'>$human_time by <b>$by</b></div>";
+            $lines_raw = split("\n", $content);
+            $lines = array();
+            foreach($lines_raw as $line) {
+                $line = trim($line);
+                if(strpos($line, "&#62;") === 0) {
+                    $line = "<font color='#7F7E6F'>$line</font>";
+                }
+                $lines[] = $line;
+            }
+            $content = implode("\n", $lines);
+            if(count($lines) > 15) {
+                //display first 10 lines
+                $i = 0;
+                echo "<pre>";
+                for(;$i < 10; $i++) {
+                    echo $lines[$i]."\n";
+                }
+                echo "</pre>";
+                //and toggle the rest..
+                $out = "";
+                $out .= "<pre>";
+                for(;$i < count($lines);$i++) {
+                    $out .= $lines[$i]."\n";
+                }
+                $out .= "</pre>\n";
+                echo outputToggle("Show More", "", $out);
+            } else {
+                //display all at once.
+                echo "<pre>$content</pre>";
+            }
+            echo "</div>";
+        }
+
+    }
+    ?>
 </div>
 <?include("app/views/scripts/footer.phtml");?>

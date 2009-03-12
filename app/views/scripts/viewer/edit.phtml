@@ -24,7 +24,7 @@
     </tr>
     <tr>
         <td class="header">Last Name:</td><td><input type="text" value="<?=$this->submitter_lname?>" name="submitter_lname"></td>
-        <td class="header">Originating Ticket ID</td><td><input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"> * for GGUS</td>
+        <td class="header"></td><td></td>
     </tr>
     <?
         echo "<tr class=\"personal\">";
@@ -33,6 +33,12 @@
         echo "</tr>";
 
     ?>
+    <tr>
+        <td class="header">Originating Ticket ID</td><td><input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"></td>
+        <td class="header">Destination Ticket ID</td><td><input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"></td>
+    </td>
+
+
     <tr>
         <td colspan="4"><h3>Ticket Info</h3></td>
     </tr>

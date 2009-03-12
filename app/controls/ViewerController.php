@@ -47,8 +47,8 @@ class ViewerController extends Zend_Controller_Action
         $this->view->submitter_email = $detail->Email__baddress;
         $this->view->cc = $detail->Email__baddress;
 
-        //originating ticket ID
         $this->view->originating_ticket_id = $detail->Originating__bTicket__bNumber;
+        $this->view->destination_ticket_id = $detail->Destination__bTicket__bNumber;
         $this->view->submitter_phone = $detail->Office__bPhone;
         $this->view->submitter_vo = Footprint::parse($detail->Originating__bVO__bSupport__bCenter);
 
@@ -153,6 +153,10 @@ class ViewerController extends Zend_Controller_Action
             if(trim($_REQUEST["originating_ticket_id"]) != "") {
                 $orig_ticket_id = $_REQUEST["originating_ticket_id"]; //TODO - validate..
             }
+            $dest_ticket_id = "";
+            if(trim($_REQUEST["destination_ticket_id"]) != "") {
+                $dest_ticket_id = $_REQUEST["destination_ticket_id"]; //TODO - validate..
+            }
             $priority = (int)$_REQUEST["priority"];
             $status = $_REQUEST["status"]; //TODO - validate?
             $type = $_REQUEST["ticket_type"]; //TODO - validate
@@ -197,6 +201,7 @@ class ViewerController extends Zend_Controller_Action
                     $footprint->setStatus($status);
                     $footprint->setTicketType($type);
                     $footprint->setOriginatingTicketNumber($orig_ticket_id);
+                    $footprint->setDestinationTicketNumber($dest_ticket_id);
                 
                     $footprint->submit();
                     slog("Ticket update submitted");

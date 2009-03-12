@@ -33,12 +33,10 @@ function gotoedit()
             echo "</tr>";
         }
 
-        if($this->originating_ticket_id != "") {
-            echo "<tr>";
-            echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
-            echo "<td class=\"header\"></td><td></td>";
-            echo "</tr>";
-        }
+        echo "<tr>";
+        echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
+        echo "<td class=\"header\">Destination Ticket ID</td><td>".$this->destination_ticket_id."</td>";
+        echo "</tr>";
     ?>
     <tr>
         <td colspan="4"><h3>Ticket Info</h3></td>

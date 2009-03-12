@@ -168,6 +168,12 @@ class Footprint
         $this->b_proj = true;
     }
 
+    public function setDestinationTicketNumber($id)
+    {
+        $this->project_fields["Destination__bTicket__bNumber"] = $id;
+        $this->b_proj = true;
+    }
+
     public function setDestinationVO($voname) { 
         if(!$this->isValidFPDestinationVO($voname)) {
             $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");

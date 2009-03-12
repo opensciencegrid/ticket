@@ -3,14 +3,8 @@
 function ggus2footprint($xml_content)
 {
     $xml = new SimpleXMLElement($xml_content);
-    $footprint = new Footprint;
-
-    //TODO - if I don't set submitter parameter, the web api will say "An error page was displayed to the Web Services user.  Details: Submitter 'goc' is not a valid user."
-    $footprint->setSubmitter("ggus");
-
     $node = "GHD_Request-ID";
     $id = (int)$xml->$node;
-    $footprint->setOriginatingTicketNumber($id);
 
     //check if the ticket is already in FP
     $model = new Tickets(); 
@@ -20,6 +14,7 @@ function ggus2footprint($xml_content)
         ///////////////////////////////////////////////////////////////////////
         // Insert
         ///////////////////////////////////////////////////////////////////////
+        $footprint = new Footprint;
         slog("inserting new FP ticket $id");
         $footprint->addDescription($xml->GHD_Description);
         $desc = "\n
@@ -90,7 +85,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         ///////////////////////////////////////////////////////////////////////
         $fpid = $orig[0]->mrid;
         slog("Originating ticket $id already exists in FP as $fpid . Doing Update..");
-        $footprint->setID($fpid); 
+        $footprint = new Footprint($fpid);
 
         //only set description field to be updated
         //I don't know which one of these fields really contain the update-description..
@@ -105,6 +100,10 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             break;
         }
     }
+
+    //set other common stuff
+    $footprint->setSubmitter("ggus");
+    $footprint->setOriginatingTicketNumber($id);
 
     return $footprint;
 }

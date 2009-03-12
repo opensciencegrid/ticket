@@ -4,50 +4,69 @@
 
 class Footprint
 {
-    public function __construct()
+    //if id is null, we will do insert. If not, update
+    public function __construct($id = null)
     {
-        $this->id = null; //if this is not null, we will do edit instead of insert
+        $this->id = $id; 
 
         $this->submitter = "OSG-GOC";
         $this->status = "Engineering";
         $this->priority_number = "4";
         $this->description = "";
-        $this->meta = "";
-        $this->permanent_cc = array();
         $this->title = "no title";
-
+        $this->meta = "";
+        $this->resetCC();
         $this->resetAssignee();
-        $this->addAssignee($this->chooseGOCAssignee());
-
         $this->ab_fields = array();
         $this->project_fields = array();
-        $this->setNextAction("ENG Action");
-        $this->setNextActionTime(time());
-
-        //since these are required items, let's set to other
-        $this->setOriginatingVO("other"); 
-        $this->setDestinationVO("other"); 
-
-        $this->setTicketType("Problem__fRequest");
-        $this->setReadyToClose("No");
-
         $this->send_no_ae = false;
+
+        //process update flags
+        if($id === null) {
+            //insert
+            $f = true; //insert everything by default
+            $this->addAssignee($this->chooseGOCAssignee()); //auto assign someone
+            $this->setOriginatingVO("other"); 
+            $this->setDestinationVO("other"); 
+            $this->setNextAction("ENG Action");
+            $this->setNextActionTime(time());
+            $this->setTicketType("Problem__fRequest");
+            $this->setReadyToClose("No");
+        } else {
+            //update
+            $f = false; //don't update anything by default
+        }
+
+        //update flag - we will only send fields to FP that are true.
+        $this->b_submitter = $f;
+        $this->b_title = $f;
+        $this->b_assignees = $f;
+        $this->b_cc = $f;
+        $this->b_priority = $f;
+        $this->b_status = $f;
+        $this->b_desc = $f;
+        $this->b_contact = $f;
+        $this->b_proj = $f;
+    }
+
+    public function resetCC()
+    {
+        $this->permanent_cc = array();
+        $this->b_cc = true;
     }
 
     public function resetAssignee()
     {
-        $this->assignees = array(
-            "OSG__bGOC__bSupport__bTeam", 
-            "OSG__bSupport__bCenters");
+        $this->assignees = array();
+        $this->b_assignees = true;
     }
 
-    //AB fields
-    public function setTitle($v) { $this->title = $v; } //ticket title
-    public function setSubmitter($v) { $this->submitter = $v; }
-    public function setFirstName($v) { $this->ab_fields["First__bName"] = $v; }
-    public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; }
-    public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; }
-    public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; }
+    public function setTitle($v) { $this->title = $v; $this->b_title = true; }
+    public function setSubmitter($v) { $this->submitter = $v; $this->b_submitter = true; }
+    public function setFirstName($v) { $this->ab_fields["First__bName"] = $v; $this->b_contact = true; }
+    public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; $this->b_contact = true; }
+    public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; $this->b_contact = true; }
+    public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; $this->b_contact = true; }
     public function sendNoAEmail() { $this->send_no_ae = true; } //set to not send assignee emails
 
     static public function GetStatusList()
@@ -62,35 +81,34 @@ class Footprint
             "Resolved",
             "Closed");
     }
-    public function setStatus($v) { $this->status = $v; }
+    public function setStatus($v) { $this->status = $v; $this->b_status = true; }
 
-    //priority-----------
-    //1 - critical
-    //2 - high
-    //3 - elevated 
-    //4 - normal 
-    public function setPriority($v) { $this->priority_number = $v; } 
-    static public function priority2str($p) {
-        switch($p) {
-        case 1: return "Critical";
-        case 2: return "High";
-        case 3: return "Elevated";
-        case 4: return "Normal";
-        }
-        return "(Unknown)";
+    static public function GetPriorityList()
+    {
+        return array(
+            "1" => "Critical",
+            "2" => "High",
+            "3" => "Elevated",
+            "4" => "Normal"
+        );
     }
+
+    public function setPriority($v) { $this->priority_number = $v; $this->b_priority = true; } 
 
     public function addDescription($v) { 
         $this->description .= $v; 
+        $this->b_desc = true;
     }
     public function addMeta($v) { 
         $this->meta .= $v;
+        $this->desc = true;
     }
     public function addAssignee($v, $bClear = false) { 
         if($bClear) {
             $this->resetAssignee();
         } 
         $this->assignees[] = $v;//no unparsing necessary
+        $this->b_assignees = true;
     }
 
     //setting this means that we are doing ticket update
@@ -99,31 +117,40 @@ class Footprint
         $this->id = $id;
     }
 
-    //from the current db, I see following ticket types
-/*
-NULL
-Problem__fRequest
-Provision__fModify__fDecom
-Scheduled__bMaintenance
-Security
-Unscheduled__bOutage
-*/
+    //from the current db, I see following ticket types //TODO - pull this from field schema
+    static public function getTicketTypes()
+    {
+        return array(
+            "Problem/Request",
+            "Scheduled Maintenance",
+            "Unscheduled Outage",
+            "Provision/Modify/Decom",
+            "Field Service Request",
+            "RMA",
+            "Security"
+            );
+    }
+
     public function setTicketType($type) {
         $this->project_fields["Ticket__uType"] = $type;
+        $this->b_proj = true;
     }
 
 
     //"Yes" or "No"
     public function setReadyToClose($close) {
         $this->project_fields["Ready__bto__bClose__Q"] = $close;
+        $this->b_proj = true;
     }
 
     public function setNextAction($action) {
         $this->project_fields["ENG__bNext__bAction__bItem"] = $action;
+        $this->b_proj = true;
     }
     public function setNextActionTime($time)
     {
         $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
+        $this->b_proj = true;
     }
 
     public function setOriginatingVO($voname) { 
@@ -132,11 +159,22 @@ Unscheduled__bOutage
             $voname = "other";
         }
         $this->project_fields["Originating__bVO__bSupport__bCenter"] = Footprint::unparse($voname);
+        $this->b_proj = true;
     }
 
     public function setOriginatingTicketNumber($id)
     {
         $this->project_fields["Originating__bTicket__bNumber"] = $id;
+        $this->b_proj = true;
+    }
+
+    public function setDestinationVO($voname) { 
+        if(!$this->isValidFPDestinationVO($voname)) {
+            $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
+            $voname = "other";
+        }
+        $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
+        $this->b_proj = true;
     }
 
     public function setDestinationVOFromSC($sc_id)
@@ -164,13 +202,6 @@ Unscheduled__bOutage
         return $scname;
     }
 
-    public function setDestinationVO($voname) { 
-        if(!$this->isValidFPDestinationVO($voname)) {
-            $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
-            $voname = "other";
-        }
-        $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
-    }
 
     public function addPrimaryAdminContact($resource_id)
     {
@@ -184,11 +215,13 @@ Unscheduled__bOutage
         } else {
             $this->addCC($prac->primary_email);
             $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
+            $this->b_cc = true;
         }
     }
 
     public function addCC($address) {
         $this->permanent_cc[] = $address;
+        $this->b_cc = true;
     }
 
     private function chooseGOCAssignee()
@@ -260,23 +293,9 @@ Unscheduled__bOutage
         //determine if we are doing create or update
         if($this->id === null) {
             $call = "MRWebServices__createIssue_goc";
-            $params = array(
-                "mrID"=>$this->id,
-                "projectID"=>config()->project_id,
-                "submitter"=>$this->submitter,
-                "title" => $this->title,
-                "assignees" => $this->assignees,
-                "permanentCCs" => $this->permanent_cc,
-                "priorityNumber" => $this->priority_number,
-                "status" => $this->status,
-                "description" => $desc,
-                "abfields" => $this->ab_fields,
-                "projfields" => $this->project_fields
-            );
-
-
         } else {
             $call = "MRWebServices__editIssue_goc";
+            /*
             $params = array(
                 "mrID"=>$this->id,
                 "projectID"=>config()->project_id,
@@ -284,8 +303,40 @@ Unscheduled__bOutage
                 "status" => $this->status,
                 "description" => $desc
             );
+            */
         }
 
+        //populate params to insert/update
+        $params = array();
+        $params["mrID"] = $this->id;
+        $params["projectID"] = config()->project_id;
+        if($this->b_submitter) {
+            $params["submitter"] = $this->submitter;
+        }
+        if($this->b_title) {
+            $params["title"] = $this->title;
+        }
+        if($this->b_assignees) {
+            $params["assignees"] = $this->assignees;
+        }
+        if($this->b_cc) {
+            $params["permanentCCs"] = $this->permanent_cc;
+        }
+        if($this->b_priority) {
+            $params["priorityNumber"] = $this->priority_number;
+        }
+        if($this->b_status) {
+            $params["status"] = $this->status;
+        }
+        if($this->b_desc) {
+            $params["description"] = $desc;
+        }
+        if($this->b_contact) {
+            $params["abfields"] = $this->ab_fields;
+        }
+        if($this->b_proj) {
+            $params["projfields"] = $this->project_fields;
+        }
         if($this->send_no_ae) {
             //don't sent email to assignee
             $params["mail"] = array("assignees"=>0);

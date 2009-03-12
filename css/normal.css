@@ -4,6 +4,11 @@
     padding:0px;
 }
 
+img
+{
+    border: 0px;
+}
+
 html,body
 {
 font-family: Verdana, 'Trebuchet MS', sans-serif;
@@ -62,7 +67,8 @@ h4
     padding-left: 5px;
     font-size: 12px;
 }
-h4, p.errors, p.warning
+
+h4, p.errors, p.warning, a.button
 {
 -moz-border-radius-topleft: 5px;
 -moz-border-radius-topright: 5px;
@@ -237,9 +243,9 @@ td.header
     font-weight: bold;
     width: 150px;
 }
-td.personal
+tr.personal
 {
-    color: red;
+    background-color: #ddd;
 }
 
 td
@@ -421,6 +427,16 @@ table
 border-collapse: collapse;
 }
 
+table.ticket_detail
+{
+padding: 5px;
+width: 100%;
+}
+table.ticket_detail td
+{
+padding: 5px;
+}
+
 table.tab
 {
 width:100%;
@@ -472,5 +488,27 @@ tr[onclick]:hover
 background-color: orange;
 }
 
+a.button
+{
+text-decoration: none;
+padding-left: 5px;
+padding-right: 10px;
+}
 
-
+a.button img
+{
+    position: relative;
+    top: 3px;
+    margin-right: 3px;
+}
+.list
+{
+    background-color: #eee;
+    margin-left: 16px;
+    width: 90%;
+}
+.scrolled_list
+{
+    height: 130px;
+    overflow: auto;
+}

@@ -32,12 +32,16 @@ class Schema
     public function getoriginatingvos()
     {
         $ret = $this->getvos();
-        return split(",", $ret[0]->originating_vo);
+        $list = split(",", $ret[0]->originating_vo);
+        asort($list);
+        return $list;
     }
     public function getdestinationvos()
     {
         $ret = $this->getvos();
-        return split(",", $ret[1]->destination_vo);
+        $list = split(",", $ret[1]->destination_vo);
+        asort($list);
+        return $list;
     }
 
     public function doget($what)

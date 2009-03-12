@@ -90,3 +90,62 @@ function humanDuration($ago)
     return floor($ago/(60*60*24))." days";
 }
 
+function listSelector($selector_id, $possible, $already)
+{
+    $selector_id = str_replace(" ", "", $selector_id);
+
+    $out = "";
+
+    $out .= "<div id=\"$selector_id\" class=\"listselector\">";
+    $out .= "<div id=\"${selector_id}_selected\" class=\"ls_selected list\" style=\"background-color: #fff\">";
+    foreach($possible as $value=>$name) {
+        $selected = "";
+        $cls = "hidden";
+        if(isset($already[$value])) {
+            $selected = "checked=checked";
+            $cls = "";
+        }
+        $out .= "<div class=\"$cls\"><input type=\"checkbox\" $selected name=\"${selector_id}[]\" value=\"$value\" onclick=\"move(this);\"/> $name</div>";
+        
+    }
+    $out .= "</div>";
+
+    $scrolled = "";
+    if(count($possible) > 5) $scrolled = "scrolled_list";
+    $out .= "<div id=\"${selector_id}_possible\" class=\"ls_possible list $scrolled\">";
+    foreach($possible as $value=>$name) {
+        $cls = "";
+        if(isset($already[$value])) {
+            $cls = "hidden";
+        }
+        $out .= "<div class=\"$cls\"><input type=\"checkbox\" posvalue=\"$value\" onclick=\"move(this);\"/> $name</div>";
+    }
+    $out .= "</div>";
+
+    $out .= "<script type=\"text/javascript\">";
+    $out .= "function move(node) {";
+    $out .= "   var parents = $(node).parents('.listselector');";
+    $out .= "   //add to target\n";
+    $out .= "   if(node.checked) {";
+    $out .= "       //move up\n";
+    $out .= "       var value = $(node).attr('posvalue');";
+    $out .= "       var i = parents.find('.ls_selected input[value=\"'+value+'\"]');";
+    $out .= "       i.attr('checked', 'checked');";
+    $out .= "       $(node).removeAttr('checked');";
+    $out .= "       i.parent().show();";
+    $out .= "       $(node).parent().hide();";
+    $out .= "   } else {";
+    $out .= "       //move down\n";
+    $out .= "       var value = $(node).attr('value');";
+    $out .= "       $(node).removeAttr('checked');";
+    $out .= "       var i = parents.find('.ls_possible input[posvalue=\"'+value+'\"]');";
+    $out .= "       i.parent().show();";
+    $out .= "       $(node).parent().hide();";
+    $out .= "   }";
+    $out .= "}";
+    $out .= "</script>";
+
+    $out .= "</div>";
+
+    return $out;
+}

@@ -14,10 +14,24 @@ function greet()
 function remove_quotes()
 {
     if(  ( function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc() ) || ini_get('magic_quotes_sybase')  ){
-        foreach($_GET as $k => $v) $_GET[$k] = stripslashes($v);
-        foreach($_POST as $k => $v) $_POST[$k] = stripslashes($v);
-        foreach($_COOKIE as $k => $v) $_COOKIE[$k] = stripslashes($v);
-        foreach($_REQUEST as $k => $v) $_REQUEST[$k] = stripslashes($v);
+        foreach($_GET as $k => $v) $_GET[$k] = stripslashes_deep($v);
+        foreach($_POST as $k => $v) $_POST[$k] = stripslashes_deep($v);
+        foreach($_COOKIE as $k => $v) $_COOKIE[$k] = stripslashes_deep($v);
+        foreach($_REQUEST as $k => $v) $_REQUEST[$k] = stripslashes_deep($v);
+    }
+}
+
+
+function stripslashes_deep($v)
+{
+    if(is_array($v)) {
+        $ret = array();
+        foreach($v as $key=>$item) {
+            $ret[$key] = stripslashes_deep($item);
+        }
+        return $ret;
+    } else {
+        return stripslashes($v);
     }
 }
 

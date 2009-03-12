@@ -1,13 +1,22 @@
 <?include("app/views/scripts/header.phtml");?>
+
 <div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
+
 <?
-if(isset($this->warning)) {
-    echo "<p class=\"warning\">".$this->warning."</p>";
+if($this->ticket_type == "Security") {
+    echo "<p class=\"warning\">This is a security ticket (only authorized personals can see this ticket)</p>";
 }
-echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
 ?>
 
+<script type="text/javascript">
+function gotoedit()
+{
+    $("#information_table").load("<?=fullbase()?>/viewer/edit?id=<?=$this->ticket_id?>");
+}
+</script>
+
 <div id="information_table">
+    <b><?=$this->title?></b>
     <table width="100%">
     <tr>
         <td colspan="4"><h3>Submitter</h3></td>
@@ -18,9 +27,9 @@ echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
     </tr>
     <?
         if(user()->getPersonID() !== null) {
-            echo "<tr>";
-            echo "<td class=\"header personal\">Email:</td><td>".$this->submitter_email."</td>";
-            echo "<td class=\"header personal\">Phone:</td><td>".$this->submitter_phone."</td>";
+            echo "<tr class=\"personal\">";
+            echo "<td class=\"header\">Email:</td><td>".$this->submitter_email."</td>";
+            echo "<td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td>";
             echo "</tr>";
         }
 
@@ -41,7 +50,19 @@ echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
 
     <tr>
         <td class="header">Priority:</td><td><?=$this->priority?></td>
-        <td class="header">Next Action Deadline:</td><td><?=$this->nad?></td>
+        <td rowspan="5" class="header">Assignees:</td><td rowspan="5">
+        <?
+        foreach($this->assignees as $team => $list) {
+            if(count($list) == 0) continue;
+            echo "<h4>$team</h4>";
+            echo "<p>";
+            foreach($list as $name) {
+                echo $name."<br/>";
+            }
+            echo "</p>";
+        }
+        ?>
+        </td>
     </tr>
 
     <tr>
@@ -49,65 +70,53 @@ echo "<b>(".$this->ticket_id.")</b> <b>".$this->title."</b>";
         <?
         $style = status2style($this->status);
         echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
-        if(!in_array(role::$goc_admin, user()->roles)) {
             echo $this->status;
-        } else {
-            echo "<select onchange=\"changeStatus(this);\">";
-            foreach(Footprint::GetStatusList() as $status) {
-                $selected = "";
-                if($status == $this->status) $selected = "selected=selected";
-                $style = status2style($status);
-                echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
-            }
-            echo "</select>";
-            ?>
-            <script type="text/javascript">
-            function changeStatus(node)
-            {
-                status = $(node).val();
-                $.post("<?=fullbase()?>/update/status", { id: "<?=$this->ticket_id?>", status: status },
-                    function(reply){
-                        //alert(reply);
-                    });
-                newclass = $(node).find("option[value="+status+"]").attr("class");
-                $("#status_flag").attr("class", newclass);
-            }
-            </script>
-            <?
-        }
         ?>
         </td>
-        <td rowspan="2" class="header">Assignees:</td><td rowspan="2"><?=$this->assignees?></td>
     </tr>
+
     <tr>
-        <td class="header personal"><?
-            if(user()->getPersonID() !== null) {
-                echo "CC:";
-            }
-        ?>
+        <td class="header">Next Action Deadline:</td><td>Morning of <?=$this->nad?></td>
+    </tr>
+
+    <tr>
+        <td class="header">Next Action Item:</td><td><?=$this->next_action?></td>
+    </tr>
+
+    <tr class="personal">
+    <?if(user()->getPersonID() !== null) { ?>
+         <td class="header">CC:</td><td>
+            <?  foreach($this->cc as $cc) { echo $cc."<br/>"; } ?>
         </td>
-        <td>
-        <?
-            if(user()->getPersonID() !== null) {
-                echo $this->cc;
-            }
-        ?>
+    <?}?>
+    </tr>
+
+
+    <?
+    if(in_array(role::$goc_admin, user()->roles)) {
+    ?>
+        <tr>
+        <td></td>
+        <td colspan="3">
+        <input type="button" onclick="gotoedit();" value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;"/>
         </td>
-    </td>
+        </tr>
+    <?}?>
+
     </table>
+
+
 </div>
+<br/>
 
 <div id="updates" style="clear: both;">
     <h3>Updates</h3>
-    <?
-    $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
-    ?>
-    <div class="ticket_update">
-        <img src="<?=base()?>/images/pencil.png">
-        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">
-        Add Update Via Email
-        </a>
-    </div>
+    <p>
+        <?
+        $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
+        ?>
+        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">Send Update Via Email</a>
+    </p>
     <?
     foreach($this->descs as $time=>$desc)
     {

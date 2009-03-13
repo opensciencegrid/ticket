@@ -28,8 +28,8 @@ class RSSFeed
 
         $uri = "https://www.blogger.com/feeds/$blogid/posts/default";
         $entry = $gdClient->newEntry();
-        $entry->title = $gdClient->newTitle(trim($subject));
-        $entry->content = $gdClient->newContent($body);
+        $entry->title = $gdClient->newTitle(htmlentities(trim($subject)));
+        $entry->content = $gdClient->newContent(htmlentities($body));
         $entry->content->setType('text');
         $createdPost = $gdClient->insertEntry($entry, $uri);
         $idText = split('-', $createdPost->id->text);

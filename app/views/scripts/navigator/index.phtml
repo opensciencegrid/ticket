@@ -40,7 +40,7 @@ $(document).ready(function() {
             $status = str_replace(" ", "&nbsp;", $status);
             $moddate = $ticket->mrupdatedate;
 
-            echo "<tr onclick=\"document.location='$url';\">";
+            echo "<tr onclick=\"window.open('$url','_blank');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
             echo "<td>$title</td>";
             echo "<td><span class='ticketid $style'>$status&nbsp;&nbsp;</span></td>";

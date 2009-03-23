@@ -30,11 +30,11 @@ $(document).ready(function() {
 
     //decide which sorting function to use
     switch($this->sortby) {
-    case "id": $cmp ="sort_id"; break;
-    case "title": $cmp ="sort_title"; break;
-    case "nextaction": $cmp ="sort_nextaction"; break;
-    case "nad": $cmp ="sort_nad"; break;
-    default: dlog("uknown sortkey: ".$this->sortby);
+        case "id": $cmp ="sort_id"; break;
+        case "title": $cmp ="sort_title"; break;
+        case "nextaction": $cmp ="sort_nextaction"; break;
+        case "nad": $cmp ="sort_nad"; break;
+        default: dlog("uknown sortkey: ".$this->sortby);
     }
     if($this->sortdir == "down") {
         $cmp .= "_down";

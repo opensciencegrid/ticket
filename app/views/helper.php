@@ -154,11 +154,11 @@ function nadstyle($nad)
 {
     $nad = strtotime($nad);
     if($nad < time()) {
-        return "red";
+        return "flag flag_red";
     } else if($nad < time() + 3600*24*7) {
-        return "yellow";
+        return "flag flag_yellow";
     }
-    return "";
+    return "flag";
 }
 
 

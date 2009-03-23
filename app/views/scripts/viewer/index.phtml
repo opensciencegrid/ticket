@@ -64,17 +64,11 @@ function gotoedit()
     </tr>
 
     <tr>
-        <td class="header">Status:</td><td>
-        <?
-        $style = status2style($this->status);
-        echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
-            echo $this->status;
-        ?>
-        </td>
+        <td class="header">Status:</td><td><?=$this->status?></td>
     </tr>
 
     <tr>
-        <td class="header">Next Action Deadline:</td><td>Morning of <?=$this->nad?></td>
+        <td class="header">Next Action Deadline:</td><td class='<?=nadstyle($this->nad)?>'>Morning of <?=$this->nad?></td>
     </tr>
 
     <tr>
@@ -88,7 +82,6 @@ function gotoedit()
         </td>
     <?}?>
     </tr>
-
 
     <?
     if(in_array(role::$goc_admin, user()->roles)) {
@@ -178,7 +171,6 @@ function gotoedit()
             }
             echo "</div>";
         }
-
     }
     ?>
 </div>

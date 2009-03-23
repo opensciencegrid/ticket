@@ -9,6 +9,9 @@ class NavigatorController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $this->view->sortby = "id";
+        $this->view->sortdir = "up";
+
         if(in_array(role::$goc_admin, user()->roles)) {
             $this->openassignAction();
         } else {

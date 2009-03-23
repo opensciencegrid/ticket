@@ -25,26 +25,49 @@ $(document).ready(function() {
   </ul>
     <div style="padding: 10px;">
     <table width="100%">
-    <tr><th>ID</th><th>Title</th><th>Status</th><th width="150">Update Time</th></tr>
+    <tr><th>ID</th><th>Title</th><th>Next Action</th><th>Next Action Date</th></tr>
     <?
-    foreach($this->tickets as $dest=>$tickets)
+
+    //decide which sorting function to use
+    switch($this->sortby) {
+    case "id": $cmp ="sort_id"; break;
+    case "title": $cmp ="sort_title"; break;
+    case "nextaction": $cmp ="sort_nextaction"; break;
+    case "nad": $cmp ="sort_nad"; break;
+    default: dlog("uknown sortkey: ".$this->sortby);
+    }
+    if($this->sortdir == "down") {
+        $cmp .= "_down";
+    }
+    dlog($cmp);
+
+    foreach($this->tickets as $group=>$tickets)
     {
-        if(trim($dest) == "") $dest = "(N/A)";
-        echo "<tr><td colspan=4><h3>$dest</h3></td></tr>";
+        if(trim($group) == "") $group = "(N/A)";
+        echo "<tr><td colspan=4><h3>$group</h3></td></tr>";
+
+        //sort the group
+        usort($tickets, $cmp);
+
         foreach($tickets as $ticket) {
             $id = $ticket->mrid;
             $title = $ticket->mrtitle;
             $url = base()."/viewer?id=$id";
             $status = Footprint::parse($ticket->mrstatus);
-            $style = status2style($status);
+            $statusstyle = status2style($status);
             $status = str_replace(" ", "&nbsp;", $status);
             $moddate = $ticket->mrupdatedate;
+            $nad = $ticket->nad;
+            $nadstyle = nadstyle($nad);
+            $naction = $ticket->nextaction;
 
             echo "<tr onclick=\"window.open('$url','_blank');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
             echo "<td>$title</td>";
-            echo "<td><span class='ticketid $style'>$status&nbsp;&nbsp;</span></td>";
-            echo "<td>$moddate</td>";
+            //echo "<td class='ticketid $statusstyle'>$status&nbsp;&nbsp;</td>";
+            //echo "<td>$moddate</td>";
+            echo "<td>$naction</td>";
+            echo "<td class='$nadstyle'>$nad</td>";
             echo "</tr>";
         }
     }
@@ -53,7 +76,42 @@ $(document).ready(function() {
     </div>
 </div>
 
+<?
+
+//various sort functions
+function sort_id($a, $b)
+{
+    return ($a->mrid > $b->mrid);
+}
+function sort_title($a, $b)
+{
+    return strcmp($a->mrtitle, $b->mrtitle);
+}
+function sort_nextaction($a, $b)
+{
+    return strcmp($a->nextaction, $b->nextaction);
+}
+function sort_nad($a, $b)
+{
+    return ($a->nad > $b->nad);
+}
+function sort_id_down($a, $b)
+{
+    return ($b->mrid > $a->mrid);
+}
+function sort_title_down($a, $b)
+{
+    return strcmp($b->mrtitle, $a->mrtitle);
+}
+function sort_nextaction_down($a, $b)
+{
+    return strcmp($b->nextaction, $a->nextaction);
+}
+function sort_nad_down($a, $b)
+{
+    return ($b->nad > $a->nad);
+}
+
+?>
 
 <?include("app/views/scripts/footer.phtml");?>
-
-

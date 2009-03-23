@@ -128,8 +128,9 @@
         <td class="header">Status:</td><td>
         <?
         $style = status2style($this->status);
-        echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
-        echo "<select name=\"status\" onchange=\"changeflag($(this));\">";
+        //echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
+        //echo "<select name=\"status\" onchange=\"changeflag($(this));\">";
+        echo "<select name=\"status\">";
         foreach(Footprint::GetStatusList() as $status) {
             $selected = "";
             if($status == $this->status) $selected = "selected=selected";
@@ -186,13 +187,14 @@
 
 <script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
 <script type="text/javascript">
+/*
 function changeflag(node)
 {
     var val = node.val();
     var c = node.find("option[value='"+val+"']").attr("class");
     $("#status_flag").attr("class", c);
 }
-
+*/
 $(document).ready(function() {
     $("input[name='nad']").datepicker({
         dateFormat: 'yy-mm-dd'

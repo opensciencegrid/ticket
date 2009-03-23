@@ -461,22 +461,21 @@ a.nodeco
     text-decoration: none;
 }
 
-.ticketid
+td.flag
 {
     background-repeat: no-repeat;
     padding-left: 28px;
     min-height: 20px;
 }
 
-.ticketid_open { background-image: url('../images/tag_red.png'); }
-.ticketid_engineering { background-image: url('../images/tag_green.png'); }
-.ticketid_customer { background-image: url('../images/tag_yellow.png'); }
-.ticketid_supportagency { background-image: url('../images/tag_blue.png'); }
-.ticketid_resolved { background-image: url('../images/tag_purple.png'); }
-.ticketid_closed { background-image: url('../images/tag_black.png'); }
-
-.ticketid_vendor { background-image: url('../images/tag_orange.png'); }
-.ticketid_networkadministration { background-image: url('../images/tag_lime.png'); }
+td.flag_red { background-image: url('../images/tag_red.png'); }
+td.flag_green { background-image: url('../images/tag_green.png'); }
+td.flag_yellow { background-image: url('../images/tag_yellow.png'); }
+td.flag_blue { background-image: url('../images/tag_blue.png'); }
+td.flag_purple { background-image: url('../images/tag_purple.png'); }
+td.flag_black { background-image: url('../images/tag_black.png'); }
+td.flag_orange { background-image: url('../images/tag_orange.png'); }
+td.flag_lime { background-image: url('../images/tag_lime.png'); }
 
 tr[onclick]
 {
@@ -511,4 +510,14 @@ a.button img
 {
     height: 130px;
     overflow: auto;
+}
+
+
+td.red
+{
+    color: red;
+}
+td.yellow
+{
+    color: yellow;
 }

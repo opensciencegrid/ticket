@@ -149,3 +149,17 @@ function listSelector($selector_id, $possible, $already)
 
     return $out;
 }
+
+function nadstyle($nad)
+{
+    $nad = strtotime($nad);
+    if($nad < time()) {
+        return "red";
+    } else if($nad + 3600*24*7 < time()) {
+        return "yellow";
+    }
+    return "";
+}
+
+
+

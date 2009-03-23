@@ -24,8 +24,8 @@ $(document).ready(function() {
     <li><a id="close" href="#close_ref">Closed Ticket within Last 90 Days</a></li>
   </ul>
     <div style="padding: 10px;">
-    <table width="100%">
-    <tr><th>ID</th><th>Title</th><th>Next Action</th><th width="180px">Next Action Date</th><th>Modified</th></tr>
+    <table width="100%" class="recordlist">
+    <tr><th>ID</th><th>Title</th><th>Next Action</th><th width="160px">Next Action Date</th><th width="95px">Modified</th></tr>
     <?
 
     //decide which sorting function to use
@@ -44,7 +44,7 @@ $(document).ready(function() {
     foreach($this->tickets as $group=>$tickets)
     {
         if(trim($group) == "") $group = "(N/A)";
-        echo "<tr><td colspan=5><h3>$group</h3></td></tr>";
+        echo "<tr ><td colspan=5><h3>$group</h3></td></tr>";
 
         //sort the group
         usort($tickets, $cmp);
@@ -61,7 +61,7 @@ $(document).ready(function() {
             $nadstyle = nadstyle($nad);
             $naction = $ticket->nextaction;
 
-            echo "<tr onclick=\"window.open('$url','_blank');\">";
+            echo "<tr class=\"record\" onclick=\"window.open('$url','_blank');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
             echo "<td>$title</td>";
             //echo "<td class='ticketid $statusstyle'>$status&nbsp;&nbsp;</td>";

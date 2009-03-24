@@ -123,6 +123,17 @@ class ViewerController extends Zend_Controller_Action
             $this->view->destination_vos = $schema_model->getdestinationvos();
         }
     }
+    
+    public function quickdescAction()
+    {
+        $dirty_id = $_REQUEST["id"];
+
+        $model = new Schema();
+        $descs = $model->getquickdesc();
+        slog("quickdesc request $dirty_id");
+        echo $descs[$dirty_id];
+        $this->render("none", null, true);
+    }
 
     public function updateAction()
     {

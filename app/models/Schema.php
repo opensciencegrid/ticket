@@ -19,6 +19,29 @@ class Schema
         return $this->cache("email");
     }
 
+    public function getquickdesc()
+    {
+        $descs = array();
+
+        $rows = $this->cache("quickdesc");
+        $count = 0;
+        $name = "";
+        foreach($rows as $row) {
+            if($count % 2 == 0) {
+                $name = $row;
+            } else {
+                $descs[$name] = $row->DESCRIPTION;
+            }
+            $count++;
+        }
+        return $descs;
+    }
+
+    public function getquickticket()
+    {
+        return $this->cache("quickticket");
+    }
+
     public function getteams()
     {
         return $this->cache("teams");

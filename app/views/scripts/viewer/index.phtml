@@ -1,7 +1,25 @@
 <?include("app/views/scripts/header.phtml");?>
 
-<div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
+<script type="text/javascript" src="<?=base()?>/lib/jquery/plugins/jquery.textarearesizer.js"></script>
+<style type="text/css">
+        div.grippie {
+                background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
+                border-color:#DDDDDD;
+                border-style:solid;
+                border-width:0pt 1px 1px;
+                cursor:s-resize;
+                height:9px;
+                overflow:hidden;
+        }
+        .resizable-textarea textarea {
+                display:block;
+                margin-bottom:0pt;
+                width:95%;
+                height: 20%;
+        }
+</style>
 
+<div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
 <?
 if($this->ticket_type == "Security") {
     echo "<p class=\"warning\">This is a security ticket (only authorized personals can see this ticket)</p>";
@@ -22,33 +40,35 @@ function gotoedit()
         <td colspan="4"><h3>Submitter</h3></td>
     </tr>
     <tr>
-        <td class="header">Name:</td><td><?=$this->submitter_name?></td>
-        <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+        <td class="header">Full Name:</td><td><?=$this->submitter_name?></td>
+        <td></td><td></td>
     </tr>
     <?
         if(user()->getPersonID() !== null) {
-            echo "<tr class=\"personal\">";
+            echo "<tr>";
             echo "<td class=\"header\">Email:</td><td>".$this->submitter_email."</td>";
             echo "<td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td>";
             echo "</tr>";
         }
-
-        echo "<tr>";
-        echo "<td class=\"header\">Originating Ticket ID</td><td>".$this->originating_ticket_id."</td>";
-        echo "<td class=\"header\">Destination Ticket ID</td><td>".$this->destination_ticket_id."</td>";
-        echo "</tr>";
     ?>
     <tr>
-        <td colspan="4"><h3>Ticket Info</h3></td>
+        <td colspan="4"><h3>Routing Information</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+        <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
+    </tr>
+    <tr>
+        <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
+        <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
+    </tr>
+
+    <tr>
+        <td colspan="4"><h3>Ticket Detail</h3></td>
     </tr>
     <tr>
         <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
-        <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
-    </tr>
-
-    <tr>
-        <td class="header">Priority:</td><td><?=$this->priority?></td>
-        <td rowspan="5" class="header">Assignees:</td><td rowspan="5">
+        <td rowspan="6" class="header">Assignees:</td><td rowspan="5">
         <?
         foreach($this->assignees as $team => $list) {
             if(count($list) == 0) continue;
@@ -62,13 +82,16 @@ function gotoedit()
         ?>
         </td>
     </tr>
+    <tr>
+        <td class="header">Priority:</td><td><?=$this->priority?></td>
+    </tr>
 
     <tr>
         <td class="header">Status:</td><td><?=$this->status?></td>
     </tr>
 
     <tr>
-        <td class="header">Next Action Deadline:</td><td class='<?=nadstyle($this->nad)?>'>Morning of <?=$this->nad?></td>
+        <td class="header">Next Action Deadline:</td><td class='<?$style = nadstyle($this->nad);if($style != "") echo "flag $style";?>'>Morning of <?=$this->nad?></td>
     </tr>
 
     <tr>

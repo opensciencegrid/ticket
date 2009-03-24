@@ -24,7 +24,7 @@ foreach($this->groups as $group)
                 echo "<h4>Similar Tickets</h4>";
             } else {
                 $score = round($ticket->score);
-                echo "<a href='$ticket->url' style='opacity: ".($score/100).";'>[$ticket->id] $score% $ticket->title ($ticket->status)</a><br/>";
+                echo "<a target='_blank' href='$ticket->url' style='opacity: ".($score/100).";'>[$ticket->id] $score% $ticket->title ($ticket->status)</a><br/>";
             }
         }
         echo "</div><br/><br/>";

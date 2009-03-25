@@ -29,6 +29,8 @@ if($this->ticket_type == "Security") {
 <script type="text/javascript">
 function gotoedit()
 {
+    $("#editbutton").attr("disabled", "disabled");
+    $("#editbutton").val("Loading...");
     $("#information_table").load("<?=fullbase()?>/viewer/edit?id=<?=$this->ticket_id?>");
 }
 </script>
@@ -112,7 +114,7 @@ function gotoedit()
         <tr>
         <td></td>
         <td colspan="3">
-        <input type="button" onclick="gotoedit();" value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;"/>
+        <input type="button" id="editbutton" onclick="gotoedit();" value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;"/>
         </td>
         </tr>
     <?}?>

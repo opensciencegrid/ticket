@@ -71,28 +71,28 @@ class BaseController extends Zend_Controller_Action
 
         if($has_yourinfo) {
             $firstname = new Zend_Form_Element_Text('firstname');
-            $firstname->setLabel("Your First Name");
+            $firstname->setLabel("First Name");
             $firstname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
             $firstname->setRequired(true);
             $firstname->setValue(user()->getPersonFirstName());
             $form->addElement($firstname);
 
             $lastname = new Zend_Form_Element_Text('lastname');
-            $lastname->setLabel("Your Last Name");
+            $lastname->setLabel("Last Name");
             $lastname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
             $lastname->setRequired(true);
             $lastname->setValue(user()->getPersonLastName());
             $form->addElement($lastname);
 
             $email = new Zend_Form_Element_Text('email');
-            $email->setLabel("Your Email Address");
+            $email->setLabel("Email Address");
             $email->addValidator(new Zend_Validate_EmailAddress());
             $email->setRequired(true);
             $email->setValue(user()->getPersonEmail());
             $form->addElement($email);
 
             $phone = new Zend_Form_Element_Text('phone');
-            $phone->setLabel("Your Phone Number");
+            $phone->setLabel("Phone Number");
             $phone->addValidator('regex', false, validator::$phone);
             $phone->setRequired(true);
             //$phone->setDescription("(Format: 123-123-1234)");
@@ -102,7 +102,7 @@ class BaseController extends Zend_Controller_Action
             $vo_model = new VO;
             $vos = $vo_model->fetchAll();
             $vo = new Zend_Form_Element_Select('vo_id');
-            $vo->setLabel("Your Virtual Organization");
+            $vo->setLabel("Virtual Organization that this contact belongs");
             $vo->setRequired(true);
             $vo->addMultiOption(null, "(Please Select)");
             $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC

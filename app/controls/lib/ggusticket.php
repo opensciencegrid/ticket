@@ -102,6 +102,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             $footprint->sendNoAEmail();
             break;
         }
+        $footprint->setSubmitter("ggus");
     }
 
     return $footprint;

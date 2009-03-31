@@ -79,6 +79,9 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 $footprint->addPrimaryAdminContact($resource_id);
             }
         }
+
+        $footprint->setSubmitter("ggus");
+        $footprint->setOriginatingTicketNumber($id);
     } else {
         ///////////////////////////////////////////////////////////////////////
         // Update
@@ -100,10 +103,6 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             break;
         }
     }
-
-    //set other common stuff
-    $footprint->setSubmitter("ggus");
-    $footprint->setOriginatingTicketNumber($id);
 
     return $footprint;
 }

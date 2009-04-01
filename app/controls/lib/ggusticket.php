@@ -90,11 +90,20 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         slog("Originating ticket $id already exists in FP as $fpid . Doing Update..");
         $footprint = new Footprint($fpid);
 
-        //only set description field to be updated
-        //I don't know which one of these fields really contain the update-description..
-        //$footprint->addDescription($xml->GHD_Public_Diary);
-        $footprint->addDescription($xml->GHD_Diary_Of_Steps); 
-        $footprint->addDescription($xml->GHD_Internal_Diary);
+        //copy ggus updates to FP description
+        if($xml->GHD_Public_Diary != "") {
+            $footprint->addDescription("[Public Diary]\n");
+            $footprint->addDescription($xml->GHD_Public_Diary);
+        }
+        if($xml->GHD_Diary_Of_Steps != "") {
+            $footprint->addDescription("[Diary Of Steps]\n");
+            $footprint->addDescription($xml->GHD_Diary_Of_Steps); 
+        }
+        if($xml->GHD_Internal_Diary != "") {
+            $footprint->addDescription("[Internal Diary]\n");
+            $footprint->addDescription($xml->GHD_Internal_Diary);
+        }
+
         switch($xml->GHD_Status) {
         case "solved":
         case "verified":

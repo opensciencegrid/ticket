@@ -43,6 +43,9 @@ class RsvController extends BaseController
             $scname = $sc->footprints_id;
             $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
 
+            //set destination VO
+            $footprint->setDestinationVOFromResourceID($resource_id);
+
             if($footprint->isValidFPSC($scname)) {
                 $footprint->addAssignee($scname);
             } else {
@@ -122,7 +125,7 @@ class RsvController extends BaseController
         $form->addElement($detail);
 
         $element = new Zend_Form_Element_Submit('submit_button');
-        $element->setLabel("Send Email");
+        $element->setLabel("Submit");
         $form->addElement($element);
 
         return $form;

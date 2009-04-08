@@ -24,6 +24,18 @@ class Resource
         $sql = "select resource_id from resource where name = '$resource_name'";
         return db()->fetchOne($sql);
     }
+    public function getPrimaryOwnerVO($resource_id) 
+    {
+        $sql = "SELECT R.resource_id, R.name as resource_name, vo.short_name as vo_name, vo.footprints_id,
+MAX(v.percent) AS ownership_percent
+FROM vo_resource_ownership v
+  RIGHT JOIN resource R ON R.resource_id=v.resource_id
+  LEFT JOIN virtualorganization vo ON v.vo_id=vo.vo_id
+where R.resource_id = $resource_id
+GROUP BY R.name";
+        slog($sql);
+        return db()->fetchRow($sql);
+    }
 }
 
 ?>

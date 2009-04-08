@@ -183,6 +183,20 @@ class Footprint
         $this->b_proj = true;
     }
 
+    public function setDestinationVOFromResourceID($resource_id)
+    {
+        $model = new Resource();
+        $vo = $model->getPrimaryOwnerVO($resource_id);
+        if($vo->footprints_id === null) {
+            $this->addMeta("No VOs are associated with Resource $vo->resource_name. Setting destination VO to other\n");
+            $this->setDestinationVO("other");
+        } else {
+            $this->addMeta("Selecting $vo->vo_name(FP name: $vo->footprints_id) for Destination VO since it has the highest resource ownership.\n");
+            $this->setDestinationVO($vo->footprints_id);
+        }
+    }
+
+/*
     public function setDestinationVOFromSC($sc_id)
     {
         $sc_model = new SC;
@@ -207,7 +221,7 @@ class Footprint
 
         return $scname;
     }
-
+*/
 
     public function addPrimaryAdminContact($resource_id)
     {

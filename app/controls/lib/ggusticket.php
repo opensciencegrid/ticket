@@ -63,12 +63,18 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 //set description destination vo, assignee
                 $footprint->addMeta("Resource where user is having this issue: ".$name."($resource_id)\n");
 
+                $footprint->setDestinationVOFromResourceID($resource_id);
+
                 //lookup SC name
                 if($resource === false) {
                     $scname = "OSG-GOC";
                     $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
                 } else {
-                    $scname = $footprint->setDestinationVO($resource_id);
+                    //lookup SC name form sc_id
+                    $sc_model = new SC;
+                    $sc = $sc_model->get($resource->sc_id);
+                    $scname = $sc->footprints_id;
+
                 }
 
                 if($footprint->isValidFPSC($scname)) {

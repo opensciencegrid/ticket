@@ -37,14 +37,14 @@ class RsvController extends BaseController
             $template = str_replace("__RESOURCE_NAME__", $resource->resource_name, $template);
             $footprint->addDescription($template);
 
+            //set destination VO
+            $footprint->setDestinationVOFromResourceID($resource_id);
+
             //lookup SC name
             $sc_model = new SC;
             $sc = $sc_model->get($resource->sc_id);
             $scname = $sc->footprints_id;
             $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
-
-            //set destination VO
-            $footprint->setDestinationVOFromResourceID($resource_id);
 
             if($footprint->isValidFPSC($scname)) {
                 $footprint->addAssignee($scname);

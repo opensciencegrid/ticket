@@ -36,14 +36,19 @@ class ResourceController extends BaseController
             if($admin) {
                 //this is their own resource - maybe installation issue..
                 $footprint->addMeta("User is the admin for this resource, and this is an installation issue.\n");
-                $footprint->setDestinationVO("OSG-GOC");
+                $footprint->setDestinationVO("MIS");
             } else {
-                //lookup SC name form sc_id
-                $sc_model = new SC;
-                $sc = $sc_model->get($resource->sc_id);
-                $scname = $sc->footprints_id;
-
                 $footprint->setDestinationVOFromResourceID($resource_id);
+
+                if($resource === false) {
+                    $scname = "OSG-GOC";
+                    $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
+                } else {
+                    //lookup SC name form sc_id
+                    $sc_model = new SC;
+                    $sc = $sc_model->get($resource->sc_id);
+                    $scname = $sc->footprints_id;
+                }
 
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);

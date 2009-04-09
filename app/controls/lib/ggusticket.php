@@ -68,7 +68,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                     $scname = "OSG-GOC";
                     $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
                 } else {
-                    $scname = $footprint->setDestinationVOFromSC($resource->sc_id);
+                    $scname = $footprint->setDestinationVO($resource_id);
                 }
 
                 if($footprint->isValidFPSC($scname)) {

@@ -57,7 +57,9 @@ class NavigatorController extends Zend_Controller_Action
                 $team->team == "OSG__bGOC__bSupport__bTeam" or
                 $team->team == "OSG__bOperations__bInfrastructure" or 
                 $team->team == "OSG__bGOC__bManagement" or
-                $team->team == "OSG__bGOC__bService__bDesk") {
+                $team->team == "OSG__bGOC__bService__bDesk" or
+                $team->team == "OSG Security Coordinators" or
+                $team->team == "OSG Storage Team") {
                 $fp_scs = array_merge($fp_scs, split(",", $team->members));
             }
         }

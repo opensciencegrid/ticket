@@ -214,7 +214,11 @@ class FinderrorController extends Zend_Controller_Action
         $members = array();
         foreach($teams as $team_entry) {
             $team = Footprint::parse($team_entry->team);
-            if($team == "OSG GOC Support Team" || $team == "OSG Operations Infrastructure" || $team == "OSG GOC Management") {
+            if( $team == "OSG GOC Support Team" || 
+                $team == "OSG Operations Infrastructure" || 
+                $team == "OSG GOC Management" ||
+                $team == "OSG Security Coordinators" ||
+                $team == "OSG Storage Team") {
                 $members = array_merge($members, split(",", $team_entry->members));
             }
         }

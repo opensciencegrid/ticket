@@ -18,7 +18,11 @@ echo "<blockquote>Please note that the team information is cached for about 10 m
 echo "<p>";
 foreach($this->teams as $team_entry) {
     $team = Footprint::parse($team_entry->team);
-    if($team == "OSG GOC Support Team" || $team == "OSG Operations Infrastructure" || $team == "OSG GOC Management") {
+    if( $team == "OSG GOC Support Team" || 
+        $team == "OSG Operations Infrastructure" || 
+        $team == "OSG GOC Management" ||
+        $team == "OSG Security Coordinators" ||
+        $team == "OSG Storage Team") {
         echo "<h4>$team</h4>";
         echo $team_entry->members;
     }

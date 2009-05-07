@@ -23,6 +23,9 @@ class ErrorController extends Zend_Controller_Action
                 $log .= "Stack Trace -----------------------------------------\n";
                 $log .= $exception->getTraceAsString()."\n\n";
 
+                $log .= "REQUEST -----------------------------------------\n";
+                $log .= print_r($_REQUEST, true)."\n\n";
+
                 $log .= "Server Parameter ------------------------------------\n";
                 $log .= print_r($_SERVER, true)."\n\n";
 

@@ -21,27 +21,48 @@ class NavigatorController extends Zend_Controller_Action
 
     public function openAction()
     {
-        $model = new Tickets();
-        $tickets = $model->getopen();
-        $this->view->activetab = "open";
-        $this->view->tickets = $this->groupby("mrdest", $tickets);
-        $this->render("index");
+        try {
+            $model = new Tickets();
+            $tickets = $model->getopen();
+            $this->view->activetab = "open";
+            $this->view->tickets = $this->groupby("mrdest", $tickets);
+            $this->render("index");
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            $this->view->content = $e->getMessage();
+            $this->render("error/error", null, true);
+        }
     }
     public function openassignAction()
     {
-        $model = new Tickets();
-        $tickets = $model->getopen();
-        $this->view->activetab = "openassign";
-        $this->view->tickets  = $this->groupby("mrassignees", $tickets);
-        $this->render("index");
+        try {
+            $model = new Tickets();
+            $tickets = $model->getopen();
+            $this->view->activetab = "openassign";
+            $this->view->tickets  = $this->groupby("mrassignees", $tickets);
+            $this->render("index");
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            $this->view->content = $e->getMessage();
+            $this->render("error/error", null, true);
+        }
     }
     public function closeAction()
     {
-        $model = new Tickets();
-        $tickets = $model->getclosed(time()-3600*24*90);
-        $this->view->activetab = "close";
-        $this->view->tickets  = $this->groupby("mrdest", $tickets);
-        $this->render("index");
+        try {
+            $model = new Tickets();
+            $tickets = $model->getclosed(time()-3600*24*90);
+            $this->view->activetab = "close";
+            $this->view->tickets  = $this->groupby("mrdest", $tickets);
+            $this->render("index");
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            $this->view->content = $e->getMessage();
+            $this->render("error/error", null, true);
+        }
     }
 
     protected function groupby($type, $tickets) 

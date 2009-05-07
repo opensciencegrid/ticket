@@ -140,11 +140,13 @@ function gotoedit()
         $content = $desc["content"];
         $type = $desc["type"];
 
-        //suppress metainfo..
-        $metapos = strpos($content, config()->metatag);
-        if($metapos !== FALSE) {
-            //has metainfo.. replace it with filtered versionme
-            $content = substr($content, 0, $metapos);
+        //suppress metainfo for non goc
+        if(!in_array(role::$goc_admin, user()->roles)) {
+            $metapos = strpos($content, config()->metatag);
+            if($metapos !== FALSE) {
+                //has metainfo.. replace it with filtered versionme
+                $content = substr($content, 0, $metapos);
+            }
         }
 
         if($time > time() - 60*60*24) {

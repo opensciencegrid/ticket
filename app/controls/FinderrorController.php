@@ -66,7 +66,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($this->oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $orig_vo2) {
                     $found = true;
-                    $this->view->error_origvos[] = array("", $orig_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                    $this->view->error_origvos[] = array("", $orig_vo2, $oim_vo->name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }
@@ -88,7 +88,7 @@ class FinderrorController extends Zend_Controller_Action
                 }
             }
             if(!$found) {
-                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->name."(".$oim_vo->footprints_id.")");
                 $this->berror = true;
             }
         } 
@@ -106,7 +106,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($this->oim_vos as $oim_vo) {
                 if($oim_vo->footprints_id == $dest_vo2) {
                     $found = true;
-                    $this->view->error_destvos[] = array("", $dest_vo2, $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                    $this->view->error_destvos[] = array("", $dest_vo2, $oim_vo->name."(".$oim_vo->footprints_id.")");
                     break;
                 }
             }
@@ -128,7 +128,7 @@ class FinderrorController extends Zend_Controller_Action
                 }
             }
             if(!$found) {
-                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->short_name."(".$oim_vo->footprints_id.")");
+                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->name."(".$oim_vo->footprints_id.")");
                 $this->berror = true;
             }
         } 
@@ -152,7 +152,7 @@ class FinderrorController extends Zend_Controller_Action
             foreach($oim_scs as $oim_sc) {
                 if($oim_sc->footprints_id == $fp_sc) {
                     //found match
-                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->short_name."(".$oim_sc->footprints_id.")");
+                    $this->view->error_sc[] = array("", $fp_sc, $oim_sc->name."(".$oim_sc->footprints_id.")");
                     $found = true;
                     break;
                 }
@@ -171,7 +171,7 @@ class FinderrorController extends Zend_Controller_Action
                 }
             }
             if(!$found) {
-                $this->view->error_sc[] = array("only in oim", "", $oim_sc->short_name."(".$oim_sc->footprints_id.")");
+                $this->view->error_sc[] = array("only in oim", "", $oim_sc->name."(".$oim_sc->footprints_id.")");
                 $this->berror = true;
             }
         }
@@ -185,7 +185,7 @@ class FinderrorController extends Zend_Controller_Action
         $model = new PrimarySCContact;
         foreach($oim_scs as $oim_sc) {
             //pull primary admin
-            $admin = $model->fetch($oim_sc->sc_id);
+            $admin = $model->fetch($oim_sc->id);
             $op_contact_email = $admin->primary_email;
             
             $found = false;
@@ -257,13 +257,11 @@ class FinderrorController extends Zend_Controller_Action
         $this->view->resource_sclink = array();
         foreach($resources as $r) {
             $note = "";
-            $site = $rs_model->fetch($r->resource_id);
-            $name = $model->fetchName($r->resource_id);
-            $sc_id = null;
+            $sc_id = $rs_model->fetchSCID($r->id);
+            $name = $model->fetchName($r->id);
             $sc_name = null;
-            if($site !== false) {
-                $sc_id = $site->sc_id;
-                $sc = $sc_model->get($site->sc_id); 
+            if($sc_id !== false) {
+                $sc = $sc_model->get($sc_id); 
                 $sc_name = $sc->footprints_id;
             } else {
                 $note .= "Failed to find this resource in rsvextra.View_resourceSiteScPub";
@@ -271,7 +269,7 @@ class FinderrorController extends Zend_Controller_Action
             }
             $this->view->resource_sclink[] = array(
                 "resource_name"=>$name,
-                "resource_id"=>$r->resource_id,
+                "resource_id"=>$r->id,
                 "sc_id"=>$sc_id,
                 "sc_name"=>$sc_name,
                 "note"=>$note

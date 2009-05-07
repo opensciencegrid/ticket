@@ -37,7 +37,7 @@ class RaController extends BaseController
             $sp_name = $form->getValue('req_sponsor');
             $sp_email = null;
             foreach($this->sponsors as $sponsor) {
-                $name = trim($sponsor->first_name. " ".$sponsor->last_name);
+                $name = trim($sponsor->name);
                 if($name == $sp_name) {
                     $sp_email = $sponsor->primary_email;
                     break;
@@ -45,12 +45,13 @@ class RaController extends BaseController
             }
             if($sp_email === null) {
                 dlog("wierd... (maybe user is tinkering with the form?)");
+                $this->render("failed", null, true);
                 return;
             }
 
             //generate ra email content
             $ra = new RaEmail();
-            $ra->setFromName($form->getValue('firstname')." ".$form->getValue('lastname'));
+            $ra->setFromName($form->getValue('name'));
             $ra->setFromEmail($form->getValue('email'));
             $ra->setFromPhone($form->getValue('phone'));
             $ra->setType($form->getValue('req_type'));

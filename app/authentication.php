@@ -99,7 +99,7 @@ function cert_authenticate()
             $user = new User($dn);
             if($user->getPersonID()) {
                 Zend_Registry::set("user", $user);
-                slog("Authenticated User: ".$user->getPersonFullName());
+                slog("Authenticated User: ".$user->getPersonName());
             } else {
                 //unknown, non-active, or expired cert?
                 _setguest();

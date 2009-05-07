@@ -55,6 +55,7 @@ class Tickets
     }
     public function getDetail($id)
     {
+        slog("fetchin from fp");
         $client = new SoapClient(null, 
             array(      'location' => config()->fp_soap_location,
                         'uri'      => config()->fp_soap_uri));
@@ -73,4 +74,3 @@ class Tickets
     }
 }
 
-?>

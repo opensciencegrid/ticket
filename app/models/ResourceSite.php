@@ -1,12 +1,10 @@
 <?
-
 class ResourceSite
 {
-    public function fetch($resource_id)
+    public function fetchSCID($resource_id)
     {
-        $sql = "select * from rsvextra.View_resourceSiteScPub where resource_id = $resource_id";
-        return db()->fetchRow($sql);
+        $sql = "select sc_id from site where id = (select site_id from resource_group where id = (select resource_group_id from resource where id = $resource_id))";
+        return db2()->fetchOne($sql);
     }
 }
 
-?>

@@ -14,7 +14,7 @@ if($this->errors != "") {
 $sponsors = "";
 foreach($this->sponsors as $sponsor) 
 {
-    $name = trim($sponsor->first_name. " ".$sponsor->last_name);
+    $name = trim($sponsor->name);
     $email = $sponsor->primary_email;
     if($sponsors != "") $sponsors .= ",\n";
     $sponsors .= "{ name: \"$name\", to: \"$email\"}";

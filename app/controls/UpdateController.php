@@ -27,7 +27,7 @@ class UpdateController extends Zend_Controller_Action
         $footprint->setStatus($status);
         $footprint->addDescription("Updating ticket status to $status");
         if(config()->simulate) {
-            echo "This is a simulation";
+            slog("This is a simulation - not status update actually submitted");
         } else {
             $mrid = $footprint->submit();
             if($mrid == $ticket_id) {

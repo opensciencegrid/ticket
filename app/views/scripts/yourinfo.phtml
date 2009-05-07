@@ -6,8 +6,7 @@ Please tell us who should be the primary contact for this ticket.
 <table>
 <tr>
 <td>
-<?=$this->element->firstname?>
-<?=$this->element->lastname?>
+<?=$this->element->name?>
 <?=$this->element->email?>
 <?=$this->element->phone?>
 <?=$this->element->vo_id?>
@@ -31,13 +30,12 @@ Populate from someone else's contact information<br/>
     $persons_json = "";
     foreach($persons as $person) 
     {
-        $fullname = trim($person->first_name. " ".$person->last_name);
-        $fname = trim($person->first_name);
-        $lname = trim($person->last_name);
+        $fullname = trim($person->name);
         $email = trim($person->primary_email);
         $phone = trim($person->primary_phone);
+        if($fullname == "") $fullname = $email;
         if($persons_json != "") $persons_json .= ",\n";
-        $persons_json .= "{ fullname: \"$fullname\", firstname: \"$fname\", lastname: \"$lname\", email: \"$email\", phone: \"$phone\"}";
+        $persons_json .= "{ fullname: \"$fullname\", email: \"$email\", phone: \"$phone\"}";
     }
     ?>
     var persons = [
@@ -59,8 +57,7 @@ Populate from someone else's contact information<br/>
             }
         });
         $("#careof").result(function(event, data, formatted) {
-            $("#firstname").val(data.firstname);
-            $("#lastname").val(data.lastname);
+            $("#name").val(data.fullname);
             $("#email").val(data.email);
             $("#phone").val(data.phone);
             $("#vo_id").val(-1); //reset vo to i-don-know

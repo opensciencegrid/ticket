@@ -27,9 +27,8 @@ class MembershipController extends BaseController
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
 
-            $firstname = $form->getValue('firstname');
-            $lastname = $form->getValue('lastname');
-            $title = $firstname. " ".$lastname. " requesting VO membership to ";
+            $name = $form->getValue('name');
+            $title = $name. " requesting VO membership to ";
 
             if($knowvo == "true") {
                 $void = $form->getValue('vo_id_requested');
@@ -53,8 +52,8 @@ class MembershipController extends BaseController
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
-                $footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
-                $title .= $info->short_name;
+                //$footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
+                $title .= $info->name;
             } else {
                 $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
                 $title .= "unknown vo";
@@ -118,7 +117,7 @@ class MembershipController extends BaseController
         $vo_model = new VO;
         $vos = $vo_model->fetchAll();
         foreach($vos as $v) {
-            $vo->addMultiOption($v->vo_id, $v->short_name);
+            $vo->addMultiOption($v->id, $v->name);
         }
         $form->addElement($vo);
 

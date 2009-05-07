@@ -162,16 +162,27 @@ RSS: http://www.grid.iu.edu/news";
         $this->accesscheck("134.68.107.18");//tick-indy.globalnoc.iu.edu
 
         if(isset($_REQUEST["xml"])) {
-            try
-            {
+            try {
+                //construct footprint object from xml
                 $xml_content = $_REQUEST["xml"];
+                slog("Received GGUS XML");
+                slog($xml_content);
+
                 require_once("lib/ggusticket.php");
                 $footprint = ggus2footprint($xml_content);
-                $mrid = $footprint->submit();
-                slog("GGUS Ticket insert / update success - FP Ticket ID $mrid");
+
+                //submit
+                try
+                {
+                    $mrid = $footprint->submit();
+                    slog("GGUS Ticket insert / update success - FP Ticket ID $mrid");
+                } catch(exception $e) {
+                    $this->sendErrorEmail($e);
+                }
             } catch(exception $e) {
-                $this->sendErrorEmail($e);
+                slog("ggus2footprint failed - maybe spam?");
             }
+
         }
         $this->render("none", null, true);
     }

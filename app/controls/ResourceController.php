@@ -26,10 +26,12 @@ class ResourceController extends BaseController
             //$resource_id = $form->getValue($issue_element_name);
             $resource_id = $issue_element->getValue();
             $rs_model = new ResourceSite();
-            $resource = $rs_model->fetch($resource_id);
+            $sc_id = $rs_model->fetchSCID($resource_id);
+            $resource_model = new Resource();
+            $resource_name = $resource_model->fetchName($resource_id);
 
             //set description destination vo, assignee
-            $footprint->addMeta("Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
+            $footprint->addMeta("Resource where user is having this issue: ".$resource_name."($resource_id)\n");
             $footprint->setTitle($form->getValue('title'));
 
             $admin = $_REQUEST["admin"];
@@ -46,7 +48,7 @@ class ResourceController extends BaseController
                 } else {
                     //lookup SC name form sc_id
                     $sc_model = new SC;
-                    $sc = $sc_model->get($resource->sc_id);
+                    $sc = $sc_model->get($sc_id);
                     $scname = $sc->footprints_id;
                 }
 
@@ -93,7 +95,7 @@ class ResourceController extends BaseController
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();
         foreach($gridtypes as $gridtype) {
-            $element->addMultiOption($gridtype->grid_type_id, $gridtype->description);
+            $element->addMultiOption($gridtype->id, $gridtype->description);
         }
         $form->addElement($element);
 
@@ -103,17 +105,16 @@ class ResourceController extends BaseController
         $resource_model = new Resource;
         $resources = $resource_model->fetchAll(1);
         foreach($resources as $resource) {
-            $element->addMultiOption($resource->resource_id, $resource->name);
+            $element->addMultiOption($resource->id, $resource->name);
         }
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
         $element->setLabel("Resource Name");
         $element->addMultiOption(null, "(Please Select)");
-        $resource_model = new Resource;
         $resources = $resource_model->fetchAll(2);
         foreach($resources as $resource) {
-            $element->addMultiOption($resource->resource_id, $resource->name);
+            $element->addMultiOption($resource->id, $resource->name);
         }
         $form->addElement($element);
 

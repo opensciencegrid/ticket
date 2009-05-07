@@ -3,6 +3,7 @@
 function ggus2footprint($xml_content)
 {
     $xml = new SimpleXMLElement($xml_content);
+
     $node = "GHD_Request-ID";
     $id = (int)$xml->$node;
 
@@ -34,8 +35,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
 
         //contact info
         $fullname = split(" ", $xml->GHD_Name);
-        $footprint->setFirstName($fullname[0]);
-        $footprint->setLastName($fullname[1]);
+        $footprint->setName($fullname);
         $footprint->setOfficePhone((string)$xml->GHD_Phone);
         $node = "GHD_E-Mail";
         $footprint->setEmail((string)$xml->$node);

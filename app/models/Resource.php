@@ -6,35 +6,34 @@ class Resource
     {
         $grid_type_where = "";
         if($grid_type !== null) {
-            $resource_groups = "select resource_group_id from resource_group RG where osg_grid_type_id = $grid_type";
-            $resource_ids = "select resource_id from resource_resource_group RRG where resource_group_id IN ($resource_groups)";
-            $grid_type_where = "and resource_id IN ($resource_ids)";
+            $resource_groups = "select id from resource_group RG where osg_grid_type_id = $grid_type";
+            $resource_ids = "select id from resource RRG where resource_group_id IN ($resource_groups)";
+            $grid_type_where = "and id IN ($resource_ids)";
         }
 
-        $sql = "select * from resource r where active = 1 and disable = 0 $grid_type_where order by name";
-        return db()->fetchAll($sql);
+        $sql = "select *, r.id as resource_id from resource r where active = 1 and disable = 0 $grid_type_where order by name";
+        return db2()->fetchAll($sql);
     }
     public function fetchName($resource_id)
     {
-        $sql = "select name from resource where active = 1 and disable = 0 and resource_id = $resource_id";
-        return db()->fetchOne($sql);
+        $sql = "select name from resource where active = 1 and disable = 0 and id = $resource_id";
+        return db2()->fetchOne($sql);
     }
     public function fetchID($resource_name)
     {
-        $sql = "select resource_id from resource where name = '$resource_name'";
-        return db()->fetchOne($sql);
+        $sql = "select id from resource where name = '$resource_name'";
+        return db2()->fetchOne($sql);
     }
     public function getPrimaryOwnerVO($resource_id) 
     {
-        $sql = "SELECT R.resource_id, R.name as resource_name, vo.short_name as vo_name, vo.footprints_id,
+        $sql = "SELECT R.id, R.name, vo.name as vo_name, vo.footprints_id,
 MAX(v.percent) AS ownership_percent
 FROM vo_resource_ownership v
-  RIGHT JOIN resource R ON R.resource_id=v.resource_id
-  LEFT JOIN virtualorganization vo ON v.vo_id=vo.vo_id
-where R.resource_id = $resource_id
+  RIGHT JOIN resource R ON R.id=v.resource_id
+  LEFT JOIN vo vo ON v.vo_id=vo.id
+where R.id = $resource_id
 GROUP BY R.name";
-        slog($sql);
-        return db()->fetchRow($sql);
+        return db2()->fetchRow($sql);
     }
 }
 

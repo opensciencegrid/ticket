@@ -63,8 +63,12 @@ class Footprint
 
     public function setTitle($v) { $this->title = $v; $this->b_title = true; }
     public function setSubmitter($v) { $this->submitter = $v; $this->b_submitter = true; }
-    public function setFirstName($v) { $this->ab_fields["First__bName"] = $v; $this->b_contact = true; }
-    public function setLastName($v) { $this->ab_fields["Last__bName"] = $v; $this->b_contact = true; }
+    public function setName($v) { 
+        list($first_name, $last_name)  = split(" ", $v, 2);
+        $this->ab_fields["First__bName"] = $first_name;
+        $this->ab_fields["Last__bName"] = $last_name;
+        $this->b_contact = true; 
+    }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; $this->b_contact = true; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; $this->b_contact = true; }
     public function sendNoAEmail() { $this->send_no_ae = true; } //set to not send assignee emails
@@ -188,7 +192,7 @@ class Footprint
         $model = new Resource();
         $vo = $model->getPrimaryOwnerVO($resource_id);
         if($vo->footprints_id === null) {
-            $this->addMeta("No VOs are associated with Resource $vo->resource_name. Setting destination VO to other\n");
+            $this->addMeta("No VOs are associated with Resource $vo->name. Setting destination VO to other\n");
             $this->setDestinationVO("other");
         } else {
             $this->addMeta("Selecting $vo->vo_name(FP name: $vo->footprints_id) for Destination VO since it has the highest resource ownership.\n");
@@ -234,7 +238,7 @@ class Footprint
             $footprint->addMeta("Primary Admin for ".$resource_name." couldn't be found in the OIM");
         } else {
             $this->addCC($prac->primary_email);
-            $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->first_name." ".$prac->last_name." and has been CC'd regarding this ticket.\n");
+            $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->name." and has been CC'd.\n");
             $this->b_cc = true;
         }
     }

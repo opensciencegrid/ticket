@@ -20,31 +20,33 @@ class RsvController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->setFirstName("OSG-GOC");
+            $footprint->setName("OSG-GOC");
             $footprint->setEmail("goc@opensciencegrid.org");
             $footprint->setOriginatingVO("MIS");
 
             //lookup service center
             $resource_id = $issue_element->getValue();
-            $rs_model = new ResourceSite();
-            $resource = $rs_model->fetch($resource_id);
+            $resource_model = new Resource();
+            $resource_name = $resource_model->fetchName($resource_id); 
 
             //set description destination vo, assignee
-            $footprint->addMeta("Resource where user is having this issue: ".$resource->resource_name."($resource_id)\n");
+            $footprint->addMeta("Resource where user is having this issue: ".$resource_name."($resource_id)\n");
             $footprint->setTitle($form->getValue("title"));
 
             $template = $form->getValue('detail');
-            $template = str_replace("__RESOURCE_NAME__", $resource->resource_name, $template);
+            $template = str_replace("__RESOURCE_NAME__", $resource_name, $template);
             $footprint->addDescription($template);
 
             //set destination VO
             $footprint->setDestinationVOFromResourceID($resource_id);
 
             //lookup SC name
+            $rs_model = new ResourceSite();
+            $sc_id = $rs_model->fetchSCID($resource_id);
             $sc_model = new SC;
-            $sc = $sc_model->get($resource->sc_id);
+            $sc = $sc_model->get($sc_id);
             $scname = $sc->footprints_id;
-            $footprint->addMeta("This resource is supported at SC:$scname. Please reset destination VO accordingly.\n");
+            $footprint->addMeta("This resource is supported at SC:$scname.\n");
 
             if($footprint->isValidFPSC($scname)) {
                 $footprint->addAssignee($scname);
@@ -89,7 +91,7 @@ class RsvController extends BaseController
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();
         foreach($gridtypes as $gridtype) {
-            $element->addMultiOption($gridtype->grid_type_id, $gridtype->description);
+            $element->addMultiOption($gridtype->id, $gridtype->description);
         }
         $form->addElement($element);
 

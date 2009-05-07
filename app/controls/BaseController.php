@@ -70,19 +70,12 @@ class BaseController extends Zend_Controller_Action
         )));
 
         if($has_yourinfo) {
-            $firstname = new Zend_Form_Element_Text('firstname');
-            $firstname->setLabel("First Name");
-            $firstname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
-            $firstname->setRequired(true);
-            $firstname->setValue(user()->getPersonFirstName());
-            $form->addElement($firstname);
-
-            $lastname = new Zend_Form_Element_Text('lastname');
-            $lastname->setLabel("Last Name");
-            $lastname->addValidator(new Zend_Validate_Alpha(false)); //ture for allowWhiteSpace
-            $lastname->setRequired(true);
-            $lastname->setValue(user()->getPersonLastName());
-            $form->addElement($lastname);
+            $name = new Zend_Form_Element_Text('name');
+            $name->setLabel("Full Name");
+            $name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
+            $name->setRequired(true);
+            $name->setValue(user()->getPersonName());
+            $form->addElement($name);
 
             $email = new Zend_Form_Element_Text('email');
             $email->setLabel("Email Address");
@@ -107,7 +100,7 @@ class BaseController extends Zend_Controller_Action
             $vo->addMultiOption(null, "(Please Select)");
             $vo->addMultiOption(-1, "(I don't know)"); //2 - CSC
             foreach($vos as $v) {
-                $vo->addMultiOption($v->vo_id, $v->short_name);
+                $vo->addMultiOption($v->id, $v->name);
             }
             if(in_array(role::$goc_admin, user()->roles)) {
                 $vo->setValue(25); //MIS
@@ -124,8 +117,7 @@ class BaseController extends Zend_Controller_Action
         $footprint = new Footprint;
 
         if($this->has_yourinfo) {
-            $footprint->setFirstName($form->getValue('firstname'));
-            $footprint->setLastName($form->getValue('lastname'));
+            $footprint->setName($form->getValue('name'));
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
 
@@ -136,7 +128,7 @@ class BaseController extends Zend_Controller_Action
                 $vo_model = new VO();
                 $info = $vo_model->get($void);
                 if($info->footprints_id === null) {
-                    $footprint->addMeta("Submitter's VO is ".$info->short_name. " but its footprints_id is not set in OIM. Please set it.");
+                    $footprint->addMeta("Submitter's VO is ".$info->name. " but its footprints_id is not set in OIM. Please set it.");
                 } else {
                     $footprint->setOriginatingVO($info->footprints_id);
                 }

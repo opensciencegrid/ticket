@@ -63,7 +63,7 @@ class NotifyController extends BaseController
             $person_id = $form->getValue('email_from');
             if($person_id != "") {
                 $person = $model->fetchPerson($person_id);
-                $e->setFrom($person->first_name." ".$person->last_name." <".$person->primary_email.">");
+                $e->setFrom($person->name." <".$person->primary_email.">");
             } else {
                 $e->setFrom(config()->email_from);
             }
@@ -126,10 +126,10 @@ class NotifyController extends BaseController
         $e = new Zend_Form_Element_Select('email_from');
         $e->setLabel("Sender Address");
         $e->addMultiOption(null, config()->email_from);
-        $model = new PrimaryEmail();
-        $contacts = $model->fetchAll(4);
+        $model = new Person();
+        $contacts = $model->fetchGOC(4);
         foreach($contacts as $contact) {
-            $e->addMultiOption($contact->person_id, $contact->first_name." ".$contact->last_name." <".$contact->primary_email.">");
+            $e->addMultiOption($contact->id, $contact->name." <".$contact->primary_email.">");
         }
         $form->addElement($e);
 

@@ -5,7 +5,7 @@ class Schema
     private function cache($token) {
         //returns list of users and their current email addresses
         $c = new Cache("/tmp/goctiket.".$token."_".config()->project_id);
-        if($c->isFresh(600)) { //10 minutes..
+        if($c->isFresh(600)) { //10 minute
             return $c->get();
         } else {
             $ret = $this->doget($token);
@@ -77,4 +77,3 @@ class Schema
     }
 }
 
-?>

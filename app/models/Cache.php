@@ -5,7 +5,7 @@ class Cache
     function __construct($path)
     {
         $this->path = $path;
-        $this->ctime = filectime($path);
+        $this->ctime = @filectime($path);
     }
     function isFresh($fresh_for)
     {

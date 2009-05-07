@@ -130,7 +130,6 @@ class ViewerController extends Zend_Controller_Action
 
         $model = new Schema();
         $descs = $model->getquickdesc();
-        slog("quickdesc request $dirty_id");
         echo $descs[$dirty_id];
         $this->render("none", null, true);
     }
@@ -181,11 +180,10 @@ class ViewerController extends Zend_Controller_Action
                 try {
                     $footprint = new Footprint($ticket_id);
                     $footprint->setTitle($title); 
-                    $footprint->setSubmitter(user()->getPersonFullName()); 
+                    $footprint->setSubmitter(user()->getPersonName()); 
                 
                     //contact
-                    $footprint->setFirstName($submit_fname);
-                    $footprint->setLastName($submit_lname);
+                    $footprint->setName($submit_fname." ".$submit_lname);
                     $footprint->setOfficePhone($submit_phone);
                     $footprint->setEmail($submit_email);
                     $footprint->setOriginatingVO($submit_vo);
@@ -196,10 +194,12 @@ class ViewerController extends Zend_Controller_Action
                         $footprint->addAssignee($assignee);
                     }
                     $footprint->resetCC();
-                    foreach($ccs as $cc) {
-                        $cc = trim($cc);
-                        if($cc != "") {
-                            $footprint->addCC($cc);
+                    if(isset($ccs)) {
+                        foreach($ccs as $cc) {
+                            $cc = trim($cc);
+                            if($cc != "") {
+                                $footprint->addCC($cc);
+                            }
                         }
                     }
                     if($description != "") {
@@ -215,7 +215,6 @@ class ViewerController extends Zend_Controller_Action
                     $footprint->setDestinationTicketNumber($dest_ticket_id);
                 
                     $footprint->submit();
-                    slog("Ticket update submitted");
                     header("Location: ".fullbase()."/viewer?id=".$ticket_id);
                     exit;
                 } catch(exception $e) {
@@ -229,7 +228,13 @@ class ViewerController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        $detail = $this->loaddetail();
+        try {
+            $detail = $this->loaddetail();
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            return;
+        }
 
         //notes
         $alldesc = $detail->alldescs;

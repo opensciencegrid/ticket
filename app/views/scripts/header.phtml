@@ -30,7 +30,6 @@
 <img id="logo" src="<?=base()?>/images/osg_logo.png" alt="myosg logo"/>
 <h1><?=config()->app_name?></h1>
 <h2>by Grid Operations Center</h2>
-</div>
 <?
 function submenutitle($id)
 {
@@ -52,6 +51,7 @@ if(in_array(role::$goc_admin, user()->roles)) {
 ?>
     <span id="submenu_admin"><a href="<?=base()?>/admin" accesskey="3"><?=submenutitle("admin")?></a></span>
 <?}?>
+</div>
 </div>
 <script type="text/javascript">
     $("#submenu_<?=$this->submenu_selected?>").addClass("selected");

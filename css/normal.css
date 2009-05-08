@@ -24,51 +24,54 @@ p
 
 #header
 {
-padding-left: 105px;
-background-image: url('../images/orange_back.png');
-height:60px;
+background-image: url('../images/lhc_back.png');
+height:80px;
 font-family: 'Trebuchet MS';
 }
 #header h1
 {
+padding-left: 105px;
 color: white;
 padding-top: 8px;
 padding-bottom: 8px;
 font-size: 14pt;
+text-shadow: black 2px 2px 4px;
 }
 #header h2
 {
+padding-left: 105px;
 color: #EfE8C2;
 font-weight: normal;
 font-size: 13pt;
+margin-bottom: 7px;
 }
 #logo
 {
 position: absolute;
-top: 2px;
+top: 0px;
 left: 2px;
 }
 
 h3
 {
-    border-top: 1px solid orange;
-    background-color: #fdb;
+    border-top: 1px solid #630;
+    background-color: #edc;
     font-size: 13px;
     font-weight: bold;
-    padding: 2px;
+    padding: 5px;
     color: #630;
 }
 h4
 {
     color: #630;
-    background-color: #fdb;
+    border-bottom: 1px solid #630;
     font-weight: bold;
     padding :2px;
     padding-left: 5px;
     font-size: 12px;
 }
 
-h4, p.errors, p.warning, a.button
+p.errors, p.warning, a.button
 {
 -moz-border-radius-topleft: 5px;
 -moz-border-radius-topright: 5px;
@@ -88,9 +91,7 @@ a
 
 a:hover
 {
-    background-color: orange;
-    color: white;
-    text-decoration: none;
+    color: brown;
 }
 
 .container {
@@ -279,33 +280,33 @@ pre
 .submenu
 {
 font-family:"trebuchet ms",sans-serif;
-background-color: black;
-padding: 6px 2.5em 4px 28px;
+padding: 0px 28px 0px 28px;
 }
 .submenu span
 {
 padding-left: 10px;
 padding-right: 10px;
 padding-bottom: 4px;
-padding-top: 3px;
+padding-top: 6px;
+position: relative;
+top: 5px;
 }
 .submenu a
 {
 font-size: 12px;
 font-weight: bold;
-color: #888;
+color: #ccc;
 text-decoration: none;
 }
 .submenu a:hover
 {
-color: #7e6B09;
+color: white;
 text-decoration: underline;
-background-color: black;
+background-color: transparent;
 }
 .submenu span.selected
 {
-    color: #7e6b09;
-    background-color: white;
+background-color: white;
 -moz-border-radius-topleft: 5px;
 -moz-border-radius-topright: 5px;
 -moz-border-radius-bottomright: 0px;
@@ -315,9 +316,12 @@ background-color: black;
 -webkit-border-bottom-left-radius: 0px;
 -webkit-border-bottom-right-radius: 0px;
 }
+.submenu span.selected a
+{
+color: #333;
+}
 .submenu span.selected a:hover
 {
-color: inherit;
 background-color: inherit;
 }
 
@@ -404,7 +408,7 @@ ul.subsection_tabs li.tab a.active {
 .update_description .header
 {
     padding: 3px;
-    background-color: orange;
+    background-color: #edc;
 }
 
 .orange-round
@@ -418,7 +422,7 @@ ul.subsection_tabs li.tab a.active {
 -webkit-border-bottom-left-radius: 15px;
 -webkit-border-bottom-right-radius: 15px;
 padding: 10px;
-background-color: #fdb;
+background-color: #edc;
 }
 
 table
@@ -493,7 +497,7 @@ cursor: pointer;
 
 tr[onclick]:hover
 {
-background-color: orange;
+background-color: #ccc;
 }
 
 a.button

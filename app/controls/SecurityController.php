@@ -54,6 +54,7 @@ class SecurityController extends BaseController
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setRequired(true);
+        $detail->setLabel("Detail");
         $form->addElement($detail);
 
         //output captcha element

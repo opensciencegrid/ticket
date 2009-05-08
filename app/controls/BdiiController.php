@@ -22,13 +22,14 @@ class BdiiController extends BaseController
             $footprint->setTitle($form->getValue('title'));
 
             if($form->getValue("down") == "true") {
-                $footprint->addMeta("BDII is not responding!!");
+                $footprint->addMeta("BDII is not responding!! - Opening in CRITICAL priority");
                 $footprint->setPriority(1); //set it to critical
                 $footprint->setTicketType("Unscheduled__bOutage");
             }
 
-            //bdii ticket is assigned to arvind
+            //bdii ticket is assigned to arvind & soichi
             $footprint->addAssignee("agopu", true); 
+            $footprint->addAssignee("hayashis");
             $footprint->setDestinationVO("MIS");
 
             try 

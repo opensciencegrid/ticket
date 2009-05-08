@@ -53,7 +53,7 @@ function sendSMS($users, $subject, $body)
     $header = "From: ". $Name . " <" . $email . ">\r\n";
     mail($recipient, $subject, $body, $header);
 
-    dlog("Sent SMS notification to $recipient user:".print_r($users, true));
+    slog("Sent SMS notification to $recipient user:".print_r($users, true));
 }
 
 function signedmail($to, $subject, $body, $header = "")

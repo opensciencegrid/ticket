@@ -319,15 +319,6 @@ class Footprint
             $call = "MRWebServices__createIssue_goc";
         } else {
             $call = "MRWebServices__editIssue_goc";
-            /*
-            $params = array(
-                "mrID"=>$this->id,
-                "projectID"=>config()->project_id,
-                "submitter"=>$this->submitter,
-                "status" => $this->status,
-                "description" => $desc
-            );
-            */
         }
 
         //populate params to insert/update
@@ -371,18 +362,21 @@ class Footprint
 
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)
-            $id = print_r($params, true);
+            $this->id = print_r($params, true);
         } else {
             //submit the ticket!
             $client = new SoapClient(null, array(
                 'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
                 'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
             slog("calling $call");
-            $id = $client->__soapCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
-            $this->send_notification($params["assignees"], $id); //TODO - this only works for ticket create..
+            $newid = $client->__soapCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+            if($this->id === null) {
+                $this->id = $newid;
+            }
+            $this->send_notification($params["assignees"], $this->id);
         }
 
-        return $id;
+        return $this->id;
     }
 
     private function send_notification($assignees, $id) 

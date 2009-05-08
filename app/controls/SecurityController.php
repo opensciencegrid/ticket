@@ -20,8 +20,17 @@ class SecurityController extends BaseController
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
-            $footprint->setPriority(1); //set it to critical
-            $footprint->addAssignee("rquick", true);//security ticket is assigned to rob
+
+            if($form->getValue('critical_1') == 1 and $form->getValue('critical_2') == 1) {
+                $footprint->addMeta("User has checked both CRITICAL criterias opening ticket as CRITICAL");
+                $footprint->setPriority(1); //set it to critical
+            } else {
+                $footprint->addMeta("Opening ticket with normal priority.");
+            }
+            //security ticket is assigned to rob - and CC Kyle
+            $footprint->addAssignee("rquick", true);
+            $footprint->addAssignee("kagross");
+
             $footprint->setTicketType("Security");
             $footprint->setTitle($form->getValue('title'));
 
@@ -44,6 +53,11 @@ class SecurityController extends BaseController
     private function getForm()
     {
         $form = $this->initForm("security");
+
+        $critical_1 = new Zend_Form_Element_Checkbox('critical_1');
+        $form->addElement($critical_1);
+        $critical_2 = new Zend_Form_Element_Checkbox('critical_2');
+        $form->addElement($critical_2);
 
         $e = new Zend_Form_Element_Text('title');
         $e->setAttribs(array('size'=>50));

@@ -44,12 +44,9 @@ class User
                 //don't enter same action twice.
                 if(isset($this->action[$action_id])) continue;
 
-                slog("processing action id $action_id");
-
                 //search for the action
                 foreach($actions as $action) {
                     if($action->id == $action_id) {
-                        slog("user has access to $action->name");
                         $this->action[$action_id] = $action->name;
                         break;
                     }
@@ -73,7 +70,6 @@ class User
             $this->contact_name = $row->name;
             $this->contact_email = $row->primary_email;
             $this->contact_phone = $row->primary_phone;
-            slog(print_r($row, true));
         } else {
             slog("DN: $dn doesn't exist in oim");
         }

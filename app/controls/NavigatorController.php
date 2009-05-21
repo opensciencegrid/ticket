@@ -5,13 +5,22 @@ class NavigatorController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "view";
+
+        $this->view->sortby = "nad";
+        dlog("settin sortby to ".$_REQUEST["sortby"]);
+        if(isset($_REQUEST["sortby"])) {
+            $this->view->sortby = $_REQUEST["sortby"];
+        }
+
+        $this->view->sortdir = "up";
+        if(isset($_REQUEST["sortdir"])) {
+            $this->view->sortdir = $_REQUEST["sortdir"];
+        }
+
     }
 
     public function indexAction()
     {
-        $this->view->sortby = "id";
-        $this->view->sortdir = "up";
-
         if(user()->allows("ticket_admin")) {
             $this->openassignAction();
         } else {

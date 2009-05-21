@@ -7,39 +7,10 @@
     <div>
     I'd like to open a ticket regarding ...
     <br><br>
-    <p><a href="security">A Security Incident</a></p>
-    <p><a href="bdii">A BDII Service Outage</a></p>
-    <p><a href="resource">An Issue Affecting a Specific OSG Resource</a></p>
-    <p><a href="membership">Membership to the OSG</a></p>
-    <br/>
+    <p><a href="resource">An Issue Affecting a Specific ITB Resource</a></p>
     <p><a href="other">Any Others Issue</a>
     </div>
 </div>
-
-<?if(in_array(role::$goc_admin, user()->roles)) {?>
-<br/>
-<h3>OSG GOC staff</h3>
-<div class="menu">
-    <div>
-    You are authorized to do following as OSG GOC Staff...
-    <br><br>
-    <p><a href="ra">Send certificate request email</a></p>
-    <p><a href="rsv">Submit RSV related trouble ticket</a></p>
-    </div>
-</div>
-<?}?> 
-
-<?if(in_array(role::$security_admin, user()->roles)) {?>
-<br/>
-<h3>OSG security staff</h3>
-<div class="menu">
-    <div>
-    You are authorized to do following as OSG Security Staff...
-    <br><br>
-    <p><a href="notify">Send Notification Email/RSS</a></p>
-    </div>
-</div>
-<?}?> 
 
 <?include("app/views/scripts/footer.phtml");?>
 

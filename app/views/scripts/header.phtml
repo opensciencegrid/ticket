@@ -47,7 +47,7 @@ function submenutitle($id)
     <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1"><?=submenutitle("open")?></a></span>
     <span id="submenu_view"><a href="<?=base()?>/navigator" accesskey="2"><?=submenutitle("view")?></a></span>
 <?
-if(in_array(role::$goc_admin, user()->roles)) {
+if(in_array(role::$itb_admin, user()->roles)) {
 ?>
     <span id="submenu_admin"><a href="<?=base()?>/admin" accesskey="3"><?=submenutitle("admin")?></a></span>
 <?}?>

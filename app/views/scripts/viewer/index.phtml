@@ -109,7 +109,7 @@ function gotoedit()
     </tr>
 
     <?
-    if(in_array(role::$itb_admin, user()->roles)) {
+    if(user()->allows("ticket_update")) {
     ?>
         <tr>
         <td></td>
@@ -140,8 +140,7 @@ function gotoedit()
         $content = $desc["content"];
         $type = $desc["type"];
 
-        //suppress metainfo for non goc
-        if(!in_array(role::$itb_admin, user()->roles)) {
+        if(user()->allows("ticket_view_meta")) {
             $metapos = strpos($content, config()->metatag);
             if($metapos !== FALSE) {
                 //has metainfo.. replace it with filtered versionme

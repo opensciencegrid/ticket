@@ -1,14 +1,14 @@
 <?
 
 class OpenticketsController extends Zend_Controller_Action 
-{ 
+{
     public function init()
     {
         $this->view->submenu_selected = "view";
-    }    
+    }
 
-    public function indexAction() 
-    { 
+    public function indexAction()
+    {
         $model = new Tickets();
         $tickets = $model->getopen();
 

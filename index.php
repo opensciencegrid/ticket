@@ -8,7 +8,6 @@ require_once "Zend/Loader.php";
 Zend_Loader::registerAutoload(); 
 
 //load our stuff
-require_once("app/roles.php");
 require_once("config.php");
 require_once("app/views/helper.php");
 require_once("app/base.php");

@@ -148,7 +148,7 @@ wget http://vdt.cs.wisc.edu/scot/rsv-profiler
 
 To Restart:
 
-cd $VDT_LOCATION
+cd \$VDT_LOCATION
 vdt-control --off osg-rsv condor-cron
 vdt-control --on condor-cron osg-rsv
 
@@ -159,8 +159,8 @@ condor_cron_q
 
 And you can look at:
 
-$VDT_LOCATION/osg-rsv/logs/consumers/*.log
-(and $VDT_LOCATION/osg-rsv/logs/probes/*.log)
+\$VDT_LOCATION/osg-rsv/logs/consumers/*.log
+(and \$VDT_LOCATION/osg-rsv/logs/probes/*.log)
 
 to see there are any indications of any errors.
 

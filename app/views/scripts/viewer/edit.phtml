@@ -79,21 +79,23 @@
         <table width="100%"><tr>
         <?
         echo "<td>";
-        $team = "OSG ITB Team";
-        showteam($team, $this->teams[$team], $this->assignees[$team]);
+        foreach(config()->editor_team_lists[0] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
         echo "</td>";
 
         echo "<td>";
-        $team = "OSG Support Centers";
-        showteam($team, $this->teams[$team], $this->assignees[$team]);
+        foreach(config()->editor_team_lists[1] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
         echo "</td>";
 
-/*
         echo "<td>";
-        $team = "OSG GOC Service Desk";
-        showteam($team, $this->teams[$team], $this->assignees[$team]);
+        foreach(config()->editor_team_lists[2] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
         echo "</td>";
-*/
+
         function showteam($team, $members, $already_selected) {
             echo "<h4>$team</h4>";
 

@@ -9,8 +9,7 @@ class NotifyController extends BaseController
 
     public function indexAction() 
     { 
-        //only security admin are allowed to access this form
-        if(!in_array(role::$security_admin, user()->roles)) {
+        if(!user()->allows("ticket_notify")) {
             $this->render("error/access", null, true);
             return;
         }
@@ -21,8 +20,7 @@ class NotifyController extends BaseController
 
     public function submitAction()
     {
-        //only security admin are allowed to access this form
-        if(!in_array(role::$security_admin, user()->roles)) {
+        if(!user()->allows("ticket_notify")) {
             $this->render("error/access", null, true);
             return;
         }

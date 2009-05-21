@@ -26,12 +26,12 @@ class ViewerController extends Zend_Controller_Action
         var_dump($attachments);
         */
 
-        //prevent security ticket to be accessible
+        //limit access to security ticket
         if($detail->Ticket__uType == "Security") {
             //only certain users can see security ticket
-            if(!in_array(role::$see_security_ticket, user()->roles)) {
+            if(!user()->allows("ticket_view_security_ticket")) {
                 $this->render("security");
-                return;
+                return null;
             }
         }
         
@@ -112,10 +112,10 @@ class ViewerController extends Zend_Controller_Action
 
     public function editAction()
     {
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_update")) {
             $this->render("error/access", null, true); 
         } else {
-            $this->loaddetail();
+            $detail = $this->loaddetail();
 
             //load additional stuff that we need for ticket edit
             $schema_model = new Schema();
@@ -136,7 +136,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function updateAction()
     {
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_update")) {
             $this->render("error/access", null, true); 
         } else {
             //pull & validate the request 
@@ -181,7 +181,7 @@ class ViewerController extends Zend_Controller_Action
                     $footprint = new Footprint($ticket_id);
                     $footprint->setTitle($title); 
                     $footprint->setSubmitter(user()->getPersonName()); 
-                
+
                     //contact
                     $footprint->setName($submit_fname." ".$submit_lname);
                     $footprint->setOfficePhone($submit_phone);
@@ -230,6 +230,7 @@ class ViewerController extends Zend_Controller_Action
     { 
         try {
             $detail = $this->loaddetail();
+            if($detail === null) return;
         } catch (SoapFault $e) {
             elog("SoapFault detected while ViewController:loaddetail()");
             elog($e->getMessage());

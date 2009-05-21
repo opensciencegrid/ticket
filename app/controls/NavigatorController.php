@@ -12,7 +12,7 @@ class NavigatorController extends Zend_Controller_Action
         $this->view->sortby = "id";
         $this->view->sortdir = "up";
 
-        if(in_array(role::$goc_admin, user()->roles)) {
+        if(user()->allows("ticket_admin")) {
             $this->openassignAction();
         } else {
             $this->openAction();

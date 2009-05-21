@@ -13,8 +13,7 @@ class RaController extends BaseController
 
     public function indexAction() 
     { 
-        //only goc users are allowed
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_ra")) {
             $this->render("error/access", null, true);
             return;
         }
@@ -26,7 +25,7 @@ class RaController extends BaseController
     public function submitAction()
     {
         //only goc users are allowed
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_ra")) {
             $this->render("error/access", null, true);
             return;
         }

@@ -9,7 +9,7 @@ class GocadminController extends BaseController
     public function indexAction() 
     { 
         //only goc users are allowed
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_admin")) {
             $this->render("error/access", null, true);
             return;
         }

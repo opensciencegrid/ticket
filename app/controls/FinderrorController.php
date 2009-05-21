@@ -20,7 +20,7 @@ class FinderrorController extends Zend_Controller_Action
 
     public function emailerrorAction()
     {
-        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
+        if(!user()->allows("ticket_admin") and !islocal()) {
             $this->render("error/access", null, true);
             return;
         }
@@ -42,7 +42,7 @@ class FinderrorController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        if(!in_array(role::$goc_admin, user()->roles) and !islocal()) {
+        if(!user()->allows("ticket_admin") and !islocal()) {
             $this->render("error/access", null, true);
             return;
         }
@@ -186,7 +186,7 @@ class FinderrorController extends Zend_Controller_Action
         foreach($oim_scs as $oim_sc) {
             //pull primary admin
             $admin = $model->fetch($oim_sc->id);
-            $op_contact_email = $admin->primary_email;
+            $op_contact_email = @$admin->primary_email;
             
             $found = false;
             foreach($emails as $email) {

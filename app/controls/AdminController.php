@@ -13,7 +13,8 @@ class AdminController extends BaseController
     {
         $this->view->submenu_selected = "admin";
 
-        if(!in_array(role::$goc_admin, user()->roles)) {
+        if(!user()->allows("ticket_admin")) {
+        //if(!in_array(role::$goc_admin, user()->roles)) {
             $this->render("error/access", null, true);
             return;
         }

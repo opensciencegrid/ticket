@@ -159,7 +159,9 @@ RSS: http://www.grid.iu.edu/news";
 
     public function ggussubmitAction()
     {
-        $this->accesscheck("134.68.107.18");//tick-indy.globalnoc.iu.edu
+        $client_dns = "tick-indy.globalnoc.iu.edu";
+        $ip = system("host $client_dns | head -n 1 | grep -Eo '[[:digit:]]+(\.[[:digit:]]+)+'");
+        $this->accesscheck($ip);
 
         if(isset($_REQUEST["xml"])) {
             try {

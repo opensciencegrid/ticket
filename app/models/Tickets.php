@@ -42,33 +42,25 @@ class Tickets
 
     public function dosearch($query, $bIncludeDesc = false)
     {
-        $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
         $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, Destination__bVO__bSupport__bCenter as mrDEST, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad";
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";
         }
         $projectid = config()->project_id;
-        $ret = $client->__soapCall("MRWebServices__search_goc",
+
+        $ret = fpcall("MRWebServices__search_goc", 
             array(config()->webapi_user, config()->webapi_password, "", "select $column from MASTER$projectid ".$query));
-        dlog("Ticket::dosearch($query)");
         return $ret;
     }
     public function getDetail($id)
     {
-        slog("fetchin from fp");
-        $client = new SoapClient(null, 
-            array(      'location' => config()->fp_soap_location,
-                        'uri'      => config()->fp_soap_uri));
-        $ret = $client->__soapCall("MRWebServices__getIssueDetails_goc", 
+        $ret = fpcall("MRWebServices__getIssueDetails_goc", 
             array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         return $ret;
     }
     public function getAttachments($id)
     {
-        $client = new SoapClient(null, 
-            array(      'location' => config()->fp_soap_location,
-                        'uri'      => config()->fp_soap_uri));
-        $ret = $client->__soapCall("MRWebServices__getAttachments_goc", 
+        $ret = fpcall("MRWebServices__getAttachments_goc", 
             array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         return $ret;
     }

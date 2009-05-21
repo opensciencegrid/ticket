@@ -80,3 +80,17 @@ function signedmail($to, $subject, $body, $header = "")
     return mail($to, $subject, "", $header);
 }
 
+function fpcall($function, $param)
+{
+    $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
+    for($i = 0; $i < 5; $i++) {
+        try {
+            $ret = $client->__soapCall($function, $param);
+            return $ret;
+        } catch (SoapFault $e) {
+            elog($e->getMessage());
+        }
+    }
+    elog("Soap called failed too many times.. quitting");
+    return null;
+}

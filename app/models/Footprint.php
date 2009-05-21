@@ -365,11 +365,7 @@ class Footprint
             $this->id = print_r($params, true);
         } else {
             //submit the ticket!
-            $client = new SoapClient(null, array(
-                'location' => "https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl",
-                'uri'      => "https://tick.globalnoc.iu.edu/MRWebServices"));
-            slog("calling $call");
-            $newid = $client->__soapCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+            $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
             if($this->id === null) {
                 $this->id = $newid;
             }

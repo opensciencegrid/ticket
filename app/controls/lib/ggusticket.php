@@ -58,7 +58,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 $footprint->addMeta("Resource '$name' as specified in the GHD_Affected_Site field couldn't be found in OIM.");
             } else {
                 $rs_model = new ResourceSite();
-                $resource = $rs_model->fetch($resource_id);
+                $resource = $rs_model->fetchSCID($resource_id);
 
                 //set description destination vo, assignee
                 $footprint->addMeta("Resource where user is having this issue: ".$name."($resource_id)\n");

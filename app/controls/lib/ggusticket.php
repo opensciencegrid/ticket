@@ -121,6 +121,10 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             $footprint->setStatus("Closed");
             $footprint->sendNoAEmail();
             break;
+        case "reopened":
+            //reset the status to Engineering
+            $footprint->setStatus("Engineering");
+            break;
         }
         $footprint->setSubmitter("ggus");
     }

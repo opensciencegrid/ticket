@@ -7,8 +7,8 @@ class NavigatorController extends Zend_Controller_Action
         $this->view->submenu_selected = "view";
 
         $this->view->sortby = "nad";
-        dlog("settin sortby to ".$_REQUEST["sortby"]);
         if(isset($_REQUEST["sortby"])) {
+            //dlog("settin sortby to ".$_REQUEST["sortby"]);
             $this->view->sortby = $_REQUEST["sortby"];
         }
 

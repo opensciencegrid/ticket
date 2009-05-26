@@ -36,8 +36,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         $footprint->addAssignee("ggus");
 
         //contact info
-        $fullname = split(" ", $xml->GHD_Name);
-        $footprint->setName($fullname);
+        $footprint->setName((string)$xml->GHD_Name);
         $footprint->setOfficePhone((string)$xml->GHD_Phone);
         $node = "GHD_E-Mail";
         $footprint->setEmail((string)$xml->$node);

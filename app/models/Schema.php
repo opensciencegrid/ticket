@@ -49,7 +49,7 @@ class Schema
 
     public function getvos()
     {
-        $ret = $this->doget("vos");
+        $ret = $this->cache("vos");
         return $ret;
     }
     public function getoriginatingvos()

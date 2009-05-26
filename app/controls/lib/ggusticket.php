@@ -3,8 +3,12 @@
 function ggus2footprint($xml_content)
 {
     slog("Parsing ggus XML");
-    $xml = new SimpleXMLElement($xml_content);
-    slog("parsing success..");
+    try {
+        $xml = new SimpleXMLElement($xml_content);
+    } catch(exception $e) {
+        elog("XML parsing failed.. maybe due to malformed email (like spam)");
+        return null;
+    }
 
     $node = "GHD_Request-ID";
     $id = (int)$xml->$node;

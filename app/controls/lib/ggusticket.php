@@ -2,21 +2,23 @@
 
 function ggus2footprint($xml_content)
 {
+    slog("Parsing ggus XML");
     $xml = new SimpleXMLElement($xml_content);
+    slog("parsing success..");
 
     $node = "GHD_Request-ID";
     $id = (int)$xml->$node;
 
     //check if the ticket is already in FP
     $model = new Tickets(); 
-    dlog("searching for $id");
+    slog("searching for GGUS Ticket ID: $id");
     $orig = $model->getoriginating($id);
     if(count($orig) == 0) {
         ///////////////////////////////////////////////////////////////////////
         // Insert
         ///////////////////////////////////////////////////////////////////////
         $footprint = new Footprint;
-        slog("inserting new FP ticket $id");
+        slog("This ticket doesn't exist yet - preparing to insert new FP ticket $id");
         $footprint->addDescription($xml->GHD_Description);
         $desc = "\n
 [Other GGUS Ticket Info]

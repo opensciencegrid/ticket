@@ -69,7 +69,7 @@ class Schema
 
     public function doget($what)
     {
-        slog("Making fpcall");
+        slog("Making fpcall to get schema:$what");
         return fpcall("MRWebServices__schema_goc", array(config()->webapi_user, config()->webapi_password, "", $what, config()->project_id));
     }
 }

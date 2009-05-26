@@ -173,10 +173,12 @@ RSS: http://www.grid.iu.edu/news";
 
                 require_once("lib/ggusticket.php");
                 $footprint = ggus2footprint($xml_content);
+                slog("Created ggus footprint ticket object (to be submitted)");
 
                 //submit
                 try
                 {
+                    slog("Submitting ggus ticket");
                     $mrid = $footprint->submit();
                     slog("GGUS Ticket insert / update success - FP Ticket ID $mrid");
                 } catch(exception $e) {

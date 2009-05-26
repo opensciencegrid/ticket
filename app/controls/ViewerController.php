@@ -29,7 +29,7 @@ class ViewerController extends Zend_Controller_Action
         //limit access to security ticket
         if($detail->Ticket__uType == "Security") {
             //only certain users can see security ticket
-            if(!user()->allows("ticket_view_security_ticket")) {
+            if(!user()->allows("view_security_ticket")) {
                 $this->render("security");
                 return null;
             }
@@ -112,7 +112,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function editAction()
     {
-        if(!user()->allows("ticket_update")) {
+        if(!user()->allows("gocticket_update")) {
             $this->render("error/access", null, true); 
         } else {
             $detail = $this->loaddetail();
@@ -136,7 +136,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function updateAction()
     {
-        if(!user()->allows("ticket_update")) {
+        if(!user()->allows("gocticket_update")) {
             $this->render("error/access", null, true); 
         } else {
             //pull & validate the request 

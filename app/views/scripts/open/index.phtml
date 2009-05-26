@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<?if(user()->allows("ticket_admin")) {?>
+<?if(user()->allows("admin")) {?>
 <br/>
 <h3>OSG GOC staff</h3>
 <div class="menu">
@@ -28,7 +28,7 @@
 </div>
 <?}?> 
 
-<?if(user()->allows("ticket_notify")) {?>
+<?if(user()->allows("notify")) {?>
 <br/>
 <h3>OSG security staff</h3>
 <div class="menu">

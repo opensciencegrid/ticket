@@ -6,7 +6,7 @@ class UpdateController extends Zend_Controller_Action
     public function statusAction()
     {
         //only goc users are allowed
-        if(!user()->allows("ticket_update")) {
+        if(!user()->allows("update")) {
             $this->render("error/access", null, true);
             return;
         }

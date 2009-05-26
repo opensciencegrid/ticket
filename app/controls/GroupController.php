@@ -9,7 +9,7 @@ class GroupController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        if(!user()->allows("ticket_admin")) {
+        if(!user()->allows("admin")) {
             $this->render("error/access", null, true);
             return;
         }

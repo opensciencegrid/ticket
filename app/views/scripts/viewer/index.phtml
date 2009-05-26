@@ -109,7 +109,7 @@ function gotoedit()
     </tr>
 
     <?
-    if(user()->allows("ticket_update")) {
+    if(user()->allows("update")) {
     ?>
         <tr>
         <td></td>
@@ -140,7 +140,7 @@ function gotoedit()
         $content = $desc["content"];
         $type = $desc["type"];
 
-        if(user()->allows("ticket_view_meta")) {
+        if(user()->allows("view_meta")) {
             $metapos = strpos($content, config()->metatag);
             if($metapos !== FALSE) {
                 //has metainfo.. replace it with filtered versionme

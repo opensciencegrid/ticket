@@ -102,8 +102,7 @@ class BaseController extends Zend_Controller_Action
             foreach($vos as $v) {
                 $vo->addMultiOption($v->id, $v->name);
             }
-            if(!user()->allows("ticket_admin")) {
-            //if(in_array(role::$goc_admin, user()->roles)) {
+            if(!user()->allows("admin")) {
                 $vo->setValue(25); //MIS
             }
             $form->addElement($vo);

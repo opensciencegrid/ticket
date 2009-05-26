@@ -9,7 +9,7 @@ class NotifyController extends BaseController
 
     public function indexAction() 
     { 
-        if(!user()->allows("ticket_notify")) {
+        if(!user()->allows("notify")) {
             $this->render("error/access", null, true);
             return;
         }
@@ -20,7 +20,7 @@ class NotifyController extends BaseController
 
     public function submitAction()
     {
-        if(!user()->allows("ticket_notify")) {
+        if(!user()->allows("notify")) {
             $this->render("error/access", null, true);
             return;
         }

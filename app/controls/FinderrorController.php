@@ -20,7 +20,7 @@ class FinderrorController extends Zend_Controller_Action
 
     public function emailerrorAction()
     {
-        if(!user()->allows("ticket_admin") and !islocal()) {
+        if(!user()->allows("admin") and !islocal()) {
             $this->render("error/access", null, true);
             return;
         }
@@ -42,7 +42,7 @@ class FinderrorController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        if(!user()->allows("ticket_admin") and !islocal()) {
+        if(!user()->allows("admin") and !islocal()) {
             $this->render("error/access", null, true);
             return;
         }

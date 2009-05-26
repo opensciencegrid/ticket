@@ -59,7 +59,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 $footprint->addMeta("Resource '$name' as specified in the GHD_Affected_Site field couldn't be found in OIM.");
             } else {
                 $rs_model = new ResourceSite();
-                $resource = $rs_model->fetchSCID($resource_id);
+                $sc_id = $rs_model->fetchSCID($resource_id);
 
                 //set description destination vo, assignee
                 $footprint->addMeta("Resource where user is having this issue: ".$name."($resource_id)\n");
@@ -67,13 +67,13 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 $footprint->setDestinationVOFromResourceID($resource_id);
 
                 //lookup SC name
-                if($resource === false) {
+                if($sc_id === false) {
                     $scname = "OSG-GOC";
                     $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
                 } else {
                     //lookup SC name form sc_id
                     $sc_model = new SC;
-                    $sc = $sc_model->get($resource->sc_id);
+                    $sc = $sc_model->get($sc_id);
                     $scname = $sc->footprints_id;
 
                 }

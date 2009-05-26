@@ -76,7 +76,7 @@ class User
     }
 
     public function allows($action) {
-        return in_array($action, config()->role_prefix.$this->action);
+        return in_array(config()->role_prefix.$action, $this->action);
     }
 
     public function isGuest() { return $this->guest; }

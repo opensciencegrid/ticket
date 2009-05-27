@@ -112,7 +112,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function editAction()
     {
-        if(!user()->allows("gocticket_update")) {
+        if(!user()->allows("update")) {
             $this->render("error/access", null, true); 
         } else {
             $detail = $this->loaddetail();
@@ -136,7 +136,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function updateAction()
     {
-        if(!user()->allows("gocticket_update")) {
+        if(!user()->allows("update")) {
             $this->render("error/access", null, true); 
         } else {
             //pull & validate the request 

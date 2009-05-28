@@ -97,6 +97,10 @@ class ResourceController extends BaseController
         foreach($gridtypes as $gridtype) {
             $element->addMultiOption($gridtype->id, $gridtype->description);
         }
+        if(config()->role_prefix == "itbticket_") {
+            //set it to ITB list
+            $element->setValue(2);
+        }
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_1');

@@ -15,7 +15,7 @@ class RSSFeed
             'date' => time(),
             'body' => $body
         );
-        db()->insert("rsvextra.rss_article", $row);
+        db2()->insert("rsvextra.rss_article", $row);
 
         /////////////////////////////////////////////////////////////
         // Insert to osggoc.blogger.com

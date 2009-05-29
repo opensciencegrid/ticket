@@ -1,5 +1,6 @@
 <?
 
+/*
 $g_db = null;
 function connect_db()
 {
@@ -33,6 +34,7 @@ function db() {
     }
     return $g_db; 
 }
+*/
 
 $g_db2 = null;
 function connect_db2()

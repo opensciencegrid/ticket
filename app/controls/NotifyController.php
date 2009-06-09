@@ -239,13 +239,19 @@ class NotifyController extends BaseController
     private function getSecurityBody($mrid)
     {
         return "
-A security notification has been posted.
+A new security notification has been posted.
 
-If you have an access to GOC security ticket, please open this notification at following URL.
+You are receiving this message because you are listed as a security contact for an OSG resource or VO or support center. Assuming you are registered on OIM, and are authorized to view security tickets, please open the following URL for further information:
 https://ticket.grid.iu.edu/goc/viewer?id=$mrid
 
-Thank you,
-OSG Security
+Please contact security@opensciencegrid.org if you have any questions or concerns.
+
+This message is digitally signed. We encourage you to verify the digital signatures on OSG security announcements according to:
+https://twiki.grid.iu.edu/bin/view/Security/SecureEmail
+
+Sincerely,
+Doug Olson
+on behalf of the OSG Security Team
 ";
     }
 

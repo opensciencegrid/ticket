@@ -54,13 +54,13 @@ class BaseController extends Zend_Controller_Action
         return $captchaCode;
     }
 
-    protected function initForm($page, $has_yourinfo = true)
+    protected function initForm($page, $has_yourinfo = true, $param = "")
     {  
         $this->has_yourinfo = $has_yourinfo;
 
         //init form
         $form = new Zend_Form;
-        $form->setAction(base()."/$page/submit");
+        $form->setAction(base()."/$page/submit?$param");
         $form->setAttrib("id", $page."_form");
         $form->setMethod("post");
         $form->setDecorators(array(
@@ -115,7 +115,6 @@ class BaseController extends Zend_Controller_Action
     {
         //prepare footprint ticket
         $footprint = new Footprint;
-
         if($this->has_yourinfo) {
             $footprint->setName($form->getValue('name'));
             $footprint->setOfficePhone($form->getValue('phone'));

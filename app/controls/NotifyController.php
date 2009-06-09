@@ -4,6 +4,12 @@ class NotifyController extends BaseController
 { 
     public function init()
     {
+        if(isset($_REQUEST["security"])) {
+            $this->view->pagename = "Create Security Notification";
+        } else {
+            $this->view->pagename = "Send Notification Email/RSS";
+        }
+        
         $this->view->submenu_selected = "open";
     }
 
@@ -31,8 +37,29 @@ class NotifyController extends BaseController
         }
 
         $form = $this->getForm();
-
         if($form->isValid($_POST)) {
+            //if this is for security ticket, create footprint ticket with security type with no sc assignee
+            $security_mrid = null;
+            if(isset($_REQUEST["security"])) {
+                $footprint = $this->initSubmit($form);
+                $footprint->setTitle("[OSG-SEC-NOTIFY-".date("Y-m-d")."] ".$form->getValue('subject'));
+                $footprint->addDescription($form->getValue('body'));
+                $footprint->setTicketType("Security");
+                $footprint->addAssignee("rquick", true);
+                $footprint->addAssignee("maltunay");
+                $footprint->setName("GOC");
+                $footprint->setOfficePhone("317-278-9699");
+                $footprint->setEmail("goc@opensciencegrid.org");
+
+                try
+                {
+                    $security_mrid = $footprint->submit();
+                } catch(exception $e) {
+                    $this->sendErrorEmail($e);
+                    $this->render("failed", null, true);
+                }
+            }
+
             //construct security email object
             $e = new SecurityEmail();
             if($form->getValue('rsecurity')) {
@@ -56,6 +83,9 @@ class NotifyController extends BaseController
             if($form->getValue('sites')) {
                 $e->addAddress("osg-sites@opensciencegrid.org");
             }
+            if(config()->debug) {
+                $e->addAddress("hayashis@indiana.edu");
+            }
 
             $model = new Person();
             $person_id = $form->getValue('email_from');
@@ -63,26 +93,46 @@ class NotifyController extends BaseController
                 $person = $model->fetchPerson($person_id);
                 $e->setFrom($person->name." <".$person->primary_email.">");
             } else {
-                $e->setFrom(config()->email_from);
+                if(isset($_REQUEST["security"])) {
+                    $e->setFrom(config()->email_from_security);
+                } else {
+                    $e->setFrom(config()->email_from);
+                }
             }
 
             $e->setTo('goc@opensciencegrid.org');
-            $body = $form->getValue('body');
-            $sig = $form->getValue('sig');
-            $e->setBody($body."\n".$sig);
-            $subject = $form->getValue('subject');
-            $ticket_id = $form->getValue('ticket');
-            if($ticket_id != "") { 
-                $subject .= " - GOC Ticket # " . $ticket_id;
+
+            if(isset($_REQUEST["security"])) {
+                $e->setSubject("OSG-SEC-NOTIFY-".date("Y-m-d"));
+            } else {
+                $subject = $form->getValue('subject');
+                $ticket_id = $form->getValue('ticket');
+                if($ticket_id != "") { 
+                    $subject .= " - GOC Ticket # " . $ticket_id;
+                }
+                $e->setSubject($subject);
             }
-            $e->setSubject($subject);
-        
-            try 
+
+            if(isset($_REQUEST["security"])) {
+                $e->setBody($this->getSecurityBody($security_mrid));
+            } else {
+                $body = $form->getValue('body');
+                $sig = $form->getValue('sig');
+                if($ticket_id != "") { 
+                    $body .= "\n\nPlease see ticket $ticket_id at:\nhttps://ticket.grid.iu.edu/goc/viewer?id=$ticket_id\n";
+                }
+                $e->setBody($body."\n".$sig);
+            }
+
+            try
             {
                 if(config()->simulate) {
                     echo "<h1>Simulation</h2>";
                     $e->dump();
                     $this->render("none", null, true);
+                    if($do_rss) {
+                        echo "RSS feed will be added";
+                    }
                 } else {
                     $e->send();
                     if($do_rss) {
@@ -104,8 +154,12 @@ class NotifyController extends BaseController
 
     private function getForm()
     {
-        $form = $this->initForm("notify", false); //false - no contact information necessary
-        
+        if(isset($_REQUEST["security"])) {
+            $form = $this->initForm("notify", false, "security"); //false - no contact information necessary
+        } else {
+            $form = $this->initForm("notify", false);
+        }
+
         $e = new Zend_Form_Element_Checkbox('rsecurity');
         $form->addElement($e);
         $e = new Zend_Form_Element_Checkbox('vsecurity');
@@ -123,7 +177,11 @@ class NotifyController extends BaseController
 
         $e = new Zend_Form_Element_Select('email_from');
         $e->setLabel("Sender Address");
-        $e->addMultiOption(null, config()->email_from);
+        if(isset($_REQUEST["security"])) {
+            $e->addMultiOption(null, config()->email_from_security);
+        } else {
+            $e->addMultiOption(null, config()->email_from);
+        }
         $model = new Person();
         $contacts = $model->fetchGOC(4);
         foreach($contacts as $contact) {
@@ -132,49 +190,73 @@ class NotifyController extends BaseController
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Text('subject');
-        $e->setLabel("Subject");
+        if(isset($_REQUEST["security"])) {
+            $e->setLabel("Subject that will be used in security ticket that is generated");
+        } else {
+            $e->setLabel("Subject");
+        }
         $e->setRequired(true);
         $form->addElement($e);
 
-        $e= new Zend_Form_Element_Text('ticket');
-        $e->setLabel("Footprint Ticket ID");
-        $e->addValidator(new Zend_Validate_Int()); //ture for allowWhiteSpace
-        $e->setDescription("* Optional");
-        $e->addDecorator("description");
-        $e->setRequired(false);
-        $form->addElement($e);
+        if(!isset($_REQUEST["security"])) {
+            $e = new Zend_Form_Element_Text('ticket');
+            $e->setLabel("Footprint Ticket ID");
+            $e->addValidator(new Zend_Validate_Int()); //ture for allowWhiteSpace
+            $e->setDescription("* Optional");
+            $e->addDecorator("description");
+            $e->setRequired(false);
+            $form->addElement($e);
+        }
 
         $detail = new Zend_Form_Element_Textarea('body');
         $detail->addValidator(new Zend_Validate_StringLength(1, 1024*1024*16)); //max 16M for MEDIUMTEXT
-        $detail->setLabel("Body");
+        if(isset($_REQUEST["security"])) {
+            $detail->setLabel("Content that will be used in security ticket that is generated");
+        } else {
+            $detail->setLabel("Content");
+        }
         $detail->setRequired(true);
         $form->addElement($detail);
 
-        $e = new Zend_Form_Element_Textarea('sig');
-        $e->setLabel("Email Signature");
-        $e->setRequired(true);
-        $e->setValue($this->getSigTemplate());
-        $form->addElement($e);
+        if(!isset($_REQUEST["security"])) {
+            $e = new Zend_Form_Element_Textarea('sig');
+            $e->setLabel("Email Signature");
+            $e->setRequired(true);
+            $e->setValue($this->getGOCSigTemplate());
+            $form->addElement($e);
 
-        $e = new Zend_Form_Element_Checkbox('rss');
-        $e->setLabel("Publish to RSS");
-        $form->addElement($e);
+            $e = new Zend_Form_Element_Checkbox('rss');
+            $e->setLabel("Publish to RSS");
+            $form->addElement($e);
+        }
 
         $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Send Email");
+        $submit->setLabel("Submit");
         $form->addElement($submit);
 
         return $form;
     }
-    private function getSigTemplate()
+    private function getSecurityBody($mrid)
+    {
+        return "
+A security notification has been posted.
+
+If you have an access to GOC security ticket, please open this notification at following URL.
+https://ticket.grid.iu.edu/goc/viewer?id=$mrid
+
+Thank you,
+OSG Security
+";
+    }
+
+    private function getGOCSigTemplate()
     {
         return "
 Please submit problems, requests, and questions at:
-https://oim.grid.iu.edu/gocticket/
+https://ticket.grid.iu.edu/goc
 
 Thank You,
 OSG Grid Operations Center (GOC)
-Submit a GOC ticket: https://oim.grid.iu.edu/gocticket
 Email/Phone: goc@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
 RSS Feed: http://osggoc.blogspot.com
@@ -189,7 +271,7 @@ class SecurityEmail
         $this->h_email = array();
         $this->bcc = "";
         $this->pa_model = new PrimaryAddress();
-        $this->from = config()->email_from;
+        $this->from = config()->email_from_security;
     }
 
     public function setFrom($val) { $this->from = $val; }
@@ -241,7 +323,7 @@ class SecurityEmail
         echo "<hr>From: ".htmlentities($this->from)."\n\n";
         echo "<hr>Subject: ".$this->subject."\n\n";
         echo "<hr>BCC: ".$this->bcc."\n\n";
-        echo "<hr>Body:<pre> ".$this->body."</pre>\n\n";
+        echo "<hr>Body:<pre>".$this->body."</pre>\n\n";
         echo "<hr>\n\n";
     }
 

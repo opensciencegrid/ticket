@@ -70,7 +70,9 @@ function signedmail($to, $subject, $body, $header = "")
 
     //sign the body
     $signed_body = tempnam("/tmp", "gocticket");
-    system("openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body");
+    $command = "openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body";
+    slog($command);
+    system($command);
 
     //insert the signed content and my header to $header
     $header .= "\r\nFrom: " . config()->signed_email_from."\r\n";
@@ -78,7 +80,10 @@ function signedmail($to, $subject, $body, $header = "")
 
     //send everything from $header
     slog($header);
-    return mail($to, $subject, "", $header);
+    if(!mail($to, $subject, "", $header)) {
+        elog("Failed to send email");
+        throw new exception("Failed to send email");
+    }
 }
 
 function fpcall($function, $param)
@@ -93,5 +98,5 @@ function fpcall($function, $param)
         }
     }
     elog("Soap called failed too many times.. quitting");
-    return null;
+    throw new exception("soap call failed - too many retry");
 }

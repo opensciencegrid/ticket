@@ -24,7 +24,7 @@ class NavigatorController extends Zend_Controller_Action
         if(user()->allows("admin")) {
             $this->openassignAction();
         } else {
-            $this->openAction();
+            $this->openoriginAction();
         }
     }
 
@@ -35,6 +35,21 @@ class NavigatorController extends Zend_Controller_Action
             $tickets = $model->getopen();
             $this->view->activetab = "open";
             $this->view->tickets = $this->groupby("mrdest", $tickets);
+            $this->render("index");
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            $this->view->content = $e->getMessage();
+            $this->render("error/error", null, true);
+        }
+    }
+    public function openoriginAction()
+    {
+        try {
+            $model = new Tickets();
+            $tickets = $model->getopen();
+            $this->view->activetab = "openorigin";
+            $this->view->tickets = $this->groupby("mrorigin", $tickets);
             $this->render("index");
         } catch (SoapFault $e) {
             elog("SoapFault detected while ViewController:loaddetail()");

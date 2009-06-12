@@ -100,7 +100,7 @@ function gotoedit()
         <td class="header">Next Action Item:</td><td><?=$this->next_action?></td>
     </tr>
 
-    <tr class="personal">
+    <tr>
     <?if(user()->getPersonID() !== null) { ?>
          <td class="header">CC:</td><td>
             <?  foreach($this->cc as $cc) { echo $cc."<br/>"; } ?>

@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
@@ -27,9 +28,11 @@
 </head>
 <body>
 <div id="header">
-<img id="logo" src="<?=base()?>/images/osg_logo.png" alt="myosg logo"/>
-<h1><?=config()->app_name?></h1>
-<h2>by Grid Operations Center</h2>
+    <img id="logo" src="<?=base()?>/images/osg_logo.png" alt="myosg logo"/>
+    <h1><a href="<?=base()?>"><?=config()->app_name?></a></h1>
+    <h2>by Grid Operations Center</h2>
+</div>
+
 <?
 function submenutitle($id)
 {
@@ -44,20 +47,17 @@ function submenutitle($id)
 }
 ?>
 <div class="submenu" id="submenu_rsv">
-    <span id="submenu_open"><a href="<?=base()?>/open" accesskey="1"><?=submenutitle("open")?></a></span>
-    <span id="submenu_view"><a href="<?=base()?>/navigator" accesskey="2"><?=submenutitle("view")?></a></span>
-<?
-if(user()->allows("admin")) {
-?>
-    <span id="submenu_admin"><a href="<?=base()?>/admin" accesskey="3"><?=submenutitle("admin")?></a></span>
-<?}?>
+    <span id="submenu_open"><a href="<?=base()?>/open"><?=submenutitle("open")?></a></span>
+    <span id="submenu_view"><a href="<?=base()?>/navigator"><?=submenutitle("view")?></a></span>
+    <?if(user()->allows("admin")) {?>
+        <span id="submenu_admin"><a href="<?=base()?>/admin"><?=submenutitle("admin")?></a></span>
+    <?}?>
+    <script type="text/javascript">
+        $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
+    </script>
 </div>
-</div>
-<script type="text/javascript">
-    $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
-</script>
 
-<div class="container">
+<div id="content">
 
 <?include("app/views/scripts/search.phtml");?>
 
@@ -67,7 +67,7 @@ if(config()->simulate) {
 }
 
 if(config()->debug) {
-    echo "<p class=\"warning\">Running in Debug mode</p>";
+    echo "<p class=\"warning\">Running in debug mode</p>";
 }
 
 if(config()->role_prefix == "itbticket_") {

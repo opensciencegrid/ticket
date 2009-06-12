@@ -9,47 +9,44 @@ img
     border: 0px;
 }
 
-html,body
+body
 {
-font-family: Verdana, 'Trebuchet MS', sans-serif;
-font-size:12px;
-line-height:1.3em;
+font-family: 'Trebuchet MS', sans-serif;
+color: #555555;
+font-size:11pt;
 }
 
 p
 {
-    margin: 5px;
+margin-bottom: 10px;
 }
 
-
-#header
+#header {
+padding-left: 110px;
+background: #614b17 url('../images/n1.gif') repeat-x;
+height: 60px;
+}
+#header h1 a
 {
-background-image: url('../images/gray_back.gif');
-height:80px;
-font-family: 'Trebuchet MS';
+color: #fff;
+text-decoration: none;
 }
 #header h1
 {
-padding-left: 105px;
-color: white;
-padding-top: 8px;
-padding-bottom: 8px;
-font-size: 14pt;
-text-shadow: black 2px 2px 4px;
+padding-top: 7px;
+font-size: 15pt;
 }
 #header h2
 {
-padding-left: 105px;
 color: #EfE8C2;
-font-weight: normal;
 font-size: 13pt;
-margin-bottom: 7px;
 }
+
 #logo
 {
 position: absolute;
-top: 0px;
-left: 2px;
+top: 2px;
+left: 5px;
 }
 
 h3
@@ -67,8 +64,8 @@ h4
     border-bottom: 1px solid #630;
     font-weight: bold;
     padding :2px;
-    padding-left: 5px;
     font-size: 12px;
+    margin-bottom: 3px;
 }
 
 p.errors, p.warning, a.button
@@ -86,7 +83,6 @@ p.errors, p.warning, a.button
 a
 {
     color: black;
-    padding: 2px;
 }
 
 a:hover
@@ -94,20 +90,15 @@ a:hover
     color: brown;
 }
 
-.container {
-    padding:10px;
-    padding-left: 20px;
-    padding-right: 20px;
-
-/*
-    width: 95%;
-    margin-right: auto;
-    margin-left: auto;
-    background-color: white;
-*/
+#content {
+padding: 10px 5px 20px 20px;
+line-height: 1.6em;
+background: url('../images/a4.gif') repeat-x top left;
+font-size: 11px;
+font-family: verdana, "trebuchet ms", sans-serif;
 }
 
-.container .form, .menu
+#content .form, .menu
 {
     background:#ece9d8 url(../images/bg.gif) repeat-x;
     padding: 10px;
@@ -279,51 +270,30 @@ pre
 
 .submenu
 {
-font-family:"trebuchet ms",sans-serif;
-padding: 0px 28px 0px 28px;
+background-color: black;
+padding: 4px 28px 4px 20px;
 }
 .submenu span
 {
-padding-left: 10px;
-padding-right: 10px;
-padding-bottom: 4px;
-padding-top: 6px;
-position: relative;
-top: 5px;
+padding-right: 20px;
 }
 .submenu a
 {
 font-size: 12px;
 font-weight: bold;
-color: #ccc;
+color: #888;
 text-decoration: none;
 }
 .submenu a:hover
 {
-color: white;
+color: #6B7E09;
 text-decoration: underline;
-background-color: transparent;
-}
-.submenu span.selected
-{
-background-color: white;
--moz-border-radius-topleft: 5px;
--moz-border-radius-topright: 5px;
--moz-border-radius-bottomright: 0px;
--moz-border-radius-bottomleft: 0px;
--webkit-border-top-left-radius: 5px;
--webkit-border-top-right-radius: 5px;
--webkit-border-bottom-left-radius: 0px;
--webkit-border-bottom-right-radius: 0px;
 }
 .submenu span.selected a
 {
-color: #333;
+color: #fff;
 }
-.submenu span.selected a:hover
-{
-background-color: inherit;
-}
+
 
 ul.subsection_tabs {
     list-style:none;

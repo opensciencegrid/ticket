@@ -37,11 +37,10 @@ b();
 }
 })();
         </script>
-        <p></p>
-
-        Open By Ticket ID: 
-        <input type="text" id="ticketid" style="width: 75px;padding: 1px;"/>
-        <input type="button" value="Open" style="min-width: 75px;" onclick="document.location='<?=fullbase()?>/viewer?id='+$('#ticketid').val();"/>
-
+        <div style="margin-top: 2px;">
+            Open By Ticket ID: 
+            <input type="text" id="ticketid" style="width: 75px;padding: 1px;"/>
+            <input type="button" value="Open" style="min-width: 75px;" onclick="document.location='<?=fullbase()?>/viewer?id='+$('#ticketid').val();"/>
+        </div>
 </div>
 

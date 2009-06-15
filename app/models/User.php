@@ -53,6 +53,10 @@ class User
                 }
             }
         }
+        if(config()->debug) {
+            slog("roles that are authorized");
+            slog(print_r($this->action, true));
+        }
     }
 
     private function lookupDN($dn)
@@ -63,6 +67,9 @@ class User
                         c.active = 1 and
                         c.disable = 0 and
                         dn_string = '$dn'";
+        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Keith R. Jackson 633921'";
+        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Robert W. Gardner Jr. 669916'";
+        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474'";
         $row = db2()->fetchRow($sql);
         if($row) {
             $this->dn_id = $row->id;

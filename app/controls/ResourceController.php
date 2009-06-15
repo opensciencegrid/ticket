@@ -123,7 +123,7 @@ class ResourceController extends BaseController
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Checkbox('admin');
-        $element->setLabel("Check here if you are the admin for this resource, and this is an installation issue.");
+        $element->setLabel("Check here if you are the admin for this resource (this will prevent the ticket from getting routed back to you)");
         $form->addElement($element);
 
         $e = new Zend_Form_Element_Text('title');

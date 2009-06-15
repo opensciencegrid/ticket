@@ -250,8 +250,7 @@ This message is digitally signed. We encourage you to verify the digital signatu
 https://twiki.grid.iu.edu/bin/view/Security/SecureEmail
 
 Sincerely,
-Doug Olson
-on behalf of the OSG Security Team
+OSG Security Team
 ";
     }
 

@@ -18,8 +18,13 @@ function checked($e)
 ?>
 
 <dd>
-<p>Security Contacts:</p>
+<?if(!isset($_REQUEST["security"])) {?>
+<label>Security Contacts</label>
+<?}?>
 <blockquote>
+    <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/>
+    GOC &nbsp;&nbsp;&nbsp;
+
     <input type="hidden" name="rsecurity" value="0">
     <input type="checkbox" name="rsecurity" id="rsecurity" value="1" <?=checked($this->element->rsecurity)?>>
     Resource Security Contacts&nbsp;&nbsp;&nbsp;
@@ -34,8 +39,9 @@ function checked($e)
 </blockquote>
 </dd>
 
+<?if(!isset($_REQUEST["security"])) {?>
 <dd>
-    <p>Mailing Lists:</p>
+    <label>Mailing Lists</label>
 <blockquote>
     <input type="hidden" name="support" value="0">
     <input type="checkbox" name="support" id="support" value="1" <?=checked($this->element->support)?>>
@@ -54,6 +60,7 @@ function checked($e)
     OSG-Sites&nbsp;&nbsp;&nbsp;
 </blockquote>
 </dd>
+<?}?>
 
 <dd>
 <h3>Message</h3>

@@ -22,7 +22,7 @@
 <div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
 <?
 if($this->ticket_type == "Security") {
-    echo "<p class=\"warning\">This is a security ticket (only authorized persons can see this ticket)</p>";
+    echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";
 }
 ?>
 

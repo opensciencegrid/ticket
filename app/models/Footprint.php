@@ -250,10 +250,20 @@ class Footprint
 
     private function chooseGOCAssignee()
     {
+        $people = array();
+
+        //find the list of people for assignees
+        $schema_model = new Schema();
+        $teams = $schema_model->getteams();
+        foreach($teams as $team) {
+            if($team->team == "OSG__bGOC__bSupport__bTeam") {
+                $people = split(",", $team->members);
+            }
+        }
+        
         //randomly pick one of the GOCers
-        $gocers = config()->goc_assignees;
-        $lucky = rand(0, sizeof($gocers)-1);
-        return $gocers[$lucky]; 
+        $lucky = rand(0, sizeof($people)-1);
+        return $people[$lucky]; 
     }
 
     private function lookupVOName($id)

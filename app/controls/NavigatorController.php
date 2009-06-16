@@ -77,9 +77,24 @@ class NavigatorController extends Zend_Controller_Action
     {
         try {
             $model = new Tickets();
-            $tickets = $model->getclosed(time()-3600*24*90);
+            $tickets = $model->getclosed(config()->closeticket_window);
             $this->view->activetab = "close";
             $this->view->tickets  = $this->groupby("mrdest", $tickets);
+            $this->render("index");
+        } catch (SoapFault $e) {
+            elog("SoapFault detected while ViewController:loaddetail()");
+            elog($e->getMessage());
+            $this->view->content = $e->getMessage();
+            $this->render("error/error", null, true);
+        }
+    }
+    public function closeoriginAction()
+    {
+        try {
+            $model = new Tickets();
+            $tickets = $model->getclosed(config()->closeticket_window);
+            $this->view->activetab = "closeorigin";
+            $this->view->tickets  = $this->groupby("mrorigin", $tickets);
             $this->render("index");
         } catch (SoapFault $e) {
             elog("SoapFault detected while ViewController:loaddetail()");

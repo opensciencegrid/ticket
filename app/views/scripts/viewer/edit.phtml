@@ -78,19 +78,19 @@
         <td rowspan="6" colspan="2"><b>Assignees:</b><br/>
         <table width="100%"><tr>
         <?
-        echo "<td>";
+        echo "<td valign='top'>";
         foreach(config()->editor_team_lists[0] as $team) {
             showteam($team, $this->teams[$team], $this->assignees[$team]);
         }
         echo "</td>";
 
-        echo "<td>";
+        echo "<td valign='top'>";
         foreach(config()->editor_team_lists[1] as $team) {
             showteam($team, $this->teams[$team], $this->assignees[$team]);
         }
         echo "</td>";
 
-        echo "<td>";
+        echo "<td valign='top'>";
         foreach(config()->editor_team_lists[2] as $team) {
             showteam($team, $this->teams[$team], $this->assignees[$team]);
         }

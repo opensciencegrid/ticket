@@ -25,6 +25,10 @@ class ViewerController extends Zend_Controller_Action
         var_dump($attachments);
         */
 
+        $this->view->ticket_id = $id;
+        $this->view->title = $detail->title;
+        $this->view->page_title = "[$id] ".$detail->title;
+
         //limit access to security ticket
         if($detail->Ticket__uType == "Security") {
             //only certain users can see security ticket
@@ -35,9 +39,6 @@ class ViewerController extends Zend_Controller_Action
             }
         }
         
-        $this->view->ticket_id = $id;
-        $this->view->title = $detail->title;
-        $this->view->page_title = "[$id] ".$detail->title;
 
         //submitter 
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;

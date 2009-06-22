@@ -22,7 +22,7 @@
 <div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
 <?
 if($this->ticket_type == "Security") {
-    echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";
+    echo "<p class=\"errors\">Permission Denied to view ticket id ".$this->ticket_id.": Security Issue tickets can only be viewed on this website if you have loaded your X509 certificate on your web browser, and are registered on OIM with that certificate.</p>";
 }
 ?>
 

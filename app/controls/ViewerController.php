@@ -1,18 +1,17 @@
 <?
 
 class ViewerController extends Zend_Controller_Action 
-{ 
+{
     public function init()
     {
         $this->view->submenu_selected = "view";
-    }    
-
+    }
 
     public function loaddetail()
     {
         $dirty_id = $_REQUEST["id"];
         $id = (int)$dirty_id;
-        
+
         $model = new Tickets();
         $detail = $model->getDetail($id);
         if($detail === "") {
@@ -29,7 +28,8 @@ class ViewerController extends Zend_Controller_Action
         //limit access to security ticket
         if($detail->Ticket__uType == "Security") {
             //only certain users can see security ticket
-            if(!user()->allows("view_security_ticket")) {
+            if(user()->isGuest()) {
+            //if(!user()->allows("view_security_ticket")) {
                 $this->render("security");
                 return null;
             }

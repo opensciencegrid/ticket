@@ -78,6 +78,7 @@ class User
             $this->contact_email = $row->primary_email;
             $this->contact_phone = $row->primary_phone;
         } else {
+            $this->contact_name = "Guest";
             slog("DN: $dn doesn't exist in oim");
         }
     }

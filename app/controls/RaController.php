@@ -6,7 +6,7 @@ class RaController extends BaseController
     {
         $this->view->submenu_selected = "open";
         //load sponsor list
-        $model = new Sponsor();
+        $model = new RAContact();
         $this->sponsors = $model->fetchall();
         $this->view->sponsors = $this->sponsors;
     }
@@ -147,7 +147,7 @@ class RaController extends BaseController
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Text('req_sponsor');
-        $e->setLabel("Requestor Sponsor");
+        $e->setLabel("Requestor Sponsor (RA Contacts)");
         $e->setRequired(true);
         $form->addElement($e);
 

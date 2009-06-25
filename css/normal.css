@@ -185,10 +185,13 @@ p.warning
 {
     margin-bottom: 5px; 
 }
-.footer
+#footer
 {
-    padding:10px;
-    text-align: center;
+padding:10px;
+background: url('../images/a4.gif') repeat-x top left;
+border-top: solid 1px #D0D4BB;
+padding: 1.0em 1.0em 1.0em 1.0em;
+font-size: 0.8em;
 }
 .indent
 {

@@ -39,7 +39,7 @@ class ErrorController extends Zend_Controller_Action
 
                         //also send SMS
                         $subject = "[".config()->app_name."] Application error";
-                        sendSMS(config()->error_sms_to, $subject, $exception);
+                        sendSMS(config()->error_sms_to, $subject, $exception->getMessage());
 
                         $this->view->content .= "Detail of this error has been sent to the development team for further analysis.";
                     }

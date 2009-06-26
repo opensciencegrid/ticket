@@ -38,8 +38,7 @@ class ErrorController extends Zend_Controller_Action
                         mail(config()->elog_email_address, "[gocticket] error has occurerd", $log, "From: ".config()->email_from);
 
                         //also send SMS
-                        $subject = "[".config()->app_name."] Application error";
-                        sendSMS(config()->error_sms_to, $subject, $exception->getMessage());
+                        sendSMS(config()->error_sms_to, "Application Error", $exception->getMessage());
 
                         $this->view->content .= "Detail of this error has been sent to the development team for further analysis.";
                     }

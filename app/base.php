@@ -49,9 +49,7 @@ function sendSMS($users, $subject, $body)
             elog("couldn't find user $user in sms_address configuration");
         }
     }
-    $Name = config()->app_name;
-    $email = "hayashis@indiana.edu"; //senders e-mail adress
-    $header = "From: ". $Name . " <" . $email . ">\r\n";
+    $header = "From: ". config()->error_from."\r\n";
     mail($recipient, $subject, $body, $header);
 
     slog("Sent SMS notification to $recipient user:".print_r($users, true));

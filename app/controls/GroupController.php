@@ -14,7 +14,8 @@ class GroupController extends Zend_Controller_Action
             return;
         }
 
-        $xml_file = "/tmp/gocticket.groupticket.xml";
+        //$xml_file = "/tmp/gocticket.groupticket.xml";
+        $xml_file = config()->group_xml_path;
         try {
             $this->view->groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);
         } catch(exception $e) {

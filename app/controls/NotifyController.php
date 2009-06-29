@@ -38,6 +38,8 @@ class NotifyController extends BaseController
 
         $form = $this->getForm();
         if($form->isValid($_POST)) {
+            $this->view->detail = "<h2>Process Detail</h2><br/>";
+
             //if this is for security ticket, create footprint ticket with security type with no sc assignee
             $security_mrid = null;
             if(isset($_REQUEST["security"])) {
@@ -54,6 +56,10 @@ class NotifyController extends BaseController
                 try
                 {
                     $security_mrid = $footprint->submit();
+
+                    $this->view->detail .= "<br/><h3>Following Ticket(ID:$security_mrid) has been submitted</h3><br/>";
+                    $this->view->detail .= "<pre>".print_r($footprint, true)."</pre>";
+
                 } catch(exception $e) {
                     $this->sendErrorEmail($e);
                     $this->render("failed", null, true);
@@ -127,17 +133,23 @@ class NotifyController extends BaseController
             try
             {
                 if(config()->simulate) {
-                    echo "<h1>Simulation</h2>";
-                    $e->dump();
+                    echo "<h2>Simulation</h2>";
+                    echo $e->dump();
                     $this->render("none", null, true);
                     if($do_rss) {
                         echo "RSS feed will be added";
                     }
                 } else {
                     $e->send();
+
+                    $this->view->detail .= "<br/><h3>Following Email has been sent</h3><br/>";
+                    $this->view->detail .= $e->dump();
+
                     if($do_rss) {
                         $r = new RSSFeed();
                         $r->insert($subject, $ticket_id, $body);
+
+                        $this->view->detail .= "<br/><h3>RSS Feed has been generated</h3><br/>";
                     }
                     $this->render("processed", null, true);
                 }
@@ -324,12 +336,14 @@ class SecurityEmail
     }
     public function dump()
     {
-        echo "<hr>To: ".$this->to."\n\n";
-        echo "<hr>From: ".htmlentities($this->from)."\n\n";
-        echo "<hr>Subject: ".$this->subject."\n\n";
-        echo "<hr>BCC: ".$this->bcc."\n\n";
-        echo "<hr>Body:<pre>".$this->body."</pre>\n\n";
-        echo "<hr>\n\n";
+        $out = "";
+        $out .= "<hr>To: ".$this->to."\n\n";
+        $out .= "<hr>From: ".htmlentities($this->from)."\n\n";
+        $out .= "<hr>Subject: ".$this->subject."\n\n";
+        $out .= "<hr>BCC: ".$this->bcc."\n\n";
+        $out .= "<hr>Body:<pre>".$this->body."</pre>\n\n";
+        $out .= "<hr>\n\n";
+        return $out;
     }
 
     public function send()

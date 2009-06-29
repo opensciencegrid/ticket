@@ -54,7 +54,7 @@ class User
             }
         }
         if(config()->debug) {
-            slog("roles that are authorized");
+            slog("DEBUG: roles that are authorized");
             slog(print_r($this->action, true));
         }
     }

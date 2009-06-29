@@ -55,7 +55,7 @@ function sendSMS($users, $subject, $body)
     slog("Sent SMS notification to $recipient user:".print_r($users, true));
 }
 
-function signedmail($to, $subject, $body, $header = "")
+function signedmail($to, $from, $subject, $body, $header = "")
 {
     $key = config()->signed_email_key;
     $cert = config()->signed_email_cert;
@@ -73,11 +73,10 @@ function signedmail($to, $subject, $body, $header = "")
     system($command);
 
     //insert the signed content and my header to $header
-    $header .= "\r\nFrom: " . config()->signed_email_from."\r\n";
+    $header .= "\r\nFrom: $from\r\n";
     $header .= file_get_contents($signed_body);
 
     //send everything from $header
-    slog($header);
     if(!mail($to, $subject, "", $header)) {
         elog("Failed to send email");
         throw new exception("Failed to send email");

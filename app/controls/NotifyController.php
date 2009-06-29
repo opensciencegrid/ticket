@@ -47,8 +47,12 @@ class NotifyController extends BaseController
                 $footprint->setTitle("[OSG-SEC-NOTIFY-".date("Y-m-d")."] ".$form->getValue('subject'));
                 $footprint->addDescription($form->getValue('body'));
                 $footprint->setTicketType("Security");
-                $footprint->addAssignee("rquick", true);
-                $footprint->addAssignee("maltunay");
+                if(config()->debug) {
+                    $footprint->addAssignee("hayashis", true);
+                } else {
+                    $footprint->addAssignee("rquick", true);
+                    $footprint->addAssignee("maltunay");
+                }
                 $footprint->setName("GOC");
                 $footprint->setOfficePhone("317-278-9699");
                 $footprint->setEmail("goc@opensciencegrid.org");
@@ -106,7 +110,11 @@ class NotifyController extends BaseController
                 }
             }
 
-            $e->setTo('goc@opensciencegrid.org');
+            if(config()->debug) {
+                $e->setTo("hayashis@indiana.edu");
+            } else {
+                $e->setTo('goc@opensciencegrid.org');
+            }
 
             if(isset($_REQUEST["security"])) {
                 $e->setSubject("OSG-SEC-NOTIFY-".date("Y-m-d"));
@@ -348,7 +356,7 @@ class SecurityEmail
 
     public function send()
     {
-        signedmail($this->to, $this->subject, $this->body, "Bcc: ".$this->bcc);
+        signedmail($this->to, $this->from, $this->subject, $this->body, "Bcc: ".$this->bcc);
 
         slog("[submit] Signed notification email sent with following content --------------------------");
         slog(print_r($this, true));

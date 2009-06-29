@@ -7,6 +7,16 @@ set_include_path('app/controls' . PATH_SEPARATOR . get_include_path());
 require_once "Zend/Loader.php"; 
 Zend_Loader::registerAutoload(); 
 
+//check to make sure our site installation is done
+if(!file_exists("config.php")) {
+    echo "please create site specific config.php";
+    exit;
+}
+if(!file_exists(".htaccess")) {
+    echo ".htaccess file doesn't exist. please create";
+    exit;
+}
+
 //load our stuff
 require_once("config.php");
 require_once("app/views/helper.php");

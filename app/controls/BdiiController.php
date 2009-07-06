@@ -21,9 +21,15 @@ class BdiiController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
             $footprint->setTitle($form->getValue('title'));
 
-            if($form->getValue("down") == "true") {
-                $footprint->addMeta("BDII is not responding!! - Opening in CRITICAL priority");
-                $footprint->setPriority(1); //set it to critical
+            $bdiiserver = $form->getValue("bdiiserver");
+            $footprint->addMeta("Which BDII instance: ".$bdiiserver."\n");
+
+            $down = $form->getValue("down");
+            $footprint->addMeta("Is BDII down?: ".$down."\n");
+
+            if($down == "true" && $bdiiserver == "is") {
+                $footprint->addMeta("Opening ticket in CRITICAL priority\n");
+                $footprint->setPriority(1); //set it to critical;
                 $footprint->setTicketType("Unscheduled__bOutage");
             }
 
@@ -65,10 +71,15 @@ class BdiiController extends BaseController
         $elem->setRequired(true);
         $elem->addMultiOption("false", "Yes");
         $elem->addMultiOption("true", "No");
-        $elem->setDescription("* Selecting \"No\" will cause this ticket to be opened with CRITICAL priority.");
-        $elem->addDecorator("description");
+        //$elem->setDescription("* Selecting \"No\" will cause this ticket to be opened with CRITICAL priority.");
+        //$elem->addDecorator("description");
         $form->addElement($elem);
 
+        $elem = new Zend_Form_Element_Select('bdiiserver');
+        $elem->setLabel("Which BDII instance are you having this issue?");
+        $elem->setRequired(true);
+        $elem->addMultiOption("is", "*.grid.iu.edu");
+        $elem->addMultiOption("other", "(Other)");
         $form->addElement($elem);
 
         $detail = new Zend_Form_Element_Textarea('detail');

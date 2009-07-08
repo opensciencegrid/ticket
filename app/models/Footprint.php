@@ -376,10 +376,13 @@ class Footprint
         } else {
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+
+            //ticket creation will get new id
             if($this->id === null) {
                 $this->id = $newid;
+                //send sms
+                $this->send_notification($params["assignees"], $newid);
             }
-            $this->send_notification($params["assignees"], $this->id);
         }
 
         return $this->id;

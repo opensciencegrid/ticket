@@ -1,0 +1,46 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>"
+      name="myform">
+<dl>
+
+<dd>
+<?=$this->render("yourinfo.phtml", true)?>
+</dd>
+
+<dd> 
+    <h3>Issue Detail</h3>
+    <p> Now tell us about the issue.  </p>
+</dd>
+
+<?=$this->element->vo?>
+</dl>
+<dl id="title_holder" class="hidden">
+    <?=$this->element->title?>
+</dl>
+<dl>
+<?=$this->element->detail?>
+<?=$this->element->submit_button?>
+</dl>
+</form>
+
+<script type="text/javascript">
+function settitle() 
+{
+    var id = $("#vo")[0].selectedIndex;
+    if(!id) {
+        $("#title_holder").hide();
+    } else {
+        var rname = $("#vo")[0].options[id].text;
+        $("#title").attr("value", rname + " VO Specific Issue");
+        $("#title_holder").show();
+    }
+}
+
+var title = $("#vo").val();
+if(title == "") {
+    settitle();
+} else {
+    $("#title_holder").show();
+}
+$("#vo").change(settitle);
+</script>

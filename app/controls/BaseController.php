@@ -102,7 +102,7 @@ class BaseController extends Zend_Controller_Action
             foreach($vos as $v) {
                 $vo->addMultiOption($v->id, $v->name);
             }
-            if(!user()->allows("admin")) {
+            if(user()->allows("admin")) {
                 $vo->setValue(25); //MIS
             }
             $form->addElement($vo);

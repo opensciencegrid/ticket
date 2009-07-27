@@ -227,6 +227,7 @@ class Footprint
     }
 */
 
+    //this is for resource
     public function addPrimaryAdminContact($resource_id)
     {
         $model = new Resource();
@@ -239,6 +240,23 @@ class Footprint
         } else {
             $this->addCC($prac->primary_email);
             $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->name." and has been CC'd.\n");
+            $this->b_cc = true;
+        }
+    }
+
+    //this is for vo
+    public function addPrimaryVOAdminContact($vo_id)
+    {
+        $model = new VO();
+        $vo_name = $model->get($vo_id)->name;
+
+        $prac_model = new PrimaryVOAdminContact();
+        $prac = $prac_model->fetch($vo_id);
+        if($prac === false) {
+            $footprint->addMeta("Primary Admin for ".$vo_name." VO couldn't be found in the OIM");
+        } else {
+            $this->addCC($prac->primary_email);
+            $this->addMeta("Primary Admin for ".$vo_name." VO is ".$prac->name." and has been CC'd.\n");
             $this->b_cc = true;
         }
     }

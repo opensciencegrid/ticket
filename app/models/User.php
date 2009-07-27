@@ -64,12 +64,8 @@ class User
         //make sure user DN exists and active
         $sql = "select d.*, c.name, c.primary_email, c.primary_phone from dn d left join contact c on (d.contact_id = c.id)
                     where
-                        c.active = 1 and
                         c.disable = 0 and
                         dn_string = '$dn'";
-        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Keith R. Jackson 633921'";
-        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Robert W. Gardner Jr. 669916'";
-        //              dn_string = '/DC=org/DC=doegrids/OU=People/CN=Iwona Sakrejda 40474'";
         $row = db2()->fetchRow($sql);
         if($row) {
             $this->dn_id = $row->id;

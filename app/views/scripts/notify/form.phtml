@@ -2,11 +2,6 @@
       method="<?=$this->escape($this->element->getMethod())?>">
 <dl>
 <dd>
-    <?if(isset($_REQUEST["security"])) {?>
-        <h4>What is this form for?</h4>
-        <p>This form will create a GOC security ticket with the information you provide.</p>
-        <p>Then an email with a link to the security ticket will be sent to the list of people selected below.</p>
-    <?}?>
     <h3>Send To</h3>
 </dd>
 
@@ -18,9 +13,7 @@ function checked($e)
 ?>
 
 <dd>
-<?if(!isset($_REQUEST["security"])) {?>
 <label>Security Contacts</label>
-<?}?>
 <blockquote>
     <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/>
     GOC &nbsp;&nbsp;&nbsp;
@@ -39,7 +32,6 @@ function checked($e)
 </blockquote>
 </dd>
 
-<?if(!isset($_REQUEST["security"])) {?>
 <dd>
     <label>Mailing Lists</label>
 <blockquote>
@@ -60,7 +52,6 @@ function checked($e)
     OSG-Sites&nbsp;&nbsp;&nbsp;
 </blockquote>
 </dd>
-<?}?>
 
 <dd>
 <h3>Message</h3>
@@ -73,6 +64,7 @@ function checked($e)
 <?=$this->element->body?>
 <?=$this->element->sig?>
 <?=$this->element->rss?>
+<?=$this->element->sign?>
 </dl>
 
 <dl>

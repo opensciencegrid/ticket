@@ -60,6 +60,13 @@ function signedmail($to, $from, $subject, $body, $header = "")
     $key = config()->signed_email_key;
     $cert = config()->signed_email_cert;
 
+    if(!file_exists($key)) {
+        throw new exception("Couldn't find certificate key $key");
+    }
+    if(!file_exists($cert)) {
+        throw new exception("Couldn't find certificate $key");
+    }
+
     //store the original body (so that openssl can process it)
     $original_body = tempnam("/tmp", "gocticket");
     $handle = fopen($original_body, "w");

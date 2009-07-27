@@ -354,7 +354,7 @@ class Footprint
             $params["status"] = $this->status;
         }
         if($this->b_desc) {
-            $params["description"] = $desc;
+            $params["description"] = htmlentities($desc);
         }
         if($this->b_contact) {
             $params["abfields"] = $this->ab_fields;
@@ -435,6 +435,14 @@ class Footprint
         $str = str_replace("-", "__u", $str);
         $str = str_replace(" ", "__b", $str);
         $str = str_replace("/", "__f", $str);
+        return $str;
+    }
+    static public function preserve_whitespace($str)
+    {
+        $str = str_replace("^ ", ". ", $str);
+        $str = str_replace("^\t", ".\t", $str);
+        $str = str_replace("\n ", "\n. ", $str);
+        $str = str_replace("\n\t", "\n.\t", $str);
         return $str;
     }
 }

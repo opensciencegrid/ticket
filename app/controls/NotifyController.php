@@ -112,7 +112,6 @@ class NotifyController extends BaseController
                     if($do_rss) {
                         $r = new RSSFeed();
                         $r->insert($subject, $ticket_id, $body);
-
                         $this->view->detail .= "<br/><h3>RSS Feed has been generated</h3><br/>";
                     }
                     $this->render("processed", null, true);

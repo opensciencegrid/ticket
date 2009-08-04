@@ -1,15 +1,15 @@
 <?include("app/views/scripts/header.phtml");?>
 <div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Ticket Clustering</div>
 
+
 <h3>Ticket Clustering</h3>
 <br/>
 <p>
 Following are groupings of similar tickets that are modified withtin last 30 days. Only groups with more than 3 tickets are displayed.
 </p>
 <?
-foreach($this->groups as $group) 
+foreach($this->groups as $tickets) 
 {
-    $tickets = $group->ticket;
     if(count($tickets) > 2) {
         $first = true;
         foreach($tickets as $ticket) {

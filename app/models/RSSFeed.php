@@ -7,15 +7,16 @@ class RSSFeed
         $ticket_id = (int)$ticket_id;
 
         /////////////////////////////////////////////////////////////
-        // Insert to rsvextra.rss_article (for backup purpose)
-        //Zend_DB takes care of quoting..
+        //Backup the RSS content
         $row = array(
             'title' => $subject,
             'ticket' => $ticket_id,
             'date' => time(),
             'body' => $body
         );
-        db2()->insert("rsvextra.rss_article", $row);
+        //db2()->insert("rsvextra.rss_article", $row);
+        slog("RSS Feed to be sent to Blogger");
+        slog(print_r($row, true));
 
         /////////////////////////////////////////////////////////////
         // Insert to osggoc.blogger.com

@@ -56,9 +56,6 @@ class NotifyController extends BaseController
             if($form->getValue('sites')) {
                 $e->addAddress("osg-sites@opensciencegrid.org");
             }
-            if(config()->debug) {
-                $e->addAddress("hayashis@indiana.edu");
-            }
 
             $person_id = $form->getValue('email_from');
             if($person_id == -1) {
@@ -71,6 +68,7 @@ class NotifyController extends BaseController
                 $e->setFrom($person->name." <".$person->primary_email.">");
             }
 
+            //override to address for testing
             if(config()->debug) {
                 $e->setTo("hayashis@indiana.edu");
             } else {
@@ -104,6 +102,9 @@ class NotifyController extends BaseController
                         echo "Email will be signed";
                     }
                 } else {
+                    if($_REQUEST["sign"] == 1) {
+                        $e->setSign();
+                    }
                     $e->send();
 
                     $this->view->detail .= "<br/><h3>Following Email has been sent</h3><br/>";

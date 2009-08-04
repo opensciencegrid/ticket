@@ -80,7 +80,7 @@ function signedmail($to, $from, $subject, $body, $header = "")
     system($command);
 
     //insert the signed content and my header to $header
-    $header .= "\r\nFrom: $from\r\n";
+    $header .= "From: $from\r\n";
     $header .= file_get_contents($signed_body);
 
     //send everything from $header

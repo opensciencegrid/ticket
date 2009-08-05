@@ -91,6 +91,9 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             }
         }
 
+        $foot_priority = ggus2footPriority($xml->GHD_Priority);
+        $footprint->setPriority($foot_priority);
+
         $footprint->setSubmitter("ggus");
         $footprint->setOriginatingTicketNumber($id);
     } else {
@@ -115,6 +118,9 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
             $footprint->addDescription($xml->GHD_Internal_Diary);
         }
 
+        $foot_priority = ggus2footPriority($xml->GHD_Priority);
+        $footprint->setPriority($foot_priority);
+
         switch($xml->GHD_Status) {
         case "solved":
         case "verified":
@@ -130,6 +136,22 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
     }
 
     return $footprint;
+}
+
+function ggus2footPriority($ggus_priority)
+{
+    switch($ggus_priority) {
+    case "less urgent":
+        return 4;//NORMAL
+    case "urgent":
+        return 3;//Elevated
+    case "very urgent":
+        return 2;//HIGH
+    case "top priority":
+        return 1;//Critical
+    }
+    //unknown..
+    return 4;
 }
 
 /*

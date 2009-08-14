@@ -74,6 +74,7 @@ class SecurityEmail
     public function send()
     {
         $header = "From: $this->from\r\n";
+        $header = "Bcc: $this->bcc\r\n";
         if($this->sign) {
             signedmail($this->to, $this->from, $this->subject, $this->body);
             slog("[submit] Notification email(signed) sent with following content --------------------------");

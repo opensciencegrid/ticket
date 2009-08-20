@@ -1,0 +1,63 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>"
+      name="myform">
+<dl>
+
+<dd>
+<?=$this->render("yourinfo.phtml", true)?>
+</dd>
+
+<dd> 
+    <h3>Issue Detail</h3>
+    <p> Now tell us about the issue.  </p>
+</dd>
+
+<?=$this->element->resource_type?>
+</dl>
+    <dl id="resource_id_with_issue_1_holder" class="hidden">
+    <?=$this->element->resource_id_with_issue_1?>
+    </dl>
+<dl>
+</dl>
+    <dl id="resource_id_with_issue_2_holder" class="hidden">
+    <?=$this->element->resource_id_with_issue_2?>
+    </dl>
+<dl>
+</dl>
+    <dl id="title_holder" class="hidden">
+    <?=$this->element->title?>
+    </dl>
+<dl>
+<?=$this->element->admin?>
+<?=$this->element->detail?>
+
+<?=$this->element->submit_button?>
+</dl>
+</form>
+
+<script type="text/javascript">
+function show_resourcelist() {
+    $("#resource_id_with_issue_1_holder").hide();
+    $("#resource_id_with_issue_2_holder").hide();
+    //find currently selected item
+    var grid_type = $("#resource_type").val();
+    $("#resource_id_with_issue_"+grid_type+"_holder").show();
+}
+function settitle() 
+{
+    var id = this.selectedIndex;
+    if(!id) {
+        $("#title_holder").hide();
+    } else {
+        var rname = this.options[id].text;
+        $("#title").attr("value", "Resource Specific Issue on "+rname);
+        $("#title_holder").show();
+    }
+}
+show_resourcelist();
+$("#resource_type").change(function() {
+    show_resourcelist();
+});
+$("#resource_id_with_issue_1").change(settitle);
+$("#resource_id_with_issue_2").change(settitle);
+</script>

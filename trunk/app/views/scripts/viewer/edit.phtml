@@ -1,0 +1,271 @@
+
+<form action="<?=fullbase()?>/viewer/update" method="post">
+<input type="hidden" name="id" value="<?=$this->ticket_id?>">
+
+<b>Title:</b> <input type="text" size="100" name="title" value="<?=$this->title?>"/>
+
+<table class="ticket_detail">
+    <tr>
+        <td colspan="4"><h3>Submitter</h3></td>
+    </tr>
+    <tr>
+        <td class="header">First Name:</td><td><input type="text" value="<?=$this->submitter_fname?>" name="submitter_fname"></td>
+        <td class="header">Last Name:</td><td><input type="text" value="<?=$this->submitter_lname?>" name="submitter_lname"></td>
+    </tr>
+    <tr>
+        <?
+        echo "<td class=\"header\">Email:</td><td><input type=\"text\" value=\"".$this->submitter_email."\" name=\"submitter_email\"></td>";
+        ?>
+        <td class="header">Phone:</td><td><input type="text" value="<?=$this->submitter_phone?>" name="submitter_phone"></td>
+    </tr>
+    <tr>
+    <?
+    ?>
+
+    <tr>
+        <td colspan="4"><h3>Routing Information</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Originating VO:</td><td>
+        <select name="submitter_vo">
+        <?
+        foreach($this->originating_vos as $id=>$vo) {
+            $selected = "";
+            if($vo == $this->submitter_vo) $selected = "selected=selected";
+            echo "<option id=\"$id\" $selected>$vo</option>";
+        }
+        ?>
+        </select>
+        </td>
+        <?
+        echo "<td class=\"header\">Originating Ticket ID</td><td><input type=\"text\" value=\"".$this->originating_ticket_id."\" name=\"originating_ticket_id\"></td>";
+        ?>
+    </tr>
+    <tr>
+        <td class="header">Destination VO:</td><td>
+        <select name="destination_vo">
+        <?
+        foreach($this->destination_vos as $id=>$vo) {
+            $selected = "";
+            if($vo == $this->destination_vo) $selected = "selected=selected";
+            echo "<option id=\"$id\" $selected>$vo</option>";
+        }
+        ?>
+        </select>
+        </td>
+        <td class="header">Destination Ticket ID</td><td><input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"></td>
+
+    </tr>
+
+    <tr>
+        <td colspan="4"><h3>Ticket Detail</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Ticket Type:</td><td>
+        <select name="ticket_type">
+        <?
+        $ttype = Footprint::GetTicketTypes();
+        foreach($ttype as $type) {
+            $selected = "";
+            if($type == $this->ticket_type) $selected = "selected=selected";
+            echo "<option id=\"$type\" $selected>$type</option>";
+        }
+        ?>
+        </select>
+        </td>
+
+
+        <td rowspan="6" colspan="2"><b>Assignees:</b><br/>
+        <table width="100%"><tr>
+        <?
+        echo "<td valign='top'>";
+        foreach(config()->editor_team_lists[0] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
+        echo "</td>";
+
+        echo "<td valign='top'>";
+        foreach(config()->editor_team_lists[1] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
+        echo "</td>";
+
+        echo "<td valign='top'>";
+        foreach(config()->editor_team_lists[2] as $team) {
+            showteam($team, $this->teams[$team], $this->assignees[$team]);
+        }
+        echo "</td>";
+
+        function showteam($team, $members, $already_selected) {
+            echo "<h4>$team</h4>";
+
+            $possible_values = array();
+            $aka_model = new AKA();
+            foreach($members as $a) {
+                $aka = $aka_model->lookupName($a);
+                $possible_values[$a] = $aka;
+            }
+            echo "<p>";
+            echo listSelector("assignees", $possible_values, $already_selected);
+            echo "</p>";
+        }
+        ?>
+        </tr></table>
+
+        </td>
+    </tr>
+
+    <tr>
+        <td class="header">Priority:</td><td>
+        <select name="priority">
+        <?
+        $plist = Footprint::GetPriorityList();
+        foreach($plist as $id=>$p) {
+            $selected = "";
+            if($p == $this->priority) $selected = "selected=selected";
+            echo "<option id=\"$id\" value=\"$id\" $selected>$p</option>";
+        }
+        ?>
+        </select>
+
+        </td>
+
+    </tr>
+
+    <tr>
+        <td class="header">Status:</td><td>
+        <?
+        $style = status2style($this->status);
+        //echo "<span id='status_flag' class='ticketid $style'>&nbsp;</span>";
+        //echo "<select name=\"status\" onchange=\"changeflag($(this));\">";
+        echo "<select name=\"status\">";
+        foreach(Footprint::GetStatusList() as $status) {
+            $selected = "";
+            if($status == $this->status) $selected = "selected=selected";
+            $style = status2style($status);
+            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+        }
+        echo "</select>";
+        ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="header">Next Action Deadline:</td><td> Morning of <input type="text" name="nad" value="<?=$this->nad?>"/> </td>
+    </tr>
+
+    <tr>
+        <td class="header">Next Action Item:</td><td><input type="text" name="next_action" value="<?=$this->next_action?>"/> </td>
+    </tr>
+
+    <tr>
+        <td class="header">CC:</td> <td>
+        <div class="ccarea">
+        <?
+            foreach($this->cc as $cc) {
+                echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\" size=\"35\"/> <a class=\"button\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+            }
+        ?>
+        </div>
+        <script type="text/javascript">
+        function addcc(node)
+        {
+            var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" size=\"35\"/> <a class=\"button\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"<?=fullbase()?>/images/delete.png\"/></a></div>";
+            node.append(template);
+            setup_cc();
+        }
+        <?
+        $model = new Person();
+        $persons = $model->fetchAll();
+        $persons_json = "";
+        foreach($persons as $person) 
+        {
+            $fullname = trim($person->name);
+            $email = trim($person->primary_email);
+            $phone = trim($person->primary_phone);
+            if($fullname == "") $fullname = $email;
+            if($persons_json != "") $persons_json .= ",\n";
+            $persons_json .= "{ fullname: \"$fullname\", email: \"$email\", phone: \"$phone\"}";
+        }
+        ?>
+        var persons = [
+            <?=$persons_json?>
+        ];
+        $(document).ready(function() {
+            setup_cc();
+        });
+        function setup_cc()
+        {
+            $(".cc").autocomplete(persons, {
+                mustMatch: false,
+                matchContains: true,
+                width: 500,
+                formatItem: function(row, i, max) {
+                    return row.fullname + "<br/>Email: " + row.email;
+                },
+                formatMatch: function(row, i, max) {
+                    return row.fullname + " " + row.email;
+                },
+                formatResult: function(row) {
+                    return row.email;
+                }
+            });
+        }
+
+        </script>
+        <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><img src="<?=fullbase()?>/images/add.png"/>Add New CC</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="header">Description:</td><td colspan="3">
+        <select name="quickdesc" onchange="
+            $('.resizable').val('Loading...');
+            $.ajax({
+                url: '<?=fullbase()?>/viewer/quickdesc?id='+escape($(this).val()),
+                success: function(data) {
+                    $('.resizable').val(data);
+                }
+            });
+            ">  
+        <?
+        $model = new Schema();
+        $descs = $model->getquickdesc();
+        echo "<option>(Quick Description)</option>";
+        foreach($descs as $name=>$desc) {
+            echo "<option id=\"$name\">$name</option>";
+        }
+        ?>
+        </select>
+        <textarea class="resizable" style="width: 100%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td class="header" colspan="3">
+            <input type="submit" value="&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;"/>
+            or <a href="<?=fullbase()?>/viewer?id=<?=$this->ticket_id?>">Cancel</a>
+        </td>
+    </tr>
+
+
+</table>
+</form>
+
+<script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
+<script type="text/javascript">
+/*
+function changeflag(node)
+{
+    var val = node.val();
+    var c = node.find("option[value='"+val+"']").attr("class");
+    $("#status_flag").attr("class", c);
+}
+*/
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    $('textarea.resizable').TextAreaResizer();
+});
+</script>

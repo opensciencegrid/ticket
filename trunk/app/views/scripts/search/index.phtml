@@ -1,0 +1,23 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; Search Ticket </div>
+<h3>Search Ticket</h3>
+<div class="menu">
+        By Keyword<br/>
+        <form action="http://www.google.com/cse" id="cse-search-box">
+          <div>
+            <input type="hidden" name="cx" value="016752695275174109936:9u1k_fz_bag" />
+            <input type="hidden" name="ie" value="UTF-8" />
+            <input type="text" name="q"/>
+            <input type="submit" name="sa" value="Search" style="min-width: 100px;"/>
+          </div>
+        </form>
+        <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
+
+        <br/>
+        By Ticket ID<br/>
+        <input type="text" id="ticketid" style="width: 135px;padding: 1px;"/>
+        <input type="button" value="Open" style="min-width: 100px;" onclick="document.location='<?=fullbase()."/viewer?id="?>'+$('#ticketid').val();"/>
+</div>
+<?include("app/views/scripts/footer.phtml");?>
+
+

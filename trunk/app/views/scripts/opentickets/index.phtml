@@ -1,0 +1,33 @@
+<?include("app/views/scripts/header.phtml");?>
+
+<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+<ul class="subsection_tabs">
+    <li class="tab"><a class="active" href="#"><span>Open&nbsp;Tickets</span></a></li>
+    <li class="tab"><a href="<?=fullbase()?>/closedtickets"><span>Closed&nbsp;Tickets</span></a></li>
+</ul>
+<div class="tabcontent">
+<?
+
+echo "<span style='float: right; color: gray;'>Update Time</span>";
+foreach($this->tickets as $dest=>$tickets)
+{
+    echo "<h3>$dest</h3>";
+    foreach($tickets as $ticket) {
+        $id = $ticket->mrid;
+        $title = $ticket->mrtitle;
+        $url = base()."/viewer?id=$id";
+        $status = Footprint::parse($ticket->mrstatus);
+        $moddate = $ticket->mrupdatedate;
+
+        echo "<p>";
+        echo "<span style='float: right; color: gray;'>$moddate</span>";
+        echo "<a href='$url'>$id</a>$title ($status)";
+        echo "<p>";
+    }
+}
+?>
+</div>
+
+<?include("app/views/scripts/footer.phtml");?>
+
+

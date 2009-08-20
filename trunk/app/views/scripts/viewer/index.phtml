@@ -1,0 +1,203 @@
+<?include("app/views/scripts/header.phtml");?>
+
+<script type="text/javascript" src="<?=base()?>/lib/jquery/plugins/jquery.textarearesizer.js"></script>
+<style type="text/css">
+        div.grippie {
+                background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
+                border-color:#DDDDDD;
+                border-style:solid;
+                border-width:0pt 1px 1px;
+                cursor:s-resize;
+                height:9px;
+                overflow:hidden;
+        }
+        .resizable-textarea textarea {
+                display:block;
+                margin-bottom:0pt;
+                width:95%;
+                height: 20%;
+        }
+</style>
+
+<div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
+<?
+if($this->ticket_type == "Security") {
+    echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";
+}
+?>
+
+<script type="text/javascript">
+function gotoedit()
+{
+    $("#editbutton").attr("disabled", "disabled");
+    $("#editbutton").val("Loading...");
+    $("#information_table").load("<?=fullbase()?>/viewer/edit?id=<?=$this->ticket_id?>");
+}
+</script>
+
+<div id="information_table">
+    <b><?=$this->title?></b>
+    <table width="100%">
+    <tr>
+        <td colspan="4"><h3>Contact Information</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Full Name:</td><td><?=$this->submitter_name?></td>
+        <td></td><td></td>
+    </tr>
+    <?
+        if(user()->getPersonID() !== null) {
+            echo "<tr>";
+            echo "<td class=\"header\">Email:</td><td>".$this->submitter_email."</td>";
+            echo "<td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td>";
+            echo "</tr>";
+        }
+    ?>
+    <tr>
+        <td colspan="4"><h3>Routing Information</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+        <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
+    </tr>
+    <tr>
+        <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
+        <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
+    </tr>
+
+    <tr>
+        <td colspan="4"><h3>Ticket Detail</h3></td>
+    </tr>
+    <tr>
+        <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
+        <td rowspan="6" class="header">Assignees:</td><td rowspan="5">
+        <?
+        foreach($this->assignees as $team => $list) {
+            if(count($list) == 0) continue;
+            echo "<h4>$team</h4>";
+            echo "<p>";
+            foreach($list as $name) {
+                echo $name."<br/>";
+            }
+            echo "</p>";
+        }
+        ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="header">Priority:</td><td><?=$this->priority?></td>
+    </tr>
+
+    <tr>
+        <td class="header">Status:</td><td><?=$this->status?></td>
+    </tr>
+
+    <tr>
+        <td class="header">Next Action Deadline:</td><td class='<?$style = nadstyle($this->nad);if($style != "") echo "flag $style";?>'>Morning of <?=$this->nad?></td>
+    </tr>
+
+    <tr>
+        <td class="header">Next Action Item:</td><td><?=$this->next_action?></td>
+    </tr>
+
+    <tr>
+    <?if(user()->getPersonID() !== null) { ?>
+         <td class="header">CC:</td><td>
+            <?  foreach($this->cc as $cc) { echo $cc."<br/>"; } ?>
+        </td>
+    <?}?>
+    </tr>
+
+    <?
+    if(user()->allows("update")) {
+    ?>
+        <tr>
+        <td></td>
+        <td colspan="3">
+        <input type="button" id="editbutton" onclick="gotoedit();" value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;"/>
+        </td>
+        </tr>
+    <?}?>
+
+    </table>
+
+
+</div>
+<br/>
+
+<div id="updates" style="clear: both;">
+    <h3>Updates</h3>
+    <p>
+        <?
+        $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
+        ?>
+        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">Send Update Via Email</a>
+    </p>
+    <?
+    foreach($this->descs as $time=>$desc)
+    {
+        $by = $desc["by"];
+        $content = $desc["content"];
+        $type = $desc["type"];
+
+        if(user()->allows("view_meta")) {
+            $metapos = strpos($content, config()->metatag);
+            if($metapos !== FALSE) {
+                //has metainfo.. replace it with filtered versionme
+                $content = substr($content, 0, $metapos);
+            }
+        }
+
+        if($time > time() - 60*60*24) {
+            //show in "ago" format
+            $human_time = agoCalculation($time). " ago";
+        } else {
+            $human_time = date(config()->date_format_full, $time);
+        }
+
+        if($type == "history") {
+            echo "<div class='update_history'>";
+            $out = "<pre>$content</pre>";
+            echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
+            echo "</div>";
+        }
+        
+        if($type == "description") {
+            echo "<div class='update_description'>";
+            echo "<div class='header'>$human_time by <b>$by</b></div>";
+            $lines_raw = split("\n", $content);
+            $lines = array();
+            foreach($lines_raw as $line) {
+                $line = trim($line);
+                if(strpos($line, "&#62;") === 0) {
+                    $line = "<font color='#7F7E6F'>$line</font>";
+                }
+                $lines[] = $line;
+            }
+            $content = implode("\n", $lines);
+            if(count($lines) > 15) {
+                //display first 10 lines
+                $i = 0;
+                echo "<pre>";
+                for(;$i < 10; $i++) {
+                    echo $lines[$i]."\n";
+                }
+                echo "</pre>";
+                //and toggle the rest..
+                $out = "";
+                $out .= "<pre>";
+                for(;$i < count($lines);$i++) {
+                    $out .= $lines[$i]."\n";
+                }
+                $out .= "</pre>\n";
+                echo outputToggle("Show More", "", $out);
+            } else {
+                //display all at once.
+                echo "<pre>$content</pre>";
+            }
+            echo "</div>";
+        }
+    }
+    ?>
+</div>
+<?include("app/views/scripts/footer.phtml");?>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="robots" content="noarchive"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="<?=base()?>/images/tea.png" rel="icon" type="image/png">
+
+    <link rel="stylesheet" href="<?=base()?>/css/normal.css" type="text/css" media="screen"/>
+    <link rel="search" type="application/opensearchdescription+xml" href="<?=base()?>/opensearch/id" title="GOC Ticket (by ID)"/>
+    <link rel="stylesheet" href="<?=base()?>/lib/jquery/theme/ui.all.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="<?=base()?>/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="<?=base()?>/lib/jquery/jquery.ui.all.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="<?=base()?>/css/jquery.autocomplete.css" />
+    <script type="text/javascript" src="<?=base()?>/lib/jquery/plugins/jquery.autocomplete.min.js"></script>
+
+    <?
+    if(isset($this->page_title)) {
+        echo "<title>".$this->page_title."</title>";
+    } else {
+        echo "<title>".config()->app_name."</title>";
+    }
+    ?>
+
+    <!--[if lt IE 8]>
+<script src="<?=base()?>/lib/IE8.js" type="text/javascript"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="header">
+    <img id="logo" src="<?=base()?>/images/osg_logo.png" alt="myosg logo"/>
+    <h1><a href="<?=base()?>"><?=config()->app_name?></a></h1>
+    <h2>by Grid Operations Center</h2>
+</div>
+
+<?
+function submenutitle($id)
+{
+    switch($id) {
+    case "open":
+        return "Submit A Ticket";
+    case "view":
+        return "View Tickets";
+    case "admin":
+        return "Administration";
+    }
+}
+?>
+<div class="submenu" id="submenu_rsv">
+    <span id="submenu_open"><a href="<?=base()?>/open"><?=submenutitle("open")?></a></span>
+    <span id="submenu_view"><a href="<?=base()?>/navigator"><?=submenutitle("view")?></a></span>
+    <?if(user()->allows("admin")) {?>
+        <span id="submenu_admin"><a href="<?=base()?>/admin"><?=submenutitle("admin")?></a></span>
+    <?}?>
+    <script type="text/javascript">
+        $("#submenu_<?=$this->submenu_selected?>").addClass("selected");
+    </script>
+</div>
+
+<div id="content">
+
+<?include("app/views/scripts/search.phtml");?>
+
+<?
+if(config()->simulate) {
+    echo "<p class=\"warning\">Simulation Mode - No email / ticket will be actually created</p>";
+}
+
+if(config()->debug) {
+    echo "<p class=\"warning\">Running in debug mode</p>";
+}
+
+if(config()->role_prefix == "itbticket_") {
+    echo "<p class=\"errors\">This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.grid.iu.edu/goc\">go here</a></p>";
+}
+
+

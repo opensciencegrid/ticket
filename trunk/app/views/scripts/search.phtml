@@ -1,0 +1,46 @@
+<div class="searchbox">
+        <form action="http://www.google.com/cse" id="cse-search-box">
+          <div>
+            <input type="hidden" name="cx" value="016752695275174109936:9u1k_fz_bag" />
+
+            <input type="hidden" name="ie" value="UTF-8" />
+            <input type="text" name="q" size="30"/>
+            <input type="submit" name="sa" value="Search" style="min-width: 75px;"/>
+          </div>
+        </form>
+        <script type="text/javascript">
+(function() {
+var f = document.getElementById('cse-search-box');
+if (!f) {
+f = document.getElementById('searchbox_demo');
+}
+if (f && f.q) {
+var q = f.q;
+var n = navigator;
+var l = location;
+if (n.platform == 'Win32') {
+q.style.cssText = 'border: 1px solid #7e9db9; padding: 2px;';
+}
+var b = function() {
+if (q.value == '') {
+q.style.background = '#FFFFFF url(<?=fullbase()?>/images/google_custom_search_watermark.gif) left no-repeat';
+}
+};
+var f = function() {
+q.style.background = '#ffffff';
+};
+q.onfocus = f;
+q.onblur = b;
+if (!/[&?]q=[^&]/.test(l.search)) {
+b();
+}
+}
+})();
+        </script>
+        <div style="margin-top: 2px;">
+            Open By Ticket ID: 
+            <input type="text" id="ticketid" style="width: 75px;padding: 1px;"/>
+            <input type="button" value="Open" style="min-width: 75px;" onclick="document.location='<?=fullbase()?>/viewer?id='+$('#ticketid').val();"/>
+        </div>
+</div>
+

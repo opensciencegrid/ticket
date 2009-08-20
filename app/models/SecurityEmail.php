@@ -73,11 +73,13 @@ class SecurityEmail
 
     public function send()
     {
-        $header = "From: $this->from\r\n";
         if($this->sign) {
-            signedmail($this->to, $this->from, $this->subject, $this->body);
+            //TODO - need to put bcc in BCC section instead of To
+            signedmail($this->to, $this->from, $this->subject, $this->body, "Bcc: ".$this->bcc."\r\n");
             slog("[submit] Notification email(signed) sent with following content --------------------------");
         } else {
+            $header = "From: $this->from\r\n";
+            $header .= "Bcc: $this->bcc\r\n";
             if(!mail($this->to, $this->subject, $this->body, $header)) {
                 elog("Failed to send email");
                 throw new exception("Failed to send unsigned email");

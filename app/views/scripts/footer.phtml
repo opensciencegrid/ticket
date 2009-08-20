@@ -2,12 +2,25 @@
 
 <div id="footer">
 <?
-echo "<p style=\"float: right\">".config()->app_name." Version ".config()->version;
+echo "<div style=\"float: right; text-align: right\">";
+
+echo "<p>".config()->app_name." Version ".config()->version;
 if(config()->debug) {
     exec("svn info | grep \"Revision:\" |  awk '{print $2}'", $out);
     echo " (Rev. ".$out[0].")";
 }
 echo "</p>";
+
+echo "<p>Logged in as <b>";
+if(user()->isGuest()) {
+    echo "Guest";
+} else {
+    echo user()->getDN();
+}
+echo "</b></p>";
+
+
+echo "</div>";
 ?>
 <p><a href="https://myosg.grid.iu.edu">MyOSG</a> | GOCTicket | <a href="https://oim.grid.iu.edu">OIM</a> | <a href="https://twiki.grid.iu.edu">TWiki</a> | Report bugs at <a href="http://code.google.com/p/osggoc/issues/entry">GOC Bug Tracker</a></p>
 <p><img align="left" src="<?=base()?>/images/tea.png"/>&nbsp;<?=config()->copyright?></p>

@@ -200,33 +200,6 @@ class Footprint
         }
     }
 
-/*
-    public function setDestinationVOFromSC($sc_id)
-    {
-        $sc_model = new SC;
-        $sc = $sc_model->get($sc_id);
-        $scname = $sc->footprints_id;
-
-        //lookup VOs associated with this sc
-        $vomodel = new VO();
-        $vos = $vomodel->getfromsc($sc_id);
-        if($vos === false or count($vos) == 0) {
-            $this->addMeta("No VOs are associated with Support Center=$scname where this resource belongs.\n");
-        } else {
-            $this->addMeta("Following VOs are associated with Support Center=$scname where this resource belongs.\n");
-            foreach($vos as $vo) {
-                $this->addMeta("\t".$vo->short_name."\n");
-            }
-            $fpvo = $vos[0]->footprints_id;
-            $oimvo = $vos[0]->short_name;
-            $this->addMeta("Selecting $oimvo for Destination VO - just the first one in the list..\n");
-            $this->setDestinationVO($fpvo);
-        }
-
-        return $scname;
-    }
-*/
-
     //this is for resource
     public function addPrimaryAdminContact($resource_id)
     {
@@ -236,7 +209,7 @@ class Footprint
         $prac_model = new PrimaryResourceAdminContact();
         $prac = $prac_model->fetch($resource_id);
         if($prac === false) {
-            $footprint->addMeta("Primary Admin for ".$resource_name." couldn't be found in the OIM");
+            $this->addMeta("Primary Admin for ".$resource_name." couldn't be found in the OIM");
         } else {
             $this->addCC($prac->primary_email);
             $this->addMeta("Primary Admin for ".$resource_name." is ".$prac->name." and has been CC'd.\n");
@@ -253,7 +226,7 @@ class Footprint
         $prac_model = new PrimaryVOAdminContact();
         $prac = $prac_model->fetch($vo_id);
         if($prac === false) {
-            $footprint->addMeta("Primary Admin for ".$vo_name." VO couldn't be found in the OIM");
+            $this->addMeta("Primary Admin for ".$vo_name." VO couldn't be found in the OIM");
         } else {
             $this->addCC($prac->primary_email);
             $this->addMeta("Primary Admin for ".$vo_name." VO is ".$prac->name." and has been CC'd.\n");

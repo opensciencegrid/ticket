@@ -11,7 +11,11 @@
     <?=$this->element->vo?>
     <br/>
 
+</dl>
+    <dl id="sponsor_holder">
     <?=$this->element->req_sponsor?>
+    </dl>
+<dl>
     <?=$this->element->req_name?>
     <?=$this->element->req_email?>
     <?=$this->element->req_phone?>
@@ -21,3 +25,19 @@
     <?=$this->element->submit_button?>
 
 </form>
+
+<script type="text/javascript">
+showhide_sponsor();
+function showhide_sponsor()
+{
+    var req_type = $("#req_type").val();
+    if(req_type == "personal") {
+        $("#sponsor_holder").show();
+    } else {
+        $("#sponsor_holder").hide();
+    }
+}
+$("#req_type").change(function() {
+    showhide_sponsor();
+});
+</script>

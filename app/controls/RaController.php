@@ -31,21 +31,28 @@ class RaController extends BaseController
         }
 
         $form = $this->getForm();
+
+        if($_REQUEST["req_type"] == "host") {
+            $form->getElement("req_sponsor")->setRequired(false);
+        }
+
         if($form->isValid($_POST)) {
-            //validate sponsor (just in case)
-            $sp_name = $form->getValue('req_sponsor');
-            $sp_email = null;
-            foreach($this->sponsors as $sponsor) {
-                $name = trim($sponsor->name);
-                if($name == $sp_name) {
-                    $sp_email = $sponsor->primary_email;
-                    break;
+            //validate sponsor for personal cert request
+            if($_REQUEST["req_type"] == "personal") {
+                $sp_name = $form->getValue('req_sponsor');
+                $sp_email = null;
+                foreach($this->sponsors as $sponsor) {
+                    $name = trim($sponsor->name);
+                    if($name == $sp_name) {
+                        $sp_email = $sponsor->primary_email;
+                        break;
+                    }
                 }
-            }
-            if($sp_email === null) {
-                dlog("wierd... (maybe user is tinkering with the form?)");
-                $this->render("failed", null, true);
-                return;
+                if($sp_email === null) {
+                    elog("wierd... (maybe user is tinkering with the form?)");
+                    $this->render("failed", null, true);
+                    return;
+                }
             }
 
             //generate ra email content
@@ -59,8 +66,15 @@ class RaController extends BaseController
             $ra->setPhone($form->getvalue('req_phone'));
             $ra->setVO($form->getvalue('vo'));
             $ra->setDN($form->getvalue('req_dn'));
-            $ra->setSponsorName($sp_name);
-            $ra->setSponsorEmail($sp_email);
+
+            if($_REQUEST["req_type"] == "personal") {
+                $ra->setSponsorName($sp_name);
+                $ra->setSponsorEmail($sp_email);
+            } else {
+                $ra->setSponsorName($form->getValue("req_name"));
+                $ra->setSponsorEmail($form->getValue("req_email"));
+            }
+
             $ra->setID($form->getvalue('req_id'));
 
             $email_content = $ra->getBody();
@@ -72,13 +86,13 @@ class RaController extends BaseController
             $footprint = $this->initSubmit($form);
             $footprint->setTitle("FYI: Certificate Request Email for ".$form->getValue('req_name'));
             $description = "Following Email has been sent.\n";
-            $description .= "[Recipient]\n".$email_recipient."\n";
-            $description .= "[Header]\n".$email_header."\n";
+            $description .= "[TO]\n".$email_recipient."\n";
+            $description .= "[SMTP Header]\n".$email_header."\n";
             $description .= "[Subject]\n".$email_subject."\n";
             $description .= "[Content]\n".$email_content."\n";
             $footprint->addDescription($description);
 
-            try 
+            try
             {
                 $this->view->mrid = $footprint->submit();
                 if(!config()->simulate) {
@@ -198,7 +212,12 @@ class RaEmail
 
     public function getBody()
     {
-        $template = $this->getTemplate();
+        if($this->type == "host") {
+            $template = $this->getTemplateHost();
+        } else {
+            $template = $this->getTemplatePersonal();
+        }
+
         $template = str_replace("__SPONSOR_NAME__", $this->sponsor_name, $template);
 
         $template = str_replace("__NAME__", $this->name, $template);
@@ -219,7 +238,40 @@ class RaEmail
         return $template;
     }
 
-    private function getTemplate()
+    private function getTemplateHost()
+    {
+        $note = "Please verify the authenticity of the request by sending me a digitally-signed email or phone me at __FROM_PHONE__ to let me know you have requested this certificate.";
+
+        $template = "Hello __NAME__,
+
+You have requested a __TYPE__ from the
+DOEGrids Certificate Authority with the following information:
+
+Email: __EMAIL__
+Phone: __PHONE__
+
+The subject name of the certificate request is
+
+__DN__
+
+Please note the following acceptable forms of secure communication:
+
+- a face-to-face meeting
+- a telephone call if you have previously met the person
+ face-to-face and are capable of recognizing his or her voice
+- an email digitally signed using a DOEGrids certificate
+
+Note that general email is not acceptable as a form of secure
+communication.
+
+$note
+
+__FROM_NAME__ <__FROM_EMAIL__> for the OSG Operations Workgroup
+";
+       return $template;
+    }
+
+    private function getTemplatePersonal()
     {
 
         $instruction = "- You need to have a secure communication with the requestor and

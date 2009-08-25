@@ -368,11 +368,13 @@ class Footprint
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
 
-            //ticket creation will get new id
+            //for new ticket..
             if($this->id === null) {
-                $this->id = $newid;
-                //send sms
-                $this->send_notification($params["assignees"], $newid);
+                //if the ticket didn't come from other ticketing system, send SMS
+                //(We don't want GGUS to send us critical ticket which send us alarm in the middle of the night)
+                if(trim($this->project_fields["Originating__bTicket__bNumber"]) == "") {
+                    $this->send_notification($params["assignees"], $this->id);
+                }
             }
         }
 

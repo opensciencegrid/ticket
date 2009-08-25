@@ -3,17 +3,17 @@ class PrimaryAddress
 {
     public function get_resource_security()
     {
-        $sql = "SELECT * from contact where id in (select contact_id from resource_contact where contact_type_id = 2 and contact_rank_id = 1) and active = 1 and disable = 0 ";
+        $sql = "SELECT * from contact where id in (select contact_id from resource_contact where contact_type_id = 2 and contact_rank_id = 1) and disable = 0 ";
         return db2()->fetchAll($sql);
     }
     public function get_vo_security()
     {
-        $sql = "SELECT * from contact where id in (select contact_id from vo_contact where contact_type_id = 2 and contact_rank_id = 1) and active = 1 and disable = 0 ";
+        $sql = "SELECT * from contact where id in (select contact_id from vo_contact where contact_type_id = 2 and contact_rank_id = 1) and disable = 0 ";
         return db2()->fetchAll($sql);
     }
     public function get_sc_security()
     {
-        $sql = "SELECT * from contact where id in (select contact_id from sc_contact where contact_type_id = 2 and contact_rank_id = 1) and active = 1 and disable = 0 ";
+        $sql = "SELECT * from contact where id in (select contact_id from sc_contact where contact_type_id = 2 and contact_rank_id = 1) and disable = 0 ";
         return db2()->fetchAll($sql);
     }
     public function get_sc()

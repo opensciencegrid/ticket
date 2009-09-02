@@ -30,7 +30,7 @@ class RsvController extends BaseController
             $resource_name = $resource_model->fetchName($resource_id); 
 
             //set description destination vo, assignee
-            $footprint->addMeta("Resource where user is having this issue: ".$resource_name."($resource_id)\n");
+            $footprint->addMeta("Resource on which user is having this issue: ".$resource_name."($resource_id)\n");
             $footprint->setTitle($form->getValue("title"));
 
             $template = $form->getValue('detail');
@@ -46,7 +46,7 @@ class RsvController extends BaseController
             $sc_model = new SC;
             $sc = $sc_model->get($sc_id);
             $scname = $sc->footprints_id;
-            $footprint->addMeta("This resource is supported at SC:$scname.\n");
+            $footprint->addMeta("This resource is supported by support center: $scname.\n");
 
             if($footprint->isValidFPSC($scname)) {
                 $footprint->addAssignee($scname);
@@ -66,7 +66,7 @@ class RsvController extends BaseController
                 $this->render("failed", null, true);
             }
         } else {
-            $this->view->errors = "Please correct following issues.";
+            $this->view->errors = "Please correct the following issues.";
             $this->view->form = $form;
             $this->render("index");
         }
@@ -86,7 +86,7 @@ class RsvController extends BaseController
         $form = $this->initForm("rsv", false); //false is for no-yourinfo
 
         $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("I am having RSV related issue in following resource");
+        $element->setLabel("I am having RSV related issues on the following resource");
         $element->setRequired(true);
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();

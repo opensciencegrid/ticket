@@ -33,7 +33,7 @@ function settitle()
 {
     var id = this.selectedIndex;
     var rname = this.options[id].text;
-    $("#title").attr("value", "Request for OSG membership at "+rname);
+    $("#title").attr("value", "Request for VO membership to  "+rname);
     $("#title_holder").show();
 }
 showhide_volist();
@@ -44,7 +44,7 @@ $("#vo_id_requested").change(settitle);
 $("#knowvo").change(function() {
     var id = this.selectedIndex;
     if(id == 0) {
-        $("#title").attr("value", "Request for OSG membership");
+        $("#title").attr("value", "Request for VO membership");
     } 
 });
 </script>

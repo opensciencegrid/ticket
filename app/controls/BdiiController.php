@@ -22,13 +22,13 @@ class BdiiController extends BaseController
             $footprint->setTitle($form->getValue('title'));
 
             $bdiiserver = $form->getValue("bdiiserver");
-            $footprint->addMeta("Which BDII instance: ".$bdiiserver."\n");
+            $footprint->addMeta("Select BDII Server Instance: ".$bdiiserver."\n");
 
             $down = $form->getValue("down");
-            $footprint->addMeta("Is BDII down?: ".$down."\n");
+            $footprint->addMeta("Is the BDII completely down?: ".$down."\n");
 
             if($down == "true" && $bdiiserver == "is") {
-                $footprint->addMeta("Opening ticket in CRITICAL priority\n");
+                $footprint->addMeta("Opening ticket with CRITICAL priority\n");
                 $footprint->setPriority(1); //set it to critical;
                 $footprint->setTicketType("Unscheduled__bOutage");
             }
@@ -49,7 +49,7 @@ class BdiiController extends BaseController
                 $this->render("failed", null, true);
             }
         } else {
-            $this->view->errors = "Please correct following issues.";
+            $this->view->errors = "Please correct the following issues.";
             $this->view->form = $form;
             $this->render("index");
         }

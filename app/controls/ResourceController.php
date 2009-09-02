@@ -31,20 +31,20 @@ class ResourceController extends BaseController
             $resource_name = $resource_model->fetchName($resource_id);
 
             //set description destination vo, assignee
-            $footprint->addMeta("Resource where user is having this issue: ".$resource_name."($resource_id)\n");
+            $footprint->addMeta("Resource on which user is having this issue: ".$resource_name."($resource_id)\n");
             $footprint->setTitle($form->getValue('title'));
 
             $admin = $_REQUEST["admin"];
             if($admin) {
                 //this is their own resource - maybe installation issue..
-                $footprint->addMeta("User is the admin for this resource, and this is an installation issue.\n");
+                $footprint->addMeta("User is the administator for this resource.\n");
                 $footprint->setDestinationVO("MIS");
             } else {
                 $footprint->setDestinationVOFromResourceID($resource_id);
 
                 if($resource === false) {
                     $scname = "OSG-GOC";
-                    $footprint->addMeta("Couldn't find the SC associated with this resource. Please see finderror page for more detail.");
+                    $footprint->addMeta("Couldn't find the support center that supports this resource. Please see finderror page for more detail.");
                 } else {
                     //lookup SC name form sc_id
                     $sc_model = new SC;
@@ -69,7 +69,7 @@ class ResourceController extends BaseController
                 $this->render("failed", null, true);
             }
         } else {
-            $this->view->errors = "Please correct following issues.";
+            $this->view->errors = "Please correct the following issues.";
             $this->view->form = $form;
             $this->render("index");
         }
@@ -90,7 +90,7 @@ class ResourceController extends BaseController
         $form = $this->initForm("resource");
 
         $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("I am having this issue in following resource");
+        $element->setLabel("I am having this issue on the following resource");
         $element->setRequired(true);
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();
@@ -123,7 +123,7 @@ class ResourceController extends BaseController
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Checkbox('admin');
-        $element->setLabel("Check here if you are the admin for this resource (this will prevent the ticket from getting routed back to you)");
+        $element->setLabel("Check here if you are the admin for this resource (this will prevent the ticket from getting routed back to you!)");
         $form->addElement($element);
 
         $e = new Zend_Form_Element_Text('title');

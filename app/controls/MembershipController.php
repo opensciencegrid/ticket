@@ -44,8 +44,8 @@ class MembershipController extends BaseController
                 $sc = $sc_model->get($info->sc_id);
                 $scname = $sc->footprints_id;
 
-                $footprint->addMeta("Submitter is requesting a membership at VO:".$info->footprints_id."\n");
-                $footprint->addMeta("This VO is supported at SC:$scname\n");
+                $footprint->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
+                $footprint->addMeta("This VO is supported by support center: $scname\n");
 
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);
@@ -55,7 +55,7 @@ class MembershipController extends BaseController
                 //$footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
                 $title .= $info->name;
             } else {
-                $footprint->addMeta("Submitter doesn't know the VO to request membership to.\n");
+                $footprint->addMeta("Submitter doesn't know the VO they would like to request membership to.\n");
                 $title .= "unknown vo";
             }
             $footprint->setTitle($form->getValue('title'));
@@ -79,7 +79,7 @@ class MembershipController extends BaseController
             }
 
         } else {
-            $this->view->errors = "Please correct following issues.";
+            $this->view->errors = "Please correct the following issues.";
             $this->view->form = $form;
             $this->render("index");
         }
@@ -107,12 +107,12 @@ class MembershipController extends BaseController
 
         $element = new Zend_Form_Element_Select('knowvo');
         $element->setLabel("Do you know which VO you are requesting your membership to?");
-        $element->addMultiOption("false", "I don't know / not sure");
+        $element->addMultiOption("false", "I don't know / Not Sure");
         $element->addMultiOption("true", "Yes");
         $form->addElement($element);
 
         $vo = new Zend_Form_Element_Select('vo_id_requested');
-        $vo->setLabel("VO where you need an access");
+        $vo->setLabel("VO to which you need an access");
         $vo->addMultiOption(null, "(Please Select)");
         $vo_model = new VO;
         $vos = $vo_model->fetchAll();

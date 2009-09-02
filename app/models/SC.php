@@ -9,8 +9,8 @@ class SC
     public function fetchAll()
     {
         $sql = $this->sql()." order by name";
-        $vos = db2()->fetchAll($sql);
-        return $vos;
+        $scs = db2()->fetchAll($sql);
+        return $scs;
     }
     public function get($scid) 
     {

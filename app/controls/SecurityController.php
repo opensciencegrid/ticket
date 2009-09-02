@@ -22,7 +22,7 @@ class SecurityController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
 
             if($form->getValue('critical_1') == 1 and $form->getValue('critical_2') == 1) {
-                $footprint->addMeta("User has checked both CRITICAL criterias opening ticket as CRITICAL");
+                $footprint->addMeta("User has checked both CRITICAL criterias - opening ticket with  CRITICAL priority");
                 $footprint->setPriority(1); //set it to critical
             } else {
                 $footprint->addMeta("Opening ticket with normal priority.");
@@ -44,7 +44,7 @@ class SecurityController extends BaseController
                 $this->render("failed", null, true);
             }
         } else {
-            $this->view->errors = "Please correct following issues.";
+            $this->view->errors = "Please correct the following issues.";
             $this->view->form = $form;
             $this->render("index");
         }

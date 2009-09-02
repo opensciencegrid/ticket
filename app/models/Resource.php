@@ -6,22 +6,22 @@ class Resource
     {
         $grid_type_where = "";
         if($grid_type !== null) {
-            $resource_groups = "select id from resource_group RG where osg_grid_type_id = $grid_type";
-            $resource_ids = "select id from resource RRG where resource_group_id IN ($resource_groups)";
-            $grid_type_where = "and id IN ($resource_ids)";
+            $resource_groups = "SELECT id FROM resource_group RG WHERE osg_grid_type_id = $grid_type AND disable IS FALSE";
+            $resource_ids = "SELECT id FROM resource RRG WHERE resource_group_id IN ($resource_groups) AND disable IS FALSE";
+            $grid_type_where = "AND id IN ($resource_ids)";
         }
 
-        $sql = "select *, r.id as resource_id from resource r where active = 1 and disable = 0 $grid_type_where order by name";
+        $sql = "SELECT *, r.id as resource_id FROM resource r WHERE active = 1 and disable = 0 $grid_type_where order by name";
         return db2()->fetchAll($sql);
     }
     public function fetchName($resource_id)
     {
-        $sql = "select name from resource where active = 1 and disable = 0 and id = $resource_id";
+        $sql = "SELECT name FROM resource WHERE active = 1 and disable IS FALSE and id = $resource_id";
         return db2()->fetchOne($sql);
     }
     public function fetchID($resource_name)
     {
-        $sql = "select id from resource where name = '$resource_name'";
+        $sql = "SELECT id FROM resource WHERE name = '$resource_name'";
         return db2()->fetchOne($sql);
     }
     public function getPrimaryOwnerVO($resource_id) 
@@ -31,7 +31,8 @@ MAX(v.percent) AS ownership_percent
 FROM vo_resource_ownership v
   RIGHT JOIN resource R ON R.id=v.resource_id
   LEFT JOIN vo vo ON v.vo_id=vo.id
-where R.id = $resource_id
+WHERE R.id = $resource_id
+ AND vo.disable IS FALSE
 GROUP BY R.name";
         return db2()->fetchRow($sql);
     }

@@ -277,7 +277,7 @@ class ViewerController extends Zend_Controller_Action
                 $time = strtotime($fields[0].$fields[1]);// + 3600;
                 $by = $fields[2];
                 $action = $fields[3];
-                $action = str_replace(";", "\n", $action);
+                //$action = str_replace(";", "\n", $action);
 
                 if(isset($descs[$time])) {
                     $descs[$time]["content"].= "\n".Footprint::parse($action);

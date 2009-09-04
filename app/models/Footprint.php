@@ -76,7 +76,6 @@ class Footprint
     static public function GetStatusList()
     {
         return array(
-            "Open", 
             "Engineering",
             "Customer", 
             "Network Administration",
@@ -345,7 +344,7 @@ class Footprint
             $params["status"] = $this->status;
         }
         if($this->b_desc) {
-            $params["description"] = htmlentities($desc);
+            $params["description"] = $desc;
         }
         if($this->b_contact) {
             $params["abfields"] = $this->ab_fields;

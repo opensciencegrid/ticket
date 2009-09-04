@@ -146,7 +146,11 @@ RSS: http://www.grid.iu.edu/news";
         $desc = preg_replace($sig, "", $desc);
 
         //remove meta info
-        $sig = "/\n\".config()->metatag."(.|\n)*/";
+        $meta = config()->metatag;
+        $meta = str_replace("[", "\[", $meta);
+        $meta = str_replace("]", "\]", $meta);
+        $sig = "/\n$meta(.|\n)*/";
+        slog($sig);
         $desc = preg_replace($sig, "", $desc);
 
         //remove GGUS Info

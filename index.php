@@ -37,6 +37,7 @@ try {
     ini_set('log_errors', 1);
     ini_set('display_startup_errors', 1);
     ini_set('default_charset', 'UTF-8');
+    ini_set('default_socket_timeout', 120);
     error_reporting(E_ALL | E_STRICT);
     date_default_timezone_set("UTC");
 

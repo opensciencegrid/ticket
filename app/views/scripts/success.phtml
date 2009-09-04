@@ -2,7 +2,6 @@
 <div class="bread"><a href="<?=base()?>">Home</a> &gt; Success!</div>
 <p>Your ticket has been submitted successfully.</p>
 <p>Please sit back and relax as we take care of your request.</p>
-<br/><br/>
 <?
 if(!config()->simulate) {?>
     <p>Your Ticket ID is <a href="<?=base()?>/viewer?id=<?=$this->mrid?>"><?=$this->mrid?></a></p>

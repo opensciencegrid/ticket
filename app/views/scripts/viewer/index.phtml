@@ -140,10 +140,11 @@ function gotoedit()
         $content = $desc["content"];
         $type = $desc["type"];
 
-        if(user()->allows("view_meta")) {
+        //hide meta information if user doesn't have metatag access
+        if(!user()->allows("view_meta")) {
             $metapos = strpos($content, config()->metatag);
             if($metapos !== FALSE) {
-                //has metainfo.. replace it with filtered versionme
+                //has metainfo.. hide it
                 $content = substr($content, 0, $metapos);
             }
         }
@@ -157,8 +158,8 @@ function gotoedit()
 
         if($type == "history") {
             echo "<div class='update_history'>";
-            $out = "<pre>$content</pre>";
-            echo outputToggle("Internal Activities on $human_time", "Hide Internal Activities on $human_time", $out);
+            $out = "<pre>".Footprint::parse($content)."</pre>";
+            echo outputToggle("Internal Activities ($human_time)", "Internal Activities ($human_time)", $out);
             echo "</div>";
         }
         

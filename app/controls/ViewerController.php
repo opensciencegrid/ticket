@@ -256,7 +256,7 @@ class ViewerController extends Zend_Controller_Action
             $date_str = explode("(GMT", $date_str);
             $date_str = $date_str[0];
 
-            $time = strtotime($date_str) + 3600;
+            $time = strtotime($date_str);// + 3600;
             $by = str_replace(":", "", $info_a[1]);
 
             if(isset($descs[$time])) {
@@ -266,6 +266,7 @@ class ViewerController extends Zend_Controller_Action
             }
         }
 
+        //only show internal activity for non-guest users (since it contains email address)
         if(user()->getPersonID() !== null) {
             //history
             $history = split("\n", $detail->history);
@@ -273,13 +274,13 @@ class ViewerController extends Zend_Controller_Action
                 $fields = split("____________history", $hist);
 
                 //parse out fields
-                $time = strtotime($fields[0].$fields[1]) + 3600;
+                $time = strtotime($fields[0].$fields[1]);// + 3600;
                 $by = $fields[2];
                 $action = $fields[3];
                 $action = str_replace(";", "\n", $action);
 
                 if(isset($descs[$time])) {
-                    $descs[$time]["content"].= "\n".$action;
+                    $descs[$time]["content"].= "\n".Footprint::parse($action);
                 } else {
                     $descs[$time] = array("type"=>"history", "by"=>$by, "content"=>$action); 
                 }

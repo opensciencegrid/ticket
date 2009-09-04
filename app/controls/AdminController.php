@@ -146,7 +146,7 @@ RSS: http://www.grid.iu.edu/news";
         $desc = preg_replace($sig, "", $desc);
 
         //remove meta info
-        $sig = "/\n\[META Information for OSG GOC Support Staff\](.|\n)*/";
+        $sig = "/\n\".config()->metatag."(.|\n)*/";
         $desc = preg_replace($sig, "", $desc);
 
         //remove GGUS Info

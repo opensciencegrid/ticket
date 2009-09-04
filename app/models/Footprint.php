@@ -422,6 +422,8 @@ class Footprint
         $str = str_replace("__u", "-", $str);
         $str = str_replace("__b", " ", $str);
         $str = str_replace("__f", "/", $str);
+        $str = str_replace("__P", "(", $str);
+        $str = str_replace("__p", ")", $str);
         return $str;
     }
     static public function unparse($str)
@@ -429,6 +431,8 @@ class Footprint
         $str = str_replace("-", "__u", $str);
         $str = str_replace(" ", "__b", $str);
         $str = str_replace("/", "__f", $str);
+        $str = str_replace("(", "__P", $str);
+        $str = str_replace(")", "__p", $str);
         return $str;
     }
     static public function preserve_whitespace($str)

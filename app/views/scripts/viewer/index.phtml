@@ -1,6 +1,6 @@
 <?include("app/views/scripts/header.phtml");?>
 
-<script type="text/javascript" src="<?=base()?>/lib/jquery/plugins/jquery.textarearesizer.js"></script>
+<script type="text/javascript" src="<?=base()?>/lib/jquery-1.3.2/plugins/jquery.textarearesizer.js"></script>
 <style type="text/css">
         div.grippie {
                 background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
@@ -42,14 +42,14 @@ function gotoedit()
         <td colspan="4"><h3>Contact Information</h3></td>
     </tr>
     <tr>
-        <td class="header">Full Name:</td><td><?=$this->submitter_name?></td>
+        <td class="header">Full Name</td><td><?=$this->submitter_name?></td>
         <td></td><td></td>
     </tr>
     <?
         if(user()->getPersonID() !== null) {
             echo "<tr>";
-            echo "<td class=\"header\">Email:</td><td>".$this->submitter_email."</td>";
-            echo "<td class=\"header\">Phone:</td><td>".$this->submitter_phone."</td>";
+            echo "<td class=\"header\">Email</td><td>".$this->submitter_email."</td>";
+            echo "<td class=\"header\">Phone</td><td>".$this->submitter_phone."</td>";
             echo "</tr>";
         }
     ?>
@@ -57,11 +57,11 @@ function gotoedit()
         <td colspan="4"><h3>Routing Information</h3></td>
     </tr>
     <tr>
-        <td class="header">Originating VO:</td><td><?=$this->submitter_vo?></td>
+        <td class="header">Originating VO</td><td><?=$this->submitter_vo?></td>
         <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
     </tr>
     <tr>
-        <td class="header">Destination VO:</td><td><?=$this->destination_vo?></td>
+        <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
         <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
     </tr>
 
@@ -69,8 +69,8 @@ function gotoedit()
         <td colspan="4"><h3>Ticket Detail</h3></td>
     </tr>
     <tr>
-        <td class="header">Ticket Type:</td><td><?=$this->ticket_type?></td>
-        <td rowspan="6" class="header">Assignees:</td><td rowspan="5">
+        <td class="header">Ticket Type</td><td><?=$this->ticket_type?></td>
+        <td rowspan="6" class="header">Assignees</td><td rowspan="5">
         <?
         foreach($this->assignees as $team => $list) {
             if(count($list) == 0) continue;
@@ -85,24 +85,24 @@ function gotoedit()
         </td>
     </tr>
     <tr>
-        <td class="header">Priority:</td><td><?=$this->priority?></td>
+        <td class="header">Priority</td><td><?=$this->priority?></td>
     </tr>
 
     <tr>
-        <td class="header">Status:</td><td><?=$this->status?></td>
+        <td class="header">Status</td><td><?=$this->status?></td>
     </tr>
 
     <tr>
-        <td class="header">Next Action Deadline:</td><td class='<?$style = nadstyle($this->nad);if($style != "") echo "flag $style";?>'>Morning of <?=$this->nad?></td>
+        <td class="header">Next Action Deadline</td><td class='<?$style = nadstyle($this->nad);if($style != "") echo "flag $style";?>'>Morning of <?=$this->nad?></td>
     </tr>
 
     <tr>
-        <td class="header">Next Action Item:</td><td><?=$this->next_action?></td>
+        <td class="header">Next Action Item</td><td><?=$this->next_action?></td>
     </tr>
 
     <tr>
     <?if(user()->getPersonID() !== null) { ?>
-         <td class="header">CC:</td><td>
+         <td class="header">CC</td><td>
             <?  foreach($this->cc as $cc) { echo $cc."<br/>"; } ?>
         </td>
     <?}?>

@@ -88,7 +88,7 @@ class VoController extends BaseController
         $form->addElement($detail);
 
         $element = new Zend_Form_Element_Submit('submit_button');
-        $element->setLabel("Submit");
+        $element->setLabel("   Submit   ");
         $form->addElement($element);
 
         return $form;

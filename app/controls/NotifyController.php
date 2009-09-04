@@ -196,7 +196,7 @@ class NotifyController extends BaseController
         $form->addElement($e);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Submit");
+        $submit->setLabel("   Submit   ");
         $form->addElement($submit);
 
         return $form;

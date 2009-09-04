@@ -39,7 +39,6 @@ class ViewerController extends Zend_Controller_Action
             }
         }
         
-
         //submitter 
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;
         $this->view->submitter_fname = $detail->First__bName;
@@ -250,8 +249,13 @@ class ViewerController extends Zend_Controller_Action
             $desc = strstr($desc, "\n");
 
             //parse out time and by..
-            $info_a = split(" by ", $info);
+            $info_a = explode(" by ", $info);
             $date_str = str_replace(" at ", " ", $info_a[0]);
+
+            //FP9 add some time zone description - remove it since php can't parse it out
+            $date_str = explode("(GMT", $date_str);
+            $date_str = $date_str[0];
+
             $time = strtotime($date_str) + 3600;
             $by = str_replace(":", "", $info_a[1]);
 

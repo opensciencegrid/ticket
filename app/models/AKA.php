@@ -1,5 +1,6 @@
 <?
 
+//also known as
 class AKA
 {
     public function __construct()

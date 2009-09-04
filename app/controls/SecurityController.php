@@ -84,7 +84,7 @@ class SecurityController extends BaseController
         $form->addElement($captcha);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Submit");
+        $submit->setLabel("   Submit   ");
         $form->addElement($submit);
 
         return $form;

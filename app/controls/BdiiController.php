@@ -88,7 +88,7 @@ class BdiiController extends BaseController
         $form->addElement($detail);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Submit");
+        $submit->setLabel("   Submit   ");
         $form->addElement($submit);
 
         return $form;

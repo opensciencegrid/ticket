@@ -9,7 +9,7 @@
 
 <br/>
 <dt>
-<label class="required" for="title">Select following check boxes to open this ticket in CRITICAL priority</label>
+<label class="required" for="title">Select following check boxes to open this ticket in CRITICAL priority<br/><br/></label>
 </dt>
 <?
 function checked($e)
@@ -17,13 +17,13 @@ function checked($e)
     if($e->checked) return "checked=checked";
 }
 ?>
-<p>
+<p class="indent">
     <input type="hidden" name="critical_1" value="0">
     <input type="checkbox" name="critical_1" id="critical_1" value="1" <?=checked($this->element->critical_1)?>>
 This issue needs immediate, undivided attention from GOC staff until resolved.<br/>
 </p>
 
-<p>
+<p class="indent">
     <input type="hidden" name="critical_2" value="0">
     <input type="checkbox" name="critical_2" id="critical_2" value="1" <?=checked($this->element->critical_2)?>>
 Contact will be available immediately for contact by GOC staff for details regarding the reported problem.<br/>

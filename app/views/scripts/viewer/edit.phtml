@@ -75,7 +75,7 @@
         </td>
 
 
-        <td rowspan="6" colspan="2"><b>Assignees:</b><br/>
+        <td rowspan="6" colspan="2"><span class="header">Assignees</span><br/>
         <table width="100%"><tr>
         <?
         echo "<td valign='top'>";
@@ -163,14 +163,14 @@
         <div class="ccarea">
         <?
             foreach($this->cc as $cc) {
-                echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\" size=\"35\"/> <a class=\"button\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+                echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\" size=\"35\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
             }
         ?>
         </div>
         <script type="text/javascript">
         function addcc(node)
         {
-            var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" size=\"35\"/> <a class=\"button\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"<?=fullbase()?>/images/delete.png\"/></a></div>";
+            var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" size=\"35\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"<?=fullbase()?>/images/delete.png\"/></a></div>";
             node.append(template);
             setup_cc();
         }
@@ -213,7 +213,7 @@
         }
 
         </script>
-        <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><img src="<?=fullbase()?>/images/add.png"/>Add New CC</a>
+        <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
         </td>
     </tr>
 
@@ -254,14 +254,6 @@
 
 <script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
 <script type="text/javascript">
-/*
-function changeflag(node)
-{
-    var val = node.val();
-    var c = node.find("option[value='"+val+"']").attr("class");
-    $("#status_flag").attr("class", c);
-}
-*/
 $(document).ready(function() {
     $("input[name='nad']").datepicker({
         dateFormat: 'yy-mm-dd'

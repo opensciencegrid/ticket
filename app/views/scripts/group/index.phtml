@@ -16,10 +16,11 @@ foreach($this->groups as $tickets)
             if($first) {
                 $first = false;
                 $desc = $ticket->desc;
-                echo "<h3><a href='$ticket->url'>[$ticket->id]</a> $ticket->title</h3>";
+                echo "<h3>[$ticket->id] $ticket->title</h3>";
                 echo "<blockquote>";
                 echo "<pre>$desc</pre>";
                 echo "</blockquote>";
+                echo "<p><a href='$ticket->url'>Open This Ticket</a></p>";
                 echo "<div class='indent'>";
                 echo "<h4>Similar Tickets</h4>";
             } else {

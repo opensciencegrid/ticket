@@ -166,7 +166,7 @@ class RaController extends BaseController
         $form->addElement($e);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
-        $submit->setLabel("Send Email");
+        $submit->setLabel("   Submit   ");
         $form->addElement($submit);
 
         return $form;

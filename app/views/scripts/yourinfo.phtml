@@ -1,8 +1,5 @@
 <h3>Contact Information</h3>
-<p>
-Please tell us who should be the primary contact for this ticket.
-</p>
-
+Please tell us who should be the primary contact for this ticket.<br/>
 <table>
 <tr>
 <td>
@@ -15,11 +12,10 @@ Please tell us who should be the primary contact for this ticket.
 if(user()->allows("update")) {
     ?>
 <td style="vertical-align: middle;">
-<br/><br/>
-<img src="<?=base()?>/images/orange_arrow.png">
+    <img src="<?=base()?>/images/populator_arrow.png">
 </td>
 <td style="vertical-align: middle;">
-<div class="orange-round">
+<div class="contact_populator">
 Populate from someone else's contact information<br/>
 <label class="required" for="careof">Name</label><br/>
     <?
@@ -70,5 +66,4 @@ Populate from someone else's contact information<br/>
 }
 ?>
 </table>
-<br/><br/>
-
+<br/>

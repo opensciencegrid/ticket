@@ -2,11 +2,9 @@
 
 <div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
 <h3>Please select from following options</h3>
-<div class="menu">
-
+<div class="bitindent">
+    <p>I'd like to open a ticket regarding ...</p>
     <div>
-    I'd like to open a ticket regarding ...
-    <br/><br/>
 <?if(config()->role_prefix == "gocticket_") {?>
     <p><a href="security">A Security Incident</a></p>
     <p><a href="bdii">A BDII Service Outage</a></p>
@@ -22,16 +20,14 @@
     <p><a href="other">Any Others Issue</a></p>
 <?}?>
     </div>
-
 </div>
 
 <?if(user()->allows("admin")) {?>
 <br/>
 <h3>OSG GOC staff</h3>
-<div class="menu">
+<div class="bitindent">
+    <p>You are authorized to do following as OSG GOC Staff...</p>
     <div>
-    You are authorized to do following as OSG GOC Staff...
-    <br/><br/>
     <p><a href="ra">Send certificate request email</a></p>
     <p><a href="rsv">Submit RSV related trouble ticket</a></p>
     <p><a href="notify">Send Notification Email/RSS</a></p>
@@ -42,10 +38,9 @@
 <?if(user()->allows("notify")) {?>
 <br/>
 <h3>OSG security staff</h3>
-<div class="menu">
+<div class="bitindent">
+    <p>You are authorized to do following as OSG Security Staff...</p>
     <div>
-    You are authorized to do following as OSG Security Staff...
-    <br/><br/>
     <p><a href="simplenotify">Send Notification Email</a></p>
     </div>
 </div>

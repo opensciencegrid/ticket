@@ -124,7 +124,7 @@ $(document).ready(function() {
             $status = Footprint::parse($ticket->mrstatus);
             $statusstyle = status2style($status);
             $status = str_replace(" ", "&nbsp;", $status);
-            $moddate = agoCalculation(strtotime($ticket->mrupdatedate));
+            $moddate = agoCalculation(strtotime($ticket->mrupdatedate. " GMT"));
             $nad = $ticket->nad;
             $nadstyle = nadstyle($nad);
             $naction = $ticket->nextaction;
@@ -132,7 +132,6 @@ $(document).ready(function() {
             echo "<tr class=\"record\" onclick=\"window.open('$url','ticket_".$ticket->mrid."');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
             echo "<td>$title</td>";
-            //echo "<td class='ticketid $statusstyle'>$status&nbsp;&nbsp;</td>";
             echo "<td>$naction</td>";
             echo "<td class='flag $nadstyle'>$nad</td>";
             echo "<td>$moddate ago</td>";

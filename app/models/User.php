@@ -14,6 +14,7 @@ class User
         $this->contact_fullname = "Guest";
         $this->contact_email = "";
         $this->contact_phone = "";
+        $this->timezone = "UTC";
 
         $this->guest = true;
         if($dn !== null) {
@@ -23,13 +24,16 @@ class User
                 $this->lookupActions();
             }
         }
+        if(config()->debug) {
+            slog(print_r($this, true));
+        }
     }
 
     private function lookupActions()
     {
         $model = new DNAuthorizationType();
         $dnauthtypes = $model->fetchAllByDNID($this->dn_id);
-        
+
         $matrix_model = new AuthorizationTypeAction();
         $action_model = new Action();
         $actions = $action_model->fetchAll();
@@ -53,26 +57,23 @@ class User
                 }
             }
         }
-        if(config()->debug) {
-            slog("DEBUG: roles that are authorized");
-            slog(print_r($this->action, true));
-        }
     }
 
     private function lookupDN($dn)
     {
         //make sure user DN exists and active
-        $sql = "select d.*, c.name, c.primary_email, c.primary_phone from dn d left join contact c on (d.contact_id = c.id)
+        $sql = "select d.*, c.*, d.id as dn_id from dn d left join contact c on (d.contact_id = c.id)
                     where
                         c.disable = 0 and
                         dn_string = '$dn'";
         $row = db2()->fetchRow($sql);
         if($row) {
-            $this->dn_id = $row->id;
+            $this->dn_id = $row->dn_id;
             $this->contact_id = $row->contact_id;
             $this->contact_name = $row->name;
             $this->contact_email = $row->primary_email;
             $this->contact_phone = $row->primary_phone;
+            $this->timezone = $row->timezone;
         } else {
             $this->contact_name = "Guest";
             slog("DN: $dn doesn't exist in oim");
@@ -90,4 +91,5 @@ class User
     public function getPersonPhone() { return $this->contact_phone; }
     public function getDN() { return $this->dn; }
     public function getDNID() { return $this->dn_id; }
+    public function getTimeZone() { return $this->timezone; }
 }

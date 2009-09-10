@@ -268,13 +268,13 @@ class ViewerController extends Zend_Controller_Action
 
         //only show internal activity for non-guest users (since it contains email address)
         if(user()->getPersonID() !== null) {
-            //history
+            //history (internal activity)
             $history = split("\n", $detail->history);
             foreach($history as $hist) {
                 $fields = split("____________history", $hist);
 
                 //parse out fields
-                $time = strtotime($fields[0].$fields[1]);// + 3600;
+                $time = strtotime($fields[0].$fields[1]." GMT"); //set GMT so that strtotime will parse it as FP timezone (should be GMT)
                 $by = $fields[2];
                 $action = $fields[3];
                 //$action = str_replace(";", "\n", $action);

@@ -39,8 +39,8 @@ try {
     ini_set('default_charset', 'UTF-8');
     ini_set('default_socket_timeout', 120);
     error_reporting(E_ALL | E_STRICT);
-    date_default_timezone_set("UTC");
 
+    date_default_timezone_set(user()->getTimeZone());
 } catch(exception $e) {
     //when a catastrohpic failure occure (like disk goes read-only..) emailing is the only way we got..
     mail(config()->elog_email_address, "[gocticket] Caught exception during bootstrap", $e, "From: ".config()->email_from);

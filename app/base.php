@@ -8,8 +8,6 @@ function greet()
 {
     slog('----------------------------------------------------------------------');
     slog(config()->app_name. ' session starting.. '.$_SERVER["REQUEST_URI"]);
-    //dlog("REQUEST: ".print_r($_REQUEST, true));
-    //dlog("SERVER: ".print_r($_SERVER, true));
 }
 
 function remove_quotes()
@@ -21,7 +19,6 @@ function remove_quotes()
         foreach($_REQUEST as $k => $v) $_REQUEST[$k] = stripslashes_deep($v);
     }
 }
-
 
 function stripslashes_deep($v)
 {

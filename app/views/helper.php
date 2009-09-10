@@ -80,7 +80,8 @@ function outputToggle($show, $hide, $content, $open_by_default = false)
 function agoCalculation($timestamp)
 {
     $ago = time() - $timestamp;
-    return humanDuration($ago);
+    $str = humanDuration($ago);
+    return $str;
 }
 function humanDuration($ago)
 {

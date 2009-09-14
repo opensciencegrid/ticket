@@ -10,7 +10,7 @@ class OpensearchController extends Zend_Controller_Action
 <ShortName>GOC Ticket (by ID)</ShortName>
 <Description>Open GOC Ticket by Ticket ID</Description>
 <InputEncoding>inputEncoding</InputEncoding>
-<Image width="16" height="16"><?=fullbase()?>/images/logo.png</Image>
+<Image width="16" height="16"><?=fullbase()?>/images/tea.png</Image>
 <Url type="text/html" method="get" template="<?=fullbase()?>/viewer?id={searchTerms}"/>
 </OpenSearchDescription>
     <?

@@ -6,7 +6,8 @@ class SecurityEmail
     {
         $this->h_email = array();
         $this->bcc = "";
-        $this->pa_model = new PrimaryAddress();
+        $this->address_model = new Address();
+        $this->paddress_model = new PrimaryAddress();
         $this->sign = false;
     }
 
@@ -33,25 +34,25 @@ class SecurityEmail
 
     public function addResourceSecurityAddresses()
     {
-        $recs = $this->pa_model->get_resource_security();
+        $recs = $this->address_model->get_resource_security();
         $this->addAddresses($recs);
     }
 
     public function addVOSecurityAddresses()
     {
-        $recs = $this->pa_model->get_vo_security();
+        $recs = $this->address_model->get_vo_security();
         $this->addAddresses($recs);
     }
 
     public function addSCSecurityAddresses()
     {
-        $recs = $this->pa_model->get_sc_security();
+        $recs = $this->address_model->get_sc_security();
         $this->addAddresses($recs);
     }
 
     public function addSupportAddresses()
     {
-        $recs = $this->pa_model->get_sc();
+        $recs = $this->paddress_model->get_sc();
         $this->addAddresses($recs);
     }
     public function dump()

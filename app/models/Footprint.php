@@ -64,7 +64,16 @@ class Footprint
     public function setTitle($v) { $this->title = $v; $this->b_title = true; }
     public function setSubmitter($v) { $this->submitter = $v; $this->b_submitter = true; }
     public function setName($v) { 
-        list($first_name, $last_name)  = @split(" ", $v, 2);
+        //split first name and the last name
+        $pos = strstr($v, " ");
+        if($pos === false) {
+            $first_name = $v;
+            $last_name = "";
+        } else {
+            $first_name = substr($v, 0, $pos);
+            $last_name = substr($v, $pos+1);
+        }
+
         $this->ab_fields["First__bName"] = $first_name;
         $this->ab_fields["Last__bName"] = $last_name;
         $this->b_contact = true; 

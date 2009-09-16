@@ -72,7 +72,7 @@ class BaseController extends Zend_Controller_Action
         if($has_yourinfo) {
             $name = new Zend_Form_Element_Text('name');
             $name->setLabel("Full Name");
-            $name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
+            //$name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
             $name->setRequired(true);
             $name->setValue(user()->getPersonName());
             $form->addElement($name);

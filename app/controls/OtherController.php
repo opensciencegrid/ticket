@@ -20,7 +20,7 @@ class OtherController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
             $footprint->setTitle($form->getValue('title'));
 
-            try 
+            try
             {
                 $mrid = $footprint->submit();
                 $this->view->mrid = $mrid;

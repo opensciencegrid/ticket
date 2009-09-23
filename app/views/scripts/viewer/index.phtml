@@ -131,7 +131,7 @@ function gotoedit()
         <?
         $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
         ?>
-        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=$subject?>">Send Update Via Email</a>
+        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=urlencode($subject)?>">Send Update Via Email</a>
     </p>
     <?
     foreach($this->descs as $time=>$desc)

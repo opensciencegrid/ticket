@@ -29,7 +29,10 @@ try {
     remove_quotes();
     setup_logs();
     greet();
-    cert_authenticate();
+
+    //if(!strstr($_SERVER["REQUEST_URI"], "opensearch")) {
+        cert_authenticate();
+    //}
 
     //set php config
     ini_set('error_log', config()->error_logfile);

@@ -22,12 +22,11 @@ class AdminController extends BaseController
 
     private function accesscheck($remote_addr = null)
     {
-        //make sure the request originated from localhost
+        //make sure the request originated from localhost or $remote_addr
         if($_SERVER["REMOTE_ADDR"] != $remote_addr and !islocal()) {
             //pretend that this page doesn't exist
             $this->getResponse()->setRawHeader('HTTP/1.1 404 Not Found');
-            echo "access denided";
-            elog("Illegal access from ".$_SERVER["REMOTE_ADDR"]);
+            elog("Illegal access to ticket Admin controller from ".$_SERVER["REMOTE_ADDR"]);
             exit;
         }
     }
@@ -150,7 +149,6 @@ RSS: http://www.grid.iu.edu/news";
         $meta = str_replace("[", "\[", $meta);
         $meta = str_replace("]", "\]", $meta);
         $sig = "/\n$meta(.|\n)*/";
-        slog($sig);
         $desc = preg_replace($sig, "", $desc);
 
         //remove GGUS Info
@@ -164,9 +162,19 @@ RSS: http://www.grid.iu.edu/news";
 
     public function ggussubmitAction()
     {
-        $client_dns = "tick-indy.globalnoc.iu.edu";
-        $ip = system("host $client_dns | head -n 1 | grep -Eo '[[:digit:]]+(\.[[:digit:]]+)+'");
-        $this->accesscheck($ip);
+        $allowed = false;
+        foreach(config()->ttx_clients as $ttx_client) {
+            $ip = gethostbyname($ttx_client);
+            if($_SERVER["REMOTE_ADDR"] == $ip) {
+                $allowed = true;
+                break;
+            }
+        }
+        if(!$allowed) {
+            header('HTTP/1.1 404 Not Found');
+            elog("Illegal access to ggus submit Admin controller from ".$_SERVER["REMOTE_ADDR"]);
+            exit;
+        }
 
         if(isset($_REQUEST["xml"])) {
             try {
@@ -188,6 +196,8 @@ RSS: http://www.grid.iu.edu/news";
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
             }
+        } else {
+            echo "please provide xml";
         }
         $this->render("none", null, true);
     }

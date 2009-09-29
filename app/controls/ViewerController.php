@@ -9,7 +9,7 @@ class ViewerController extends Zend_Controller_Action
 
     public function loaddetail()
     {
-        $dirty_id = $_REQUEST["id"];
+        $dirty_id = trim($_REQUEST["id"]);
         $id = (int)$dirty_id;
 
         if((string)$id !== $dirty_id) {

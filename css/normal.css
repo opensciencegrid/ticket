@@ -257,7 +257,7 @@ margin-left: 30px;
 {
 background-color: black;
 padding: 4px 28px 4px 20px;
-height: 24px;
+min-height: 24px;
 }
 .submenu a
 {

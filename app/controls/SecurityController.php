@@ -28,8 +28,10 @@ class SecurityController extends BaseController
                 $footprint->addMeta("Opening ticket with normal priority.");
             }
             //security ticket is assigned to rob - and CC Kyle
-            $footprint->addAssignee("rquick", true);
-            $footprint->addAssignee("kagross");
+	    $footprint->addAssignee("agopu", true);
+            // TODO agopu 
+	    // $footprint->addAssignee("rquick", true); 
+	    // $footprint->addAssignee("kagross");
 
             $footprint->setTicketType("Security");
             $footprint->setTitle($form->getValue('title'));

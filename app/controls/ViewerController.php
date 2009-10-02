@@ -34,11 +34,19 @@ class ViewerController extends Zend_Controller_Action
         $this->view->title = $detail->title;
         $this->view->page_title = "[$id] ".$detail->title;
 
+        //limit access to security announcement
+        if($detail->Ticket__uType == "Security_Notification") {
+            //only certain users can see security announcements - registered users on OIM 2009-09-22
+            if(user()->isGuest()) {
+                $this->render("securityannounceticket");
+                return null;
+            }
+        }
+        
         //limit access to security ticket
         if($detail->Ticket__uType == "Security") {
-            //only certain users can see security ticket
-            if(user()->isGuest()) {
-            //if(!user()->allows("view_security_ticket")) {
+            //only certain users can see security incident ticket - GOC and Security staff 2009-09-22
+            if(!user()->allows("view_security_incident_ticket")) {
                 $this->render("security");
                 return null;
             }

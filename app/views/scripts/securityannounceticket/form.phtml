@@ -1,0 +1,18 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>">
+<dl>
+
+<?=$this->render("yourinfo.phtml", true)?>
+
+<h3>Issue Detail</h3>
+<?=$this->element->title?>
+
+<br/>
+
+<?=$this->element->detail?>
+<br/><br/>
+
+<?=$this->element->submit_button?>
+</dl>
+</form>
+

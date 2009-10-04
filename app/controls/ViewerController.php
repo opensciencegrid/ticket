@@ -7,9 +7,11 @@ class ViewerController extends Zend_Controller_Action
         $this->view->submenu_selected = "view";
     }
     
+/*
     private function getCache($ticket_id) {
         return new Cache("/tmp/goctiket.detail.".$ticket_id."_".config()->project_id);
     }
+*/
 
     public function loaddetail()
     {
@@ -21,6 +23,7 @@ class ViewerController extends Zend_Controller_Action
             $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
         }
 
+/*
         $c = $this->getCache($id);
         if($c->isFresh(30)) { //This cache is mainly for users editing the ticket - 30 seconds should be enough
             $detail = $c->get();
@@ -33,12 +36,13 @@ class ViewerController extends Zend_Controller_Action
             $this->render("nosuchticket");
             return;
         }
-
-        /*
-        //pull list of attachments
-        $attachments = $model->getAttachments($id);
-        var_dump($attachments);
-        */
+*/
+        $model = new Tickets();
+        $detail = $model->getDetail($id);
+        if($detail === "") {
+            $this->render("nosuchticket");
+            return;
+        }
 
         $this->view->ticket_id = $id;
         $this->view->title = $detail->title;
@@ -238,8 +242,10 @@ class ViewerController extends Zend_Controller_Action
                 
                     $footprint->submit();
                     header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+/*
                     $c = $this->getCache($ticket_id);
                     $c->invalidate();
+*/
 
                     exit;
                 } catch(exception $e) {
@@ -261,6 +267,15 @@ class ViewerController extends Zend_Controller_Action
             elog("SoapFault detected while ViewController:loaddetail()");
             elog($e->getMessage());
             return;
+        }
+
+        if(user()->allows("update")) {
+            //load additional stuff that we need for ticket edit
+            $schema_model = new Schema();
+            $this->view->originating_vos = $schema_model->getoriginatingvos();
+            $this->view->destination_vos = $schema_model->getdestinationvos();
+
+            $this->view->editable = true;
         }
 
         //notes

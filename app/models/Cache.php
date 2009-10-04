@@ -7,6 +7,10 @@ class Cache
         $this->path = $path;
         $this->ctime = @filectime($path);
     }
+    function invalidate()
+    {
+        unlink($this->path);
+    }
     function isFresh($fresh_for)
     {
         if($this->ctime === false) return false;

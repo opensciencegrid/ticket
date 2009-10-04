@@ -56,5 +56,6 @@ try {
 //dispatch
 $frontController = Zend_Controller_Front::getInstance();
 $frontController->setControllerDirectory('app/controls');
-$frontController->dispatch(); 
+$frontController->dispatch();
 
+slog("---------all done--------");

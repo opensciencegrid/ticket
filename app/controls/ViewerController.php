@@ -6,6 +6,10 @@ class ViewerController extends Zend_Controller_Action
     {
         $this->view->submenu_selected = "view";
     }
+    
+    private function getCache($ticket_id) {
+        return new Cache("/tmp/goctiket.detail.".$ticket_id."_".config()->project_id);
+    }
 
     public function loaddetail()
     {
@@ -17,12 +21,18 @@ class ViewerController extends Zend_Controller_Action
             $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
         }
 
-        $model = new Tickets();
-        $detail = $model->getDetail($id);
+        $c = $this->getCache($id);
+        if($c->isFresh(30)) { //This cache is mainly for users editing the ticket - 30 seconds should be enough
+            $detail = $c->get();
+        } else {
+            $model = new Tickets();
+            $detail = $model->getDetail($id);
+            $c->set($detail);
+        }
         if($detail === "") {
             $this->render("nosuchticket");
             return;
-        } 
+        }
 
         /*
         //pull list of attachments
@@ -188,7 +198,6 @@ class ViewerController extends Zend_Controller_Action
                 //TODO - implement mechanism to allow re-editing
                 echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
             } else {
-
                 //prepare and submit ticket update
                 try {
                     $footprint = new Footprint($ticket_id);
@@ -229,6 +238,9 @@ class ViewerController extends Zend_Controller_Action
                 
                     $footprint->submit();
                     header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+                    $c = $this->getCache($ticket_id);
+                    $c->invalidate();
+
                     exit;
                 } catch(exception $e) {
                     echo "Sorry, ticket update submission failed for some reason";
@@ -244,6 +256,7 @@ class ViewerController extends Zend_Controller_Action
         try {
             $detail = $this->loaddetail();
             if($detail === null) return;
+
         } catch (SoapFault $e) {
             elog("SoapFault detected while ViewController:loaddetail()");
             elog($e->getMessage());

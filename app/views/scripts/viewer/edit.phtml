@@ -182,10 +182,9 @@
         {
             $fullname = trim($person->name);
             $email = trim($person->primary_email);
-            $phone = trim($person->primary_phone);
             if($fullname == "") $fullname = $email;
             if($persons_json != "") $persons_json .= ",\n";
-            $persons_json .= "{ fullname: \"$fullname\", email: \"$email\", phone: \"$phone\"}";
+            $persons_json .= "{ name: \"$fullname\", email: \"$email\"}";
         }
         ?>
         var persons = [
@@ -201,7 +200,7 @@
                 matchContains: true,
                 width: 500,
                 formatItem: function(row, i, max) {
-                    return row.fullname + "<br/>Email: " + row.email;
+                    return row.name + "<br/>Email: " + row.email;
                 },
                 formatMatch: function(row, i, max) {
                     return row.fullname + " " + row.email;

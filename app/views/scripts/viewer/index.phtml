@@ -218,11 +218,11 @@ function gotoedit()
             $persons_json = "";
             foreach($persons as $person) 
             {
-                $fullname = trim($person->name);
+                $name = trim($person->name);
                 $email = trim($person->primary_email);
-                if($fullname == "") $fullname = $email;
+                if($name == "") $name = $email;
                 if($persons_json != "") $persons_json .= ",\n";
-                $persons_json .= "{ name: \"$fullname\", email: \"$email\"}";
+                $persons_json .= "{ name: \"$name\", email: \"$email\"}";
             }
             ?>
             var persons = [
@@ -241,7 +241,7 @@ function gotoedit()
                         return row.name + "<br/>Email: " + row.email;
                     },
                     formatMatch: function(row, i, max) {
-                        return row.fullname + " " + row.email;
+                        return row.name + " " + row.email;
                     },
                     formatResult: function(row) {
                         return row.email;
@@ -371,16 +371,6 @@ function gotoedit()
         <?}?>
         </tr>
 
-        <?
-        if(user()->allows("update")) {
-        ?>
-            <tr>
-            <td></td>
-            <td colspan="3">
-            <input type="button" id="editbutton" onclick="gotoedit();" value="&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;"/>
-            </td>
-            </tr>
-        <?}?>
         </table>
     </div>
 <?}?>

@@ -22,10 +22,8 @@ class SecurityAnnounceTicketController extends BaseController
 	    $footprint->addMeta("Opening security announcement ticket with normal priority.");
 
             //security ticket is assigned to rob - and CC Kyle
-            $footprint->addAssignee("agopu", true);
-	    // TODO agopu 
-            // $footprint->addAssignee("rquick", true);
-            // $footprint->addAssignee("kagross");
+	    $footprint->addAssignee("rquick", true);
+	    $footprint->addAssignee("kagross");
 
             $footprint->setTicketType("Security_Notification");
             $footprint->setTitle($form->getValue('title'));

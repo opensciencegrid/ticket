@@ -42,7 +42,7 @@ class Tickets
 
     public function dosearch($query, $bIncludeDesc = false)
     {
-        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad";
+        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";
         }

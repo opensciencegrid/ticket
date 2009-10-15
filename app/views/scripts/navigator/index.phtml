@@ -128,10 +128,17 @@ function sort_modified_down($a, $b)
             $nad = $ticket->nad;
             $nadstyle = nadstyle($nad);
             $naction = $ticket->nextaction;
+            //dlog($ticket);
+
+            //process tag
+            $tag = "";
+            if($ticket->ticket_type == "Security") {
+                $tag = "<span class=\"red tag\">Security</span>";
+            }
 
             echo "<tr class=\"record\" onclick=\"window.open('$url','ticket_".$ticket->mrid."');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
-            echo "<td>$title</td>";
+            echo "<td>$tag$title</td>";
             echo "<td>$naction</td>";
             echo "<td class='flag $nadstyle'>$nad</td>";
             echo "<td>$moddate ago</td>";

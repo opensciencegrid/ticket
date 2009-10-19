@@ -129,17 +129,18 @@ class Footprint
         $this->id = $id;
     }
 
-    //from the current db, I see following ticket types //TODO - pull this from field schema
+    //from the current db, I see following ticket types //TODO - pull this from field schema, but filter it with values that we really use
     static public function getTicketTypes()
     {
         return array(
             "Problem/Request",
-            "Scheduled Maintenance",
-            "Unscheduled Outage",
-            "Provision/Modify/Decom",
-            "Field Service Request",
-            "RMA",
-            "Security"
+            //"Scheduled Maintenance",
+            //"Unscheduled Outage",
+            //"Provision/Modify/Decom",
+            //"Field Service Request",
+            //"RMA",
+            "Security",
+            "Security_Notification"
             );
     }
 

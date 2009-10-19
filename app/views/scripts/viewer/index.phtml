@@ -37,7 +37,10 @@
 <?
 if($this->ticket_type == "Security") {
     echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";
+} else if($this->ticket_type == "Security_Notification") {
+    echo "<p class=\"errors\">This is a security notification ticket which is only accecible for registered OIM users. Please do not forward the content of this ticket to anyone.</p>";
 }
+
 ?>
 
 <script type="text/javascript">

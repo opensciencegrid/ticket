@@ -122,7 +122,7 @@ class BaseController extends Zend_Controller_Action
 
             $void = $form->getValue('vo_id');
             if($void == -1) {
-                $footprint->addMeta("Submitter doesn't know his/her SC.\n");
+                $footprint->addMeta("Submitter doesn't know the VO he/she belongs.\n");
             } else {
                 $vo_model = new VO();
                 $info = $vo_model->get($void);

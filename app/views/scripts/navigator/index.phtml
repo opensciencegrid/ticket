@@ -134,6 +134,8 @@ function sort_modified_down($a, $b)
             $tag = "";
             if($ticket->ticket_type == "Security") {
                 $tag = "<span class=\"red tag\">Security</span>";
+            } else if($ticket->ticket_type == "Security_Notification") {
+                $tag = "<span class=\"red tag\">Security Notification</span>";
             }
 
             echo "<tr class=\"record\" onclick=\"window.open('$url','ticket_".$ticket->mrid."');\">";

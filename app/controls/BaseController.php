@@ -111,12 +111,35 @@ class BaseController extends Zend_Controller_Action
         return $form;
     }
 
+    private function getFPAgent($name) 
+    {
+        $model = new Schema();        
+        $emails = $model->getemail();
+        //var_dump($emails);
+        foreach($emails as $email) {
+            if($email->fullname == $name) {
+                return $email->user;
+            }
+        }
+        return null; 
+    }
+
     protected function initSubmit($form)
     {
         //prepare footprint ticket
         $footprint = new Footprint;
         if($this->has_yourinfo) {
-            $footprint->setName($form->getValue('name'));
+            $name = $form->getValue('name');
+            $footprint->setName($name);
+
+            //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
+            $agent = $this->getFPAgent($name);
+            if($agent !== null) {
+                $footprint->setSubmitter($agent);
+            } else {
+                $footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
+            }
+
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
 

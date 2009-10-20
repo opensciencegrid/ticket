@@ -14,6 +14,12 @@ class Schema
         }
     }
 
+    public function getusers()
+    {
+        $ret = $this->cache("users");
+        return $ret[0]; //ret is somewhat wrapped with array..
+    }
+
     public function getemail()
     {
         return $this->cache("email");

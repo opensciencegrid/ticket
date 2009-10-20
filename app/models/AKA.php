@@ -16,10 +16,7 @@ class AKA
 
         //lookup FP users
         $model = new Schema();
-        $emails = $model->getemail(); 
-        foreach($emails as $email) {
-            $this->aka[$email->user] = $email->fullname;
-        }
+        $this->aka = $model->getusers();
     }
 
     public function lookupName($a)

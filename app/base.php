@@ -89,13 +89,14 @@ function signedmail($to, $from, $subject, $body, $header = "")
 
 function fpcall($function, $param)
 {
+    //passing connection_timeout doesn't seem to work in case of host not routable.. maybe a different timeout applies?
     $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri));
     for($i = 0; $i < 5; $i++) {
         try {
             $ret = $client->__soapCall($function, $param);
             return $ret;
         } catch (SoapFault $e) {
-            elog($e->getMessage());
+            elog("fpcall: SoapFault -- ".$e->getMessage());
         }
     }
     elog("Soap called failed too many times.. quitting");

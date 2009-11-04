@@ -188,6 +188,7 @@ class NotifyController extends BaseController
 
         $e = new Zend_Form_Element_Checkbox('rss');
         $e->setLabel("Publish to RSS");
+        $e->setValue(true);
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Checkbox('sign');

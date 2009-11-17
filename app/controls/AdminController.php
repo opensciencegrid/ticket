@@ -171,8 +171,8 @@ RSS: http://www.grid.iu.edu/news";
             }
         }
         if(!$allowed) {
-            header('HTTP/1.1 404 Not Found');
             elog("Illegal access to ggus submit Admin controller from ".$_SERVER["REMOTE_ADDR"]);
+            echo "sorry, your IP is not authorised to access this method";
             exit;
         }
 

@@ -22,7 +22,6 @@ class ViewerController extends Zend_Controller_Action
             //id that looks like non-id - forward to keyword search
             $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
         }
-
 /*
         $c = $this->getCache($id);
         if($c->isFresh(30)) { //This cache is mainly for users editing the ticket - 30 seconds should be enough

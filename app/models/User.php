@@ -25,6 +25,7 @@ class User
             }
         }
         if(config()->debug) {
+            slog("Debug Dump of User Object");
             slog(print_r($this, true));
         }
     }

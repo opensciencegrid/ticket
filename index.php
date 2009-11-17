@@ -30,9 +30,7 @@ try {
     setup_logs();
     greet();
 
-    //if(!strstr($_SERVER["REQUEST_URI"], "opensearch")) {
-        cert_authenticate();
-    //}
+    cert_authenticate();
 
     //set php config
     ini_set('error_log', config()->error_logfile);
@@ -52,6 +50,10 @@ try {
     echo "<pre>".$e->getMessage()."</pre>";
     exit;
 }
+
+//log access
+$goc = new GOC();
+$goc->logAccess();
 
 //dispatch
 $frontController = Zend_Controller_Front::getInstance();

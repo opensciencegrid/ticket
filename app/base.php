@@ -89,7 +89,7 @@ function signedmail($to, $from, $subject, $body, $header = "")
 
 function fpcall($function, $param)
 {
-    $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri, 'connection_timeout'=>5));
+    $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri, 'connection_timeout'=>7));
     for($i = 0; $i < 5; $i++) {
         try {
             $ret = $client->__soapCall($function, $param);

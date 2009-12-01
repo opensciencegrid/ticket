@@ -381,7 +381,7 @@ class Footprint
             if($this->id === null) {
                 //if the ticket didn't come from other ticketing system, send SMS
                 //(We don't want GGUS to send us critical ticket which send us alarm in the middle of the night)
-                if(trim($this->project_fields["Originating__bTicket__bNumber"]) == "") {
+                if(trim(@$this->project_fields["Originating__bTicket__bNumber"]) == "") {
                     $this->send_notification($params["assignees"], $newid);
                 }
             }

@@ -27,13 +27,13 @@ class Resource
     public function getPrimaryOwnerVO($resource_id) 
     {
         $sql = "SELECT R.id, R.name, vo.name as vo_name, vo.footprints_id,
-MAX(v.percent) AS ownership_percent
+ v.percent AS ownership_percent
 FROM vo_resource_ownership v
   RIGHT JOIN resource R ON R.id=v.resource_id
   LEFT JOIN vo vo ON v.vo_id=vo.id
 WHERE R.id = $resource_id
  AND vo.disable IS FALSE
-GROUP BY R.name";
+ AND v.percent=(SELECT MAX(v2.percent) FROM vo_resource_ownership v2 WHERE v2.resource_id = $resource_id); ";
         return db2()->fetchRow($sql);
     }
 }

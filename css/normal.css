@@ -52,13 +52,13 @@ left: 5px;
 
 h3
 {
-background-color:gray;
+background-image:url('../images/h3_back.png');
 color:white;
 font-family:"Arial";
 font-size:13px;
 margin-bottom:3px;
 margin-top:3px;
-padding:4px 4px 4px 5px;
+padding:4px 8px 4px 8px;
 
 -webkit-border-top-left-radius: 4px;
 -webkit-border-top-right-radius: 4px;
@@ -103,7 +103,7 @@ a:hover
 }
 
 #content {
-padding: 10px 5px 20px 20px;
+padding: 10px 20px 20px 20px;
 line-height: 1.6em;
 background: url('../images/a4.gif') repeat-x top left;
 font-size: 11px;

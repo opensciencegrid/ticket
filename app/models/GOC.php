@@ -7,7 +7,7 @@ class GOC
 
         $data = array(
             'application'      => config()->app_id,
-            'server' => $_SERVER["SERVER_NAME"],
+            'server' => php_uname('n'),
             'detail'      => $_SERVER["REQUEST_URI"],
             'ip'      => $_SERVER["REMOTE_ADDR"],
             'dn'      => user()->dn,

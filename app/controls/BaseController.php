@@ -114,11 +114,10 @@ class BaseController extends Zend_Controller_Action
     private function getFPAgent($name) 
     {
         $model = new Schema();        
-        $emails = $model->getemail();
-        //var_dump($emails);
-        foreach($emails as $email) {
-            if($email->fullname == $name) {
-                return $email->user;
+        $users = $model->getusers();
+        foreach($users as $id=>$fpname) {
+            if($fpname == $name) {
+                return $id;
             }
         }
         return null; 

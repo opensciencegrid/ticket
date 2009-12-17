@@ -22,7 +22,8 @@ class Schema
 
     public function getemail()
     {
-        return $this->cache("email");
+        $ret = $this->cache("email_fp9");
+        return $ret[0];
     }
 
     public function getquickdesc()

@@ -6,8 +6,11 @@ class TestController extends Zend_Controller_Action
     { 
         echo "testing something..";
 
-        $model = new Resource();
-        var_dump($model->getPrimaryOwnerVO(66));
+        $model = new Schema();
+
+        echo "<pre>";
+        var_dump($model->doget("email"));
+        echo "</pre>";
 
         $this->render("none", null, true);
     }

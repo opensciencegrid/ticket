@@ -181,28 +181,25 @@ class FinderrorController extends Zend_Controller_Action
     { 
         $model = new SC();
         $oim_scs = $model->fetchAll();
-        $emails = $this->schema_model->getemail();
+        $fpemails = $this->schema_model->getemail();
         $model = new PrimarySCContact;
         foreach($oim_scs as $oim_sc) {
             //pull primary admin
             $admin = $model->fetch($oim_sc->id);
             $op_contact_email = @$admin->primary_email;
             
-            $found = false;
-            foreach($emails as $email) {
-                if($email->user == $oim_sc->footprints_id) {
-                    $found = true;
-                    if(strcasecmp($op_contact_email, $email->email) == 0) {
-                        //found email match
-                        $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "");
-                    } else {
-                        $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, $email->user, $email->email, "* Email address doesn't match");
-                        $this->berror = true;
-                    }
+            $user = $oim_sc->footprints_id;
+            if(array_key_exists($user, $fpemails)) {
+                $fpemail = $fpemails[$user];
+                if(strcasecmp($op_contact_email, $fpemail) == 0) {
+                    //found email match
+                    $this->view->error_email[] = array($oim_sc->name, $op_contact_email, $user, $fpemail, "");
+                } else {
+                    $this->view->error_email[] = array($oim_sc->name, $op_contact_email, $user, $fpemail, "* Email address doesn't match");
+                    $this->berror = true;
                 }
-            }
-            if(!$found) {
-                $this->view->error_email[] = array($oim_sc->footprints_id, $op_contact_email, "", "", "* No such user ID in FP.");
+            } else {
+                $this->view->error_email[] = array($oim_sc->name, $op_contact_email, "", "", "* No such user ID in FP.");
                 $this->berror = true;
             }
         }

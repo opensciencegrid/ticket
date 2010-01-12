@@ -1,0 +1,36 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; GGUS XML Submit</div>
+
+<h3>GGUS Ticket Insert / Update</h3>
+<form action="ggussubmit" method="post">
+Enter GGUS XML:<br/>
+<textarea name="xml" rows="10" cols="80">
+<Ticket>
+       <GHD_Request-ID>54589</GHD_Request-ID>
+       <GHD_Loginname></GHD_Loginname>
+       <GHD_Name>Open Science Grid FootPrints </GHD_Name>
+       <GHD_E-Mail>osg@tick-indy.globalnoc.iu.edu</GHD_E-Mail>
+       <GHD_Phone></GHD_Phone>
+       <GHD_Experiment>none</GHD_Experiment>
+       <GHD_Responsible_Unit>GGUS</GHD_Responsible_Unit>
+       <GHD_Status>assigned</GHD_Status>
+       <GHD_Priority>less urgent</GHD_Priority>
+       <GHD_Short_Description>Open Science Grid: LCG BDIIs again not updating from OSG BDII ISSUE=7932 PROJ=71</GHD_Short_Description>
+       <GHD_Description></GHD_Description>
+       <GHD_Experiment_Specific_Problem>No</GHD_Experiment_Specific_Problem>
+       <GHD_Type_Of_Problem>Information System</GHD_Type_Of_Problem>
+       <GHD_Date_Time_Of_Problem>2010-01-11 18:43</GHD_Date_Time_Of_Problem>
+       <GHD_Diary_Of_Steps></GHD_Diary_Of_Steps>
+       <GHD_Public_Diary></GHD_Public_Diary>
+       <GHD_Short_Solution></GHD_Short_Solution>
+       <GHD_Detailed_Solution></GHD_Detailed_Solution>
+       <GHD_Internal_Diary></GHD_Internal_Diary>
+       <GHD_Origin_ID></GHD_Origin_ID>
+       <GHD_Last_Modifier>Carsten Preuss</GHD_Last_Modifier>
+       <GHD_Affected_Site></GHD_Affected_Site>
+</Ticket>
+</textarea>
+<br/>
+<input type="submit" name="Submit"/>
+</form>
+<?include("app/views/scripts/footer.phtml");?>

@@ -160,8 +160,13 @@ RSS: http://www.grid.iu.edu/news";
         return $desc;
     }
 
-    public function ggussubmitAction()
+    public function ggussubmitformAction()
     {
+        $this->ttxcheck();
+        $this->view->submenu_selected = "admin";
+    }
+
+    public function ttxcheck() {
         $allowed = false;
         foreach(config()->ttx_clients as $ttx_client) {
             $ip = gethostbyname($ttx_client);
@@ -175,6 +180,11 @@ RSS: http://www.grid.iu.edu/news";
             echo "sorry, your IP is not authorised to access this method";
             exit;
         }
+    }
+
+    public function ggussubmitAction()
+    {
+        $this->ttxcheck();
 
         if(isset($_REQUEST["xml"])) {
             try {

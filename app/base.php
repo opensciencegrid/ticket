@@ -96,12 +96,15 @@ function fpcall($function, $param)
             return $ret;
         } catch (SoapFault $e) {
             $msg = $e->getMessage();
+	    /*
             if($msg == "Could not connect to host") {
                 //this happens when server is gone - due to like n/w issue -- bail!
                 elog("fpcall: SoapFault (bailing) -- ".$msg);
                 throw new exception("Underlying system that this application depends on is having an issue : ".$msg);
             } 
+            */
             elog("fpcall: SoapFault (trying again) -- ".$msg);
+	    sleep(1);
         }
     }
     elog("Soap called failed too many times.. quitting");

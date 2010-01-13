@@ -4,7 +4,7 @@ class RAContact
 {
     public function fetchAll()
     {
-        $sql = "SELECT p.* FROM ra_contact f JOIN contact p ON (f.contact_id = p.id) WHERE p.disable IS FALSE";
+        $sql = "SELECT * FROM contact WHERE disable IS FALSE AND id IN (select contact_id from dn where dn_string like '/DC=org/DC=doegrids/OU=People%')";
         return db2()->fetchAll($sql);
     }
 }

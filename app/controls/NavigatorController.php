@@ -113,9 +113,7 @@ class NavigatorController extends Zend_Controller_Action
         //find suppor centers
         $fp_scs = array();
         foreach($teams as $team) {
-            if(in_array($team->team, config()->assignee_team_list)) {
-                $fp_scs = array_merge($fp_scs, split(",", $team->members));
-            }
+            $fp_scs = array_merge($fp_scs, split(",", $team->members));
         }
 
         //group tickets by certain field id

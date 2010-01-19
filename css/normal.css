@@ -11,7 +11,7 @@ img
 
 body
 {
-font-family: 'Trebuchet MS', sans-serif;
+font-family: Verdana;
 color: black;
 font-size:11pt;
 min-width: 950px;
@@ -24,7 +24,7 @@ margin-bottom: 10px;
 
 #header {
 padding-left: 110px;
-background: #614b17 url('../images/header.png') repeat-x;
+background: #000 url('../images/header.png') repeat-x;
 height: 60px;
 }
 #header h1 a
@@ -36,6 +36,7 @@ text-decoration: none;
 {
 padding-top: 7px;
 font-size: 15pt;
+font-family: 'Trebuchet MS';
 }
 #header h2
 {
@@ -69,15 +70,24 @@ padding:4px 8px 4px 8px;
 -moz-border-radius-topleft:4px;
 -moz-border-radius-topright:4px;
 }
-h4
-{
-    color: #555;
-    border-bottom: 1px dotted #555;
-    font-size: 11px;
-    font-weight: bold;
-    padding :2px;
-    margin-bottom: 3px;
-    margin-right: 5px;
+
+h4 {
+color: #666;
+border-bottom: 1px dotted #555;
+font-size: 11px;
+font-weight: bold;
+padding :2px;
+padding-left: 0px;
+margin-bottom: 5px;
+margin-right: 5px;
+
+}
+
+h5 {
+font-size: 10px;
+font-family: Verdana;
+color: #444;
+margin-bottom: 3px;
 }
 
 p.errors, p.warning, a.button
@@ -110,17 +120,25 @@ font-size: 11px;
 font-family: verdana, "trebuchet ms", sans-serif;
 }
 
-.form input[type=text], .form select
+input[type=text], select
 {
-    width: 300px;
+    width: 250px;
+    margin-bottom: 3px;
 }
-.form input[type=text], .form select, .form textarea
+input[type=text], select, textarea
 {
     padding: 3px;
 }
+select {
+    width: 260px;
+}
 
-.form textarea {
+textarea {
     height: 200px;
+}
+span.header {
+    display: inline-block;
+    width: 150px;
 }
 
 ul.errors
@@ -164,6 +182,7 @@ background: url('../images/a4.gif') repeat-x top left;
 border-top: solid 1px #D0D4BB;
 padding: 1.0em 3.5em 1.0em 3.5em;
 font-size: 0.8em;
+font-family: 'Trebuchet MS';
 }
 .indent
 {
@@ -259,6 +278,7 @@ margin-left: 30px;
 background-color: black;
 padding: 4px 28px 4px 20px;
 min-height: 24px;
+font-family: 'Trebuchet MS';
 }
 .submenu a
 {
@@ -394,12 +414,6 @@ table
 border-collapse: collapse;
 }
 
-table.ticket_detail
-{
-padding: 5px;
-width: 100%;
-}
-
 table.tab
 {
 width:100%;
@@ -413,10 +427,17 @@ border-left: 5px solid #70571a;
 text-align: center;
 }
 
-table.recordlist
-{
+table.recordlist {
 font-size:11px;
 }
+
+table.ticket_detail td {
+padding-right: 10px;
+}
+table.ticket_detail h4 {
+width: 410px;
+}
+
 tr.record
 {
 border-bottom: 1px solid #ccc;
@@ -460,18 +481,6 @@ tr[onclick]:hover
 background-color: #ccc;
 }
 
-.list
-{
-    background-color: #eee;
-    margin-left: 16px;
-    width: 90%;
-}
-.scrolled_list
-{
-    height: 130px;
-    overflow: auto;
-}
-
 #tabs .ui-helper-reset
 {
     font-size: 80%;
@@ -497,3 +506,58 @@ span.red
     background-color: red;
     color: white;
 }
+
+.fblist
+{
+border: 1px solid #ccc;
+padding: 2px;
+margin-bottom: 5px;
+}
+.fblist input.autocomplete
+{
+border: 0;
+width: 90%;
+}
+
+.fblist div, .list div.checked, .cc {
+padding: 1px;
+background-color:#DDDDDD;
+border:1px solid #AAAAAA;
+-moz-border-radius-bottomleft:4px;
+-moz-border-radius-bottomright:4px;
+-moz-border-radius-topleft:4px;
+-moz-border-radius-topright:4px;
+-webkit-border-top-left-radius: 4px;
+-webkit-border-top-right-radius: 4px;
+-webkit-border-bottom-left-radius: 4px;
+-webkit-border-bottom-right-radius: 4px;
+margin:1px;
+padding-left: 3px;
+}
+
+.cc input {
+background-color: white;
+width: 227px;
+}
+.cc {
+display: inline-block;
+}
+
+.list div {
+padding: 1px;
+border: 1px solid transparent;
+margin: 1px;
+padding-left: 3px;
+line-height: 200%;
+}
+
+.fblist div img {
+vertical-align: text-top;
+cursor: pointer;
+padding-right: 2px;
+}
+
+.ac_results {
+font-size:11px;
+}
+

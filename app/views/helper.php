@@ -91,60 +91,84 @@ function humanDuration($ago)
     return floor($ago/(60*60*24))." days";
 }
 
-function listSelector($selector_id, $possible, $already)
+function checklist($id, $kv, $selected)
 {
-    $selector_id = str_replace(" ", "", $selector_id);
+    //output list
+    $out = "";
+    $out .= "<div class=\"list\" id=\"${id}__list\">";
+    foreach($kv as $key=>$value) {
+        $checked = "";
+        $label_class = "";
+        if(isset($selected[$key])) {
+            $checked = "checked=checked";
+            $label_class = "checked";
+        }
+        $name = "$id"."[$key]";
+        $out .= "<div class=\"$label_class\">";
+        $out .= "<input type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
+        $out .= $value;
+        $out .= "</div>";
+    }
+    $out .= "</div>";
+    echo $out;
+}
 
+
+function fblist($id, $kv, $selected)
+{
     $out = "";
 
-    $out .= "<div id=\"$selector_id\" class=\"listselector\">";
-    $out .= "<div id=\"${selector_id}_selected\" class=\"ls_selected list\" style=\"background-color: #fff\">";
-    foreach($possible as $value=>$name) {
-        $selected = "";
-        $cls = "hidden";
-        if(isset($already[$value])) {
-            $selected = "checked=checked";
-            $cls = "";
+    //output list editor
+    $out .= "<div class=\"fblist_container\" id=\"${id}__list\"><div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
+
+    //output script
+    $delete_url = fullbase()."/images/delete.png";
+    $script = "<script type='text/javascript'>$(document).ready(function() {";
+    $script .= "var ${id}__listdata = [";
+    $first = true;
+    $pre_selected ="";
+    foreach($kv as $key=>$value) {
+        $name = "$id"."[$key]";
+        if(isset($selected[$key])) {
+            $pre_selected .= "<div><img onclick=\"$(this).parent().remove();\" src=\"$delete_url\"/>".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
         }
-        $out .= "<div class=\"$cls\"><input type=\"checkbox\" $selected name=\"${selector_id}[]\" value=\"$value\" onclick=\"move(this);\"/> $name</div>";
-        
+        //$name = str_replace(array("\n", "\r"), "", htmlsafe($value[0]));
+        //$desc = str_replace(array("\n", "\r"), "", htmlsafe($value[1]));
+        if(!$first) {
+            $script .= ",\n";
+        }
+        $first = false;
+        $script .= "{ id: \"$key\", name: \"$value\", desc: \"\" }";
     }
+    $script .= "];";
+    $script .= <<<BLOCK
+    $("#${id}__list input.autocomplete").autocomplete(${id}__listdata, {
+        max: 9999999,
+        minChars: 0,
+        mustMatch: true,
+        matchContains: true,
+        width: 280,
+        formatItem: function(item) {
+            if(item.desc == "") return item.name; 
+            return item.name + " (" + item.desc + ")";
+        }
+    }).result(function(event, item) {
+        if(item != null) {
+            $(this).val("");
+            $(this).before("<div><img onclick=\"$(this).parent().remove();\" src=\"$delete_url\"/>"+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
+        }
+    });
+});</script>
+BLOCK;
+
+    $out .= $pre_selected;
+    $out .= "<input type='text' class='autocomplete' onfocus='$(\"#${id}__acnote\").fadeIn(\"slow\");' onblur='$(\"#${id}__acnote\").fadeOut(\"slow\");'/>";
+    $out .= $script;
+
     $out .= "</div>";
 
-    $scrolled = "";
-    if(count($possible) > 5) $scrolled = "scrolled_list";
-    $out .= "<div id=\"${selector_id}_possible\" class=\"ls_possible list $scrolled\">";
-    foreach($possible as $value=>$name) {
-        $cls = "";
-        if(isset($already[$value])) {
-            $cls = "hidden";
-        }
-        $out .= "<div class=\"$cls\"><input type=\"checkbox\" posvalue=\"$value\" onclick=\"move(this);\"/> $name</div>";
-    }
-    $out .= "</div>";
-
-    $out .= "<script type=\"text/javascript\">";
-    $out .= "function move(node) {";
-    $out .= "   var parents = $(node).parents('.listselector');";
-    $out .= "   //add to target\n";
-    $out .= "   if(node.checked) {";
-    $out .= "       //move up\n";
-    $out .= "       var value = $(node).attr('posvalue');";
-    $out .= "       var i = parents.find('.ls_selected input[value=\"'+value+'\"]');";
-    $out .= "       i.attr('checked', 'checked');";
-    $out .= "       $(node).removeAttr('checked');";
-    $out .= "       i.parent().show();";
-    $out .= "       $(node).parent().hide();";
-    $out .= "   } else {";
-    $out .= "       //move down\n";
-    $out .= "       var value = $(node).attr('value');";
-    $out .= "       $(node).removeAttr('checked');";
-    $out .= "       var i = parents.find('.ls_possible input[posvalue=\"'+value+'\"]');";
-    $out .= "       i.parent().show();";
-    $out .= "       $(node).parent().hide();";
-    $out .= "   }";
-    $out .= "}";
-    $out .= "</script>";
+    //display note
+    $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"color: #999; font-size: 9px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
 
     $out .= "</div>";
 
@@ -162,5 +186,8 @@ function nadstyle($nad)
     return "";
 }
 
-
+function htmlsafe($str)
+{
+    return htmlspecialchars($str, ENT_NOQUOTES, "UTF-8");
+}
 

@@ -7,35 +7,17 @@ class ViewerController extends Zend_Controller_Action
         $this->view->submenu_selected = "view";
     }
     
-/*
-    private function getCache($ticket_id) {
-        return new Cache("/tmp/goctiket.detail.".$ticket_id."_".config()->project_id);
-    }
-*/
-
     public function loaddetail()
     {
         $dirty_id = trim($_REQUEST["id"]);
         $id = (int)$dirty_id;
 
+
         if((string)$id !== $dirty_id) {
             //id that looks like non-id - forward to keyword search
             $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
         }
-/*
-        $c = $this->getCache($id);
-        if($c->isFresh(30)) { //This cache is mainly for users editing the ticket - 30 seconds should be enough
-            $detail = $c->get();
-        } else {
-            $model = new Tickets();
-            $detail = $model->getDetail($id);
-            $c->set($detail);
-        }
-        if($detail === "") {
-            $this->render("nosuchticket");
-            return;
-        }
-*/
+
         $model = new Tickets();
         $detail = $model->getDetail($id);
         if($detail === "") {
@@ -88,33 +70,39 @@ class ViewerController extends Zend_Controller_Action
         //schema, team
         $aka_model = new AKA();
         $model = new Schema();
-        $teams = array();
-        foreach($model->getteams() as $teamrec) {
-            $team = Footprint::parse($teamrec->team);
-            $teams[$team] = split(",", $teamrec->members);
-            $this->view->assignees[$team] = array();
+        $this->view->teams = $model->getteams();
+
+        //replace members (echism,kagross,cpipes) to more usable array
+        foreach($this->view->teams as $team) {
+            $members = explode(",", $team->members);
+            $new_members = array();
+            foreach($members as $member) {
+                $new_members[$member] = $aka_model->lookupName($member);
+            }
+            $team->members = $new_members;
         }
-        $this->view->teams = $teams;
-        $this->view->cc = array();
 
         //assignee, cc
-        foreach(split(" ", $detail->assignees) as $a) {
-            //FP somehow put CCs on assginee field... why!?!?
+        $this->view->assignees = array();
+        $this->view->cc = array();
+        foreach(explode(" ", $detail->assignees) as $a) {
+            //FP somehow put CCs on assginee field... 
             if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
                 $this->view->cc[] = substr($a, 3);
                 continue;
             }
-            $ass = Footprint::parse($a);
-            //FP somehow contains team names on assignee...  why!?!?
-            if(isset($teams[$ass])) {
-                continue;
+            //FP somehow contains team names on assignee... ignore it
+            $team_name = false;
+            foreach($this->view->teams as $team) {
+                if($team->team == $a) {
+                    $team_name = true;
+                    break;
+                }
             }
-            //now lookup real team for this person
-            $team = $this->lookupTeam($teams, $ass);
-            //lookup AKA
-            $aka = $aka_model->lookupName($ass);
-            if($aka !== null) $ass = $aka;
-            $this->view->assignees[$team][$a] = $ass;
+            if($team_name) continue;
+
+            //store to assignee list
+            $this->view->assignees[$a] = $aka_model->lookupName($a);
         }
 
         $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
@@ -126,15 +114,18 @@ class ViewerController extends Zend_Controller_Action
         return $detail;
     }
 
+/*
     public function lookupTeam($teams, $person)
     {
-        foreach($teams as $team=>$members) {
-            foreach($members as $member) {
+        dlog($teams);
+        foreach($teams as $team) {
+            foreach(split($team->members, ",") as $member) {
                 if($person == $member) return $team;
             }
         }
         return "Unknown Team";
     }
+*/
 
     public function editAction()
     {
@@ -178,8 +169,17 @@ class ViewerController extends Zend_Controller_Action
             $submit_phone = $_REQUEST["submitter_phone"];
             $submit_vo = $_REQUEST["submitter_vo"];
 
+            //consolidate assignee list
+            $assignees = array();
+            foreach($_REQUEST as $key=>$param) {
+                if(substr($key, 0, 5) == "team_") {
+                    foreach($param as $assignee=>$flag) {
+                        $assignees[] = $assignee;
+                    }
+                }
+            }
+
             //detail
-            $assignees = @$_REQUEST["assignees"]; //TODO - validate
             $ccs = @$_REQUEST["cc"]; //TODO - validate
             $description = trim($_REQUEST["description"]); //TODO - validate?
             $dest_vo = $_REQUEST["destination_vo"]; //TODO - validate
@@ -241,14 +241,9 @@ class ViewerController extends Zend_Controller_Action
                 
                     $footprint->submit();
                     header("Location: ".fullbase()."/viewer?id=".$ticket_id);
-/*
-                    $c = $this->getCache($ticket_id);
-                    $c->invalidate();
-*/
-
                     exit;
                 } catch(exception $e) {
-                    echo "Sorry, ticket update submission failed for some reason";
+                    echo "Sorry, ticket update submission failed for following reason";
                     echo $e;
                 }
             }
@@ -279,12 +274,12 @@ class ViewerController extends Zend_Controller_Action
 
         //notes
         $alldesc = $detail->alldescs;
-        $alldescs = split("Entered on", $alldesc);
+        $alldescs = explode("Entered on", $alldesc);
         $descs = array();
 
         foreach($alldescs as $desc) {
             if($desc == "") continue;
-            $desc_lines = split("\n", $desc);
+            $desc_lines = explode("\n", $desc);
             $info = trim($desc_lines[0]);
             $desc = strstr($desc, "\n");
 
@@ -309,9 +304,9 @@ class ViewerController extends Zend_Controller_Action
         //only show internal activity for non-guest users (since it contains email address)
         if(user()->getPersonID() !== null) {
             //history (internal activity)
-            $history = split("\n", $detail->history);
+            $history = explode("\n", $detail->history);
             foreach($history as $hist) {
-                $fields = split("____________history", $hist);
+                $fields = explode("____________history", $hist);
 
                 //parse out fields
                 $time = strtotime($fields[0].$fields[1]." GMT"); //set GMT so that strtotime will parse it as FP timezone (should be GMT)
@@ -330,7 +325,6 @@ class ViewerController extends Zend_Controller_Action
         krsort($descs);
         $this->view->descs = $descs;
     }
-
 }
 
 

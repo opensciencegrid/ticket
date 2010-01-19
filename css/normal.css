@@ -294,6 +294,7 @@ padding-right: 7px;
 {
 text-decoration: underline;
 }
+
 .submenu span.selected a
 {
 color: #fff;
@@ -471,7 +472,8 @@ td.flag_black { background-image: url('../images/tag_black.png'); }
 td.flag_orange { background-image: url('../images/tag_orange.png'); }
 td.flag_lime { background-image: url('../images/tag_lime.png'); }
 
-tr[onclick]
+tr[onclick],
+div[onclick]
 {
 cursor: pointer;
 }
@@ -561,3 +563,19 @@ padding-right: 2px;
 font-size:11px;
 }
 
+.selected .header {
+background-image: url('../images/pointer.png');
+background-repeat: no-repeat;
+background-position: 4px 3px;
+background-color: #69f;
+padding-left: 23px;
+color: white;
+}
+
+.selected pre {
+color: #369;
+}
+
+.header:hover {
+background-color: gray;
+}

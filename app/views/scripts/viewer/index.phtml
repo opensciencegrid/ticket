@@ -407,7 +407,10 @@ function gotoedit()
         
         if($type == "description") {
             echo "<div class='update_description'>";
-            echo "<div class='header'>$human_time by <b>$by</b></div>";
+            $url = selfURL();
+            $anchor = $time;
+            $alink = "<span class=\"sidenote\"><a name=\"$anchor\" href=\"$url#$anchor\"><img src=\"images/link.png\"/></a></span>";
+            echo "<div class='header'>$alink $human_time by <b>$by</b></div>";
             $lines_raw = split("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {

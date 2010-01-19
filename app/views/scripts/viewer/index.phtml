@@ -406,8 +406,10 @@ function gotoedit()
         }
         
         if($type == "description") {
-            echo "<div class='update_description'>";
-            echo "<div class='header'>$human_time by <b>$by</b></div>";
+            $url = selfURL();
+            $anchor = $time;
+            echo "<div class='update_description' onclick=\"document.location='$url#$anchor'; reset_anchor();\">";
+            echo "<div class='header'><a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b></div>";
             $lines_raw = split("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {
@@ -443,4 +445,18 @@ function gotoedit()
     }
     ?>
 </div>
+<script type="text/javascript">
+function reset_anchor() {
+    $("#updates .selected").removeClass("selected");
+
+    var urls = document.location.toString().split('#'); 
+    var anchor = urls[1];
+    if(anchor) {
+        $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
+    }
+}
+$(document).ready(function() {
+    reset_anchor();
+});
+</script>
 <?include("app/views/scripts/footer.phtml");?>

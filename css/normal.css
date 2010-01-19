@@ -199,7 +199,7 @@ font-family: 'Trebuchet MS';
 
 .sidenote
 {
-    width: 350px;
+    padding-right: 10px;
     float: right;
 }
 
@@ -294,6 +294,7 @@ padding-right: 7px;
 {
 text-decoration: underline;
 }
+
 .submenu span.selected a
 {
 color: #fff;
@@ -471,7 +472,8 @@ td.flag_black { background-image: url('../images/tag_black.png'); }
 td.flag_orange { background-image: url('../images/tag_orange.png'); }
 td.flag_lime { background-image: url('../images/tag_lime.png'); }
 
-tr[onclick]
+tr[onclick],
+div[onclick]
 {
 cursor: pointer;
 }
@@ -560,4 +562,26 @@ padding-right: 2px;
 .ac_results {
 font-size:11px;
 }
+
+#updates .header:hover {
+background-color: gray;
+}
+
+#updates .selected .header {
+background-image: url('../images/pointer.png');
+background-repeat: no-repeat;
+background-position: 4px 3px;
+background-color: #69f;
+padding-left: 23px;
+color: white;
+}
+
+#updates .selected {
+background: #b2ccff url('../images/selected_back.gif') repeat-x;
+-moz-border-radius-bottomright: 8px;
+-moz-border-radius-bottomleft: 8px;
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
+}
+
 

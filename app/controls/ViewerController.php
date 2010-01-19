@@ -216,6 +216,7 @@ class ViewerController extends Zend_Controller_Action
                     //detail
                     $footprint->resetAssignee();
                     foreach($assignees as $assignee) {
+			dlog($assignee);
                         $footprint->addAssignee($assignee);
                     }
                     $footprint->resetCC();

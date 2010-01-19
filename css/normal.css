@@ -563,11 +563,11 @@ padding-right: 2px;
 font-size:11px;
 }
 
-.header:hover {
+#updates .header:hover {
 background-color: gray;
 }
 
-.selected .header {
+#updates .selected .header {
 background-image: url('../images/pointer.png');
 background-repeat: no-repeat;
 background-position: 4px 3px;
@@ -576,7 +576,7 @@ padding-left: 23px;
 color: white;
 }
 
-.selected {
+#updates .selected {
 background: #b2ccff url('../images/selected_back.gif') repeat-x;
 -moz-border-radius-bottomright: 8px;
 -moz-border-radius-bottomleft: 8px;

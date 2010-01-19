@@ -563,6 +563,10 @@ padding-right: 2px;
 font-size:11px;
 }
 
+.header:hover {
+background-color: gray;
+}
+
 .selected .header {
 background-image: url('../images/pointer.png');
 background-repeat: no-repeat;
@@ -572,10 +576,12 @@ padding-left: 23px;
 color: white;
 }
 
-.selected pre {
-color: #369;
+.selected {
+background: #b2ccff url('../images/selected_back.gif') repeat-x;
+-moz-border-radius-bottomright: 8px;
+-moz-border-radius-bottomleft: 8px;
+-webkit-border-bottom-left-radius: 8px;
+-webkit-border-bottom-right-radius: 8px;
 }
 
-.header:hover {
-background-color: gray;
-}
+

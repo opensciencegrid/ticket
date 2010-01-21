@@ -90,7 +90,7 @@ color: #444;
 margin-bottom: 3px;
 }
 
-p.errors, p.warning, a.button
+p.errors, p.warning, a.button, ul.errors
 {
 -moz-border-radius-topleft: 5px;
 -moz-border-radius-topright: 5px;
@@ -141,7 +141,6 @@ span.header {
     width: 150px;
 }
 
-ul.errors
 {
     color: red;
     margin-left:40px;
@@ -152,7 +151,7 @@ dt
     padding-top: 5px;
 }
 
-p.errors
+p.errors, ul.errors
 {
     margin: 0px;
     margin-bottom: 5px;
@@ -164,6 +163,13 @@ p.errors
     background-repeat: no-repeat;
     background-position: 5px 10px;
 }
+ul.errors {
+padding-top: 5px;
+padding-bottom: 5px;
+list-style: none;
+background-position: 5px 5px;
+}
+
 p.warning
 {
     background-image: url('../images/error.png');

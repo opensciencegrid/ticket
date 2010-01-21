@@ -51,7 +51,7 @@ function gotoedit()
         <h3>Ticket Detail</h3>
 
         <table class="ticket_detail" width="100%">
-        <tr><td width="40%">
+        <tr><td width="430px">
 
             <h4>Submitter</h4>
             <span class="header">First Name:</span>
@@ -406,9 +406,8 @@ function gotoedit()
         }
         
         if($type == "description") {
-            $url = selfURL();
             $anchor = $time;
-            echo "<div class='update_description' onclick=\"document.location='$url#$anchor'; reset_anchor();\">";
+            echo "<div class='update_description' onclick=\"document.location='#$anchor'; reset_anchor();\">";
             echo "<div class='header'><a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b></div>";
             $lines_raw = split("\n", $content);
             $lines = array();

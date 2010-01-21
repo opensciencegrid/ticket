@@ -9,9 +9,14 @@ class OimController extends GOCServiceController
     }
 
     function addElements($form) {
-        //nothing to add
+        $elem = new Zend_Form_Element_Text('ref');
+        $elem->setLabel("URL");
+        $elem->setDescription("URL that relates to this ticket");
+        $elem->setValue(@$_REQUEST["ref"]);
+        $form->addElement($elem);
     }
     function processFields($form, $footprint) {
-        //nothing to pull
+        $url = $form->getValue("ref");
+        $footprint->addMeta("URL: ".$url);
     }
 } 

@@ -583,5 +583,17 @@ background: #b2ccff url('../images/selected_back.gif') repeat-x;
 -webkit-border-bottom-left-radius: 8px;
 -webkit-border-bottom-right-radius: 8px;
 }
+.form .description {
+color: gray;
+padding-left: 10px;
+background-image: url('../images/dot.png');
+background-repeat: no-repeat;
+background-position: 8px 8px;
+padding-left: 20px;
+}
 
-
+.form label.required {
+background-image: url('../images/required_field.png');
+background-repeat: no-repeat;
+padding-left: 15px;
+}

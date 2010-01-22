@@ -408,8 +408,8 @@ function gotoedit()
         if($type == "description") {
             $url = selfURL();
             $anchor = $time;
-            echo "<div class='update_description' onclick=\"document.location='$url#$anchor'; reset_anchor();\">";
-            echo "<div class='header'><a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b></div>";
+            echo "<div class='update_description'>";
+            echo "<div class='header' onclick=\"document.location='$url#$anchor'; reset_anchor();\"><a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b></div>";
             $lines_raw = split("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {

@@ -221,7 +221,7 @@ function gotoedit()
                 foreach($ids as $id) {
                     $team = $teams[$id];
                     echo "<h5>".Footprint::parse($team->team)."</h5>";
-                    if(sizeof($team->members) > 5) {
+                    if(sizeof($team->members) > 7) {
                         echo fblist("team_$id", $team->members, $assignees);
                     } else {
                         echo checklist("team_$id", $team->members, $assignees);
@@ -230,11 +230,11 @@ function gotoedit()
             }
             echo "<table width=\"100%\">";
             echo "<tr><td>";
-            showTeams($this->teams, $this->assignees, array(0,1,3));
+            showTeams($this->teams, $this->assignees, config()->editor_teams[0]);
             echo "</td><td>";
-            showTeams($this->teams, $this->assignees, array(6,2));
+            showTeams($this->teams, $this->assignees, config()->editor_teams[1]);
             echo "</td><td>";
-            showTeams($this->teams, $this->assignees, array(4,5));
+            showTeams($this->teams, $this->assignees, config()->editor_teams[2]);
             echo "</td></tr>";
             echo "</table>";
             ?>

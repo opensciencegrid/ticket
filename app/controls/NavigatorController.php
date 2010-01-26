@@ -110,26 +110,29 @@ class NavigatorController extends Zend_Controller_Action
         
         $schema_model = new Schema();
         $teams = $schema_model->getteams();
-        //find suppor centers
-        $fp_scs = array();
-        foreach($teams as $team) {
-            $fp_scs = array_merge($fp_scs, split(",", $team->members));
-        }
 
         //group tickets by certain field id
         $grouped_tickets = array();
         foreach($tickets as $ticket) {
             $token = Footprint::parse($ticket->$type);
             if($type == "mrassignees") {
-                //assignees are wierd
+                //assignees are wierd (need to filter by certain team)
+
+                $fp_goc = array();
+                foreach($teams as $id=>$team) {
+                    if(in_array($id, config()->navigator_assignee_list)) {
+                        $fp_goc = array_merge($fp_goc, split(",", $team->members));
+                    }
+                }
+
                 foreach(split(" ", $token) as $a) {
                     if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
                         //ignore CCs
                         continue;
                     }
 
-                    //ignore non-goc assignee er
-                    if(!in_array($a, $fp_scs)) {
+                    //ignore non-goc assignee
+                    if(!in_array($a, $fp_goc)) {
                         continue;
                     }
 

@@ -570,8 +570,8 @@ padding-right: 2px;
 font-size:11px;
 }
 
-#updates .header:hover {
-background-color: gray;
+#updates .header img.anchor_img:hover {
+cursor: pointer;
 }
 
 #updates .selected .header {

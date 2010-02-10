@@ -26,9 +26,6 @@ if($this->ticket_type == "Security") {
     echo "<p class=\"errors\">This is a security notification ticket which is only accecible for registered OIM users. Please do not forward the content of this ticket to anyone.</p>";
 }
 
-dlog($this->assignees);
-dlog($this->teams);
-
 ?>
 
 <script type="text/javascript">
@@ -369,20 +366,23 @@ function gotoedit()
 
 <div id="updates" style="clear: both;">
     <?
-    $sort_order = "up";
+    $sort_order = "down";
     if($_REQUEST["sort"]) {
         $sort_order = $_REQUEST["sort"];
     }
 
-    if($sort_order == "up") {
-        $flip_url = fullurl()."&sort=down";
-        arsort($this->descs);
+    $flip_url = str_replace(array("&sort=up", "&sort=down"), "", fullurl());
+    if($sort_order == "down") {
+        $flip_url .= "&sort=up";
+        $flip_button = "images/down.png";
+        krsort($this->descs, SORT_NUMERIC);
     } else {
-        $flip_url = fullurl()."&sort=up";
-        asort($this->descs);
+        $flip_url .= "&sort=down";
+        $flip_button = "images/up.png";
+        ksort($this->descs, SORT_NUMERIC);
     }
     ?>
-    <h3>Updates<a href="<?=$flip_url?>"><img style="float: right;" src="images/up.png"/></a></h3>
+    <h3>Updates<a href="<?=$flip_url?>"><img style="float: right;" src="<?=$flip_button?>"/></a></h3>
     <p>
         <?
         $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;

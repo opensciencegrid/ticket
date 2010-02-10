@@ -85,11 +85,11 @@ function sort_modified_down($a, $b)
             if($it->sortdir == "down") { 
                 $url = noquery()."?sortby=$key&sortdir=up";
                 echo "<a href=\"$url\">".$name."</a>";
-                echo "<img align=\"baseline\" src=\"".fullbase()."/images/bullet_arrow_down.png\" alt=\"down\"/>";
+                echo "<img align=\"top\" src=\"".fullbase()."/images/down.png\" alt=\"down\"/>";
             } else {
                 $url = noquery()."?sortby=$key&sortdir=down";
                 echo "<a href=\"$url\">".$name."</a>";
-                echo "<img align=\"baseline\" src=\"".fullbase()."/images/bullet_arrow_up.png\" alt=\"up\"/>";
+                echo "<img align=\"top\" src=\"".fullbase()."/images/up.png\" alt=\"up\"/>";
             }
         } else {
             $url = noquery()."?sortby=$key";

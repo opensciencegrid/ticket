@@ -40,13 +40,15 @@
 function submenutitle($id)
 {
     switch($id) {
-    case "open":
+      case "open":
         return "Submit A Ticket";
-    case "view":
+      case "view":
         return "View Tickets";
-    case "admin":
-        return "Administration";
-    }
+      case "admin":
+        return "GOC Staff Tasks";
+      case "securitytasks":
+        return "Security Staff Tasks";
+     }  
 }
 ?>
 <div class="submenu" id="submenu_rsv">
@@ -54,6 +56,9 @@ function submenutitle($id)
     <span id="submenu_view"><a href="<?=base()?>/navigator"><?=submenutitle("view")?></a></span>
     <?if(user()->allows("admin")) {?>
         <span id="submenu_admin"><a href="<?=base()?>/admin"><?=submenutitle("admin")?></a></span>
+    <?}?>
+    <?if(user()->allows("notify")) {?>
+        <span id="submenu_securitytasks"><a href="<?=base()?>/securitytasks"><?=submenutitle("securitytasks")?></a></span>
     <?}?>
     <script type="text/javascript">
         $("#submenu_<?=$this->submenu_selected?>").addClass("selected");

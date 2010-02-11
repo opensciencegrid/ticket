@@ -60,23 +60,9 @@ width: 300px;
 <br/>
 <h3>OSG GOC staff</h3>
 <div class="bitindent">
-    <p>You are authorized to do following as OSG GOC Staff...</p>
+    <p>You are authorized to submit these additional types of tickets as OSG GOC Staff...</p>
     <div>
-    <p><a href="ra">Send certificate request email</a></p>
     <p><a href="rsv">Submit RSV related trouble ticket</a></p>
-    <p><a href="notify">Send Notification Email/RSS</a></p>
-    </div>
-</div>
-<?}?> 
-
-<?if(user()->allows("notify")) {?>
-<br/>
-<h3>OSG security staff</h3>
-<div class="bitindent">
-    <p>You are authorized to do following as OSG Security Staff...</p>
-    <div>
-    <p><a href="securityannounceticket">Create Security Notification Ticket</a></p>
-    <p><a href="simplenotify">Send Notification Email</a></p>
     </div>
 </div>
 <?}?> 

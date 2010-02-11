@@ -1,12 +1,40 @@
 <?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+<style>
+table.menu {
+margin: 0px;
+padding: 0px;
+}
+table.menu td {
+padding-right: 20px;
+}
+table.menu h4 {
+width: 300px;
+}
+</style>
 
-<h3>Administration</h3>
+<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+<br/>
+<h3>GOC Staff Tasks</h3>
 <div class="bitindent">
-    <p>You are authorized to do following as OSG GOC staff</p>
-    <p><a href="finderror">Analyze Footprint related errors</a></p>
-    <p><a href="group">Show Ticket Clustering</a></p>
-    <p><a href="admin/ggussubmitform">Resend GGUS XML</a></p>
+    <table class="menu">
+    <tr>
+        <td>
+        <h4>Usual Notifications</h4>
+         <p><a href="notify">Send Notification Email/RSS</a></p>
+        </td>
+
+        <td>
+        <h4>RA Agent Related Tasks</h4>
+         <p><a href="ra">Send certificate request email</a></p>
+        </td>
+
+        <td>
+        <h4>GOCTicket Administrative Tasks</h4>
+         <p><a href="finderror">Analyze Footprint related errors</a></p>
+         <p><a href="group">Show Ticket Clustering</a></p>
+        </td>
+    </tr>
+    </table>
 </div>
 
 <?include("app/views/scripts/footer.phtml");?>

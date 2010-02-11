@@ -1,0 +1,27 @@
+<?include("app/views/scripts/header.phtml");?>
+<style>
+table.menu {
+margin: 0px;
+padding: 0px;
+}
+table.menu td {
+padding-right: 20px;
+}
+table.menu h4 {
+width: 300px;
+}
+</style>
+
+<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+<br/>
+<h3>OSG Security Staff Tasks</h3>
+<div class="bitindent">
+    <br/>
+    <p>You are authorized to do following as OSG Security Staff...</p>
+    <div>
+    <p><a href="securityannounceticket">Create Security Notification Ticket</a></p>
+    <p><a href="simplenotify">Send Notification Email</a></p>
+    </div>
+</div>
+
+<?include("app/views/scripts/footer.phtml");?>

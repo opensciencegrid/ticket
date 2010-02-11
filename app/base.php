@@ -91,7 +91,7 @@ function signedmail($to, $from, $subject, $body, $header = "")
     }
 }
 
-function fpcall($function, $param)
+function fpCall($function, $param)
 {
     $client = new SoapClient(null, array('location' => config()->fp_soap_location, 'uri' => config()->fp_soap_uri, 'connection_timeout'=>5));
     $msg = "";
@@ -101,6 +101,7 @@ function fpcall($function, $param)
             return $ret;
         } catch (SoapFault $e) {
             $msg = $e->getMessage();
+
             /*
             if($msg == "Could not connect to host") {
                 //this happens when server is gone - due to like n/w issue -- bail!
@@ -109,6 +110,12 @@ function fpcall($function, $param)
             } 
             */
             elog("fpcall: SoapFault (trying again) -- ".$msg);
+
+            if(strpos($msg, "Wide character in subroutine entry at /usr/local/footprints//cgi/SUBS/send_mail.pl") !== false) {
+                elog("ignoring this error - this is a known FP issue - fpcall itself was ok");
+                return;
+            }
+
             sleep(1);
         }
     }

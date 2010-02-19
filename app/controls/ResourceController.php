@@ -14,6 +14,9 @@ class ResourceController extends BaseController
 
     public function submitAction()
     {
+        slog("Resource form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
         $issue_element = $this->getIssueElement($form);
         $issue_element->setRequired(true);
@@ -26,7 +29,6 @@ class ResourceController extends BaseController
             //$resource_id = $form->getValue($issue_element_name);
             $resource_id = $issue_element->getValue();
             $rs_model = new ResourceSite();
-            $sc_id = $rs_model->fetchSCID($resource_id);
             $resource_model = new Resource();
             $resource_name = $resource_model->fetchName($resource_id);
 
@@ -42,9 +44,10 @@ class ResourceController extends BaseController
             } else {
                 $footprint->setDestinationVOFromResourceID($resource_id);
 
-                if($resource === false) {
+                $sc_id = $rs_model->fetchSCID($resource_id);
+                if(!$sc_id) {
                     $scname = "OSG-GOC";
-                    $footprint->addMeta("Couldn't find the support center that supports this resource. Please see finderror page for more detail.");
+                    $footprint->addMeta("Couldn't find the support center that supports this resource. Please see finderror page for more detail.\n");
                 } else {
                     //lookup SC name form sc_id
                     $sc_model = new SC;
@@ -54,6 +57,7 @@ class ResourceController extends BaseController
 
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);
+                    $footprint->addMeta("Assigned support center: $scname which supports this resource\n");
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }

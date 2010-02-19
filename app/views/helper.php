@@ -91,7 +91,7 @@ function humanDuration($ago)
     return floor($ago/(60*60*24))." days";
 }
 
-function checklist($id, $kv, $selected)
+function checklist($id, $kv, $selected, $extrainfo)
 {
     //output list
     $out = "";
@@ -106,6 +106,20 @@ function checklist($id, $kv, $selected)
         $name = "$id"."[$key]";
         $out .= "<div class=\"$label_class\">";
         $out .= "<input type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
+
+        //add some extra info .. if provided for this key
+        if(isset($extrainfo[$key])) {
+            list($name, $url) = $extrainfo[$key];
+            
+            $value .= "<span class=\"sidenote\">";
+            if($url !== null) {
+                $value .= "<a target=\"${key}_${name}\" href=\"$url\">$name</a>";
+            } else {
+                $value .= $name;
+            }
+            $value .= "</span>";
+        }
+
         $out .= $value;
         $out .= "</div>";
     }
@@ -132,8 +146,6 @@ function fblist($id, $kv, $selected)
         if(isset($selected[$key])) {
             $pre_selected .= "<div><img onclick=\"$(this).parent().remove();\" src=\"$delete_url\"/>".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
         }
-        //$name = str_replace(array("\n", "\r"), "", htmlsafe($value[0]));
-        //$desc = str_replace(array("\n", "\r"), "", htmlsafe($value[1]));
         if(!$first) {
             $script .= ",\n";
         }

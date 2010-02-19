@@ -105,11 +105,25 @@ class ViewerController extends Zend_Controller_Action
             $this->view->assignees[$a] = $aka_model->lookupName($a);
         }
 
+
         $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
         $this->view->nad = date("Y-m-d", strtotime($detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p));
         $this->view->next_action = $detail->ENG__bNext__bAction__bItem;
         $this->view->ready_to_close = $detail->Ready__bto__bClose__Q;
         $this->view->ticket_type = Footprint::parse($detail->Ticket__uType);
+
+        $model = new TX();
+        $this->view->txlinks = array();
+        try {
+            foreach($model->getLinks($id) as $txid=>$tid) {
+                list($fpid, $url) = config()->lookupFPID($txid, $tid);
+                if($fpid !== null) {
+                    $this->view->txlinks[$fpid] = array($tid, $url);
+                }
+            }
+        } catch (Exception $e) {
+            elog("Failed to connect to TX db - ignoring");
+        }
 
         return $detail;
     }

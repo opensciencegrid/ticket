@@ -52,3 +52,29 @@ function gocdb() {
     return $g_gocdb; 
 }
 
+$g_txdb = null;
+function connect_txdb()
+{
+    global $g_txdb;
+
+    $db = Zend_Db::factory(config()->db_type, config()->tx_db_params);
+    $db->setFetchMode(Zend_Db::FETCH_OBJ);
+
+    //profile db via firebug
+    if(config()->debug) {
+        $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
+        $profiler->setEnabled(true);
+        $db->setProfiler($profiler);
+    }
+
+    $g_txdb = $db;
+}
+
+function txdb() { 
+    global $g_txdb; 
+    if($g_txdb == null) {
+        connect_txdb();
+    }
+    return $g_txdb; 
+}
+

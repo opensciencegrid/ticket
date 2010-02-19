@@ -214,24 +214,24 @@ function gotoedit()
 
             <h4>Assignees:</h4>
             <?
-            function showTeams($teams, $assignees, $ids) {
+            function showTeams($teams, $assignees, $ids, $txlinks) {
                 foreach($ids as $id) {
                     $team = $teams[$id];
                     echo "<h5>".Footprint::parse($team->team)."</h5>";
                     if(sizeof($team->members) > 7) {
                         echo fblist("team_$id", $team->members, $assignees);
                     } else {
-                        echo checklist("team_$id", $team->members, $assignees);
+                        echo checklist("team_$id", $team->members, $assignees, $txlinks);
                     }
                 }
             }
             echo "<table width=\"100%\">";
             echo "<tr><td>";
-            showTeams($this->teams, $this->assignees, config()->editor_teams[0]);
+            showTeams($this->teams, $this->assignees, config()->editor_teams[0], $this->txlinks);
             echo "</td><td>";
-            showTeams($this->teams, $this->assignees, config()->editor_teams[1]);
+            showTeams($this->teams, $this->assignees, config()->editor_teams[1], $this->txlinks);
             echo "</td><td>";
-            showTeams($this->teams, $this->assignees, config()->editor_teams[2]);
+            showTeams($this->teams, $this->assignees, config()->editor_teams[2], $this->txlinks);
             echo "</td></tr>";
             echo "</table>";
             ?>

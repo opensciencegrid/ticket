@@ -30,9 +30,6 @@ class RaController extends BaseController
             return;
         }
 
-        slog("RA form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
 
         if($_REQUEST["req_type"] == "host") {

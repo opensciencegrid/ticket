@@ -16,9 +16,6 @@ class SecurityController extends BaseController
 
     public function submitAction()
     {
-        slog("Security form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);

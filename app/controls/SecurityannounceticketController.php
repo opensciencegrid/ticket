@@ -15,9 +15,6 @@ class SecurityAnnounceTicketController extends BaseController
 
     public function submitAction()
     {
-        slog("Security Announcements form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);

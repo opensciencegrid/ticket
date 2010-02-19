@@ -14,9 +14,6 @@ class OtherController extends BaseController
 
     public function submitAction()
     {
-        slog("'Other Issue' form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);

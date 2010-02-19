@@ -15,9 +15,6 @@ class BdiiController extends BaseController
 
     public function submitAction()
     {
-        slog("BDII form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);

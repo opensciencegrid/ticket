@@ -14,9 +14,6 @@ class ResourceController extends BaseController
 
     public function submitAction()
     {
-        slog("Resource form submitted with following requests");
-        slog(print_r($_REQUEST, true));
-
         $form = $this->getForm();
         $issue_element = $this->getIssueElement($form);
         $issue_element->setRequired(true);

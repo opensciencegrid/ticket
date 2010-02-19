@@ -9,8 +9,11 @@ function greet()
     slog('----------------------------------------------------------------------');
     slog(config()->app_name. ' session starting.. '.$_SERVER["REQUEST_URI"]);
     if(config()->debug) { 
-        slog("Dumping $_REQUEST object");
+        slog("Dumping request object");
         slog(print_r($_REQUEST, true)); 
+    } else {
+        //if not debug, only dump POST object
+        slog(print_r($_POST, true)); 
     }
 }
 

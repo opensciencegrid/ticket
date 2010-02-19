@@ -19,6 +19,7 @@ class ResourceController extends BaseController
             $issue_element = $this->getIssueElement($form);
             $issue_element->setRequired(true);
         } catch (exception $e) {
+            elog("didn't receive any form data - maybe user's browser has issue"); 
             $this->view->content = "We did not receive necessary form data.";
             $this->view->content .= "<pre>".print_r($_REQUEST, true)."</pre>";
             $this->view->content .= "<pre>".$e->getMessage()."</pre>";

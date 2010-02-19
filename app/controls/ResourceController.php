@@ -15,17 +15,16 @@ class ResourceController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
-        try {
-            $issue_element = $this->getIssueElement($form);
-            $issue_element->setRequired(true);
-        } catch (exception $e) {
+        $issue_element = $this->getIssueElement($form);
+        if($issue_element === null) {
             elog("didn't receive any form data - maybe user's browser has issue"); 
-            $this->view->content = "We did not receive necessary form data.";
+            $this->view->content = "<p>We did not receive necessary form data.</p>";
+            $this->view->content .= "<p>Following is everything I got from your browser..</p>";
             $this->view->content .= "<pre>".print_r($_REQUEST, true)."</pre>";
-            $this->view->content .= "<pre>".$e->getMessage()."</pre>";
             $this->render("error/error", null, true);
             return;
         }
+        $issue_element->setRequired(true);
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
@@ -88,11 +87,13 @@ class ResourceController extends BaseController
     public function getIssueElement($form)
     {
         //make one of resource_issue field required based on resource_type selection
-        $resource_type = $_REQUEST["resource_type"];
-        $issue_element_name = "resource_id_with_issue_$resource_type";
-        $issue_element = $form->getElement($issue_element_name);
-        return $issue_element;
-
+        if(isset($_REQUEST["resource_type"])) {
+            $resource_type = $_REQUEST["resource_type"];
+            $issue_element_name = "resource_id_with_issue_$resource_type";
+            $issue_element = $form->getElement($issue_element_name);
+            return $issue_element;
+        }
+        return null;
     }
 
     private function getForm()

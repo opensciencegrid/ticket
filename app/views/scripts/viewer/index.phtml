@@ -128,13 +128,13 @@ function gotoedit()
                 <div class="ccarea">
                     <?
                     foreach($this->cc as $cc) {
-                        echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+                        echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"images/delete.png\"/></a></div>";
                     }
                     ?>
                     <script type="text/javascript">
                     function addcc(node)
                     {
-                        var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"<?=fullbase()?>/images/delete.png\"/></a></div>";
+                        var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"images/delete.png\"/></a></div>";
                         node.append(template);
                         setup_cc();
                     }

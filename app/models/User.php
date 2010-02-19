@@ -11,7 +11,7 @@ class User
         $this->dn = $dn;
         $this->dn_id = null;
         $this->contact_id = null;
-        $this->contact_fullname = "Guest";
+        $this->contact_name = "Guest";
         $this->contact_email = "";
         $this->contact_phone = "";
         $this->timezone = "UTC";
@@ -78,7 +78,6 @@ class User
             $this->contact_phone = $row->primary_phone;
             $this->timezone = $row->timezone;
         } else {
-            $this->contact_name = "Guest";
             slog("DN: $dn doesn't exist in oim");
         }
     }

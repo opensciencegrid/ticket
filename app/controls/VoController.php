@@ -14,6 +14,9 @@ class VoController extends BaseController
 
     public function submitAction()
     {
+        slog("VO form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
 
         if($form->isValid($_POST)) {

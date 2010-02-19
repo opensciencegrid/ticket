@@ -14,6 +14,9 @@ class RsvController extends BaseController
 
     public function submitAction()
     {
+        slog("RSV form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
         $issue_element = $this->getIssueElement($form);
         $issue_element->setRequired(true);

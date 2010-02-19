@@ -15,15 +15,18 @@ class SecurityAnnounceTicketController extends BaseController
 
     public function submitAction()
     {
+        slog("Security Announcements form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
-	    $footprint->addMeta("Opening security announcement ticket with normal priority.");
+            $footprint->addMeta("Opening security announcement ticket with normal priority.");
 
             //security ticket is assigned to rob - and CC Kyle
-	    $footprint->addAssignee("rquick", true);
-	    $footprint->addAssignee("kagross");
+            $footprint->addAssignee("rquick", true);
+            $footprint->addAssignee("kagross");
 
             $footprint->setTicketType("Security_Notification");
             $footprint->setTitle($form->getValue('title'));

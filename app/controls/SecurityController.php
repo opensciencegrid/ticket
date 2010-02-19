@@ -16,6 +16,9 @@ class SecurityController extends BaseController
 
     public function submitAction()
     {
+        slog("Security form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
@@ -28,8 +31,8 @@ class SecurityController extends BaseController
                 $footprint->addMeta("Opening ticket with normal priority.");
             }
             //security ticket is assigned to rob - and CC Kyle
-	    $footprint->addAssignee("rquick", true); 
-	    $footprint->addAssignee("kagross");
+            $footprint->addAssignee("rquick", true); 
+            $footprint->addAssignee("kagross");
 
             $footprint->setTicketType("Security");
             $footprint->setTitle($form->getValue('title'));

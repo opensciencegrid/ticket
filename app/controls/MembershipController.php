@@ -14,6 +14,9 @@ class MembershipController extends BaseController
 
     public function submitAction()
     {
+        slog("Membership form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
 
         //make vo_id_requested required if voknown is selected

@@ -26,6 +26,9 @@ class NotifyController extends BaseController
             return;
         }
 
+        slog("Notify form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $do_rss = false;
         if($_REQUEST["rss"] == 1) { $do_rss = true; }
 

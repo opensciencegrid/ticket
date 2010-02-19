@@ -26,6 +26,9 @@ class SimplenotifyController extends BaseController
             return;
         }
 
+        slog("Simple Notify form submitted with following requests");
+        slog(print_r($_REQUEST, true));
+
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $this->view->detail = "<h2>Process Detail</h2><br/>";

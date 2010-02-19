@@ -15,8 +15,16 @@ class ResourceController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
-        $issue_element = $this->getIssueElement($form);
-        $issue_element->setRequired(true);
+        try {
+            $issue_element = $this->getIssueElement($form);
+            $issue_element->setRequired(true);
+        } catch (exception $e) {
+            $this->view->content = "We did not receive necessary form data.";
+            $this->view->content .= "<pre>".print_r($_REQUEST, true)."</pre>";
+            $this->view->content .= "<pre>".$e->getMessage()."</pre>";
+            $this->render("error/error", null, true);
+            return;
+        }
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);

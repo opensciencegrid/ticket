@@ -65,7 +65,7 @@ class Footprint
     public function setSubmitter($v) { $this->submitter = $v; $this->b_submitter = true; }
     public function setName($v) { 
         //split first name and the last name
-        $pos = strpos($v, " ");
+        $pos = strpos(trim($v), " ");
         if($pos === false) {
             $first_name = $v;
             $last_name = "";

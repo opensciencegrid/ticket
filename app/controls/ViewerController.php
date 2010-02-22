@@ -46,7 +46,7 @@ class ViewerController extends Zend_Controller_Action
                 return null;
             }
         }
-        
+
         //submitter 
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;
         $this->view->submitter_fname = $detail->First__bName;

@@ -53,6 +53,16 @@ class Schema
     {
         return $this->cache("teams");
     }
+    public function getteammembers($team_name)
+    {
+        $teams = $this->getteams();
+        foreach($teams as $team) {
+            if($team->team == $team_name) {
+                return split(",", $team->members);
+            }
+        }
+        return null;
+    }
 
     public function getvos()
     {

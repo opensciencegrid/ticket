@@ -2,15 +2,16 @@
 
 class Tickets
 {
+    public $closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";
     public function getopen()
     {
-        $ret = $this->dosearch("where mrSTATUS not in ('Closed', '_DELETED_', '_SOLVED_', 'Resolved') order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS not in ".$this->closed_status." order by mrDEST, mrID DESC");
         return $ret;
     }
     public function getclosed($start_time)
     {
         $start = date("Y-m-d", $start_time);
-        $ret = $this->dosearch("where mrSTATUS in ('Closed', '_SOLVED_', 'Resolved') and mrUPDATEDATE > '$start' order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS in ".$this->closed_status." and mrUPDATEDATE > '$start' order by mrDEST, mrID DESC");
         return $ret;
     }
     public function getall()
@@ -18,14 +19,11 @@ class Tickets
         $ret = $this->dosearch("where mrSTATUS <> '_DELETED_' order by mrID DESC");
         return $ret;
     }
-
     public function getoriginating($id)
     {
         $ret = $this->dosearch("where Originating__bTicket__bNumber = $id");
         return $ret;
     }
-
-
     public function getrecent()
     {
         $start_time = time() - 3600*24*30; //30 days
@@ -63,6 +61,28 @@ class Tickets
         $ret = fpcall("MRWebServices__getAttachments_goc", 
             array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         return $ret;
+    }
+    public function getopencounts()
+    {
+        $projectid = config()->project_id;
+        $recs = fpcall("MRWebServices__search_goc", 
+            array(config()->webapi_user, config()->webapi_password, "", 
+            "select mrASSIGNEES from MASTER$projectid where mrSTATUS not in ".$this->closed_status));
+        $counts = array();
+        foreach($recs as $rec) {
+            $assignees = $rec->mrassignees;
+            foreach(split(" ", $assignees) as $assignee) {
+                $assignee = trim($assignee);
+                if($assignee != "") {
+                    if(isset($counts[$assignee])) {
+                        $counts[$assignee]++;
+                    } else {
+                        $counts[$assignee] = 1;
+                    }
+                }
+            }
+        }
+        return $counts;
     }
 }
 

@@ -250,6 +250,7 @@ class Footprint
 
     private function chooseGOCAssignee()
     {
+/*
         $people = array();
 
         //find the list of people for assignees
@@ -264,6 +265,10 @@ class Footprint
         //randomly pick one of the GOCers
         $lucky = rand(0, sizeof($people)-1);
         return $people[$lucky]; 
+*/
+        $model = new NextAssignee();
+        //$this->addMeta("Assignment Reason: ".$model->getReason());
+        return $model->getNextAssignee();
     }
 
     private function lookupVOName($id)

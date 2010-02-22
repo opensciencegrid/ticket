@@ -55,7 +55,8 @@ SSL_CLIENT_CERT         XXXXXXXXXXXXXXXX
 function isbot()
 {
     foreach(config()->botlist as $bot) {
-        if(ereg($bot, $HTTP_USER_AGENT)) {
+        if(ereg($bot, $_SERVER['HTTP_USER_AGENT'])) {
+            slog("Detected Bot - ".$_SERVER['HTTP_USER_AGENT']);
             return true;
         }
     }

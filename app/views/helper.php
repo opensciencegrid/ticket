@@ -105,22 +105,23 @@ function checklist($id, $kv, $selected, $extrainfo)
         }
         $name = "$id"."[$key]";
         $out .= "<div class=\"$label_class\">";
-        $out .= "<input type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
 
         //add some extra info .. if provided for this key
         if(isset($extrainfo[$key])) {
             list($name, $url) = $extrainfo[$key];
             
-            $value .= "<span class=\"sidenote\">";
+            $out .= "<span class=\"sidenote\">";
             if($url !== null) {
-                $value .= "<a target=\"${key}_${name}\" href=\"$url\">$name</a>";
+                $out .= "<a target=\"${key}_${name}\" href=\"$url\">$name</a>";
             } else {
-                $value .= $name;
+                $out .= $name;
             }
-            $value .= "</span>";
+            $out .= "</span>";
         }
 
+        $out .= "<input type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
         $out .= $value;
+
         $out .= "</div>";
     }
     $out .= "</div>";
@@ -136,7 +137,7 @@ function fblist($id, $kv, $selected)
     $out .= "<div class=\"fblist_container\" id=\"${id}__list\"><div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
 
     //output script
-    $delete_url = fullbase()."/images/delete.png";
+    $delete_url = "images/delete.png";
     $script = "<script type='text/javascript'>$(document).ready(function() {";
     $script .= "var ${id}__listdata = [";
     $first = true;

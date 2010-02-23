@@ -415,7 +415,9 @@ function gotoedit()
 
         if($time > time() - 60*60*24) {
             //show in "ago" format
-            $human_time = agoCalculation($time). " ago";
+            $detail = date(config()->date_format_full, $time);
+            $ago = agoCalculation($time). " ago";
+            $human_time = "<span onmouseover=\"$(this).text('$detail');\" onmouseout=\"$(this).text('$ago');\">$ago</span>";
         } else {
             $human_time = date(config()->date_format_full, $time);
         }
@@ -430,7 +432,10 @@ function gotoedit()
         if($type == "description") {
             $anchor = $time;
             echo "<div class='update_description'>";
-            echo "<div class='header'><a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b><img style=\"padding-right: 3px;\" onclick=\"document.location='#$anchor'; reset_anchor();\" class=\"anchor_img\" align=\"right\" src=\"images/application_link.png\"/></div>";
+            echo "<div class='header'>";
+            echo "<img style=\"padding-right: 3px;\" onclick=\"document.location='#$anchor'; reset_anchor();\" class=\"anchor_img\" align=\"right\" src=\"images/application_link.png\"/>";
+            echo "<a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b>";
+            echo "</div>";
             $lines_raw = split("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {

@@ -389,11 +389,11 @@ function gotoedit()
     <p>
         <span style="float: right"><a href="<?=$flip_url?>">Reverse Sorting Order</a>&nbsp;<img align="top" src="<?=$flip_button?>"/></span>
         <?
-        $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
         if(!isset($_REQUEST["expandall"])) {
             $expand_all_url = fullurl()."&expandall=true";
             echo "<a style=\"float: right; margin-right: 10px;\" href=\"$expand_all_url\">Expand All Descriptions</a>";
         }
+        $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
         ?>
         <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=urlencode($subject)?>">Send Update Via Email</a>
     </p>

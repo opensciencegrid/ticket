@@ -70,6 +70,22 @@ function slog($obj)
     Zend_Registry::get("logger")->log($obj, Zend_Log::INFO);
 }
 
-
-
-
+//session message (in HTML format)
+function addMessage($content)
+{
+    $message = new Zend_Session_Namespace("message");
+    if(isset($message->content)) {
+        $message->content .= $content;
+    } else {
+        $message->content = $content;
+    }
+}
+function flushMessage() {
+    $message = new Zend_Session_Namespace("message");
+    if(isset($message->content)) {
+        $content = $message->content;
+        unset($message->content);
+        return $content;
+    }
+    return "";
+}

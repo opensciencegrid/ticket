@@ -367,9 +367,25 @@ class Footprint
         if($this->b_proj) {
             $params["projfields"] = $this->project_fields;
         }
+        $params["mail"] = array();
         if($this->send_no_ae) {
             //don't sent email to assignee
-            $params["mail"] = array("assignees"=>0);
+            slog("send_no_ae is set - suppressing notification email for assignee.");
+            $params["mail"]["assignees"]=0;
+        }
+
+        //suppress contact email if no description is given
+        if(trim($desc) == "") {
+            slog("description is empty - suppressing notification email for ticket contact");
+            $params["mail"]["assignees"]=0;
+            $params["mail"]["contact"]=0;
+            $params["mail"]["permanentCCs"]=0;
+        }
+
+        //don't pass empty mail array - FP API will throw up
+        // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
+        if(count($params["mail"]) == 0) {
+            unset($params["mail"]);
         }
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
@@ -382,18 +398,41 @@ class Footprint
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
 
-            //for new ticket..
+            //For new ticket
             if($this->id === null) {
-                //if the ticket didn't come from other ticketing system, send SMS
+                //Send SMS -- if the ticket didn't come from other ticketing system.
                 //(We don't want GGUS to send us critical ticket which send us alarm in the middle of the night)
                 if(trim(@$this->project_fields["Originating__bTicket__bNumber"]) == "") {
                     $this->send_notification($params["assignees"], $newid);
                 }
+
+                //reset ticket ID with new ID that we just got
+                $this->id = $newid;
             }
-            $this->id = $newid;
+
+            //if assignee notification was suppressed, then send GOC-TX trigger email ourselves
+            if(@$params["mail"]["assignees"] === 0) {
+                slog("sending trigger emails to GOC-TX");
+                $this->sendGOCTXTrigger($this->assignees, $this->id);
+            }
         }
 
         return $this->id;
+    }
+
+    private function sendGOCTXTrigger($assignees, $id) {
+        $model = new Schema();
+        $emails = $model->getemail();
+        foreach($assignees as $assignee) {
+            $email = $emails[$assignee];
+            //is this TX trigger address? (it starts with tx+)
+            if(strpos($email, "tx+") === 0) {
+               slog("sending trigger to $assignee($email) for issue $id");
+               if(!mail($email, "ISSUE=".$id." PROJ=".config()->project_id, "trigger email...")) {
+                    elog("Failed to send trigger to $assignee($email) for issue $id");
+               }
+            }
+        }
     }
 
     private function send_notification($assignees, $id) 

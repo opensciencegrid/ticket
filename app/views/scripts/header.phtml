@@ -54,13 +54,13 @@ function submenutitle($id)
 }
 ?>
 <div class="submenu" id="submenu_rsv">
-    <span id="submenu_open"><a href="<?=base()?>/open"><?=submenutitle("open")?></a></span>
-    <span id="submenu_view"><a href="<?=base()?>/navigator"><?=submenutitle("view")?></a></span>
+    <div id="submenu_open"><a href="<?=base()?>/open"><?=submenutitle("open")?></a></div>
+    <div id="submenu_view"><a href="<?=base()?>/navigator"><?=submenutitle("view")?></a></div>
     <?if(user()->allows("admin")) {?>
-        <span id="submenu_admin"><a href="<?=base()?>/admin"><?=submenutitle("admin")?></a></span>
+        <div id="submenu_admin"><a href="<?=base()?>/admin"><?=submenutitle("admin")?></a></div>
     <?}?>
     <?if(user()->allows("notify")) {?>
-        <span id="submenu_securitytasks"><a href="<?=base()?>/securitytasks"><?=submenutitle("securitytasks")?></a></span>
+        <div id="submenu_securitytasks"><a href="<?=base()?>/securitytasks"><?=submenutitle("securitytasks")?></a></div>
     <?}?>
     <script type="text/javascript">
         $("#submenu_<?=$this->submenu_selected?>").addClass("selected");

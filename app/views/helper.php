@@ -108,13 +108,13 @@ function checklist($id, $kv, $selected, $extrainfo)
 
         //add some extra info .. if provided for this key
         if(isset($extrainfo[$key])) {
-            list($name, $url) = $extrainfo[$key];
+            list($extra, $url) = $extrainfo[$key];
             
             $out .= "<span class=\"sidenote\">";
             if($url !== null) {
-                $out .= "<a target=\"${key}_${name}\" href=\"$url\">$name</a>";
+                $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>";
             } else {
-                $out .= $name;
+                $out .= $extra;
             }
             $out .= "</span>";
         }

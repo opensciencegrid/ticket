@@ -216,56 +216,70 @@ class ViewerController extends Zend_Controller_Action
                 echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
             } else {
                 //prepare and submit ticket update
-                try {
-                    $footprint = new Footprint($ticket_id);
-                    $footprint->setTitle($title); 
-                    $footprint->setSubmitter(user()->getPersonName()); 
+                $footprint = new Footprint($ticket_id);
+                $footprint->setTitle($title); 
 
-                    //contact
-                    $footprint->setName($submit_fname." ".$submit_lname);
-                    $footprint->setOfficePhone($submit_phone);
-                    $footprint->setEmail($submit_email);
-                    $footprint->setOriginatingVO($submit_vo);
+                if($description != "") {
+                    $footprint->addDescription($description);
+                }
 
-                    //detail
-                    $footprint->resetAssignee();
-                    foreach($assignees as $assignee) {
-                        $footprint->addAssignee($assignee);
-                    }
-                    $footprint->resetCC();
-                    if(isset($ccs)) {
-                        foreach($ccs as $cc) {
-                            $cc = trim($cc);
-                            if($cc != "") {
-                                $footprint->addCC($cc);
-                            }
+                $agent = $this->getFPAgent(user()->getPersonName());
+                if($agent !== null) {
+                    $footprint->setSubmitter($agent);
+                } else {
+                    $footprint->addDescription("\n-- by ".user()->getPersonName()." (non-FP user)");
+                }
+
+                //contact
+                $footprint->setName($submit_fname." ".$submit_lname);
+                $footprint->setOfficePhone($submit_phone);
+                $footprint->setEmail($submit_email);
+                $footprint->setOriginatingVO($submit_vo);
+
+                //detail
+                $footprint->resetAssignee();
+                foreach($assignees as $assignee) {
+                    $footprint->addAssignee($assignee);
+                }
+                $footprint->resetCC();
+                if(isset($ccs)) {
+                    foreach($ccs as $cc) {
+                        $cc = trim($cc);
+                        if($cc != "") {
+                            $footprint->addCC($cc);
                         }
                     }
-                    if($description != "") {
-                        $footprint->addDescription($description);
-                    }
-                    $footprint->setDestinationVO($dest_vo);
-                    $footprint->setNextAction($next_action);
-                    $footprint->setNextActionTime($nad);
-                    $footprint->setPriority($priority);
-                    $footprint->setStatus($status);
-                    $footprint->setTicketType($type);
-                    $footprint->setOriginatingTicketNumber($orig_ticket_id);
-                    $footprint->setDestinationTicketNumber($dest_ticket_id);
-                
-                    $footprint->submit();
-                    header("Location: ".fullbase()."/viewer?id=".$ticket_id);
-                    exit;
-                } catch(exception $e) {
-                    $this->sendErrorEmail($e);
-                    addMessage("<p>Sorry, ticket update submission failed for following reason</p>");
-                    addMessage("<p>".$e->getMessage()."</p>");
                 }
+                $footprint->setDestinationVO($dest_vo);
+                $footprint->setNextAction($next_action);
+                $footprint->setNextActionTime($nad);
+                $footprint->setPriority($priority);
+                $footprint->setStatus($status);
+                $footprint->setTicketType($type);
+                $footprint->setOriginatingTicketNumber($orig_ticket_id);
+                $footprint->setDestinationTicketNumber($dest_ticket_id);
+            
+                $footprint->submit();
+                header("Location: ".fullbase()."/viewer?id=".$ticket_id);
             }
         }
         $this->render("none", null, true);
     }
 
+    private function getFPAgent($name)
+    {
+        $model = new Schema();
+        $users = $model->getusers();
+        foreach($users as $id=>$fpname) {
+            if($fpname == $name) {
+                return $id;
+            }
+        }
+        return null;
+    }
+
+
+/*
     protected function sendErrorEmail($e)
     {
         //construct message body
@@ -296,7 +310,7 @@ class ViewerController extends Zend_Controller_Action
         }
         elog($mail_body);
     }
-
+*/
     public function indexAction() 
     { 
         try {

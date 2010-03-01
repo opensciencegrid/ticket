@@ -97,6 +97,15 @@ function cert_authenticate()
     } else {
         if(isset($_SERVER["SSL_CLIENT_S_DN"])) {
             $dn = $_SERVER["SSL_CLIENT_S_DN"];
+
+/*
+            //debug override
+            if(config()->debug) {
+                $dn = "/DC=org/DC=doegrids/OU=People/CN=Dan Fraser 66495";
+                slog("Overriding DN to $dn");
+            }
+*/
+
             $user = new User($dn);
             if($user->getPersonID()) {
                 Zend_Registry::set("user", $user);

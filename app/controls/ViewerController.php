@@ -257,12 +257,44 @@ class ViewerController extends Zend_Controller_Action
                     header("Location: ".fullbase()."/viewer?id=".$ticket_id);
                     exit;
                 } catch(exception $e) {
-                    echo "Sorry, ticket update submission failed for following reason";
-                    echo $e;
+                    $this->sendErrorEmail($e);
+                    addMessage("<p>Sorry, ticket update submission failed for following reason</p>");
+                    addMessage("<p>".$e->getMessage()."</p>");
                 }
             }
         }
         $this->render("none", null, true);
+    }
+
+    protected function sendErrorEmail($e)
+    {
+        //construct message body
+        $mail_body = "Failed to update ticket\n";
+        $mail_body .= "[Exception Message]\n";
+        $mail_body .= $e->getMessage()."\n";
+
+        $mail_body .= "[Stack Trace]\n";
+        $mail_body .= $e->getTraceAsString()."\n\n";
+
+        $mail_body .= "\n[User has submitted following]\n";
+        $mail_body .= print_r($_REQUEST, true);
+
+        if(config()->elog_email) {
+            $Name = config()->app_name;
+            $email = "hayashis@indiana.edu"; //senders e-mail adress (needs to be valid GOC user?)
+            $recipient = config()->elog_email_address;
+            $subject = "[ticket_form] Update Failed";
+            $header = "From: ".config()->email_from."\r\n";
+
+            //now, send the email
+            mail($recipient, $subject, $mail_body, $header);
+
+            //also send SMS
+            $subject = "GOC Ticket update failure";
+            $body = "GOC Ticket update error has occured.";
+            sendSMS(config()->error_sms_to, $subject, $body);
+        }
+        elog($mail_body);
     }
 
     public function indexAction() 

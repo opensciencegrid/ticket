@@ -227,7 +227,8 @@ class ViewerController extends Zend_Controller_Action
                 if($agent !== null) {
                     $footprint->setSubmitter($agent);
                 } else {
-                    $footprint->addDescription("\n-- by ".user()->getPersonName()." (non-FP user)");
+                    $footprint->addDescription("\n-- by ".user()->getPersonName());
+                    $footprint->addMeta(user()->getDN());
                 }
 
                 //contact

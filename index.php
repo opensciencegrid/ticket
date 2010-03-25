@@ -52,8 +52,14 @@ try {
 }
 
 //log access
-$goc = new GOC();
-$goc->logAccess();
+try {
+    $goc = new GOC();
+    $goc->logAccess();
+} catch(exception $e) {
+    //continue processing
+    wlog("failed to log access - skipping");
+    wlog($e->getMessage());
+}
 
 //dispatch
 $frontController = Zend_Controller_Front::getInstance();

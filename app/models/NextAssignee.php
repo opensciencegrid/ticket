@@ -15,16 +15,30 @@ class NextAssignee
         $day = $time["tm_mday"];
         $weekday = $time["tm_wday"];
 
+        //construct list of possible assignee based on each hours
+        if($hour >= 5 and $hour < 8) {
+            $members = array("adeximo");
+        } else if ($hour >= 8 and $hour < 13) {
+            $members = array("adeximo", "echism", "kagross");
+        } else if ($hour >= 13 and $hour < 17) {
+            $members = array("adeximo", "echism", "kagross", "cpipes");
+        } else if ($hour >= 17 and $hour < 21) {
+            $members = array("cpipes");
+        } else {
+            $members = array("adeximo", "echism", "kagross");
+        }
+        
+        //report the pool of possible staff
+        $this->reason .= "possible assignees at this hour ($hour):";
+        foreach($members as $member) {
+            $this->reason .= " ".$member;
+        }
+        $this->reason .= ". ";
+
+        /*
         //pull everyone from support team
         $model = new Schema();
         $members = $model->getteammembers("OSG__bGOC__bSupport__bTeam");
-
-        //TODO - pick the assignee based on following
-        //6am - 8am - Alain only
-        //8am - 1pm - Alain / Kyle / E
-        //1pm - 3pm - everybody
-        //3pm - 5pm - E / K / C
-        //5pm - 6am - everybody (execept C)
 
         //don't assign to chris from 9 - 1pm 
         $chris = array_search("cpipes", $members);
@@ -34,6 +48,7 @@ class NextAssignee
                 unset($members[$chris]);
             }
         }
+        */
 
         //pick one person with least amount of tickets.
         if(count($members) > 0) {
@@ -42,9 +57,19 @@ class NextAssignee
             $id = null;
             $min = null;
             foreach($members as $member) {
-                if($id === null || $min > $counts[$member]) {
+                if(!isset($counts[$member])) {
+                    $counts[$member] = 0;
+                }
+                $count = $counts[$member];
+
+                if($member == "cpipes") {
+                    $count = $count*2;
+                    $this->reason .= "doubling the ticket count for chris - since he works half time. ";
+                }
+
+                if($id === null || $min > $count) {
                     $id = $member;
-                    $min = $counts[$member];
+                    $min = $count;
                 }
             }
             $this->next_assignee = $id;
@@ -60,6 +85,7 @@ class NextAssignee
         foreach($members as $member) {
             $this->reason .= $member." has ".$counts[$member]." tickets. ";
         }
+        slog("choose ".$this->next_assignee. " due to - ". $this->reason);
     }
 
 }

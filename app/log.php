@@ -58,7 +58,22 @@ function elog($obj)
     // 0) message is sent to PHP's system logger, using the Operating System's 
     // system logging mechanism or a file, depending on what the error_log  
     // configuration directive is set to. This is the default option. 
-    error_log($obj, 0); 
+    error_log("[ERR] ".$obj, 0); 
+}
+
+//warning log
+function wlog($obj)
+{
+    if(is_string($obj)) {
+        $obj = log_format($obj);
+    } 
+    Zend_Registry::get("logger")->log($obj, Zend_Log::WARN);
+
+    //send to error_log as well
+    // 0) message is sent to PHP's system logger, using the Operating System's 
+    // system logging mechanism or a file, depending on what the error_log  
+    // configuration directive is set to. This is the default option. 
+    error_log("[WARN] ".$obj, 0); 
 }
 
 //standard log

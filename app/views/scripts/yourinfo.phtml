@@ -7,6 +7,8 @@ Please tell us who should be the primary contact for this ticket.<br/>
 <?=$this->element->email?>
 <?=$this->element->phone?>
 <?=$this->element->vo_id?>
+
+
 </td>
 <?
 if(user()->allows("update")) {
@@ -66,4 +68,22 @@ Populate from someone else's contact information<br/>
 }
 ?>
 </table>
-<br/>
+<?if(!user()->isguest()) { ?>
+    <dt>CC this ticket to following email address</dt>
+    <dd>
+        <div class="ccarea" style="width:270px">
+            <?
+            $ccs = array();
+            if(Zend_Registry::isRegistered("passback_ccs")) {
+                $ccs = Zend_Registry::get("passback_ccs");
+            }
+            include_once("app/views/cc_editor.php");
+            cceditor($ccs);
+            ?>
+        </div>
+        <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
+    </dd>
+    <br/>
+<?  }
+
+

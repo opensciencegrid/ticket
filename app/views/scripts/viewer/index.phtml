@@ -127,55 +127,9 @@ function gotoedit()
             <td style="padding-left: 3px;">
                 <div class="ccarea">
                     <?
-                    foreach($this->cc as $cc) {
-                        echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"images/delete.png\"/></a></div>";
-                    }
+                    include_once("app/views/cc_editor.php");
+                    cceditor($this->cc);
                     ?>
-                    <script type="text/javascript">
-                    function addcc(node)
-                    {
-                        var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\"/><a href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"images/delete.png\"/></a></div>";
-                        node.append(template);
-                        setup_cc();
-                    }
-                    <?
-                    $model = new Person();
-                    $persons = $model->fetchAll();
-                    $persons_json = "";
-                    foreach($persons as $person) 
-                    {
-                        $name = trim($person->name);
-                        $email = trim($person->primary_email);
-                        if($name == "") $name = $email;
-                        if($persons_json != "") $persons_json .= ",\n";
-                        $persons_json .= "{ name: \"$name\", email: \"$email\"}";
-                    }
-                    ?>
-                    var persons = [
-                        <?=$persons_json?>
-                    ];
-                    $(document).ready(function() {
-                        setup_cc();
-                    });
-                    function setup_cc()
-                    {
-                        $(".cc").autocomplete(persons, {
-                            mustMatch: false,
-                            matchContains: true,
-                            width: 500,
-                            formatItem: function(row, i, max) {
-                                return row.name + "<br/>Email: " + row.email;
-                            },
-                            formatMatch: function(row, i, max) {
-                                return row.name + " " + row.email;
-                            },
-                            formatResult: function(row) {
-                                return row.email;
-                            }
-                        });
-                    }
-
-                    </script>
                 </div>
                 <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
                 <br/>
@@ -282,6 +236,11 @@ function gotoedit()
         <b><?=$this->title?></b>
         <table width="100%">
         <tr>
+            <td width="15%"></td>
+            <td width="35%"></td>
+            <td width="15%"></td>
+            <td width="35%"></td>
+        <tr>
             <td colspan="4"><h3>Ticket Detail</h3></td>
         </tr>
         <tr>
@@ -294,7 +253,7 @@ function gotoedit()
         <?
             if(user()->getPersonID() !== null) {
                 echo "<tr>";
-                echo "<td class=\"header\">Email</td><td>".$this->submitter_email."</td>";
+                echo "<td class=\"header\">Email</td><td><a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a></td>";
                 echo "<td class=\"header\">Phone</td><td>".$this->submitter_phone."</td>";
                 echo "</tr>";
             }
@@ -356,9 +315,29 @@ function gotoedit()
         </tr>
 
         <tr>
-        <?if(user()->getPersonID() !== null) { ?>
+        <?if(!user()->isGuest()) { ?>
              <td class="header">CC:</td><td>
-                <?  foreach($this->cc as $cc) { echo $cc."<br/>"; } ?>
+                <form action="<?=fullbase()?>/viewer/updatecclist?id=<?=$this->ticket_id?>" method="post">
+                    <div class="ccarea">
+                    <?
+                    include_once("app/views/cc_editor.php");
+                    cceditor($this->cc);
+                    ?>
+                    </div>
+                    <a href="#" onclick="addcc($(this).siblings('div.ccarea')); return false;">Add New CC</a> <br/><br/>
+                    <input class="ccupdate" type="submit" value="&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;"/>
+                    <script type="text/javascript">
+/*
+                    function set_showupdate() {
+                        $('.ac_input').change(function() {$('.ccupdate').show()});
+                        //click event will be skipped because the whole element is removed before it gets to our event
+                        $('.ac_input_remove').mouseup(function() {$('.ccupdate').show()});
+                    }
+                    $(document).ready(function() {set_showupdate();});
+*/
+                    </script>
+                <br/>
+                </form>
             </td>
         <?}?>
         </tr>

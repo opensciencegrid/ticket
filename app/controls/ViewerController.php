@@ -261,12 +261,40 @@ class ViewerController extends Zend_Controller_Action
                 $footprint->setDestinationTicketNumber($dest_ticket_id);
             
                 $footprint->submit();
+                addMessage("Successfully updated this ticket!");
                 header("Location: ".fullbase()."/viewer?id=".$ticket_id);
             }
         }
         $this->render("none", null, true);
     }
 
+    public function updatecclistAction()
+    {
+        if(user()->isGuest()) {
+            $this->render("error/access", null, true); 
+        } else {
+            if(!isset($_REQUEST["cc"])) {
+                $this->view->content = "No CC list send....";
+                $this->render("error/error", null, true); 
+            } else {
+                $ccs = $_REQUEST["cc"]; //TODO - validate
+                $ticket_id = (int)$_REQUEST["id"];
+                $footprint = new Footprint($ticket_id);
+
+                foreach($ccs as $cc) {
+                    $cc = trim($cc);
+                    if($cc != "") {
+                        $footprint->addCC($cc);
+                   }
+                }
+                $footprint->submit();
+                addMessage("Successfully Updated CC list!");
+                header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+             }
+            $this->render("none", null, true);
+        }
+    }
+ 
     private function getFPAgent($name)
     {
         $model = new Schema();

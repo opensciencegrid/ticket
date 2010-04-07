@@ -17,6 +17,7 @@ class SecurityController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
+
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));

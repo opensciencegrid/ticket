@@ -42,14 +42,14 @@ class BaseController extends Zend_Controller_Action
         if (isset($session->registerCaptcha))
         {
             $captchaCode = $session->registerCaptcha;
-            dlog("using captchacode: ".$captchaCode);
+            //dlog("using captchacode: ".$captchaCode);
         }
         else
         {
             $md5Hash = md5($_SERVER['REQUEST_TIME']);
             $captchaCode = substr($md5Hash, rand(0, 25), 5);
             $session->registerCaptcha = $captchaCode ;
-            dlog("generated captchacode: ".$captchaCode);
+            //dlog("generated captchacode: ".$captchaCode);
         }
         return $captchaCode;
     }
@@ -60,6 +60,7 @@ class BaseController extends Zend_Controller_Action
 
         //init form
         $form = new Zend_Form;
+
         $form->setAction(base()."/$page/submit?$param");
         $form->setAttrib("id", $page."_form");
         $form->setMethod("post");
@@ -74,7 +75,9 @@ class BaseController extends Zend_Controller_Action
             $name->setLabel("Full Name");
             //$name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
             $name->setRequired(true);
-            $name->setValue(user()->getPersonName());
+            if(!user()->isguest()) {
+                $name->setValue(user()->getPersonName());
+            }
             $form->addElement($name);
 
             $email = new Zend_Form_Element_Text('email');
@@ -106,6 +109,21 @@ class BaseController extends Zend_Controller_Action
                 $vo->setValue(25); //MIS
             }
             $form->addElement($vo);
+
+            //repopulate cc (for resubmit..)
+            $ccs = array();
+            if(isset($_POST["cc"])) {
+                $_ccs = $_POST["cc"]; //TODO - validate
+                foreach($_ccs as $cc) {
+                    $cc = trim($cc);
+                    if($cc != "") {
+                        $ccs[] = $cc;
+                    }
+                }
+                //we are using Zend form, and I could not find a way to pass custom parameter back to form.phtml after 
+                //spending several hours!!! Resorting to global
+                Zend_Registry::set("passback_ccs", $ccs);
+            }
         }
 
         return $form;
@@ -141,6 +159,19 @@ class BaseController extends Zend_Controller_Action
 
             $footprint->setOfficePhone($form->getValue('phone'));
             $footprint->setEmail($form->getValue('email'));
+
+            //process CC
+            if(!user()->isguest()) {
+                if(isset($_REQUEST["cc"])) {
+                    $ccs = $_REQUEST["cc"]; //TODO - validate
+                    foreach($ccs as $cc) {
+                        $cc = trim($cc);
+                        if($cc != "") {
+                            $footprint->addCC($cc);
+                        }
+                    }
+                }
+            }
 
             $void = $form->getValue('vo_id');
             if($void == -1) {

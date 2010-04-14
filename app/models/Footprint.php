@@ -308,7 +308,7 @@ class Footprint
         $schema_model = new Schema();
         $teams = $schema_model->getteams();
         foreach($teams as $team) {
-            if($team->team == "OSG__bSupport__bCenters") {
+            if($team->team == "OSG__bSupport__bCenters" || $team->team == "Ticket__bExchange") {
                 $fp_scs = split(",", $team->members);
                 foreach($fp_scs as $fp_sc) {
                     $sc = Footprint::parse($fp_sc);    

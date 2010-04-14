@@ -140,11 +140,20 @@ class FinderrorController extends Zend_Controller_Action
         //find suppor centers
         $fp_scs = array();
         foreach($teams as $team) {
-             if($team->team == "OSG__bSupport__bCenters" || $team->team == "Ticket__bExchange") {
+             if($team->team == "OSG__bSupport__bCenters") {
                 $fp_scs = split(",", $team->members);
                 break;
             }
         }
+
+        //find TX team
+        foreach($teams as $team) {
+             if($team->team == "Ticket__bExchange") {
+                $fp_scs = array_merge($fp_scs, split(",", $team->members));
+                break;
+            }
+        }
+
         $model = new SC();
         $oim_scs = $model->fetchAll();
         foreach($fp_scs as $fp_sc) {

@@ -200,7 +200,7 @@ class Footprint
     {
         $model = new Resource();
         $vo = $model->getPrimaryOwnerVO($resource_id);
-        if($vo === null || $vo->footprints_id === null) {
+        if(!$vo || $vo->footprints_id === null) {
             $this->addMeta("No VOs are associated with Resource ID $resource_id. Setting destination VO to other\n");
             $this->setDestinationVO("other");
         } else {

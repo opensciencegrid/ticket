@@ -200,8 +200,8 @@ class Footprint
     {
         $model = new Resource();
         $vo = $model->getPrimaryOwnerVO($resource_id);
-        if($vo->footprints_id === null) {
-            $this->addMeta("No VOs are associated with Resource $vo->name. Setting destination VO to other\n");
+        if($vo === null || $vo->footprints_id === null) {
+            $this->addMeta("No VOs are associated with Resource ID $resource_id. Setting destination VO to other\n");
             $this->setDestinationVO("other");
         } else {
             $this->addMeta("Selecting $vo->vo_name(FP name: $vo->footprints_id) for Destination VO since it has the highest resource ownership.\n");

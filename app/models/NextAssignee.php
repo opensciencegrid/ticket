@@ -9,7 +9,7 @@ class NextAssignee
 
     public function __construct() 
     {
-        $time = localtime(time(), true);
+        $time = localtime(time()+(3600*config()->timezone_offset), true);
         $hour = $time["tm_hour"];
         $month = $time["tm_mon"];
         $day = $time["tm_mday"];

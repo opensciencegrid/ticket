@@ -216,9 +216,17 @@ function gotoedit()
         ?>
         </select>
         <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
-        <br/>
 
-        <input type="submit" value="&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;"/>
+        <table style="background-color: white;margin-top: 5px;"><tr>
+        <td style="width: 150px;">
+            <input type="checkbox" name="notify_assignees" value="on" checked=checked"> Notify Assignees <br/>
+            <input type="checkbox" name="notify_submitter" value="on" checked=checked"> Notify Submitter <br/>
+            <input type="checkbox" name="notify_ccs" value="on" checked=checked"> Notify CCs <br/>
+        </td>
+        <td style="vertical-align: middle;"> 
+            <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+        </td>
+        </tr></table>
 
     </form>
 
@@ -345,7 +353,6 @@ function gotoedit()
         </table>
     </div>
 <?}?>
-<br/>
 
 <div id="updates" style="clear: both;">
     <?
@@ -364,7 +371,7 @@ function gotoedit()
         ksort($this->descs, SORT_NUMERIC);
     }
     ?>
-    <h3>Updates</h3>
+    <h3>Past Updates</h3>
     <p>
         <span style="float: right"><a href="<?=$flip_url?>">Reverse Sorting Order</a>&nbsp;<img align="top" src="<?=$flip_button?>"/></span>
         <?

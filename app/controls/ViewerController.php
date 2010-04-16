@@ -259,6 +259,17 @@ class ViewerController extends Zend_Controller_Action
                 $footprint->setTicketType($type);
                 $footprint->setOriginatingTicketNumber($orig_ticket_id);
                 $footprint->setDestinationTicketNumber($dest_ticket_id);
+
+                //set suppression
+                if(!isset($_REQUEST["notify_assignees"])) {
+                    $footprint->suppress_assignees();
+                }
+                if(!isset($_REQUEST["notify_submitter"])) {
+                    $footprint->suppress_submitter();
+                }
+                if(!isset($_REQUEST["notify_ccs"])) {
+                    $footprint->suppress_ccs();
+                }
             
                 $footprint->submit();
                 addMessage("Successfully updated this ticket!");

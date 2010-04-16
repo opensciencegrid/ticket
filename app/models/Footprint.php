@@ -19,7 +19,11 @@ class Footprint
         $this->resetAssignee();
         $this->ab_fields = array();
         $this->project_fields = array();
-        $this->send_no_ae = false;
+
+        //notification suppression
+        $this->suppress_assignees = false;
+        $this->suppress_submitter = false;
+        $this->suppress_ccs = false;
 
         //process update flags
         if($id === null) {
@@ -48,6 +52,10 @@ class Footprint
         $this->b_contact = $f;
         $this->b_proj = $f;
     }
+
+    public function suppress_assignees() { $this->suppress_assignees = true; } //set to not send assignee emails
+    public function suppress_submitter() { $this->suppress_submitter = true; } //set to not send assignee emails
+    public function suppress_ccs() { $this->suppress_ccs = true; } //set to not send assignee emails
 
     public function resetCC()
     {
@@ -80,7 +88,7 @@ class Footprint
     }
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; $this->b_contact = true; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; $this->b_contact = true; }
-    public function sendNoAEmail() { $this->send_no_ae = true; } //set to not send assignee emails
+
 
     static public function GetStatusList()
     {
@@ -367,13 +375,22 @@ class Footprint
         if($this->b_proj) {
             $params["projfields"] = $this->project_fields;
         }
+
+        //handle suppression request
         $params["mail"] = array();
-        if($this->send_no_ae) {
-            //don't sent email to assignee
-            slog("send_no_ae is set - suppressing notification email for assignee.");
+        if($this->suppress_assignees) {
+            slog("suppressing notification email for assignee.");
             $params["mail"]["assignees"]=0;
         }
-
+        if($this->suppress_submitter) {
+            slog("suppressing notification email for submitter(contact).");
+            $params["mail"]["contact"]=0;
+        }
+        if($this->suppress_ccs) {
+            slog("suppressing notification email for permanent CCs");
+            $params["mail"]["permanentCCs"]=0;
+        }
+/*
         //suppress contact email if no description is given
         if(trim($desc) == "") {
             slog("description is empty - suppressing notification email for ticket contact");
@@ -381,7 +398,7 @@ class Footprint
             $params["mail"]["contact"]=0;
             $params["mail"]["permanentCCs"]=0;
         }
-
+*/
         //don't pass empty mail array - FP API will throw up
         // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
         if(count($params["mail"]) == 0) {

@@ -4,8 +4,9 @@
 set_include_path('lib/zf/library' . PATH_SEPARATOR . get_include_path());  
 set_include_path('app/models' . PATH_SEPARATOR . get_include_path());  
 set_include_path('app/controls' . PATH_SEPARATOR . get_include_path());  
-require_once "Zend/Loader.php"; 
-Zend_Loader::registerAutoload(); 
+require_once "Zend/Loader/Autoloader.php";
+$autoloader = Zend_Loader_Autoloader::getInstance();
+$autoloader->setFallbackAutoloader(true);
 
 //check to make sure our site installation is done
 if(!file_exists("config.php")) {

@@ -125,7 +125,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         case "solved":
         case "verified":
             $footprint->setStatus("Closed");
-            $footprint->sendNoAEmail();
+            $footprint->suppress_assignees();
             break;
         case "reopened":
             //reset the status to Engineering

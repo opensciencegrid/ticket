@@ -216,17 +216,18 @@ function gotoedit()
         ?>
         </select>
         <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
+        <br/>
 
-        <table style="background-color: white;margin-top: 5px;"><tr>
-        <td style="width: 150px;">
-            <input type="checkbox" name="notify_assignees" value="on" checked=checked"> Notify Assignees <br/>
-            <input type="checkbox" name="notify_submitter" value="on" checked=checked"> Notify Submitter <br/>
-            <input type="checkbox" name="notify_ccs" value="on" checked=checked"> Notify CCs <br/>
-        </td>
-        <td style="vertical-align: middle;"> 
-            <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-        </td>
-        </tr></table>
+        <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+        &nbsp;&nbsp;
+        <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
+        &nbsp;&nbsp;
+        <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
+        &nbsp;&nbsp;
+        <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+
+        <br/>
+        <br/>
 
     </form>
 

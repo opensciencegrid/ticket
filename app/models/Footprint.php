@@ -177,6 +177,7 @@ class Footprint
     public function setOriginatingVO($voname) { 
         if(!$this->isValidFPOriginatingVO($voname)) {
             $this->addMeta("Couldn't set Originating VO to $voname - No such VO in FP (please sync!)\n");
+            elog("Couldn't set Originating VO to $voname - no such vo in fp");
             $voname = "other";
         }
         $this->project_fields["Originating__bVO__bSupport__bCenter"] = Footprint::unparse($voname);
@@ -198,6 +199,7 @@ class Footprint
     public function setDestinationVO($voname) { 
         if(!$this->isValidFPDestinationVO($voname)) {
             $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
+            elog("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
             $voname = "other";
         }
         $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);

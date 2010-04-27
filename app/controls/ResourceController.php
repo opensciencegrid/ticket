@@ -65,6 +65,7 @@ class ResourceController extends BaseController
                     $footprint->addMeta("Assigned support center: $scname which supports this resource\n");
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                    elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
                 $footprint->addPrimaryAdminContact($resource_id);
             }
@@ -112,6 +113,10 @@ class ResourceController extends BaseController
             //set it to ITB list
             $element->setValue(2);
         }
+        //override with requested param
+        if(isset($_REQUEST["resource_type"])) {
+            $element->setValue((int)$_REQUEST["resource_type"]);
+        }
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_1');
@@ -122,6 +127,10 @@ class ResourceController extends BaseController
         foreach($resources as $resource) {
             $element->addMultiOption($resource->id, $resource->name);
         }
+        //override with requested param
+        if(isset($_REQUEST["resource_id"])) {
+            $element->setValue((int)$_REQUEST["resource_id"]);
+        }
         $form->addElement($element);
 
         $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
@@ -130,6 +139,10 @@ class ResourceController extends BaseController
         $resources = $resource_model->fetchAll(2);
         foreach($resources as $resource) {
             $element->addMultiOption($resource->id, $resource->name);
+        }
+        //override with requested param
+        if(isset($_REQUEST["resource_id"])) {
+            $element->setValue((int)$_REQUEST["resource_id"]);
         }
         $form->addElement($element);
 

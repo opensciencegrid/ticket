@@ -51,6 +51,7 @@ class MembershipController extends BaseController
                     $footprint->addAssignee($scname);
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                    elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
                 //$footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
                 $title .= $info->name;

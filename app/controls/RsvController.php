@@ -52,6 +52,7 @@ class RsvController extends BaseController
                 $footprint->addAssignee($scname);
             } else {
                 $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
+                elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
             }
             $footprint->addPrimaryAdminContact($resource_id);
             $footprint->addAssignee("RSV-Ops");

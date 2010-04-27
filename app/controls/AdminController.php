@@ -102,7 +102,7 @@ class AdminController extends BaseController
         echo "<title>".$this->formattitle($ticket->mrtitle)."</title>";
         echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
         echo "<dest>$ticket->mrdest</dest>";
-        echo "<url>https://oim.grid.iu.edu/gocticket/viewer?id=$ticket->mrid</url>";
+        echo "<url>https://ticket.grid.iu.edu/goc/viewer/?id=$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
         echo "<score>$p</score>";
         echo "</ticket>";

@@ -9,17 +9,17 @@ class VO
     public function fetchAll()
     {
         $sql = $this->sql()." order by name";
-        $vos = db2()->fetchAll($sql);
+        $vos = db("oim")->fetchAll($sql);
         return $vos;
     }
     public function get($void) 
     {
         $sql = $this->sql()." and id = $void";
-        return db2()->fetchRow($sql);
+        return db("oim")->fetchRow($sql);
     }
     public function getfromsc($sc_id) {
         $sql = $this->sql()." and sc_id = $sc_id";
-        return db2()->fetchAll($sql);
+        return db("oim")->fetchAll($sql);
     }
 }
 

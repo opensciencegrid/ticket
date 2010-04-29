@@ -13,7 +13,7 @@ class PrimaryAddress
     `SC`.`active` IS TRUE AND
     `SC`.`disable` IS FALSE
 )";
-        return db2()->fetchAll($sql);
+        return db("oim")->fetchAll($sql);
     }
 
 }

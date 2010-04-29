@@ -9,13 +9,13 @@ class SC
     public function fetchAll()
     {
         $sql = $this->sql()." order by name";
-        $scs = db2()->fetchAll($sql);
+        $scs = db("oim")->fetchAll($sql);
         return $scs;
     }
     public function get($scid) 
     {
         $sql = $this->sql()." and id = $scid";
-        return db2()->fetchRow($sql);
+        return db("oim")->fetchRow($sql);
     }
     
 }

@@ -69,7 +69,7 @@ class User
                     where
                         c.disable = 0 and
                         dn_string = '$dn'";
-        $row = db2()->fetchRow($sql);
+        $row = db("oim")->fetchRow($sql);
         if($row) {
             $this->dn_id = $row->dn_id;
             $this->contact_id = $row->contact_id;

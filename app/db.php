@@ -40,15 +40,15 @@ function connect($name, $db_type, $params) {
     throw new Exception("Failed to connect to $name");
 }
 
-function db2() { 
+function db($name) { 
     global $g_db; 
-    $name = "oim";
     if(!isset($g_db[$name])) { 
-        connect($name, config()->db_type, config()->oim_db_params);
+        connect($name, config()->db_type, config()->db_params[$name]);
     }
     return $g_db[$name]; 
 }
 
+/*
 function gocdb() { 
     global $g_db; 
     $name = "data";
@@ -66,4 +66,4 @@ function txdb() {
     }
     return $g_db[$name]; 
 }
-
+*/

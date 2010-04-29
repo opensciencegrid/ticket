@@ -14,7 +14,6 @@ class RSSFeed
             'date' => time(),
             'body' => $body
         );
-        //db2()->insert("rsvextra.rss_article", $row);
         slog("RSS Feed to be sent to Blogger");
         slog(print_r($row, true));
 

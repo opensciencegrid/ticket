@@ -47,8 +47,8 @@ try {
 /*
     //when a catastrohpic failure occure (like disk goes read-only..) emailing is the only way we got..
     mail(config()->elog_email_address, "[gocticket] Caught exception during bootstrap", $e, "From: ".config()->email_from);
-    header("HTTP/1.0 500 Internal Server Error");
 */
+    header("HTTP/1.0 500 Internal Server Error");
     echo "Boot Error";
     echo "<pre>".$e->getMessage()."</pre>";
     elog($e->getMessage());

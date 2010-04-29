@@ -12,17 +12,17 @@ class Resource
         }
 
         $sql = "SELECT *, r.id as resource_id FROM resource r WHERE active = 1 and disable = 0 $grid_type_where order by name";
-        return db2()->fetchAll($sql);
+        return db("oim")->fetchAll($sql);
     }
     public function fetchName($resource_id)
     {
         $sql = "SELECT name FROM resource WHERE active = 1 and disable IS FALSE and id = $resource_id";
-        return db2()->fetchOne($sql);
+        return db("oim")->fetchOne($sql);
     }
     public function fetchID($resource_name)
     {
         $sql = "SELECT id FROM resource WHERE name = '$resource_name'";
-        return db2()->fetchOne($sql);
+        return db("oim")->fetchOne($sql);
     }
     public function getPrimaryOwnerVO($resource_id) 
     {
@@ -34,7 +34,7 @@ FROM vo_resource_ownership v
 WHERE R.id = $resource_id
  AND vo.disable IS FALSE
  AND v.percent=(SELECT MAX(v2.percent) FROM vo_resource_ownership v2 WHERE v2.resource_id = $resource_id); ";
-        return db2()->fetchRow($sql);
+        return db("oim")->fetchRow($sql);
     }
 }
 

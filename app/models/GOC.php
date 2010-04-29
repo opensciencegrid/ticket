@@ -14,7 +14,7 @@ class GOC
             'timestamp'      => time()
         );
 
-        gocdb()->insert('access', $data);
+        db("data")->insert('access', $data);
     }
 }
 

@@ -8,6 +8,18 @@ class Tickets
         $ret = $this->dosearch("where mrSTATUS not in ".$this->closed_status." order by mrDEST, mrID DESC");
         return $ret;
     }
+
+/*
+    public function getmytickets($assignee)
+    {
+        $time = time() - 3600*24*3;//3 days..
+        $start = date("Y-m-d", $time);
+        //pull open tickets or recently updated (closed) tickets that are assigned to me
+        $ret = $this->dosearch("where (mrUPDATEDATE > '$start' or mrSTATUS not in ".$this->closed_status.") and mrASSIGNEES like '%$assignee%'");
+        return $ret;
+    }
+*/
+
     public function getclosed($start_time)
     {
         $start = date("Y-m-d", $start_time);
@@ -40,7 +52,7 @@ class Tickets
 
     public function dosearch($query, $bIncludeDesc = false)
     {
-        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
+        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, mrSUBMITDATE, mrpriority, ticket__utype as tickettype, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";
         }

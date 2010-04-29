@@ -4,7 +4,7 @@ class RaController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "open";
+        $this->view->submenu_selected = "admin";
         //load sponsor list
         $model = new RAContact();
         $this->sponsors = $model->fetchall();

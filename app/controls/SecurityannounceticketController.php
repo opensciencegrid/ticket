@@ -5,7 +5,7 @@ class SecurityAnnounceTicketController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "open";
+        $this->view->submenu_selected = "securitytasks";
     }
     public function indexAction() 
     { 

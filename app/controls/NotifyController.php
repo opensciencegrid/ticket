@@ -5,7 +5,7 @@ class NotifyController extends BaseController
     public function init()
     {
         $this->view->pagename = "Send Notification Email/RSS";
-        $this->view->submenu_selected = "open";
+        $this->view->submenu_selected = "admin";
     }
 
     public function indexAction() 

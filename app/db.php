@@ -1,80 +1,69 @@
 <?
 
-$g_db2 = null;
-function connect_db2()
-{
-    global $g_db2;
+$g_db = array();
 
-    $db = Zend_Db::factory(config()->db_type, config()->db_params);
-    $db->setFetchMode(Zend_Db::FETCH_OBJ);
+function connect($name, $db_type, $params) {
+    global $g_db;
 
-    //profile db via firebug
-    if(config()->debug) {
-        $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
-        $profiler->setEnabled(true);
-        $db->setProfiler($profiler);
+    //try to connect one of connection parameter that works..
+    $exceptions = array();
+    foreach($params as $param) {
+        try {
+            $db = Zend_Db::factory($db_type, $param);
+            $db->setFetchMode(Zend_Db::FETCH_OBJ);
+            $db->getConnection();
+
+            //profile db via firebug
+            if(config()->debug) {
+                $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
+                $profiler->setEnabled(true);
+                $db->setProfiler($profiler);
+            }
+
+            //slog("success $name");
+            $g_db[$name] = $db;
+            return;
+        } catch (Zend_Db_Adapter_Exception $e) {
+            // perhaps a failed login credential, or perhaps the RDBMS is not running
+            wlog("Couldn't connect to $name (trying another connection - if available):: ".$e->getMessage());
+            $exceptions[] = $e;
+        } catch (Zend_Exception $e) {
+            // perhaps factory() failed to load the specified Adapter class
+            wlog("Couldn't connect to $name (trying another connection - if available):: ".$e->getMessage());
+            $exceptions[] = $e;
+        }
     }
-
-    $g_db2 = $db;
+    $msg = "";
+    foreach($exceptions as $e) {
+        $msg .= $e->getMessage()."\n";
+    }
+    throw new Exception("Failed to connect to $name");
 }
 
 function db2() { 
-    global $g_db2; 
-    if($g_db2 == null) {
-        connect_db2();
+    global $g_db; 
+    $name = "oim";
+    if(!isset($g_db[$name])) { 
+        connect($name, config()->db_type, config()->oim_db_params);
     }
-    return $g_db2; 
-}
-
-$g_gocdb = null;
-function connect_gocdb()
-{
-    global $g_gocdb;
-
-    $db = Zend_Db::factory(config()->db_type, config()->goc_db_params);
-    $db->setFetchMode(Zend_Db::FETCH_OBJ);
-
-    //profile db via firebug
-    if(config()->debug) {
-        $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
-        $profiler->setEnabled(true);
-        $db->setProfiler($profiler);
-    }
-
-    $g_gocdb = $db;
+    return $g_db[$name]; 
 }
 
 function gocdb() { 
-    global $g_gocdb; 
-    if($g_gocdb == null) {
-        connect_gocdb();
+    global $g_db; 
+    $name = "data";
+    if(!isset($g_db[$name])) { 
+        connect($name, config()->db_type, config()->data_db_params);
     }
-    return $g_gocdb; 
-}
-
-$g_txdb = null;
-function connect_txdb()
-{
-    global $g_txdb;
-
-    $db = Zend_Db::factory(config()->db_type, config()->tx_db_params);
-    $db->setFetchMode(Zend_Db::FETCH_OBJ);
-
-    //profile db via firebug
-    if(config()->debug) {
-        $profiler = new Zend_Db_Profiler_Firebug('All DB Queries');
-        $profiler->setEnabled(true);
-        $db->setProfiler($profiler);
-    }
-
-    $g_txdb = $db;
+    return $g_db[$name]; 
 }
 
 function txdb() { 
-    global $g_txdb; 
-    if($g_txdb == null) {
-        connect_txdb();
+    global $g_db; 
+    $name = "tx";
+    if(!isset($g_db[$name])) { 
+        connect($name, config()->db_type, config()->tx_db_params);
     }
-    return $g_txdb; 
+    return $g_db[$name]; 
 }
 

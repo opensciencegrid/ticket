@@ -27,12 +27,6 @@ require_once("app/base.php");
 try {
     Zend_Session::start();
 
-    remove_quotes();
-    setup_logs();
-    greet();
-
-    cert_authenticate();
-
     //set php config
     ini_set('error_log', config()->error_logfile);
     ini_set('display_errors', 0);
@@ -40,15 +34,24 @@ try {
     ini_set('display_startup_errors', 1);
     ini_set('default_charset', 'UTF-8');
     ini_set('default_socket_timeout', 120);
+
+    remove_quotes();
+    setup_logs();
+    greet();
+
+    cert_authenticate();
+    date_default_timezone_set(user()->getTimeZone());
     error_reporting(E_ALL | E_STRICT);
 
-    date_default_timezone_set(user()->getTimeZone());
 } catch(exception $e) {
+/*
     //when a catastrohpic failure occure (like disk goes read-only..) emailing is the only way we got..
     mail(config()->elog_email_address, "[gocticket] Caught exception during bootstrap", $e, "From: ".config()->email_from);
     header("HTTP/1.0 500 Internal Server Error");
+*/
     echo "Boot Error";
     echo "<pre>".$e->getMessage()."</pre>";
+    elog($e->getMessage());
     exit;
 }
 

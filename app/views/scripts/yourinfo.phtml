@@ -45,13 +45,13 @@ Populate from someone else's contact information<br/>
             matchContains: true,
             width: 500,
             formatItem: function(row, i, max) {
-                return row.fullname + "<br/>Email: " + row.email;
+                return row.name+ "<br/>Email: " + row.email;
             },
             formatMatch: function(row, i, max) {
-                return row.fullname + " " + row.email;
+                return row.name+ " " + row.email;
             },
             formatResult: function(row) {
-                return row.fullname;
+                return row.name;
             }
         });
         $("#careof").result(function(event, data, formatted) {

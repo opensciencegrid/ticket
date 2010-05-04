@@ -469,6 +469,7 @@ class Footprint
             dlog("sending SMS notification to ".print_r($sms_to, true));
             $subject = "";
             $body = "";
+/*
             switch($this->priority_number) {
             case 1: $subject .= "CRITICAL ";
                     break;
@@ -479,7 +480,9 @@ class Footprint
             case 4: $subject .= "";
                     break;
             }
-            $subject .= "Ticket ID:$id has been submitted";
+*/
+            $subject = Footprint::getPriority($this->priority_number);
+            $subject .= " Ticket ID:$id has been submitted";
             $body .= $this->title."\n".$this->description;
 
             //truncate body
@@ -487,6 +490,16 @@ class Footprint
 
             sendSMS($sms_to, $subject, $body);
         }
+    }
+
+    static public function getPriority($number) {
+        switch($number) {
+        case 1: return "Critical";
+        case 2: return "High Priority";
+        case 3: return "Elevated";
+        case 4: return "Normal";
+        }
+        return "(Unknown Priority)";
     }
 
     static public function parse($str)

@@ -55,7 +55,7 @@ Populate from someone else's contact information<br/>
             }
         });
         $("#careof").result(function(event, data, formatted) {
-            $("#name").val(data.fullname);
+            $("#name").val(data.name);
             $("#email").val(data.email);
             $("#phone").val(data.phone);
             $("#vo_id").val(-1); //reset vo to i-don-know

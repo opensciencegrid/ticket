@@ -12,7 +12,6 @@ class ViewerController extends Zend_Controller_Action
         $dirty_id = trim($_REQUEST["id"]);
         $id = (int)$dirty_id;
 
-
         if((string)$id !== $dirty_id) {
             //id that looks like non-id - forward to keyword search
             $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
@@ -127,19 +126,6 @@ class ViewerController extends Zend_Controller_Action
 
         return $detail;
     }
-
-/*
-    public function lookupTeam($teams, $person)
-    {
-        dlog($teams);
-        foreach($teams as $team) {
-            foreach(split($team->members, ",") as $member) {
-                if($person == $member) return $team;
-            }
-        }
-        return "Unknown Team";
-    }
-*/
 
     public function editAction()
     {

@@ -18,6 +18,23 @@ class AdminController extends BaseController
             $this->render("error/access", null, true);
             return;
         }
+
+        $aka_model = new AKA();
+        $model = new Schema();
+        $teams = $model->getteams();
+
+        $this->view->link_teams = array();
+        //replace members (echism,kagross,cpipes) to more usable array
+        foreach(config()->navigator_assignee_list as $team_id) {
+            if(!isset($teams[$team_id])) continue;
+            $team = $teams[$team_id];
+            $links = array();
+            $members = explode(",", $team->members);
+            foreach($members as $member) {
+                $links[$member] = $aka_model->lookupName($member);
+            }
+            $this->view->link_teams[$team->team] = $links;
+        }
     }
 
     private function accesscheck($remote_addr = null)

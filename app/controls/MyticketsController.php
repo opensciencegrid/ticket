@@ -43,7 +43,7 @@ class MyticketsController extends Zend_Controller_Action
 
             //assigned tickets
             $closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";
-            $query = "WHERE mrstatus not in $closed_status and mrassignees like '%$this->assignee%'";
+            $query = "WHERE mrstatus not in $closed_status and mrassignees like '%".$this->view->assignee."%'";
             $this->view->assigned_tickets = $model->dosearch($query);
 
             //recently closed tickets

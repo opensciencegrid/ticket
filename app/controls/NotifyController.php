@@ -27,7 +27,7 @@ class NotifyController extends BaseController
         }
 
         $do_rss = false;
-        if($_REQUEST["rss"] == 1) { $do_rss = true; }
+        if(@$_REQUEST["rss"] == 1) { $do_rss = true; }
 
         $form = $this->getForm();
         if($form->isValid($_POST)) {

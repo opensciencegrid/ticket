@@ -34,7 +34,11 @@ class MyticketsController extends Zend_Controller_Action
             return;
         }
 
-        list($id, $name) = $this->lookupFPID($_REQUEST["assignee"]);
+        if(!isset($_REQUEST["assignee"])) {
+            list($id, $name) = array(null, "All");
+        } else {
+            list($id, $name) = $this->lookupFPID($_REQUEST["assignee"]);
+        }
 
         try {
             $model = new Tickets();
@@ -43,13 +47,21 @@ class MyticketsController extends Zend_Controller_Action
 
             //assigned tickets
             $closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";
-            $query = "WHERE mrstatus not in $closed_status and mrassignees like '%".$this->view->assignee."%'";
+            if($id !== null) {
+                $query = "WHERE mrstatus not in $closed_status and mrassignees like '%".$this->view->assignee."%'";
+            } else {
+                $query = "WHERE mrstatus not in $closed_status";
+            }
             $this->view->assigned_tickets = $model->dosearch($query);
 
             //recently closed tickets
             $this->view->closed_days = config()->myticket_closed_days;
             $recent_date = date("Y-m-d G:i:s", time()-3600*24*$this->view->closed_days);
-            $query = "WHERE mrstatus in $closed_status and mrassignees like '%".$this->view->assignee."%' and mrupdatedate > '$recent_date'";
+            if($id !== null) {
+                $query = "WHERE mrstatus in $closed_status and mrassignees like '%".$this->view->assignee."%' and mrupdatedate > '$recent_date'";
+            } else {
+                $query = "WHERE mrstatus in $closed_status and mrupdatedate > '$recent_date'";
+            }
             $this->view->closed_tickets = $model->dosearch($query);
 
         } catch (SoapFault $e) {

@@ -138,6 +138,14 @@ function sort_modified_down($a, $b)
                 $tag = "<span class=\"red tag\">Security Notification</span>";
             }
 
+            if($ticket->mrpriority == 1) {
+                $tag = "<span class=\"red tag\">Critical Priority</span>";
+            } else if($ticket->mrpriority == 2) {
+                $tag = "<span class=\"red tag\">High Priority</span>";
+            } else if($ticket->mrpriority == 3) {
+                $tag = "<span class=\"yellow tag\">Elevated Priority</span>";
+            }
+
             echo "<tr class=\"record\" onclick=\"window.open('$url','ticket_".$ticket->mrid."');\">";
             echo "<th>$id&nbsp;&nbsp;</th>";
             echo "<td>$tag$title</td>";

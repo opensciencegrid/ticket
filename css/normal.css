@@ -139,11 +139,6 @@ span.header {
     width: 150px;
 }
 
-{
-    color: red;
-    margin-left:40px;
-}
-
 dt
 {
     padding-top: 5px;
@@ -515,6 +510,12 @@ span.red
     background-color: red;
     color: white;
 }
+span.yellow
+{
+    background-color: yellow;
+    color: black;
+}
+
 
 .fblist
 {

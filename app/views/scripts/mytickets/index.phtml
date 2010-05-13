@@ -28,7 +28,7 @@ echo "You are here &gt; ";
 echo "<a href=\"".fullbase()."/".$this->submenu_selected."\">";
 echo submenutitle($this->submenu_selected)."</a> &gt; $this->page_title</div>";
 
-echo "<h3>Assigned (".count($this->assigned_tickets)." Tickets)</h3>";
+echo "<h3>Assigned or CC-ed (".count($this->assigned_tickets)." Tickets)</h3>";
 showtickets($this->assigned_tickets, "assigned");
 
 echo "<h3>Closed within ".$this->closed_days." days (".count($this->closed_tickets)." Tickets)</h3>";

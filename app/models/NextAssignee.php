@@ -19,13 +19,16 @@ class NextAssignee
         if($hour >= 5 and $hour < 8) {
             $members = array("adeximo");
         } else if ($hour >= 8 and $hour < 13) {
-            $members = array("adeximo", "echism", "kagross");
+            //$members = array("adeximo", "echism", "kagross");
+            $members = array("adeximo", "echism");
         } else if ($hour >= 13 and $hour < 17) {
-            $members = array("adeximo", "echism", "kagross", "cpipes");
+            //$members = array("adeximo", "echism", "kagross", "cpipes");
+            $members = array("adeximo", "echism", "cpipes");
         } else if ($hour >= 17 and $hour < 21) {
             $members = array("cpipes");
         } else {
-            $members = array("adeximo", "echism", "kagross");
+            //$members = array("adeximo", "echism", "kagross");
+            $members = array("adeximo", "echism");
         }
         
         //report the pool of possible staff

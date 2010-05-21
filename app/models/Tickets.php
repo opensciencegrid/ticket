@@ -74,6 +74,7 @@ class Tickets
             array(config()->webapi_user, config()->webapi_password, "", config()->project_id, $id));
         return $ret;
     }
+/*
     public function getopencounts()
     {
         $projectid = config()->project_id;
@@ -96,5 +97,6 @@ class Tickets
         }
         return $counts;
     }
+*/
 }
 

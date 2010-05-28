@@ -235,6 +235,7 @@ table.display tr.even.gradeU {
 }
 
 
+/*
 tr.odd {
 	background-color: #E2E4FF;
 }
@@ -242,7 +243,10 @@ tr.odd {
 tr.even {
 	background-color: white;
 }
-
+*/
+td {
+border-bottom:1px solid #CCCCCC;
+}
 
 
 
@@ -325,35 +329,38 @@ table.display tr.odd.row_selected td {
 	background-color: #9FAFD1;
 }
 
+/*
 
+.ex_highlight #example tbody tr.even:hover, 
+#example tbody tr.even td.highlighted {
+	background-color: #ECFFB3;
+}
+
+.ex_highlight #example tbody tr.odd:hover, 
+#example tbody tr.odd td.highlighted {
+	background-color: #E6FF99;
+}
+*/
 /*
  * Sorting classes for columns
  */
 /* For the standard odd/even */
-tr.odd td.sorting_1 {
-	background-color: #D3D6FF;
+td.sorting_1 {
+	background-color: #fea;
 }
 
-tr.odd td.sorting_2 {
-	background-color: #DADCFF;
+td.sorting_2 {
+	background-color: #ffb;
 }
 
-tr.odd td.sorting_3 {
-	background-color: #E0E2FF;
+td.sorting_3 {
+	background-color: #ffd;
 }
-
-tr.even td.sorting_1 {
-	background-color: #EAEBFF;
+tr:hover td.sorting_1,
+tr:hover td.sorting_2,
+tr:hover td.sorting_3 {
+    background-color: inherit;
 }
-
-tr.even td.sorting_2 {
-	background-color: #F2F3FF;
-}
-
-tr.even td.sorting_3 {
-	background-color: #F9F9FF;
-}
-
 
 /* For the Conditional-CSS grading rows */
 /*
@@ -462,13 +469,3 @@ tr.even.gradeU td.sorting_3 {
 }
 
 
-/*
- * Row highlighting example
- */
-.ex_highlight #example tbody tr.even:hover, #example tbody tr.even td.highlighted {
-	background-color: #ECFFB3;
-}
-
-.ex_highlight #example tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
-	background-color: #E6FF99;
-}

@@ -6,15 +6,24 @@
 .column_buttons {
 display: inline-block;
 }
+
 .column_buttons button { 
 padding: 3px;
 margin-left: 2px;
 }
+.column_buttons .ui-state-default {
+color: #ccc;
+}
+.column_buttons .ui-state-active {
+color: #000;
+}
+
 .opened_toolbar,
 .closed_toolbar {
 display: inline-block;
 margin: 2px;
 }
+
 #content {
 font-size: 12px;
 }
@@ -111,7 +120,7 @@ echo "You are here &gt; ";
 echo "<a href=\"".fullbase()."/".$this->submenu_selected."\">";
 echo submenutitle($this->submenu_selected)."</a> &gt; $this->page_title</div>";
 
-echo "<h3>Open Tickets (".count($this->assigned_tickets)." Tickets)</h3>";
+echo "<h3>Open Tickets</h3>";
 showtickets($this->assigned_tickets, "opened", $column_names);
 
 echo "<h3>Closed within ".$this->closed_days." days (".count($this->closed_tickets)." Tickets)</h3>";

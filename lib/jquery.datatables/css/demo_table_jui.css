@@ -346,15 +346,15 @@ table.display tr.odd.row_selected td {
  */
 /* For the standard odd/even */
 td.sorting_1 {
-	background-color: #cdf;
+	background-color: #d0e0ff;
 }
 
 td.sorting_2 {
-	background-color: #def;
+	background-color: #d8e8ff;
 }
 
 td.sorting_3 {
-	background-color: #eff;
+	background-color: #dfefff;
 }
 tr:hover td.sorting_1,
 tr:hover td.sorting_2,

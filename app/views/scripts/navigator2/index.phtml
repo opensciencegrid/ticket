@@ -9,7 +9,9 @@ display: inline-block;
 
 .column_buttons button { 
 padding: 3px;
-margin-left: 2px;
+}
+.column_buttons button:hover {
+cursor: pointer;
 }
 .column_buttons .ui-state-default {
 color: #ccc;
@@ -45,6 +47,7 @@ $(document).ready(function() {
         "bPaginate": false,
         "bStateSave": true,
         "bInfo": false,
+        //"oSearch": {"sSearch": "Initial search"},
         "sDom": '<"opened_toolbar">frtip'
     });
 
@@ -58,11 +61,20 @@ $(document).ready(function() {
     });
 
     $("div.opened_toolbar").html('<?
+
     echo "<div class=\"column_buttons\"> Show Columns: ";
+    $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
         if($this->opened_table_cols[$id] == false) {
             $active = "";
+        }
+        if($first) {
+            $first = false;
+            $active .= " ui-corner-left";
+        }
+        if($name == $column_names[sizeof($column_names)-1]) {
+            $active .= " ui-corner-right";
         }
         echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
     }
@@ -71,10 +83,18 @@ $(document).ready(function() {
 
     $("div.closed_toolbar").html('<?
     echo "<div class=\"column_buttons\"> Show Columns: ";
+    $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
         if($this->closed_table_cols[$id] == false) {
             $active = "";
+        }
+        if($first) {
+            $first = false;
+            $active .= " ui-corner-left";
+        }
+        if($name == $column_names[sizeof($column_names)-1]) {
+            $active .= " ui-corner-right";
         }
         echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideClosed(this, $id);\">$name</button>";
     }

@@ -35,19 +35,6 @@ width: 300px;
         </td>
     </tr>
     </table>
-    <h3>Ticket Lists</h3>
-            <?
-            echo "<p><a href='mytickets'>All Open Tickets</a><p>";
-
-            foreach($this->link_teams as $team=>$links) {
-                echo "<h4>";
-                $team = Footprint::parse($team);
-                echo "$team</h4>";
-                foreach($links as $id=>$name) {
-                    echo "<span><a href='mytickets?assignee=$id'>$name</a>&nbsp;&nbsp;</span>";
-                }
-                echo "</p>";
-            }?>
-    </div>
+</div>
 
 <?include("app/views/scripts/footer.phtml");?>

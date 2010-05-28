@@ -1,0 +1,205 @@
+<?include("app/views/scripts/header.phtml");?>
+
+<link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables/css/demo_table_jui.css" />
+
+<style type="text/css">
+.column_buttons {
+display: inline-block;
+}
+.column_buttons button { 
+padding: 3px;
+margin-left: 2px;
+}
+.opened_toolbar,
+.closed_toolbar {
+display: inline-block;
+margin: 2px;
+}
+</style>
+
+<script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+<?
+$column_names = array("ID", "Submit Date", "Title", "Update Date", "Next Action", "NAD", "Priority", "Assignees", "CCs", "Originating VO", "Destination VO");
+?>
+var opened_table;
+
+$(document).ready(function() {
+
+     opened_table = $('#opened').dataTable({
+        "bJQueryUI": true,
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bStateSave": true,
+        "bInfo": false,
+        "sDom": '<"opened_toolbar">frtip'
+    });
+
+    closed_table = $('#closed').dataTable({
+        "bJQueryUI": true,
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bStateSave": true,
+        "bInfo": false,
+        "sDom": '<"closed_toolbar">frtip'
+    });
+
+    $("div.opened_toolbar").html('<?
+    echo "<div class=\"column_buttons\"> Show Columns: ";
+    foreach($column_names as $id=>$name) {
+        $active = "ui-state-active";
+        if($this->opened_table_cols[$id] == false) {
+            $active = "";
+        }
+        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
+    }
+    echo "</div>";
+    ?>');
+
+    $("div.closed_toolbar").html('<?
+    echo "<div class=\"column_buttons\"> Show Columns: ";
+    foreach($column_names as $id=>$name) {
+        $active = "ui-state-active";
+        if($this->closed_table_cols[$id] == false) {
+            $active = "";
+        }
+        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideClosed(this, $id);\">$name</button>";
+    }
+    echo "</div>";
+    ?>');
+/*
+    var opened_data = opened.fnGetData();
+    console.dir(opened_data);
+    console.dir(opened.fnGetColumnVis(0));
+*/
+
+});
+
+function fnShowHideOpened(button, iCol )
+{
+    if($(button).hasClass("ui-state-active")) {
+        $(button).removeClass("ui-state-active");
+    } else {
+        $(button).addClass("ui-state-active");
+    }
+
+    var bVis = opened_table.fnSettings().aoColumns[iCol].bVisible;
+    opened_table.fnSetColumnVis( iCol, bVis ? false : true );
+}
+
+function fnShowHideClosed(button, iCol )
+{
+    if($(button).hasClass("ui-state-active")) {
+        $(button).removeClass("ui-state-active");
+    } else {
+        $(button).addClass("ui-state-active");
+    }
+    var bVis = closed_table.fnSettings().aoColumns[iCol].bVisible;
+    closed_table.fnSetColumnVis( iCol, bVis ? false : true );
+}
+
+</script>
+
+<div class="bread">
+
+<?
+echo "You are here &gt; ";
+echo "<a href=\"".fullbase()."/".$this->submenu_selected."\">";
+echo submenutitle($this->submenu_selected)."</a> &gt; $this->page_title</div>";
+
+echo "<h3>Open Tickets (".count($this->assigned_tickets)." Tickets)</h3>";
+showtickets($this->assigned_tickets, "opened", $column_names);
+
+echo "<h3>Closed within ".$this->closed_days." days (".count($this->closed_tickets)." Tickets)</h3>";
+showtickets($this->closed_tickets, "closed", $column_names);
+
+function showtickets($tickets, $id, $column_names) {
+?>
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
+    <thead>
+        <tr>
+    <?foreach($column_names as $name) {
+        echo "<th>$name</th>";
+    }?>
+        </tr>
+    </thead>
+    <?
+    $model = new Schema();
+    $teams = $model->getteams();
+    $aka_model = new AKA();
+
+    foreach($tickets as $ticket) {
+        $url = base()."/viewer?id=".$ticket->mrid;
+        $target = "ticket_".$ticket->mrid;
+
+        //assignee, cc
+        $assignees = array();
+        $ccs = array();
+        foreach(explode(" ", $ticket->mrassignees) as $a) {
+            //FP somehow put CCs on assginee field...-
+            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
+                $ccs[] = substr($a, 3);
+                continue;
+            }
+            //FP somehow contains team names on assignee... ignore it
+            $team_name = false;
+            foreach($teams as $team) {
+                if($team->team == $a) {
+                    $team_name = true;
+                    break;
+                }
+            }
+            if($team_name) continue;
+
+            //store to assignee list
+            $aka = $aka_model->lookupName($a);
+            $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
+        }
+
+        //priority
+        $priority = Footprint::getPriority($ticket->mrpriority);
+        switch($ticket->mrpriority) {
+        case 3: $priority = "<font color='#c90'>$priority</font>"; break;
+        case 2: $priority = "<font color='red'>$priority</font>"; break;
+        case 1: $priority = "<font color='red'>$priority</font>"; break;
+        }
+
+        //nad
+        $nad_unix = strtotime($ticket->nad);
+        $nad = date("Y-m-d", $nad_unix);
+        if($nad_unix < time()) {
+            $nad = "<font color='red'>$nad</font>";
+        } else if($nad < time() + 3600*config()->nad_alert_hours) {
+            $nad = "<font color='#c90'>$nad</font>";
+        }
+
+        //ticket type
+        $title = $ticket->mrtitle;
+        if($ticket->tickettype == "Security") {
+            $title = "<span class='red tag'>Security</span>$title";
+        }
+
+        ?>
+        <tr onclick="window.open('<?=$url?>','<?=$target?>');">
+            <td><?=$ticket->mrid?></td>
+            <td><?=$ticket->mrsubmitdate?></td>
+            <td><?=$title?></td>
+            <td><?=$ticket->mrupdatedate?></td>
+            <td><?=$ticket->nextaction?></td>
+            <td><?=$nad?></td>
+            <td><?=$priority?></td>
+            <td><?=implode("<br>", $assignees)?></td>
+            <td><?=implode("<br>", $ccs)?></td>
+            <td><?=$ticket->mrorigin?></td>
+            <td><?=$ticket->mrdest?></td>
+        </tr>
+        <?
+    }
+    ?>  
+    </table>
+<?
+}
+?>
+
+<?include("app/views/scripts/footer.phtml");?>

@@ -193,7 +193,7 @@ function nadstyle($nad)
     $nad = strtotime($nad);
     if($nad < time()) {
         return "flag_red";
-    } else if($nad < time() + 3600*24) {
+    } else if($nad < time() + 3600*config()->nad_alert_hours) {
         return "flag_yellow";
     }
     return "";

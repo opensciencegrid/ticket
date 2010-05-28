@@ -109,7 +109,6 @@ class ViewerController extends Zend_Controller_Action
             $this->view->assignees[$a] = $aka_model->lookupName($a);
         }
 
-
         $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
         $this->view->nad = date("Y-m-d", strtotime($detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p));
         $this->view->next_action = $detail->ENG__bNext__bAction__bItem;
@@ -271,36 +270,50 @@ class ViewerController extends Zend_Controller_Action
         $this->render("none", null, true);
     }
 
-    public function updatecclistAction()
+    public function updatebasicAction()
     {
         if(user()->isGuest()) {
             $this->render("error/access", null, true); 
         } else {
-            if(!isset($_REQUEST["cc"])) {
-                $this->view->content = "No CC list send....";
-                $this->render("error/error", null, true); 
-            } else {
-                $ccs = $_REQUEST["cc"]; //TODO - validate
-                $ticket_id = (int)$_REQUEST["id"];
-                $footprint = new Footprint($ticket_id);
+            $ticket_id = (int)$_REQUEST["id"];
+            $footprint = new Footprint($ticket_id);
 
-                $cclist = "";
-                foreach($ccs as $cc) {
-                    $cc = trim($cc);
-                    if($cc != "") {
-                        $footprint->addCC($cc);
-                        $cclist .= $cc."\n";
-                   }
-                }
-                if($cclist == "") $cclist = "(empty)";
-                $footprint->addDescription("[Updated CC List]\n$cclist");
+            //cc list
+            $ccs = $_REQUEST["cc"]; //TODO - validate
+            $cclist = "";
+            foreach($ccs as $cc) {
+                $cc = trim($cc);
+                if($cc != "") {
+                    $footprint->addCC($cc);
+                    $cclist .= $cc."\n";
+               }
+            }
 
-                $footprint->submit();
-                addMessage("Successfully Updated CC list!");
-                header("Location: ".fullbase()."/viewer?id=".$ticket_id);
-                exit;
-             }
-            $this->render("none", null, true);
+            //new update
+            $description = trim($_REQUEST["description"]); //TODO - should validate?
+            if($description != "") {
+                $footprint->addDescription($description);
+            }
+/*
+            if($cclist == "") $cclist = "(empty)";
+            $footprint->addDescription("[Updated CC List]\n$cclist");
+*/
+
+            //set suppression
+            if(!isset($_REQUEST["notify_assignees"])) {
+                $footprint->suppress_assignees();
+            }
+            if(!isset($_REQUEST["notify_submitter"])) {
+                $footprint->suppress_submitter();
+            }
+            if(!isset($_REQUEST["notify_ccs"])) {
+                $footprint->suppress_ccs();
+            }
+
+            $footprint->submit();
+            addMessage("Successfully Updated CC list!");
+            header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+            exit;
         }
     }
  
@@ -336,6 +349,13 @@ class ViewerController extends Zend_Controller_Action
 
             $this->view->editable = true;
         }
+
+/*
+        if(config()->debug) {
+            slog("setting non-editable for debuging purpose");
+            $this->view->editable = false;
+        }
+*/
 
         //notes
         $alldesc = $detail->alldescs;

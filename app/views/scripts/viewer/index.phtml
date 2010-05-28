@@ -3,7 +3,7 @@
 <link rel="prefetch" href="../images/selected_back.gif"/>
 <link rel="prefetch" href="../images/pointer.png"/>
 
-<script type="text/javascript" src="<?=base()?>/lib/jquery-1.3.2/plugins/jquery.textarearesizer.js"></script>
+<script type="text/javascript" src="<?=base()?>/lib/jquery-ui-1.8.1/plugins/jquery.textarearesizer.js"></script>
 <style type="text/css">
         div.grippie {
                 background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
@@ -231,60 +231,54 @@ function gotoedit()
 
     </form>
 
-    <script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $("input[name='nad']").datepicker({
-            dateFormat: 'yy-mm-dd'
-        });
-        $('textarea.resizable').TextAreaResizer();
-    });
-    </script>
 <?} else {?>
     <div id="information_table">
+        <form action="<?=fullbase()?>/viewer/updatebasic?id=<?=$this->ticket_id?>" method="post">
         <b><?=$this->title?></b>
         <table width="100%">
         <tr>
-            <td width="15%"></td>
-            <td width="35%"></td>
-            <td width="15%"></td>
-            <td width="35%"></td>
+            <td width="20%"></td>
+            <td width="30%"></td>
+            <td width="20%"></td>
+            <td width="30%"></td>
+        </tr>
         <tr>
             <td colspan="4"><h3>Ticket Detail</h3></td>
         </tr>
         <tr>
-            <td colspan="4"><h4>Submitter</h4></td>
+            <td colspan="2"><h4>Submitter</h4></td>
+            <td colspan="2"><h4>Routing Information</h4></td>
         </tr>
         <tr>
             <td class="header">Full Name</td><td><?=$this->submitter_name?></td>
-            <td></td><td></td>
-        </tr>
-        <?
-            if(user()->getPersonID() !== null) {
-                echo "<tr>";
-                echo "<td class=\"header\">Email</td><td><a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a></td>";
-                echo "<td class=\"header\">Phone</td><td>".$this->submitter_phone."</td>";
-                echo "</tr>";
-            }
-        ?>
-        <tr>
-            <td colspan="4"><h4>Routing Information</h4></td>
-        </tr>
-        <tr>
             <td class="header">Originating VO</td><td><?=$this->submitter_vo?></td>
+        </tr>
+        <tr>
+            <td class="header">Phone</td><td><?=$this->submitter_phone?></td>
             <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
         </tr>
         <tr>
+        <?
+            if(user()->getPersonID() !== null) {
+                echo "<td class=\"header\">Email</td><td><a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a></td>";
+            } else {
+                echo "<td></td></td></td>";
+            }
+        ?>
             <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
+        </tr>
+        <tr>
+            <td></td><td></td>
             <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
         </tr>
 
         <tr>
-            <td colspan="4"><h4>Other Information</h4></td>
+            <td colspan="2"><h4>Other Information</h4></td>
+            <td colspan="2"><h4>Assignees</h4></td>
         </tr>
         <tr>
             <td class="header">Ticket Type</td><td><?=$this->ticket_type?></td>
-            <td rowspan="6" class="header">Assignees:</td><td rowspan="5">
+            <td colspan="2" rowspan="6">
             <?
             foreach($this->teams as $team_id => $team) {
                 $out = "";
@@ -326,34 +320,46 @@ function gotoedit()
         <tr>
         <?if(!user()->isGuest()) { ?>
              <td class="header">CC:</td><td>
-                <form action="<?=fullbase()?>/viewer/updatecclist?id=<?=$this->ticket_id?>" method="post">
                     <div class="ccarea">
                     <?
                     include_once("app/views/cc_editor.php");
                     cceditor($this->cc);
                     ?>
                     </div>
-                    <a href="#" onclick="addcc($(this).siblings('div.ccarea')); return false;">Add New CC</a> <br/><br/>
-                    <input class="ccupdate" type="submit" value="&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;"/>
-                    <script type="text/javascript">
-/*
-                    function set_showupdate() {
-                        $('.ac_input').change(function() {$('.ccupdate').show()});
-                        //click event will be skipped because the whole element is removed before it gets to our event
-                        $('.ac_input_remove').mouseup(function() {$('.ccupdate').show()});
-                    }
-                    $(document).ready(function() {set_showupdate();});
-*/
-                    </script>
-                <br/>
-                </form>
+                    <a href="#" onclick="addcc($(this).siblings('div.ccarea')); return false;">Add New CC</a>
             </td>
         <?}?>
         </tr>
 
         </table>
+
+        <?if(!user()->isGuest()) { ?>
+            <h4>New Update</h4>
+            <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
+            <br/>
+
+            <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+            &nbsp;&nbsp;
+            <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
+            &nbsp;&nbsp;
+            <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
+            &nbsp;&nbsp;
+            <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+            <br><br>
+        <?}?>
+        </form>
     </div>
 <?}?>
+
+<script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    $('textarea.resizable').TextAreaResizer();
+});
+</script>
 
 <div id="updates" style="clear: both;">
     <?

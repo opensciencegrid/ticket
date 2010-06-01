@@ -311,7 +311,7 @@ class ViewerController extends Zend_Controller_Action
             }
 
             $footprint->submit();
-            addMessage("Successfully Updated CC list!");
+            addMessage("Successfully updated this ticket!");
             header("Location: ".fullbase()."/viewer?id=".$ticket_id);
             exit;
         }

@@ -63,10 +63,11 @@ $(document).ready(function() {
     $("div.opened_toolbar").html('<?
 
     echo "<div class=\"column_buttons\"> Show Columns: ";
+    //TODO - refactor with below code..
     $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
-        if($this->opened_table_cols[$id] == false) {
+        if(isset($this->opened_table_cols[$id]) && $this->opened_table_cols[$id] == false) {
             $active = "";
         }
         if($first) {
@@ -86,7 +87,7 @@ $(document).ready(function() {
     $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
-        if($this->closed_table_cols[$id] == false) {
+        if(isset($this->closed_table_cols[$id]) && $this->closed_table_cols[$id] == false) {
             $active = "";
         }
         if($first) {

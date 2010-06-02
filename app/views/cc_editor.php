@@ -13,9 +13,10 @@ foreach($persons as $person)
 {
     $name = trim($person->name);
     $email = trim($person->primary_email);
+    $phone = trim($person->primary_phone);
     if($name == "") $name = $email;
     if($persons_json != "") $persons_json .= ",\n";
-    $persons_json .= "{ name: \"$name\", email: \"$email\"}";
+    $persons_json .= "{ name: \"$name\", email: \"$email\", phone: \"$phone\"}";
 }
 ?>
 var persons = [

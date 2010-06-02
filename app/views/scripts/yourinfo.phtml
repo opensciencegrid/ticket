@@ -10,58 +10,18 @@ Please tell us who should be the primary contact for this ticket.<br/>
 
 
 </td>
-<?
-if(user()->allows("update")) {
-    ?>
-<td style="vertical-align: middle;">
+<?  if(user()->allows("update")) { ?>
+    <td style="vertical-align: middle;">
     <img src="<?=base()?>/images/populator_arrow.png">
-</td>
-<td style="vertical-align: middle;">
-<div class="contact_populator">
-Populate from someone else's contact information<br/>
-<label class="required" for="careof">Name</label><br/>
+    </td>
+    <td style="vertical-align: middle;">
+    <div class="contact_populator">
+    Populate from someone else's contact information<br/>
+    <label class="required" for="careof">Name</label><br/>
     <?
     echo "<input type='text' id=\"careof\"/>";
-    echo "<script type='text/javascript'>";
     $model = new Person();
-    $persons = $model->fetchAll();
-    $persons_json = "";
-    foreach($persons as $person) 
-    {
-        $fullname = trim($person->name);
-        $email = trim($person->primary_email);
-        $phone = trim($person->primary_phone);
-        if($fullname == "") $fullname = $email;
-        if($persons_json != "") $persons_json .= ",\n";
-        $persons_json .= "{ fullname: \"$fullname\", email: \"$email\", phone: \"$phone\"}";
-    }
     ?>
-    var persons = [
-        <?=$persons_json?>
-    ];
-    $(document).ready(function() {
-        $("#careof").autocomplete(persons, {
-            mustMatch: true,
-            matchContains: true,
-            width: 500,
-            formatItem: function(row, i, max) {
-                return row.name+ "<br/>Email: " + row.email;
-            },
-            formatMatch: function(row, i, max) {
-                return row.name+ " " + row.email;
-            },
-            formatResult: function(row) {
-                return row.name;
-            }
-        });
-        $("#careof").result(function(event, data, formatted) {
-            $("#name").val(data.name);
-            $("#email").val(data.email);
-            $("#phone").val(data.phone);
-            $("#vo_id").val(-1); //reset vo to i-don-know
-        });
-    });
-    </script>
     </div>
     </td>
     <?
@@ -84,6 +44,30 @@ Populate from someone else's contact information<br/>
         <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
     </dd>
     <br/>
-<?  }
+<?}?>
 
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#careof").autocomplete(persons, {
+        mustMatch: true,
+        matchContains: true,
+        width: 500,
+        formatItem: function(row, i, max) {
+            return row.name+ "<br/>Email: " + row.email;
+        },
+        formatMatch: function(row, i, max) {
+            return row.name+ " " + row.email;
+        },
+        formatResult: function(row) {
+            return row.name;
+        }
+    });
+    $("#careof").result(function(event, data, formatted) {
+        $("#name").val(data.name);
+        $("#email").val(data.email);
+        $("#phone").val(data.phone);
+        $("#vo_id").val(-1); //reset vo to i-don-know
+    });
+});
+</script>
 

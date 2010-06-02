@@ -372,12 +372,18 @@ class ViewerController extends Zend_Controller_Action
             $info_a = explode(" by ", $info);
             $date_str = str_replace(" at ", " ", $info_a[0]);
 
+
             //FP9 add some time zone description - remove it since php can't parse it out
             $date_str = explode("(GMT", $date_str);
             $date_str = $date_str[0];
 
             $time = strtotime($date_str);// + 3600;
-            $by = str_replace(":", "", $info_a[1]);
+            if(sizeof($info_a) == 1) {
+                elog("FP information [$info] is malformed..(no 'by' information)");
+                $by = "unknown";
+            } else {
+                $by = str_replace(":", "", $info_a[1]);
+            }
 
             if(isset($descs[$time])) {
                 $descs[$time]["content"].= "\n".$desc;

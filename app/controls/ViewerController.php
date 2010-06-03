@@ -279,14 +279,14 @@ class ViewerController extends Zend_Controller_Action
             $footprint = new Footprint($ticket_id);
 
             //cc list
-            $ccs = $_REQUEST["cc"]; //TODO - validate
-            $cclist = "";
-            foreach($ccs as $cc) {
-                $cc = trim($cc);
-                if($cc != "") {
-                    $footprint->addCC($cc);
-                    $cclist .= $cc."\n";
-               }
+            if(isset($_REQUEST["cc"])) {
+                $ccs = $_REQUEST["cc"]; //TODO - validate
+                foreach($ccs as $cc) {
+                    $cc = trim($cc);
+                    if($cc != "") {
+                        $footprint->addCC($cc);
+                   }
+                }
             }
 
             //new update
@@ -294,10 +294,6 @@ class ViewerController extends Zend_Controller_Action
             if($description != "") {
                 $footprint->addDescription($description);
             }
-/*
-            if($cclist == "") $cclist = "(empty)";
-            $footprint->addDescription("[Updated CC List]\n$cclist");
-*/
 
             //set suppression
             if(!isset($_REQUEST["notify_assignees"])) {

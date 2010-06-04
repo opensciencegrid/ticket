@@ -775,6 +775,7 @@ class Services_JSON
         return false;
     }
 }
+/*
 
 if (class_exists('PEAR_Error')) {
 
@@ -788,7 +789,7 @@ if (class_exists('PEAR_Error')) {
     }
 
 } else {
-
+*/
     /**
      * @todo Ultimately, this class shall be descended from PEAR_Error
      */
@@ -801,7 +802,7 @@ if (class_exists('PEAR_Error')) {
         }
     }
 
-}
+//}
     function json_decode($content, $assoc=false){
                 if ( $assoc ){
                     $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);

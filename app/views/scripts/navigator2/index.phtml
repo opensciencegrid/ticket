@@ -3,10 +3,13 @@
 <link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables/css/demo_table_jui.css" />
 
 <style type="text/css">
-.column_buttons {
+.column_buttons,
+.opened_toolbar,
+.closed_toolbar {
 display: inline-block;
 }
 
+.column_buttons {
 .column_buttons button { 
 padding: 3px;
 }
@@ -18,12 +21,6 @@ color: #ccc;
 }
 .column_buttons .ui-state-active {
 color: #000;
-}
-
-.opened_toolbar,
-.closed_toolbar {
-display: inline-block;
-margin: 2px;
 }
 
 #content {
@@ -66,7 +63,7 @@ $(document).ready(function() {
     $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
-        if($this->opened_table_cols[$id] == false) {
+        if(isset($this->opened_table_cols[$id]) && $this->opened_table_cols[$id] == false) {
             $active = "";
         }
         if($first) {
@@ -86,7 +83,7 @@ $(document).ready(function() {
     $first = true;
     foreach($column_names as $id=>$name) {
         $active = "ui-state-active";
-        if($this->closed_table_cols[$id] == false) {
+        if(isset($this->closed_table_cols[$id]) && $this->closed_table_cols[$id] == false) {
             $active = "";
         }
         if($first) {

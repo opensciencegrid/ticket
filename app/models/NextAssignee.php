@@ -15,6 +15,7 @@ class NextAssignee
         $day = $time["tm_mday"];
         $weekday = $time["tm_wday"];
 
+/*
         //construct list of possible assignee based on each hours
         if($hour >= 5 and $hour < 8) {
             $members = array("adeximo");
@@ -26,6 +27,14 @@ class NextAssignee
             $members = array("cpipes");
         } else {
             $members = array("adeximo", "echism", "kagross");
+        }
+*/
+
+        //chris is out until wedding is over
+        if($hour >= 5 and $hour < 8) {
+                $members = array("adeximo");
+        } else {
+                $members = array("adeximo", "echism", "kagross");
         }
         
         //report the pool of possible staff

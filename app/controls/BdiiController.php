@@ -34,7 +34,8 @@ class BdiiController extends BaseController
             }
 
             //bdii ticket is assigned to arvind & soichi
-            $footprint->addAssignee("agopu", true); 
+            $footprint->addAssignee("agopu", true);  //clear list
+            $footprint->addAssignee("steige");
             $footprint->addAssignee("hayashis");
             $footprint->setDestinationVO("MIS");
 

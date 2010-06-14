@@ -31,14 +31,21 @@ class ResourceController extends BaseController
             $footprint->addDescription($form->getValue('detail'));
 
             //lookup service center
-            //$resource_id = $form->getValue($issue_element_name);
             $resource_id = $issue_element->getValue();
             $rs_model = new ResourceSite();
             $resource_model = new Resource();
-            $resource_name = $resource_model->fetchName($resource_id);
+            $resource = $resource_model->fetchByID($resource_id);
+            $resource_name = $resource->name;
+            $resource_group_id = $resource->resource_group_id;
+            $resource_group_model = new ResourceGroup();
+            $resource_group = $resource_group_model->fetchByID($resource_group_id);
 
             //set description destination vo, assignee
             $footprint->addMeta("Resource on which user is having this issue: ".$resource_name."($resource_id)\n");
+            $footprint->setMetadata("ASSOCIATED_RG_ID", $resource_group_id);
+            $footprint->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
+            $footprint->setMetadata("ASSOCIATED_R_ID", $resource_id);
+            $footprint->setMetadata("ASSOCIATED_R_NAME", $resource_name);
             $footprint->setTitle($form->getValue('title'));
 
             $admin = $_REQUEST["admin"];
@@ -47,7 +54,10 @@ class ResourceController extends BaseController
                 $footprint->addMeta("User is the administator for this resource.\n");
                 $footprint->setDestinationVO("MIS");
             } else {
-                $footprint->setDestinationVOFromResourceID($resource_id);
+                $void = $footprint->setDestinationVOFromResourceID($resource_id);
+                if($void) {
+                    $footprint->setMetadata("ASSOCIATED_VO_ID", $void);
+                }
 
                 $sc_id = $rs_model->fetchSCID($resource_id);
                 if(!$sc_id) {
@@ -58,6 +68,7 @@ class ResourceController extends BaseController
                     $sc_model = new SC;
                     $sc = $sc_model->get($sc_id);
                     $scname = $sc->footprints_id;
+                    $footprint->setMetadata("SUPPORTING_SC_ID", $sc_id);
                 }
 
                 if($footprint->isValidFPSC($scname)) {
@@ -74,6 +85,11 @@ class ResourceController extends BaseController
                 $mrid = $footprint->submit();
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
+/*
+                $data = new Data();
+                $data->setMetadata($mrid, "ASSOCIATED_R_NAME", $resource_name);
+                $data->setMetadata($mrid, "ASSOCIATED_R_ID", $resource_id);
+*/
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
                 $this->render("failed", null, true);

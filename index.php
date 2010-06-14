@@ -57,13 +57,15 @@ try {
 
 //log access
 try {
-    $goc = new GOC();
-    $goc->logAccess();
+    $data = new Data();
+    $data->logAccess();
 } catch(exception $e) {
     //continue processing
-    wlog("failed to log access - skipping");
-    wlog($e->getMessage());
+    wlog("failed to log access - skipping... : ".$e->getMessage());
 }
+
+//metadata test..
+//$ret = $data->setMetadata(777, "TEST", "new");
 
 //dispatch
 $frontController = Zend_Controller_Front::getInstance();

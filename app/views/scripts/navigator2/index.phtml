@@ -44,6 +44,7 @@ $(document).ready(function() {
         "bPaginate": false,
         "bStateSave": true,
         "bInfo": false,
+        "iCookieDuration": 60*60*24*90, /*90 days*/
         //"oSearch": {"sSearch": "Initial search"},
         "sDom": '<"opened_toolbar">frtip'
     });
@@ -54,6 +55,7 @@ $(document).ready(function() {
         "bPaginate": false,
         "bStateSave": true,
         "bInfo": false,
+        "iCookieDuration": 60*60*24*90, /*90 days*/
         "sDom": '<"closed_toolbar">frtip'
     });
 
@@ -140,7 +142,7 @@ echo submenutitle($this->submenu_selected)."</a> &gt; $this->page_title</div>";
 echo "<h3>Open Tickets</h3>";
 showtickets($this->assigned_tickets, "opened", $column_names);
 
-echo "<h3>Closed within ".$this->closed_days." days (".count($this->closed_tickets)." Tickets)</h3>";
+echo "<h3>Closed within ".$this->closed_days." days</h3>";
 showtickets($this->closed_tickets, "closed", $column_names);
 
 function showtickets($tickets, $id, $column_names) {

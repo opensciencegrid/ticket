@@ -15,6 +15,7 @@ class Footprint
         $this->description = "";
         $this->title = "no title";
         $this->meta = "";
+        $this->metadata = array();
         $this->resetCC();
         $this->resetAssignee();
         $this->ab_fields = array();
@@ -123,6 +124,9 @@ class Footprint
         $this->meta .= $v;
         $this->desc = true;
     }
+    public function setMetadata($key, $value) {
+        $this->metadata[$key] = $value;
+    }
     public function addAssignee($v, $bClear = false) { 
         if($bClear) {
             $this->resetAssignee();
@@ -206,6 +210,7 @@ class Footprint
         $this->b_proj = true;
     }
 
+    //returns void selected
     public function setDestinationVOFromResourceID($resource_id)
     {
         $model = new Resource();
@@ -213,9 +218,11 @@ class Footprint
         if(!$vo || $vo->footprints_id === null) {
             $this->addMeta("No VOs are associated with Resource ID $resource_id. Setting destination VO to other\n");
             $this->setDestinationVO("other");
+            return null;
         } else {
             $this->addMeta("Selecting $vo->vo_name(FP name: $vo->footprints_id) for Destination VO since it has the highest resource ownership.\n");
             $this->setDestinationVO($vo->footprints_id);
+            return $vo->vo_id;
         }
     }
 
@@ -392,15 +399,6 @@ class Footprint
             slog("suppressing notification email for permanent CCs");
             $params["mail"]["permanentCCs"]=0;
         }
-/*
-        //suppress contact email if no description is given
-        if(trim($desc) == "") {
-            slog("description is empty - suppressing notification email for ticket contact");
-            $params["mail"]["assignees"]=0;
-            $params["mail"]["contact"]=0;
-            $params["mail"]["permanentCCs"]=0;
-        }
-*/
         //don't pass empty mail array - FP API will throw up
         // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
         if(count($params["mail"]) == 0) {
@@ -413,6 +411,11 @@ class Footprint
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)
             $this->id = print_r($params, true);
+
+            $this->id.="[Metadata Dump]\n";
+            foreach($this->metadata as $key=>$value) {
+                $this->id.="$key: $value\n";
+            }
         } else {
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
@@ -433,6 +436,13 @@ class Footprint
             if(@$params["mail"]["assignees"] === 0) {
                 slog("sending trigger emails to GOC-TX");
                 $this->sendGOCTXTrigger($this->assignees, $this->id);
+            }
+
+            //store metadata
+            $data = new Data();
+            foreach($this->metadata as $key=>$value) {
+                $data->setMetadata($this->id, $key, $value);
+                slog("Setmetadata : $this->id $key = $value");
             }
         }
 

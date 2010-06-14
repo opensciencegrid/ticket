@@ -19,6 +19,11 @@ class Resource
         $sql = "SELECT name FROM resource WHERE active = 1 and disable IS FALSE and id = $resource_id";
         return db("oim")->fetchOne($sql);
     }
+    public function fetchByID($resource_id)
+    {
+        $sql = "SELECT * FROM resource WHERE active = 1 and disable IS FALSE and id = $resource_id";
+        return db("oim")->fetchRow($sql);
+    }
     public function fetchID($resource_name)
     {
         $sql = "SELECT id FROM resource WHERE name = '$resource_name'";
@@ -26,8 +31,7 @@ class Resource
     }
     public function getPrimaryOwnerVO($resource_id) 
     {
-        $sql = "SELECT R.id, R.name, vo.name as vo_name, vo.footprints_id,
- v.percent AS ownership_percent
+        $sql = "SELECT R.id, R.name, vo.name as vo_name, vo.footprints_id, vo.id as vo_id, v.percent AS ownership_percent
 FROM vo_resource_ownership v
   RIGHT JOIN resource R ON R.id=v.resource_id
   LEFT JOIN vo vo ON v.vo_id=vo.id

@@ -132,12 +132,9 @@ function fnShowHideClosed(button, iCol )
 
 </script>
 
-<div class="bread">
-
 <?
-echo "You are here &gt; ";
-echo "<a href=\"".fullbase()."/".$this->submenu_selected."\">";
-echo submenutitle($this->submenu_selected)."</a> &gt; $this->page_title</div>";
+
+echo "You can still use <a href=\"".fullbase()."/navigatorold\">Old Ticket List</a>";
 
 echo "<h3>Open Tickets</h3>";
 showtickets($this->assigned_tickets, "opened", $column_names);

@@ -1,163 +1,233 @@
 <?include("app/views/scripts/header.phtml");?>
 
-<?
-//various sort functions
-function sort_id($a, $b)
-{
-    return ($a->mrid > $b->mrid);
-}
-function sort_title($a, $b)
-{
-    return strcmp($a->mrtitle, $b->mrtitle);
-}
-function sort_nextaction($a, $b)
-{
-    return strcmp($a->nextaction, $b->nextaction);
-}
-function sort_nad($a, $b)
-{
-    return ($a->nad > $b->nad);
-}
-function sort_modified($a, $b)
-{
-    return ($a->mrupdatedate > $b->mrupdatedate);
-}
-function sort_id_down($a, $b)
-{
-    return ($b->mrid > $a->mrid);
-}
-function sort_title_down($a, $b)
-{
-    return strcmp($b->mrtitle, $a->mrtitle);
-}
-function sort_nextaction_down($a, $b)
-{
-    return strcmp($b->nextaction, $a->nextaction);
-}
-function sort_nad_down($a, $b)
-{
-    return ($b->nad > $a->nad);
-}
-function sort_modified_down($a, $b)
-{
-    return ($b->mrupdatedate > $a->mrupdatedate);
-}
-?>
+<link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables/css/demo_table_jui.css" />
 
-<div class="bread">You are here &gt; <?=submenutitle($this->submenu_selected)?></div>
+<style type="text/css">
+.column_buttons,
+.opened_toolbar,
+.closed_toolbar {
+display: inline-block;
+}
 
-<div id="tabs">
-  <ul class="tabNavigation">
-    <li><a id="openorigin" href="#openorigin_ref">Open Tickets by Originating VO</a></li>
-    <li><a id="open" href="#open_ref">Open Tickets by Destination VO</a></li>
-    <li><a id="openassign" href="#openassign_ref">Open Tickets by Assignee</a></li>
-    <li><a id="closeorigin" href="#closeorigin_ref">Closed Tickets by Originating VO</a></li>
-    <li><a id="close" href="#close_ref">Closed Tickets by Destination VO</a></li>
-  </ul>
+.column_buttons {
+.column_buttons button { 
+padding: 3px;
+}
+.column_buttons button:hover {
+cursor: pointer;
+}
+.column_buttons .ui-state-default {
+color: #ccc;
+}
+.column_buttons .ui-state-active {
+color: #000;
+}
+
+#content {
+font-size: 12px;
+}
+</style>
+
+<script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables/js/jquery.dataTables.min.js"></script>
+
 <script type="text/javascript">
-//$(document).ready(function() {
-    $('#tabs').tabs({
-        select: function(event, ui) {
-            location.href = "<?=fullbase()?>/navigator/"+ui.tab.id;
-            return false;
-        }
+<?
+$column_names = array("ID", "Submit Date", "Title", "Update Date", "Next Action", "NAD", "Priority", "Assignees", "CCs", "Origin.&nbsp;VO", "Dest.&nbsp;VO");
+?>
+var opened_table;
+
+$(document).ready(function() {
+
+     opened_table = $('#opened').dataTable({
+        "bJQueryUI": true,
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bStateSave": true,
+        "bInfo": false,
+        "iCookieDuration": 60*60*24*90, /*90 days*/
+        //"oSearch": {"sSearch": "Initial search"},
+        "sDom": '<"opened_toolbar">frtip'
     });
-    $('#tabs li').removeClass("ui-tabs-selected");
-    $('#tabs li').removeClass("ui-state-active");
-    //select current tab
-    $($('#tabs a[id=<?=$this->activetab?>]').parents()[0]).addClass("ui-tabs-selected").addClass("ui-state-active");
-//});
+
+    closed_table = $('#closed').dataTable({
+        "bJQueryUI": true,
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bStateSave": true,
+        "bInfo": false,
+        "iCookieDuration": 60*60*24*90, /*90 days*/
+        "sDom": '<"closed_toolbar">frtip'
+    });
+
+    $("div.opened_toolbar").html('<?
+
+    echo "<div class=\"column_buttons\"> Show Columns: ";
+    $first = true;
+    foreach($column_names as $id=>$name) {
+        $active = "ui-state-active";
+        if(isset($this->opened_table_cols[$id]) && $this->opened_table_cols[$id] == false) {
+            $active = "";
+        }
+        if($first) {
+            $first = false;
+            $active .= " ui-corner-left";
+        }
+        if($name == $column_names[sizeof($column_names)-1]) {
+            $active .= " ui-corner-right";
+        }
+        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
+    }
+    echo "</div>";
+    ?>');
+
+    $("div.closed_toolbar").html('<?
+    echo "<div class=\"column_buttons\"> Show Columns: ";
+    $first = true;
+    foreach($column_names as $id=>$name) {
+        $active = "ui-state-active";
+        if(isset($this->closed_table_cols[$id]) && $this->closed_table_cols[$id] == false) {
+            $active = "";
+        }
+        if($first) {
+            $first = false;
+            $active .= " ui-corner-left";
+        }
+        if($name == $column_names[sizeof($column_names)-1]) {
+            $active .= " ui-corner-right";
+        }
+        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideClosed(this, $id);\">$name</button>";
+    }
+    echo "</div>";
+    ?>');
+/*
+    var opened_data = opened.fnGetData();
+    console.dir(opened_data);
+    console.dir(opened.fnGetColumnVis(0));
+*/
+
+});
+
+function fnShowHideOpened(button, iCol )
+{
+    if($(button).hasClass("ui-state-active")) {
+        $(button).removeClass("ui-state-active");
+    } else {
+        $(button).addClass("ui-state-active");
+    }
+
+    var bVis = opened_table.fnSettings().aoColumns[iCol].bVisible;
+    opened_table.fnSetColumnVis( iCol, bVis ? false : true );
+}
+
+function fnShowHideClosed(button, iCol )
+{
+    if($(button).hasClass("ui-state-active")) {
+        $(button).removeClass("ui-state-active");
+    } else {
+        $(button).addClass("ui-state-active");
+    }
+    var bVis = closed_table.fnSettings().aoColumns[iCol].bVisible;
+    closed_table.fnSetColumnVis( iCol, bVis ? false : true );
+}
+
 </script>
 
-    <div style="padding: 10px;">
-    <table width="100%" class="recordlist">
-    <tr>
-        <th><?sortheader("ID", "id", $this);?></th>
-        <th><?sortheader("Title", "title", $this);?></th>
-        <th><?sortheader("Next Action", "nextaction", $this);?></th>
-        <th width="160px"><?sortheader("Next Action Date", "nad", $this);?></th>
-        <th width="100px"><?sortheader("Modified", "modified", $this);?></th>
-    </tr>
+<?
+
+echo "You can still use <a href=\"".fullbase()."/navigatorold\">Old Ticket List</a>";
+
+echo "<h3>Open Tickets</h3>";
+showtickets($this->assigned_tickets, "opened", $column_names);
+
+echo "<h3>Closed within ".$this->closed_days." days</h3>";
+showtickets($this->closed_tickets, "closed", $column_names);
+
+function showtickets($tickets, $id, $column_names) {
+?>
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
+    <thead>
+        <tr>
+    <?foreach($column_names as $name) {
+        echo "<th>$name</th>";
+    }?>
+        </tr>
+    </thead>
     <?
-    function sortheader($name, $key, $it) 
-    {
-        if($key == $it->sortby) {
-            if($it->sortdir == "down") { 
-                $url = noquery()."?sortby=$key&sortdir=up";
-                echo "<a href=\"$url\">".$name."</a>";
-                echo "<img align=\"top\" src=\"".fullbase()."/images/down.png\" alt=\"down\"/>";
-            } else {
-                $url = noquery()."?sortby=$key&sortdir=down";
-                echo "<a href=\"$url\">".$name."</a>";
-                echo "<img align=\"top\" src=\"".fullbase()."/images/up.png\" alt=\"up\"/>";
+    $model = new Schema();
+    $teams = $model->getteams();
+    $aka_model = new AKA();
+
+    foreach($tickets as $ticket) {
+        $url = base()."/viewer?id=".$ticket->mrid;
+        $target = "ticket_".$ticket->mrid;
+
+        //assignee, cc
+        $assignees = array();
+        $ccs = array();
+        foreach(explode(" ", $ticket->mrassignees) as $a) {
+            //FP somehow put CCs on assginee field...-
+            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
+                $ccs[] = substr($a, 3);
+                continue;
             }
-        } else {
-            $url = noquery()."?sortby=$key";
-            echo "<a href=\"$url\">".$name."</a>";
+            //FP somehow contains team names on assignee... ignore it
+            $team_name = false;
+            foreach($teams as $team) {
+                if($team->team == $a) {
+                    $team_name = true;
+                    break;
+                }
+            }
+            if($team_name) continue;
+
+            //store to assignee list
+            $aka = $aka_model->lookupName($a);
+            $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
         }
-    }
-    //decide which sorting function to use
-    switch($this->sortby) {
-        case "id": $cmp = "sort_id"; break;
-        case "title": $cmp = "sort_title"; break;
-        case "nextaction": $cmp = "sort_nextaction"; break;
-        case "nad": $cmp = "sort_nad"; break;
-        case "modified": $cmp = "sort_modified"; break;
-        default: elog("uknown sortkey: ".$this->sortby);
-    }
-    if($this->sortdir == "down") {
-        $cmp .= "_down";
-    }
 
-    foreach($this->tickets as $group=>$tickets)
-    {
-        if(trim($group) == "") $group = "(N/A)";
-        echo "<tr ><td colspan=5><h3>$group</h3></td></tr>";
-
-        //sort the group
-        usort($tickets, $cmp);
-
-        foreach($tickets as $ticket) {
-            $id = $ticket->mrid;
-            $title = $ticket->mrtitle;
-            $url = base()."/viewer?id=$id";
-            $status = Footprint::parse($ticket->mrstatus);
-            $statusstyle = status2style($status);
-            $status = str_replace(" ", "&nbsp;", $status);
-            $moddate = agoCalculation(strtotime($ticket->mrupdatedate. " GMT"));
-            $nad = $ticket->nad;
-            $nadstyle = nadstyle($nad);
-            $naction = $ticket->nextaction;
-            //dlog($ticket);
-
-            //process tag
-            $tag = "";
-            if($ticket->ticket_type == "Security") {
-                $tag = "<span class=\"red tag\">Security</span>";
-            } else if($ticket->ticket_type == "Security_Notification") {
-                $tag = "<span class=\"red tag\">Security Notification</span>";
-            }
-
-            if($ticket->mrpriority == 1) {
-                $tag = "<span class=\"red tag\">Critical Priority</span>";
-            } else if($ticket->mrpriority == 2) {
-                $tag = "<span class=\"red tag\">High Priority</span>";
-            } else if($ticket->mrpriority == 3) {
-                $tag = "<span class=\"yellow tag\">Elevated Priority</span>";
-            }
-
-            echo "<tr class=\"record\" onclick=\"window.open('$url','ticket_".$ticket->mrid."');\">";
-            echo "<th>$id&nbsp;&nbsp;</th>";
-            echo "<td>$tag$title</td>";
-            echo "<td>$naction</td>";
-            echo "<td class='flag $nadstyle'>$nad</td>";
-            echo "<td>$moddate ago</td>";
-            echo "</tr>";
+        //priority
+        $priority = Footprint::getPriority($ticket->mrpriority);
+        switch($ticket->mrpriority) {
+        case 3: $priority = "<font color='#c90'>$priority</font>"; break;
+        case 2: $priority = "<font color='red'>$priority</font>"; break;
+        case 1: $priority = "<font color='red'>$priority</font>"; break;
         }
+
+        //nad
+        $nad_unix = strtotime($ticket->nad);
+        $nad = date("Y-m-d", $nad_unix);
+        if($nad_unix < time()) {
+            $nad = "<font color='red'>$nad</font>";
+        } else if($nad < time() + 3600*config()->nad_alert_hours) {
+            $nad = "<font color='#c90'>$nad</font>";
+        }
+
+        //ticket type
+        $title = $ticket->mrtitle;
+        if($ticket->tickettype == "Security") {
+            $title = "<span class='red tag'>Security</span>$title";
+        }
+
+        ?>
+        <tr onclick="window.open('<?=$url?>','<?=$target?>');">
+            <td><?=$ticket->mrid?></td>
+            <td><?=$ticket->mrsubmitdate?></td>
+            <td><?=$title?></td>
+            <td><?=$ticket->mrupdatedate?></td>
+            <td><?=$ticket->nextaction?></td>
+            <td><?=$nad?></td>
+            <td><?=$priority?></td>
+            <td><?=implode("<br>", $assignees)?></td>
+            <td><?=implode("<br>", $ccs)?></td>
+            <td><?=$ticket->mrorigin?></td>
+            <td><?=$ticket->mrdest?></td>
+        </tr>
+        <?
     }
-    ?>
+    ?>  
     </table>
-    </div>
-</div>
+<?
+}
+?>
 
 <?include("app/views/scripts/footer.phtml");?>

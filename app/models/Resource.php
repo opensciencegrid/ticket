@@ -14,6 +14,16 @@ class Resource
         $sql = "SELECT *, r.id as resource_id FROM resource r WHERE active = 1 and disable = 0 $grid_type_where order by name";
         return db("oim")->fetchAll($sql);
     }
+    public function fetchAllGroupByID() 
+    {
+        $rs = $this->fetchAll();
+        $ret = array();
+        foreach($rs as $r) {
+            $ret[$r->id] = $r;
+        }
+        return $ret;
+    }
+
     public function fetchName($resource_id)
     {
         $sql = "SELECT name FROM resource WHERE active = 1 and disable IS FALSE and id = $resource_id";

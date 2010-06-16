@@ -178,11 +178,10 @@ BLOCK;
     $out .= "<input type='text' class='autocomplete' onfocus='$(\"#${id}__acnote\").fadeIn(\"slow\");' onblur='$(\"#${id}__acnote\").fadeOut(\"slow\");'/>";
     $out .= $script;
 
-    $out .= "</div>";
-
     //display note
-    $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"color: #999; font-size: 9px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
+    $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"position: absolute; color: #999; font-size: 9px; right: 3px; bottom: -5px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
 
+    $out .= "</div>";
     $out .= "</div>";
 
     return $out;

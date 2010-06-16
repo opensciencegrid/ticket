@@ -1,0 +1,25 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Bulk Resource Ticket Submitter</div>
+<form action="<?=fullbase()?>/bulkresource/preview" method="post">
+<h3>Resources to Send Tickets</h3>
+<div style="width: 300px">
+<?=fblist("list", $this->kv, $this->resource_ids)?>
+</div>
+
+<h3>Template</h3>
+<div style="background-color: #eee; padding: 20px; padding-top: 15px; background-image: url('<?=fullbase();?>/images/iblard_jikan.jpg'); background-repeat: no-repeat; background-position: right bottom;">
+<p>Primary admin will be CC-ed and responsible SC, destination VO will be assigned to each ticket (similar to resource specific issue form)</p>
+<b>Title</b><br/>
+<input type="text" name="title" style="width: 600px" value="<?=$this->title?>"/><br/>
+<b>Description</b><br/>
+<textarea name="template" style="width: 600px"><?=$this->template?></textarea>
+<p>You can use following variables inside the template</p>
+<p><b>$RESOURCE_NAME</b></p>
+<p><b>$RESOURCE_FQDN</b></p>
+<p><b>$PRIMARY_ADMIN_NAME</b></p>
+</div>
+<br/>
+<input type="submit" value="Preview ...">
+
+</form>
+<?include("app/views/scripts/footer.phtml");?>

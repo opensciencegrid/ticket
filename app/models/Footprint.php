@@ -338,19 +338,12 @@ class Footprint
         return false;
     }
 
-    public function submit()
+    public function prepareParams() 
     {
         $desc = $this->description;
         if($this->meta != "") {
             $desc .= "\n\n".config()->metatag."\n";
             $desc .= $this->meta;
-        }
-
-        //determine if we are doing create or update
-        if($this->id === null) {
-            $call = "MRWebServices__createIssue_goc";
-        } else {
-            $call = "MRWebServices__editIssue_goc";
         }
 
         //populate params to insert/update
@@ -399,11 +392,27 @@ class Footprint
             slog("suppressing notification email for permanent CCs");
             $params["mail"]["permanentCCs"]=0;
         }
+
         //don't pass empty mail array - FP API will throw up
         // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
         if(count($params["mail"]) == 0) {
             unset($params["mail"]);
         }
+
+        return $params;
+    }
+
+    public function submit()
+    {
+
+        //determine if we are doing create or update
+        if($this->id === null) {
+            $call = "MRWebServices__createIssue_goc";
+        } else {
+            $call = "MRWebServices__editIssue_goc";
+        }
+
+        $params = $this->prepareParams();
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));

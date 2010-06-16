@@ -1,0 +1,28 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; <a href="<?=base()?>/bulkresource">Bulk Resource Ticket Submitter</a> &gt; Submit Result</div>
+<h3>Bulk Resource Ticket Submitter (Result)</h3>
+<?
+if(count($this->failed) == 0) {
+    echo "<p>All tickets were successfully submitted.</p>";
+} else {
+    echo "<h4>Failed Tickets</h4>";
+    echo "<p>Following resources has failed to submit tickets</p>";
+    foreach($this->failed as $rname=>$e) {
+        echo "<b>".$rname."</b><br/>";
+        echo "<blockquote>$e</blockquote>";
+    }
+}
+echo "<h4>Submitted Tickets</h4>";
+foreach($this->success as $rname=>$id) {
+    echo "<b>".$rname."</b><br/>";
+    if(config()->simulate) {
+        echo "<p>Simulation Dump</p>";
+        echo "<blockquote><pre>".print_r($id, true)."</pre></blockquote>";
+    } else {
+        $url = fullbase()."/viewer?id=".$id;
+        echo "<a href=\"$url\">$url</a><br/>";
+    }
+}
+
+
+include("app/views/scripts/footer.phtml");?>

@@ -1,0 +1,17 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; <a href="<?=base()?>/bulkresource">Bulk Resource Ticket Submitter</a> &gt; Preview</div>
+<form action="<?=fullbase()?>/bulkresource/submit" method="post">
+<h3>Bulk Resource Ticket Submitter (Preview)</h3>
+<p>Click Submit button to submit following tickets.</p>
+<?
+foreach($this->preview as $rname=>$preview) {
+    echo "<h4>".$rname."</h4>";
+    echo "<blockquote><pre>";
+    print_r($preview);
+    echo "</pre></blockquote>";
+}
+?>
+<input type="submit" value="Submit">
+
+</form>
+<?include("app/views/scripts/footer.phtml");?>

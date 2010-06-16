@@ -143,8 +143,9 @@ function gotoedit()
             <?
             foreach($this->originating_vos as $id=>$vo) {
                 $selected = "";
-                if($vo == $this->submitter_vo) $selected = "selected=selected";
-                echo "<option value=\"$vo\" $selected>".Footprint::parse($vo)."</option>";
+                $vo_p = Footprint::parse($vo);
+                if($vo_p == $this->submitter_vo) $selected = "selected=selected";
+                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
             }
             ?>
             </select>
@@ -159,8 +160,9 @@ function gotoedit()
             <?
             foreach($this->destination_vos as $id=>$vo) {
                 $selected = "";
-                if($vo == $this->destination_vo) $selected = "selected=selected";
-                echo "<option value=\"$vo\" $selected>".Footprint::parse($vo)."</option>";
+                $vo_p = Footprint::parse($vo);
+                if($vo_p == $this->destination_vo) $selected = "selected=selected";
+                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
             }
             ?>
             </select>

@@ -346,6 +346,7 @@ class ViewerController extends Zend_Controller_Action
                 window.close();
             </script>
         <?
+            $this->render("none", null, true);
             return;
         }
 

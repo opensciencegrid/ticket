@@ -263,7 +263,11 @@ class ViewerController extends Zend_Controller_Action
             
                 $footprint->submit();
                 addMessage("Successfully updated this ticket!");
-                header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+                $close = "";
+                if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "true") {
+                    $close = "&close=true";
+                }
+                header("Location: ".fullbase()."/viewer?id=".$ticket_id.$close);
                 exit;
             }
         }
@@ -330,10 +334,18 @@ class ViewerController extends Zend_Controller_Action
         try {
             $detail = $this->loaddetail();
             if($detail === null) return;
-
         } catch (SoapFault $e) {
             elog("SoapFault detected while ViewController:loaddetail()");
             elog($e->getMessage());
+            return;
+        }
+
+        if(isset($_REQUEST["close"])) {
+        ?>
+            <script type="text/javascript">
+                window.close();
+            </script>
+        <?
             return;
         }
 

@@ -19,7 +19,7 @@ width: 300px;
 
     <table class="menu">
     <tr>
-    <?if(config()->role_prefix == "gocticket_") {?>
+    <?if(config()->app_id == "gocticket") {?>
         <td>
         <h4>Site or VO related</h4>
         <p><a href="resource">Problem on OSG Resource</a></p>
@@ -44,28 +44,38 @@ width: 300px;
         <p><a href="other">Others Issue</a></p>
         </td>
 
+        <?if(user()->allows("admin")) {?>
+        <br/>
+        <h3>OSG GOC staff</h3>
+        <div class="bitindent">
+            <p>You are authorized to submit these additional types of tickets as OSG GOC Staff...</p>
+            <div>
+            <p><a href="rsv">Submit RSV related trouble ticket</a></p>
+            </div>
+        </div>
+        <?}?> 
+
+    <?} else if(config()->app_id == "itbticket") {?>
+        <td>
+        <p><a href="resource">An Issue Affecting a Specific Resource</a></p>
+        <p><a href="other">Any Others Issue</a></p>
+        </td>
+
+    <?} else if(config()->app_id == "storageticket") {?>
+        <td>
+        <p><a href="resource">An Issue Affecting a Specific Resource</a></p>
+        <p><a href="other">Any Others Issue</a></p>
+        </td>
+
     <?} else {?>
         <td>
-        <p><a href="resource">An Issue Affecting a Specific ITB Resource</a></p>
-        <p><a href="other">Any Others Issue</a></p>
+        <p>Unknown Application ID <?=config()->app_id?></p>
         </td>
     <?}?>
 
     </tr>
     </table>
 </div>
-
-
-<?if(user()->allows("admin")) {?>
-<br/>
-<h3>OSG GOC staff</h3>
-<div class="bitindent">
-    <p>You are authorized to submit these additional types of tickets as OSG GOC Staff...</p>
-    <div>
-    <p><a href="rsv">Submit RSV related trouble ticket</a></p>
-    </div>
-</div>
-<?}?> 
 
 <?include("app/views/scripts/footer.phtml");?>
 

@@ -37,7 +37,7 @@ class Schema
             if($count % 2 == 0) {
                 $name = $row;
             } else {
-                $descs[$name] = $row->DESCRIPTION;
+                $descs[$name] = html_entity_decode($row->DESCRIPTION);
             }
             $count++;
         }

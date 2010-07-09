@@ -1,11 +1,11 @@
 <?
 
-class RessController extends GOCServiceController
+class GratiaController extends GOCServiceController
 { 
     function init()
     {
         $this->view->submenu_selected = "open";
-        $this->form_title = "Ress Bugs / Requests";
+        $this->form_title = "Gratia Issues / Requests";
     }
 
     function addElements($form) {
@@ -15,6 +15,6 @@ class RessController extends GOCServiceController
         $model = new NextAssignee();
         $gocid = $model->getNextAssignee();
         $footprint->addAssignee($gocid, true); //reset assignee first
-        $footprint->addAssignee("ress-ops"); //Fermigrid Ops
+        $footprint->addAssignee("fnal"); //Fermigrid Ops?
     }
 } 

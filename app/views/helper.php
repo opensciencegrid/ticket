@@ -137,7 +137,7 @@ function fblist($id, $kv, $selected)
     $out .= "<div class=\"fblist_container\" id=\"${id}__list\"><div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
 
     //output script
-    $delete_url = "images/delete.png";
+    $delete_url = fullbase()."/images/delete.png";
     $script = "<script type='text/javascript'>$(document).ready(function() {";
     $script .= "var ${id}__listdata = [";
     $first = true;

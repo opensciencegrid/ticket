@@ -87,10 +87,12 @@ function submenutitle($id)
 <?include("app/views/scripts/search.phtml");?>
 
 <?
+if(config()->banner) {
+    echo "<div id=\"banner\" class=\"round\">".config()->banner."</div>";
+}
 if(config()->simulate) {
     echo "<p class=\"warning\">Simulation Mode - No email / ticket will be actually created</p>";
 }
-
 if(config()->debug) {
     echo "<p class=\"warning\">Running in debug mode</p>";
 }

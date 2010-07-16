@@ -1,24 +1,20 @@
-*
-{
+* {
     margin:0px;
     padding:0px;
 }
 
-img
-{
+img {
     border: 0px;
 }
 
-body
-{
+body {
 font-family: Verdana;
 color: black;
 font-size:11pt;
 min-width: 1000px;
 }
 
-p
-{
+p {
 margin-bottom: 10px;
 }
 
@@ -27,33 +23,42 @@ padding-left: 110px;
 background: #000 url('../images/header.gif') repeat-x;
 height: 60px;
 }
-#header h1 a
-{
+
+#header h1 a {
 color: #fff;
 text-decoration: none;
 }
-#header h1
-{
+
+#header h1 {
 padding-top: 7px;
 font-size: 15pt;
 font-family: 'Trebuchet MS';
 }
-#header h2
-{
+
+#header h2 {
 color: #EfE8C2;
 font-size: 13pt;
 font-family: 'Trebuchet MS';
 }
 
-#logo
-{
+#logo {
 position: absolute;
 top: 2px;
 left: 5px;
 }
 
-h3
-{
+.round {
+-webkit-border-top-left-radius: 4px;
+-webkit-border-top-right-radius: 4px;
+-webkit-border-bottom-left-radius: 4px;
+-webkit-border-bottom-right-radius: 4px;
+-moz-border-radius-bottomleft:4px;
+-moz-border-radius-bottomright:4px;
+-moz-border-radius-topleft:4px;
+-moz-border-radius-topright:4px;
+}
+
+h3 {
 background-image:url('../images/h3_back.png');
 color:white;
 font-family:"Arial";
@@ -620,3 +625,13 @@ margin-bottom: 10px;
 color: white;
 background-color: #69f;
 }
+
+#banner
+{
+background-image: url('../images/error_back.png');
+background-position: top left;
+color: white;
+margin-bottom: 5px;
+padding: 5px;
+}
+

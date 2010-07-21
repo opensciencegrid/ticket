@@ -343,10 +343,16 @@ class ViewerController extends Zend_Controller_Action
         if(isset($_REQUEST["close"])) {
         ?>
             <script type="text/javascript">
-                window.close();
                 if (window.opener && !window.opener.closed) {
+		    window.close();
                     window.opener.location.reload();
-                } 
+                } else {
+		    <?
+                    //can't close, the just show it without close
+                    $ticket_id = (int)$_REQUEST["id"];
+                    ?>
+                    document.location = "<?=fullbase()?>/viewer?id=<?=$ticket_id?>";
+		}
             </script>
         <?
             $this->render("none", null, true);

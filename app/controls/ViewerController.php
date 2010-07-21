@@ -262,7 +262,7 @@ class ViewerController extends Zend_Controller_Action
                 }
             
                 $footprint->submit();
-                addMessage("Successfully updated this ticket!");
+                addMessage("Successfully updated ticket $ticket_id!");
                 $close = "";
                 if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "true") {
                     $close = "&close=true";
@@ -344,6 +344,9 @@ class ViewerController extends Zend_Controller_Action
         ?>
             <script type="text/javascript">
                 window.close();
+                if (window.opener && !window.opener.closed) {
+                    window.opener.location.reload();
+                } 
             </script>
         <?
             $this->render("none", null, true);

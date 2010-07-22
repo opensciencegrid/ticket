@@ -220,7 +220,13 @@ function showtickets($tickets, $id, $column_names) {
             <td><?=$nad?></td>
             <td><?=$priority?></td>
             <td><?=implode("<br>", $assignees)?></td>
-            <td><?=implode("<br>", $ccs)?></td>
+        <?
+            if(!user()->isguest()) {
+                echo "<td>".implode("<br>", $ccs)."</td>";
+            } else {
+                echo "<td>(Only Visible for OIM users)</td>";
+            }
+        ?>
             <td><?=$ticket->mrorigin?></td>
             <td><?=$ticket->mrdest?></td>
         </tr>

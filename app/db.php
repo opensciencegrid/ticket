@@ -25,11 +25,13 @@ function connect($name, $db_type, $params) {
             return;
         } catch (Zend_Db_Adapter_Exception $e) {
             // perhaps a failed login credential, or perhaps the RDBMS is not running
-            wlog("Couldn't connect to $name (trying another connection - if available):: ".$e->getMessage());
+            $host = $param["host"];
+            wlog("Couldn't connect to $name($host) (trying another connection - if available):: ".$e->getMessage());
             $exceptions[] = $e;
         } catch (Zend_Exception $e) {
             // perhaps factory() failed to load the specified Adapter class
-            wlog("Couldn't connect to $name (trying another connection - if available):: ".$e->getMessage());
+            $host = $param["host"];
+            wlog("Couldn't connect to $name($host) (trying another connection - if available):: ".$e->getMessage());
             $exceptions[] = $e;
         }
     }

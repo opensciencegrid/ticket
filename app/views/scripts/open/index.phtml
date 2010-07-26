@@ -45,17 +45,6 @@ width: 300px;
         <p><a href="other">Others Issue</a></p>
         </td>
 
-        <?if(user()->allows("admin")) {?>
-        <br/>
-        <h3>OSG GOC staff</h3>
-        <div class="bitindent">
-            <p>You are authorized to submit these additional types of tickets as OSG GOC Staff...</p>
-            <div>
-            <p><a href="rsv">Submit RSV related trouble ticket</a></p>
-            </div>
-        </div>
-        <?}?> 
-
     <?} else if(config()->app_id == "itbticket") {?>
         <td>
         <p><a href="resource">An Issue Affecting a Specific Resource</a></p>
@@ -76,6 +65,19 @@ width: 300px;
 
     </tr>
     </table>
+
+    <p class="warning">If your issues needs action in less than <b>24 hours</b> as stated in the <a href="https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations">Ticket Expectations</a> please follow up this ticket creation with a phone call or email to the GOC.</p>
+
+    <?if(config()->app_id == "gocticket" && user()->allows("admin")) {?>
+    <h3>OSG GOC staff</h3>
+    <div class="bitindent">
+        <p>You are authorized to submit these additional types of tickets as OSG GOC Staff...</p>
+        <div>
+        <p><a href="rsv">Submit RSV related trouble ticket</a></p>
+        </div>
+    </div>
+    <?}?> 
+
 </div>
 
 <?include("app/views/scripts/footer.phtml");?>

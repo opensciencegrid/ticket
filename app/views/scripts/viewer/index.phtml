@@ -200,18 +200,20 @@ function gotoedit()
 
         <span class="header">New Update:</span>
         <select name="quickdesc" onchange="
-            $('.resizable').val('Loading...');
-            $.ajax({
-                url: '<?=fullbase()?>/viewer/quickdesc?id='+escape($(this).val()),
-                success: function(data) {
-                    $('.resizable').val(data);
-                }
-            });
+            if($(this).val()) {
+                $('.resizable').val('Loading...');
+                $.ajax({
+                    url: '<?=fullbase()?>/viewer/quickdesc?id='+escape($(this).val()),
+                    success: function(data) {
+                        $('.resizable').val(data);
+                    }
+                });
+            }
             ">  
         <?
         $model = new Schema();
         $descs = $model->getquickdesc();
-        echo "<option>(Quick Description)</option>";
+        echo "<option value=\"\">(Quick Description)</option>";
         foreach($descs as $name=>$desc) {
             echo "<option value=\"$name\">$name</option>";
         }

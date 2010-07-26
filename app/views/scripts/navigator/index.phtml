@@ -70,16 +70,6 @@ $(document).ready(function() {
         "sDom": '<"opened_toolbar">frtip',
         "aoColumns": [ <?=$column_types?> ]
     });
-    $("#opened input.search").keyup( function () {
-        opened_table.fnFilter( this.value, $(this).attr("pos"));
-    } );
-
-    var settings = opened_table.fnSettings().aoPreSearchCols;
-    $("#opened input.search").each(function(id) {
-        var pos = $(this).attr("pos");
-        $(this).val(settings[pos].sSearch);
-    });
-
     closed_table = $('#closed').dataTable({
         "bJQueryUI": true,
         "bAutoWidth": false,
@@ -89,14 +79,6 @@ $(document).ready(function() {
         "iCookieDuration": 60*60*24*90, /*90 days*/
         "sDom": '<"closed_toolbar">frtip',
         "aoColumns": [ <?=$column_types?> ]
-    });
-    $("#closed input.search").keyup( function () {
-        closed_table.fnFilter( this.value, $(this).attr("pos"));
-    } );
-
-    settings = closed_table.fnSettings().aoPreSearchCols;
-    $("#closed input.search").each(function(id) {
-        $(this).val(settings[id].sSearch);
     });
 
     $("div.opened_toolbar").html('<?
@@ -173,20 +155,24 @@ function fnShowHideClosed(button, iCol )
 echo "You are here > View Tickets (use <a href=\"".fullbase()."/navigatorold\">Old View</a>)";
 
 echo "<h3>Open Tickets</h3>";
-showtickets($this->assigned_tickets, "opened", $columns);
+$search = $this->table_search["opened"];
+showtickets($this->assigned_tickets, "opened", $columns, $search);
 
 echo "<h3>Closed within ".$this->closed_days." days</h3>";
-showtickets($this->closed_tickets, "closed", $columns);
+$search = $this->table_search["closed"];
+showtickets($this->closed_tickets, "closed", $columns, $search);
 
-function showtickets($tickets, $id, $columns) {
+function showtickets($tickets, $id, $columns, $search) {
 ?>
     <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
     <thead>
         <tr>
-        <?foreach($columns as $id=>$column) {
+        <?
+        foreach($columns as $cid=>$column) {
             echo "<th>".$column["name"];
             //I have to include search field inside column header so that DataTable will hide it correctly
-            echo "<input pos=\"$id\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
+            $search_value = $search[$cid][0];
+            echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
             echo "</th>";
         }?>
         </tr>

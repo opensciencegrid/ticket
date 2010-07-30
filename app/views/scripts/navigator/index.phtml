@@ -43,7 +43,7 @@ padding: 3px;
 $columns = array(
     array("name"=>"ID", "type"=>"numeric"), 
     array("name"=>"Submit Date", "type"=>"date"),
-    array("name"=>"Title", "type"=>"string"), 
+    array("name"=>"Title", "type"=>"html"), 
     array("name"=>"Update Date", "type"=>"date"), 
     array("name"=>"Next Action", "type"=>"string"), 
     array("name"=>"NAD", "type"=>"html"), 
@@ -186,7 +186,7 @@ function showtickets($tickets, $id, $columns, $search) {
         <tr>
         <?
         foreach($columns as $cid=>$column) {
-            echo "<th>".$column["name"];
+            echo "<th>".str_replace(" ", "&nbsp;", $column["name"]);
             //I have to include search field inside column header so that DataTable will hide it correctly
             $search_value = "";
             if(isset($search[$cid][0])) {

@@ -28,6 +28,12 @@ color: #000;
 span.ui-icon_disable {
 display: inline !important;
 }
+input.search {
+margin: 0px;
+}
+th {
+padding: 3px;
+}
 </style>
 
 <script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables/js/jquery.dataTables.min.js"></script>
@@ -123,6 +129,17 @@ $(document).ready(function() {
     }
     echo "</div>";
     ?>');
+
+/*
+    $(".search").each(function() {
+        var width = $(this).parent("th").width();
+        $(this).width(width);
+        $(this).val(width);
+        $(this).show();
+        $(this).css("padding", "0px");
+        $(this).css("margin", "0px");
+    });
+*/
 });
 
 function fnShowHideOpened(button, iCol )
@@ -175,6 +192,7 @@ function showtickets($tickets, $id, $columns, $search) {
             if(isset($search[$cid][0])) {
                 $search_value = $search[$cid][0];
             }
+            echo "<br/>";
             echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
             echo "</th>";
         }?>
@@ -263,5 +281,6 @@ function showtickets($tickets, $id, $columns, $search) {
 <?
 }
 ?>
+
 
 <?include("app/views/scripts/footer.phtml");?>

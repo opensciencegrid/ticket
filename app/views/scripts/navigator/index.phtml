@@ -171,7 +171,10 @@ function showtickets($tickets, $id, $columns, $search) {
         foreach($columns as $cid=>$column) {
             echo "<th>".$column["name"];
             //I have to include search field inside column header so that DataTable will hide it correctly
-            $search_value = $search[$cid][0];
+            $search_value = "";
+            if(isset($search[$cid][0])) {
+                $search_value = $search[$cid][0];
+            }
             echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
             echo "</th>";
         }?>

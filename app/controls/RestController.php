@@ -60,4 +60,34 @@ class RestController extends Zend_Controller_Action
 
         $this->render("none", null, true);
     }
+
+    function listopenAction()
+    {
+        header('content-type: text/xml'); 
+        $model = new Tickets();
+        $tickets = $model->getopen();
+        echo "<Tickets>";
+        foreach($tickets as $ticket) {
+            echo "<Ticket>";
+            echo "<ID>".$ticket->mrid."</ID>";
+            echo "<Title>".htmlsafe($ticket->mrtitle)."</Title>";
+            echo "<Priority>".Footprint::getPriority($ticket->mrpriority)."</Priority>";
+            echo "<NextAction>".htmlsafe($ticket->nextaction)."</NextAction>";
+            echo "<NAD>".$ticket->nad."</NAD>";
+            echo "<URL>".fullbase()."/viewer?id=".$ticket->mrid."</URL>";
+            echo "<Assignees>";
+            foreach(explode(" ", $ticket->mrassignees) as $assignee) {
+                if(substr($assignee, 0, 3) == "CC:") continue;
+                if(trim($assignee) != "") {
+                    echo "<Assignee>$assignee</Assignee>";
+                }
+            }
+            echo "</Assignees>";
+            echo "</Ticket>";
+        }
+        echo "</Tickets>";
+
+        $this->render("none", null, true);
+        
+    }
 } 

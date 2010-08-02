@@ -266,10 +266,10 @@ function gotoedit()
         </tr>
         <tr>
         <?
-            if(user()->getPersonID() !== null) {
+            if(!user()->isGuest()) {
                 echo "<td class=\"header\">Email</td><td><a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a></td>";
             } else {
-                echo "<td></td></td></td>";
+                echo "<td></td><td></td>";
             }
         ?>
             <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
@@ -430,6 +430,13 @@ $(document).ready(function() {
         }
         
         if($type == "description") {
+            if(user()->isGuest()) {
+                //mask email address
+                if(preg_match('/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/', $by)) {
+                    $by = substr($by, 0, strpos($by, "@"))."@....";
+                }
+            }
+
             $anchor = $time;
             echo "<div class='update_description'>";
             echo "<div class='header' onclick=\"document.location='#$anchor'; reset_anchor();\">";

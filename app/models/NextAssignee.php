@@ -93,6 +93,17 @@ class NextAssignee
         foreach($members as $member) {
             $this->reason .= $member." has ".$counts[$member]." tickets. ";
         }
+
+/*
+        //apply override
+        $model = new Override();
+        $over = $model->apply($this->next_assignee);
+        if($over != $this->next_assignee) {
+            $this->reason .= " The original assignee ".$this->next_assignee." was overriden by $over";
+            $this->next_assignee = $over;
+        }
+*/
+        
         slog("choose ".$this->next_assignee. " due to - ". $this->reason);
     }
 

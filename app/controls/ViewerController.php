@@ -125,7 +125,7 @@ class ViewerController extends Zend_Controller_Action
                 }
             }
         } catch (Exception $e) {
-            elog("Failed to connect to TX db - ignoring");
+            elog("Failed to connect to TX db - ignoring\n".$e->getMessage());
         }
 
         return $detail;

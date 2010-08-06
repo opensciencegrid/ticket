@@ -1,0 +1,82 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Assignment Override</div>
+<style>
+#table td {
+padding-right: 5px;
+}
+.delete {
+cursor: pointer;
+}
+</style>
+
+<h3>Assignment Override</h3>
+<p>Following assingment override will be applied during next assignee calculation.</p>
+
+<form action="override/submit" method="post">
+<table id="table" width="600px">
+<tr><th width="47%">From</th><th width="47%">To</th><th width="6%">&nbsp;</th></tr>
+<?
+$id = 0;
+foreach($this->overrides as $from=>$to) {
+    echo "<tr>";
+    echo "<td><input name=\"rec_from[${id}]\" type=\"text\" value=\"$from\"/></td>";
+    echo "<td><input name=\"rec_to[${id}]\" type=\"text\" value=\"$to\"/></td>";
+    echo "<td><img src=\"images/delete.png\" class=\"delete\"/></td>";
+    echo "</tr>";
+    $id++;
+}
+?>
+</table>
+<p><a href="javascript:void(0)" onclick="add();">Add New Override</a></p>
+<input type="submit" value="Submit"/>
+</form>
+
+<script type="text/javascript">
+var nextid = <?=$id?>;
+function add() {
+    $("#table").append("<tr><td><input name='rec_from["+nextid+"]' type='text'/></td><td<input name='rec_to["+nextid+"]' type='text'/></td><td><img src='images/delete.png' class='delete'/></td></tr>");
+    setup_input();
+    nextid++;
+}
+var assignees = [
+<?
+$first = true;
+foreach($this->users as $id=>$name) {
+    if(!$first) {
+        echo ",\n";
+    } else {
+        $first = false;
+    }
+    echo "{ name: \"$name\", id: \"$id\"}";
+}
+?>
+]
+
+function setup_input() {
+   $("input").autocomplete(assignees, {
+        mustMatch: true,
+        matchContains: true,
+        width: 500,
+        formatItem: function(row, i, max) {
+            return row.name + "<br/>ID:" + row.id;
+        },
+        formatMatch: function(row, i, max) {
+            return row.name + " " + row.id;
+        },
+        formatResult: function(row, i, max) {
+            return row.id;
+        }
+    }); 
+    $(".delete").click(function() {
+        $(this).parents("tr").remove();
+    });
+}
+
+$(document).ready(function() {
+    setup_input();
+});
+</script>
+
+<?include("app/views/scripts/footer.phtml");?>
+
+

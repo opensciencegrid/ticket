@@ -4,10 +4,15 @@
 
 class Footprint
 {
+    var $assignee_override;
+
     //if id is null, we will do insert. If not, update
     public function __construct($id = null)
     {
         $this->id = $id; 
+
+        $model = new Override();
+        $this->assignee_override = $model->get();
 
         $this->submitter = "OSG-GOC";
         $this->status = "Engineering";
@@ -131,6 +136,14 @@ class Footprint
         if($bClear) {
             $this->resetAssignee();
         } 
+
+        //apply override
+        if(isset($this->assignee_override[$v])) {
+            $newv = $this->assignee_override[$v];
+            $this->addMeta("Original assignee $v was overridden by $newv\n");
+            $v = $newv;
+        }
+        
         $this->assignees[] = $v;//no unparsing necessary
         $this->b_assignees = true;
     }
@@ -284,8 +297,9 @@ class Footprint
         return $people[$lucky]; 
 */
         $model = new NextAssignee();
-        //$this->addMeta("Assignment Reason: ".$model->getReason());
-        return $model->getNextAssignee();
+        $assignee = $model->getNextAssignee();
+        $this->addMeta("Assignment Reason: ".$model->getReason()."\n");
+        return $assignee;
     }
 
     private function lookupVOName($id)

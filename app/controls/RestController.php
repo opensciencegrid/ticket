@@ -53,9 +53,20 @@ class RestController extends Zend_Controller_Action
     {
         header('content-type: text/xml'); 
         $model = new NextAssignee();
+        $assignee = $model->getNextAssignee();
+        $reason = $model->getReason();
+        
+        //apply override
+        $model = new Override();
+        $over = $model->apply($assignee);
+        if($over != $assignee) {
+            $reason .= " The original assignee ".$assignee." was overriden by $over";
+            $assignee = $over;
+        }
+
         echo "<NextAssignee>";
-        echo "<FootprintsID>".htmlspecialchars($model->getNextAssignee())."</FootprintsID>";
-        echo "<Reason>".htmlspecialchars($model->getReason())."</Reason>";
+        echo "<FootprintsID>".htmlspecialchars($assignee)."</FootprintsID>";
+        echo "<Reason>".htmlspecialchars($reason)."</Reason>";
         echo "</NextAssignee>";
 
         $this->render("none", null, true);

@@ -39,7 +39,8 @@ function connect($name, $db_type, $params) {
     foreach($exceptions as $e) {
         $msg .= $e->getMessage()."\n";
     }
-    throw new Exception("Failed to connect to $name");
+    elog(print_r(debug_backtrace(), true));
+    throw new Exception("Failed to connect to $name : $msg");
 }
 
 function db($name) { 
@@ -50,22 +51,3 @@ function db($name) {
     return $g_db[$name]; 
 }
 
-/*
-function gocdb() { 
-    global $g_db; 
-    $name = "data";
-    if(!isset($g_db[$name])) { 
-        connect($name, config()->db_type, config()->data_db_params);
-    }
-    return $g_db[$name]; 
-}
-
-function txdb() { 
-    global $g_db; 
-    $name = "tx";
-    if(!isset($g_db[$name])) { 
-        connect($name, config()->db_type, config()->tx_db_params);
-    }
-    return $g_db[$name]; 
-}
-*/

@@ -14,7 +14,7 @@ if(config()->simulate) {
 
     //store message in session, and redirect
     addMessage("<p>Thank you for submitting your ticket.</p>");
-    addMessage("<p>Please examine the contents of it below, and if you see any discrepancies, or have any questions, feel free to contact the GOC at +1-317-278-9699 or by responding to this ticket via email. </p>");
+    addMessage("<p>If your issues needs action in less than <b>24 hours</b> as stated in the <a href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by responding to this ticket via email.</p>");
 
     //we now need to add exit - or header(location) won't take effect..
     exit;

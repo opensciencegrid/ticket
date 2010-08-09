@@ -626,6 +626,13 @@ color: white;
 background-color: #69f;
 }
 
+.message a {
+color: white;
+}
+.message p {
+margin-bottom: 0px;
+}
+
 #banner
 {
 background-image: url('../images/error_back.png');

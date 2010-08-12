@@ -3,7 +3,6 @@
 <link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables/css/demo_table_jui.css" />
 <meta http-equiv="refresh" content="<?=config()->navigator_refresh?>"/>
 
-
 <style>
 .column_buttons,
 .opened_toolbar,
@@ -34,9 +33,158 @@ margin: 0px;
 th {
 padding: 3px;
 }
+#content {
+display: none;
+}
 </style>
 
 <script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+<?
+    $columns = array(
+        array("name"=>"ID", "type"=>"numeric"), 
+        array("name"=>"Submit Date", "type"=>"date"),
+        array("name"=>"Title", "type"=>"html"), 
+        array("name"=>"Update Date", "type"=>"date"), 
+        array("name"=>"Next Action", "type"=>"string"), 
+        array("name"=>"NAD", "type"=>"html"), 
+        array("name"=>"Priority", "type"=>"html"), 
+        array("name"=>"Assignees", "type"=>"string"), 
+        array("name"=>"CCs", "type"=>"string"), 
+        array("name"=>"Origin.&nbsp;VO", "type"=>"string"), 
+        array("name"=>"Dest.&nbsp;VO", "type"=>"string")
+        );
+    $column_types = "";
+    foreach($columns as $id=>$column) {
+        if($column_types != "") {
+            $column_types .= ", ";
+        }
+        $column_types .= "{ \"sType\": \"".$column["type"]."\"}";
+    }
+
+?>
+</script>
+<?
+
+echo "You are here > View Tickets (use <a href=\"".fullbase()."/navigatorold\">Old View</a>)";
+
+echo "<h3>Open Tickets</h3>";
+$search = $this->table_search["opened"];
+showtickets($this->assigned_tickets, "opened", $columns, $search);
+
+echo "<h3>Closed within ".$this->closed_days." days</h3>";
+$search = $this->table_search["closed"];
+showtickets($this->closed_tickets, "closed", $columns, $search);
+
+function showtickets($tickets, $id, $columns, $search) {
+?>
+    <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
+    <thead>
+        <tr>
+        <?
+        foreach($columns as $cid=>$column) {
+            echo "<th>".str_replace(" ", "&nbsp;", $column["name"]);
+            //I have to include search field inside column header so that DataTable will hide it correctly
+            $search_value = "";
+            if(isset($search[$cid][0])) {
+                $search_value = $search[$cid][0];
+            }
+            echo "<br/>";
+            echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
+            echo "</th>";
+        }?>
+        </tr>
+    </thead>
+    <?
+    $model = new Schema();
+    $teams = $model->getteams();
+    $aka_model = new AKA();
+
+    foreach($tickets as $ticket) {
+        if($ticket->tickettype == "Security") {
+            if(user()->isguest()) {
+                //don't show security ticket to guest user 
+                continue;
+            } 
+        }
+
+        $url = base()."/viewer?id=".$ticket->mrid;
+        $target = "ticket_".$ticket->mrid;
+
+        //assignee, cc
+        $assignees = array();
+        $ccs = array();
+        foreach(explode(" ", $ticket->mrassignees) as $a) {
+            //FP somehow put CCs on assginee field...-
+            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
+                $ccs[] = substr($a, 3);
+                continue;
+            }
+            //FP somehow contains team names on assignee... ignore it
+            $team_name = false;
+            foreach($teams as $team) {
+                if($team->team == $a) {
+                    $team_name = true;
+                    break;
+                }
+            }
+            if($team_name) continue;
+
+            //store to assignee list
+            $aka = $aka_model->lookupName($a);
+            $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
+        }
+
+        //priority
+        $priority = Footprint::getPriority($ticket->mrpriority);
+        switch($ticket->mrpriority) {
+        case 3: $priority = "<font color='#c90'>$priority</font>"; break;
+        case 2: $priority = "<font color='red'>$priority</font>"; break;
+        case 1: $priority = "<font color='red'>$priority</font>"; break;
+        }
+
+        //nad
+        $nad_unix = strtotime($ticket->nad);
+        $nad = date("Y-m-d", $nad_unix);
+        if($nad_unix < time()) {
+            $nad = "<font color='red'>$nad</font>";
+        } else if($nad < time() + 3600*config()->nad_alert_hours) {
+            $nad = "<font color='#c90'>$nad</font>";
+        }
+
+        //ticket type
+        $title = $ticket->mrtitle;
+        if($ticket->tickettype == "Security") {
+            $title = "<span class='red tag'>Security</span>$title";
+        }
+
+        ?>
+        <tr onclick="window.open('<?=$url?>','<?=$target?>');">
+            <td><?=$ticket->mrid?></td>
+            <td><?=$ticket->mrsubmitdate?></td>
+            <td><?=$title?></td>
+            <td><?=$ticket->mrupdatedate?></td>
+            <td><?=$ticket->nextaction?></td>
+            <td><?=$nad?></td>
+            <td><?=$priority?></td>
+            <td><?=implode("<br>", $assignees)?></td>
+        <?
+            if(!user()->isguest()) {
+                echo "<td>".implode("<br>", $ccs)."</td>";
+            } else {
+                echo "<td>(Only Visible for OIM users)</td>";
+            }
+        ?>
+            <td><?=$ticket->mrorigin?></td>
+            <td><?=$ticket->mrdest?></td>
+        </tr>
+        <?
+    }
+    ?>  
+    </table>
+<?
+}
+?>
 
 <script type="text/javascript">
 <?
@@ -130,16 +278,7 @@ $(document).ready(function() {
     echo "</div>";
     ?>');
 
-/*
-    $(".search").each(function() {
-        var width = $(this).parent("th").width();
-        $(this).width(width);
-        $(this).val(width);
-        $(this).show();
-        $(this).css("padding", "0px");
-        $(this).css("margin", "0px");
-    });
-*/
+    $("#content").show();
 });
 
 function fnShowHideOpened(button, iCol )
@@ -166,121 +305,5 @@ function fnShowHideClosed(button, iCol )
 }
 
 </script>
-
-<?
-
-echo "You are here > View Tickets (use <a href=\"".fullbase()."/navigatorold\">Old View</a>)";
-
-echo "<h3>Open Tickets</h3>";
-$search = $this->table_search["opened"];
-showtickets($this->assigned_tickets, "opened", $columns, $search);
-
-echo "<h3>Closed within ".$this->closed_days." days</h3>";
-$search = $this->table_search["closed"];
-showtickets($this->closed_tickets, "closed", $columns, $search);
-
-function showtickets($tickets, $id, $columns, $search) {
-?>
-    <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
-    <thead>
-        <tr>
-        <?
-        foreach($columns as $cid=>$column) {
-            echo "<th>".str_replace(" ", "&nbsp;", $column["name"]);
-            //I have to include search field inside column header so that DataTable will hide it correctly
-            $search_value = "";
-            if(isset($search[$cid][0])) {
-                $search_value = $search[$cid][0];
-            }
-            echo "<br/>";
-            echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
-            echo "</th>";
-        }?>
-        </tr>
-    </thead>
-    <?
-    $model = new Schema();
-    $teams = $model->getteams();
-    $aka_model = new AKA();
-
-    foreach($tickets as $ticket) {
-        $url = base()."/viewer?id=".$ticket->mrid;
-        $target = "ticket_".$ticket->mrid;
-
-        //assignee, cc
-        $assignees = array();
-        $ccs = array();
-        foreach(explode(" ", $ticket->mrassignees) as $a) {
-            //FP somehow put CCs on assginee field...-
-            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
-                $ccs[] = substr($a, 3);
-                continue;
-            }
-            //FP somehow contains team names on assignee... ignore it
-            $team_name = false;
-            foreach($teams as $team) {
-                if($team->team == $a) {
-                    $team_name = true;
-                    break;
-                }
-            }
-            if($team_name) continue;
-
-            //store to assignee list
-            $aka = $aka_model->lookupName($a);
-            $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
-        }
-
-        //priority
-        $priority = Footprint::getPriority($ticket->mrpriority);
-        switch($ticket->mrpriority) {
-        case 3: $priority = "<font color='#c90'>$priority</font>"; break;
-        case 2: $priority = "<font color='red'>$priority</font>"; break;
-        case 1: $priority = "<font color='red'>$priority</font>"; break;
-        }
-
-        //nad
-        $nad_unix = strtotime($ticket->nad);
-        $nad = date("Y-m-d", $nad_unix);
-        if($nad_unix < time()) {
-            $nad = "<font color='red'>$nad</font>";
-        } else if($nad < time() + 3600*config()->nad_alert_hours) {
-            $nad = "<font color='#c90'>$nad</font>";
-        }
-
-        //ticket type
-        $title = $ticket->mrtitle;
-        if($ticket->tickettype == "Security") {
-            $title = "<span class='red tag'>Security</span>$title";
-        }
-
-        ?>
-        <tr onclick="window.open('<?=$url?>','<?=$target?>');">
-            <td><?=$ticket->mrid?></td>
-            <td><?=$ticket->mrsubmitdate?></td>
-            <td><?=$title?></td>
-            <td><?=$ticket->mrupdatedate?></td>
-            <td><?=$ticket->nextaction?></td>
-            <td><?=$nad?></td>
-            <td><?=$priority?></td>
-            <td><?=implode("<br>", $assignees)?></td>
-        <?
-            if(!user()->isguest()) {
-                echo "<td>".implode("<br>", $ccs)."</td>";
-            } else {
-                echo "<td>(Only Visible for OIM users)</td>";
-            }
-        ?>
-            <td><?=$ticket->mrorigin?></td>
-            <td><?=$ticket->mrdest?></td>
-        </tr>
-        <?
-    }
-    ?>  
-    </table>
-<?
-}
-?>
-
 
 <?include("app/views/scripts/footer.phtml");?>

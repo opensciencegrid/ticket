@@ -152,6 +152,11 @@ function showtickets($tickets, $id, $columns, $search) {
             $nad = "<font color='#c90'>$nad</font>";
         }
 
+        //dates
+        //for some reason, datatable doesn't sort the date correctly if there is timestamp on it.. just show date
+        $submit_date = substr($ticket->mrsubmitdate, 0, 10);
+        $update_date = substr($ticket->mrupdatedate, 0, 10);
+
         //ticket type
         $title = $ticket->mrtitle;
         if($ticket->tickettype == "Security") {
@@ -161,9 +166,9 @@ function showtickets($tickets, $id, $columns, $search) {
         ?>
         <tr onclick="window.open('<?=$url?>','<?=$target?>');">
             <td><?=$ticket->mrid?></td>
-            <td><?=$ticket->mrsubmitdate?></td>
+            <td><?=$submit_date?></td>
             <td><?=$title?></td>
-            <td><?=$ticket->mrupdatedate?></td>
+            <td><?=$update_date?></td>
             <td><?=$ticket->nextaction?></td>
             <td><?=$nad?></td>
             <td><?=$priority?></td>

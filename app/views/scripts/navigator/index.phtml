@@ -1,6 +1,8 @@
 <?include("app/views/scripts/header.phtml");?>
 
-<link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables/css/demo_table_jui.css" />
+<link rel="stylesheet" type="text/css" href="<?=fullbase()?>/lib/jquery.datatables-1.7.0/css/demo_table_jui.css" />
+<script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables-1.7.0/js/jquery.dataTables.min.js"></script>
+
 <meta http-equiv="refresh" content="<?=config()->navigator_refresh?>"/>
 
 <style>
@@ -38,7 +40,6 @@ display: none;
 }
 </style>
 
-<script type="text/javascript" src="<?=fullbase()?>/lib/jquery.datatables/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
 <?
     $columns = array(
@@ -152,6 +153,11 @@ function showtickets($tickets, $id, $columns, $search) {
             $nad = "<font color='#c90'>$nad</font>";
         }
 
+        //dates
+        //for some reason, datatable doesn't sort the date correctly if there is timestamp on it.. just show date
+        $submit_date = substr($ticket->mrsubmitdate, 0, 10);
+        $update_date = substr($ticket->mrupdatedate, 0, 10);
+
         //ticket type
         $title = $ticket->mrtitle;
         if($ticket->tickettype == "Security") {
@@ -161,9 +167,9 @@ function showtickets($tickets, $id, $columns, $search) {
         ?>
         <tr onclick="window.open('<?=$url?>','<?=$target?>');">
             <td><?=$ticket->mrid?></td>
-            <td><?=$ticket->mrsubmitdate?></td>
+            <td><?=$submit_date?></td>
             <td><?=$title?></td>
-            <td><?=$ticket->mrupdatedate?></td>
+            <td><?=$update_date?></td>
             <td><?=$ticket->nextaction?></td>
             <td><?=$nad?></td>
             <td><?=$priority?></td>

@@ -68,8 +68,8 @@ try {
 //$ret = $data->setMetadata(777, "TEST", "new");
 
 //dispatch
+slog("---------dispatching--------");
 $frontController = Zend_Controller_Front::getInstance();
 $frontController->setControllerDirectory('app/controls');
 $frontController->dispatch();
-
-slog("---------all done--------");
+slog("---------all done-----------");

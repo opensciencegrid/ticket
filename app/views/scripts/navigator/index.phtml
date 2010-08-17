@@ -91,7 +91,7 @@ function showtickets($tickets, $id, $columns, $search) {
                 $search_value = $search[$cid][0];
             }
             echo "<br/>";
-            echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;\"/>";
+            echo "<input pos=\"$cid\" onkeyup=\"".$id."_table.fnFilter(this.value, $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;this.focus();\"/>";
             echo "</th>";
         }?>
         </tr>

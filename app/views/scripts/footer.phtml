@@ -15,7 +15,7 @@ echo "<p>Logged in as <b>";
 if(user()->isGuest()) {
     echo "Guest";
 } else {
-    echo user()->getDN();
+    echo user()->getDN()." (".user()->getTimeZone().")";
 }
 echo "</b></p>";
 

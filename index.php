@@ -40,7 +40,11 @@ try {
     greet();
 
     cert_authenticate();
-    date_default_timezone_set(user()->getTimeZone());
+    if(!date_default_timezone_set(user()->getTimeZone())) {
+        date_default_timezone_set("UTC");
+        addMessage("Your timezone '".user()->getTimeZone()."' is not valid. Please try using location based timezone such as 'America/Chicago'. Reverting to UTC.");
+    }
+    //slog("user timezone: ".user()->getTimeZone());
     error_reporting(E_ALL | E_STRICT);
 
 } catch(exception $e) {

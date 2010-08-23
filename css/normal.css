@@ -260,6 +260,11 @@ th
     cursor: pointer;
 }
 
+input[type=submit] {
+height: 27px;
+padding: 0px 5px 0px 5px;
+}
+
 pre
 {
  white-space: pre-wrap;       /* css-3 */

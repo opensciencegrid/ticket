@@ -77,14 +77,25 @@ class RestController extends Zend_Controller_Action
         header('content-type: text/xml'); 
         $model = new Tickets();
         $tickets = $model->getopen();
+
+        $meta = new Data();
+
         echo "<Tickets>";
         foreach($tickets as $ticket) {
+            if($ticket->tickettype == "Security") {
+                if(user()->isguest()) {
+                    //don't show security ticket to guest user-
+                    continue;
+                }
+            }
+
             echo "<Ticket>";
             echo "<ID>".$ticket->mrid."</ID>";
             echo "<Title>".htmlsafe($ticket->mrtitle)."</Title>";
-            echo "<Priority>".Footprint::getPriority($ticket->mrpriority)."</Priority>";
+            echo "<Priority>".htmlsafe(Footprint::getPriority($ticket->mrpriority))."</Priority>";
+            echo "<Type>".htmlsafe(Footprint::parse($ticket->tickettype))."</Type>";
             echo "<NextAction>".htmlsafe($ticket->nextaction)."</NextAction>";
-            echo "<NAD>".$ticket->nad."</NAD>";
+            echo "<NAD>".htmlsafe($ticket->nad)."</NAD>";
             echo "<URL>".fullbase()."/viewer?id=".$ticket->mrid."</URL>";
             echo "<Assignees>";
             foreach(explode(" ", $ticket->mrassignees) as $assignee) {
@@ -94,6 +105,17 @@ class RestController extends Zend_Controller_Action
                 }
             }
             echo "</Assignees>";
+
+            //pull metadata
+            $recs = $meta->getAllMetadata($ticket->mrid);
+            echo "<Metadata>";
+            foreach($recs as $rec) {
+                echo "<".$rec->key.">";
+                echo htmlsafe($rec->value);
+                echo "</".$rec->key.">";
+            }
+            echo "</Metadata>";
+
             echo "</Ticket>";
         }
         echo "</Tickets>";

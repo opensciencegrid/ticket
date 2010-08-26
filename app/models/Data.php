@@ -25,6 +25,11 @@ class Data
         $sql = "SELECT value FROM gocticket.metadata WHERE ticket_id = $ticketid and `key` = '$key' and project_id = ".config()->project_id; 
         return db("data")->fetchOne($sql);
     }
+    public function getAllMetadata($ticketid)
+    {
+        $sql = "SELECT `key`, value FROM gocticket.metadata WHERE ticket_id = $ticketid and project_id = ".config()->project_id; 
+        return db("data")->fetchAll($sql);
+    }
 
     public function setMetadata($ticketid, $key, $value)
     {

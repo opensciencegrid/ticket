@@ -193,28 +193,6 @@ function showtickets($tickets, $id, $columns, $search) {
 ?>
 
 <script type="text/javascript">
-<?
-$columns = array(
-    array("name"=>"ID", "type"=>"numeric"), 
-    array("name"=>"Submit Date", "type"=>"date"),
-    array("name"=>"Title", "type"=>"html"), 
-    array("name"=>"Update Date", "type"=>"date"), 
-    array("name"=>"Next Action", "type"=>"string"), 
-    array("name"=>"NAD", "type"=>"html"), 
-    array("name"=>"Priority", "type"=>"html"), 
-    array("name"=>"Assignees", "type"=>"string"), 
-    array("name"=>"CCs", "type"=>"string"), 
-    array("name"=>"Origin.&nbsp;VO", "type"=>"string"), 
-    array("name"=>"Dest.&nbsp;VO", "type"=>"string")
-    );
-$column_types = "";
-foreach($columns as $id=>$column) {
-    if($column_types != "") {
-        $column_types .= ", ";
-    }
-    $column_types .= "{ \"sType\": \"".$column["type"]."\"}";
-}
-?>
 var opened_table;
 var closed_table;
 

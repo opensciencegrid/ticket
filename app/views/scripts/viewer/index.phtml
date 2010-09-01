@@ -261,7 +261,13 @@ function gotoedit()
             <td class="header">Originating VO</td><td><?=$this->submitter_vo?></td>
         </tr>
         <tr>
-            <td class="header">Phone</td><td><?=$this->submitter_phone?></td>
+        <?
+            if(!user()->isGuest()) {
+                echo "<td class=\"header\">Phone</td><td><?=$this->submitter_phone?></td>";
+            } else {
+                echo "<td></td><td></td>";
+            }
+        ?>
             <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
         </tr>
         <tr>

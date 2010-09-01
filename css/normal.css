@@ -19,8 +19,11 @@ margin-bottom: 10px;
 }
 
 #header {
-padding-left: 110px;
 background: #000 url('../images/header.gif') repeat-x;
+height: 60px;
+}
+#header .title{
+padding-left: 110px;
 height: 60px;
 }
 
@@ -181,11 +184,10 @@ p.warning
 }
 #footer
 {
-padding:10px;
 background: url('../images/a4.gif') repeat-x top left;
 border-top: solid 1px #D0D4BB;
-padding: 1.0em 3.5em 1.0em 3.5em;
-font-size: 0.8em;
+padding: 10px 40px;
+font-size: 12px;
 font-family: 'Trebuchet MS';
 }
 .indent
@@ -277,14 +279,9 @@ pre
     padding-top: 0px;
 }
 
-.menu
-{
-margin-left: 30px;
-}
-
 .submenu
 {
-background-color: black;
+background-image: url(../images/topnav_bg.gif);
 font-family: 'Trebuchet MS';
 padding: 4px 12px;
 }
@@ -322,39 +319,26 @@ color: #fff;
 }
 
 
-ul.subsection_tabs {
-    list-style:none;
-    margin:0 0 0 0;
-    padding:0;
-    clear:both;
-    height:23px;
-    clear:both;
+#header #links {
+position:absolute;
+right: 10px;
+top: 39px;
+font-size: 12px;
+font-family: 'Trebuchet MS', sans-serif;
+color: #555;
+}
+#header #links a {
+color: #999;
+text-decoration: none;
+}
+#header #links a:hover {
+text-decoration: underline;
+}
+#header #links .active {
+font-weight: bold;
+color: #fff;
 }
 
-ul.subsection_tabs li.tab {
-    float:left;
-    margin-right:7px;
-    text-align:center;
-}
-
-ul.subsection_tabs li.tab a {
-    display:inline-block;
-    font-weight: bold;
-    height:20px;
-    padding:3px 6px 0 6px;
-    text-decoration: none;
-    color: #f90;
-}
-
-ul.subsection_tabs li.tab a:hover {
-    background-color:#fc9;
-    color: white;
-}
-
-ul.subsection_tabs li.tab a.active {
-    background-color:#f90;
-    color: white;
-}
 .tabcontent
 {
     margin: 0px;
@@ -387,7 +371,7 @@ ul.subsection_tabs li.tab a.active {
     margin-bottom: 6px;
 }
 
-.update_history .header
+.update_history .neader
 {
     padding: 3px;
 }

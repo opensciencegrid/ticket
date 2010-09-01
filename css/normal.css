@@ -281,30 +281,16 @@ pre
 
 .submenu
 {
-background-image: url(../images/topnav_bg.gif);
+background: #000 url(../images/topnav_bg.gif);
 font-family: 'Trebuchet MS';
-padding: 4px 12px;
+padding: 3px 15px;
+height: 27px;
 }
 .submenu div {
 display: inline-block;
-padding: 2px 8px;
-}
-
-.submenu a
-{
+padding: 5px;
+margin: 0px;
 font-size: 12px;
-font-weight: bold;
-color: #888;
-text-decoration: none;
-}
-.submenu a:hover
-{
-text-decoration: underline;
-}
-
-.submenu div.selected
-{
-background-color: #333;
 -moz-border-radius-bottomleft:4px;
 -moz-border-radius-bottomright:4px;
 -moz-border-radius-topleft:4px;
@@ -313,6 +299,22 @@ background-color: #333;
 -webkit-border-top-right-radius: 4px;
 -webkit-border-bottom-left-radius: 4px;
 -webkit-border-bottom-right-radius: 4px;
+}
+.submenu a {
+font-weight: bold;
+color: #888;
+text-decoration: none;
+}
+.submenu div:hover {
+background-color: #333;
+}
+.submenu a:hover {
+color: #fff;
+}
+
+.submenu div.selected
+{
+background-color: #333;
 }
 .submenu div.selected a {
 color: #fff;

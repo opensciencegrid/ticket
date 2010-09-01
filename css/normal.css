@@ -299,27 +299,22 @@ font-size: 12px;
 -webkit-border-top-right-radius: 4px;
 -webkit-border-bottom-left-radius: 4px;
 -webkit-border-bottom-right-radius: 4px;
+color: #888;
 }
 .submenu a {
 font-weight: bold;
-color: #888;
+color: inherit;
 text-decoration: none;
 }
-.submenu div:hover {
-background-color: #333;
-}
-.submenu a:hover {
-color: #fff;
-}
-
 .submenu div.selected
 {
 background-color: #333;
-}
-.submenu div.selected a {
 color: #fff;
 }
-
+.submenu div:hover {
+background-color: #555;
+color: white;
+}
 
 #header #links {
 position:absolute;

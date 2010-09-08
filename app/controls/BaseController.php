@@ -148,6 +148,8 @@ class BaseController extends Zend_Controller_Action
         if($this->has_yourinfo) {
             $name = $form->getValue('name');
             $footprint->setName($name);
+            $footprint->setMetadata("SUBMITTER_NAME", $name);
+            $footprint->setMetadata("SUBMITTED_VIA", $this->getRequest()->getControllerName());
 
             //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
             $agent = $this->getFPAgent($name);

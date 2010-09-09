@@ -44,14 +44,9 @@ try {
         date_default_timezone_set("UTC");
         addMessage("Your timezone '".user()->getTimeZone()."' is not valid. Please try using location based timezone such as 'America/Chicago'. Reverting to UTC.");
     }
-    //slog("user timezone: ".user()->getTimeZone());
     error_reporting(E_ALL | E_STRICT);
 
 } catch(exception $e) {
-/*
-    //when a catastrohpic failure occure (like disk goes read-only..) emailing is the only way we got..
-    mail(config()->elog_email_address, "[gocticket] Caught exception during bootstrap", $e, "From: ".config()->email_from);
-*/
     header("HTTP/1.0 500 Internal Server Error");
     echo "Boot Error";
     echo "<pre>".$e->getMessage()."</pre>";
@@ -67,9 +62,6 @@ try {
     //continue processing
     wlog("failed to log access - skipping... : ".$e->getMessage());
 }
-
-//metadata test..
-//$ret = $data->setMetadata(777, "TEST", "new");
 
 //dispatch
 slog("---------dispatching--------");

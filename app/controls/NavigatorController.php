@@ -45,6 +45,11 @@ class NavigatorController extends Zend_Controller_Action
             $query = "WHERE mrstatus in $closed_status and mrupdatedate > '$recent_date'";
             $this->view->closed_tickets = $model->dosearch($query);
 
+            //load submitter
+            $this->view->submitters = array();
+            $this->loadSubmitters($this->view->assigned_tickets, $this->view->submitters);
+            $this->loadSubmitters($this->view->closed_tickets, $this->view->submitters);
+
             $model = new Schema();
             $this->view->teams = $model->getteams();
 
@@ -55,5 +60,19 @@ class NavigatorController extends Zend_Controller_Action
             $this->render("error/error", null, true);
         }
     }
+
+    function loadSubmitters($tickets, &$submitters) {
+        if(count($tickets) == 0) return;
+
+        foreach($tickets as $ticket) {
+            $ids[] = $ticket->mrid;
+        }
+        $model = new Data();
+        $recs = $model->getAllMetadataForKey($ids, "SUBMITTER_NAME");
+        foreach($recs as $rec) {
+            $submitters[$rec->ticket_id] = $rec->value;
+        }
+    }
+
 
 } 

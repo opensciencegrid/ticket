@@ -44,6 +44,7 @@ display: none;
 <?
     $columns = array(
         array("name"=>"ID", "type"=>"numeric"), 
+        array("name"=>"Submitter", "type"=>"string"),
         array("name"=>"Submit Date", "type"=>"date"),
         array("name"=>"Title", "type"=>"html"), 
         array("name"=>"Update Date", "type"=>"date"), 
@@ -71,13 +72,13 @@ echo "You are here > View Tickets (use <a href=\"".fullbase()."/navigatorold\">O
 
 echo "<h3>Open Tickets</h3>";
 $search = $this->table_search["opened"];
-showtickets($this->assigned_tickets, "opened", $columns, $search);
+showtickets($this->assigned_tickets, "opened", $columns, $search, $this->submitters);
 
 echo "<h3>Closed within ".$this->closed_days." days</h3>";
 $search = $this->table_search["closed"];
-showtickets($this->closed_tickets, "closed", $columns, $search);
+showtickets($this->closed_tickets, "closed", $columns, $search, $this->submitters);
 
-function showtickets($tickets, $id, $columns, $search) {
+function showtickets($tickets, $id, $columns, $search, $submitters) {
 ?>
     <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
     <thead>
@@ -164,9 +165,15 @@ function showtickets($tickets, $id, $columns, $search) {
             $title = "<span class='red tag'>Security</span>$title";
         }
 
+        $submitter = "(N/A)";
+        if(isset($submitters[$ticket->mrid])) {
+            $submitter = $submitters[$ticket->mrid];
+        }
+
         ?>
         <tr onclick="window.open('<?=$url?>','<?=$target?>');">
             <td><?=$ticket->mrid?></td>
+            <td><?=$submitter?></td>
             <td><?=$submit_date?></td>
             <td><?=$title?></td>
             <td><?=$update_date?></td>

@@ -15,6 +15,9 @@ class RessController extends GOCServiceController
         $model = new NextAssignee();
         $gocid = $model->getNextAssignee();
         $footprint->addAssignee($gocid, true); //reset assignee first
-        $footprint->addAssignee("ress-ops"); //Fermigrid Ops
+        //$footprint->addAssignee("ress-ops"); //Fermigrid Ops
+
+        $footprint->addAssignee("ReSS"); 
+        $footprint->setDestinationVO("ReSS_Development");
     }
 } 

@@ -153,6 +153,7 @@ class BaseController extends Zend_Controller_Action
 
             //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
             $agent = $this->getFPAgent($name);
+            $agent = null;
             if($agent !== null) {
                 $footprint->setSubmitter($agent);
             } else {

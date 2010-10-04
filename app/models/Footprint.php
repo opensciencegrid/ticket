@@ -127,7 +127,7 @@ class Footprint
     }
     public function addMeta($v) { 
         $this->meta .= $v;
-        $this->desc = true;
+        $this->b_desc = true;
     }
     public function setMetadata($key, $value) {
         $this->metadata[$key] = $value;

@@ -213,13 +213,7 @@ class ViewerController extends Zend_Controller_Action
                     $footprint->addDescription($description);
                 }
 
-                $agent = $this->getFPAgent(user()->getPersonName());
-                if($agent !== null) {
-                    $footprint->setSubmitter($agent);
-                } else {
-                    $footprint->addDescription("\n-- by ".user()->getPersonName());
-                    $footprint->addMeta(user()->getDN());
-                }
+                $this->setSubmitter($footprint);
 
                 //contact
                 $footprint->setName($submit_fname." ".$submit_lname);
@@ -274,6 +268,17 @@ class ViewerController extends Zend_Controller_Action
         $this->render("none", null, true);
     }
 
+    public function setSubmitter($footprint) 
+    {
+        $agent = $this->getFPAgent(user()->getPersonName());
+        if($agent !== null) {
+            $footprint->setSubmitter($agent);
+        } else {
+            $footprint->addDescription("\n\n-- by ".user()->getPersonName());
+            $footprint->addMeta(user()->getDN());
+        }
+    }
+ 
     public function updatebasicAction()
     {
         if(user()->isGuest()) {
@@ -298,6 +303,8 @@ class ViewerController extends Zend_Controller_Action
             if($description != "") {
                 $footprint->addDescription($description);
             }
+
+            $this->setSubmitter($footprint);
 
             //set suppression
             if(!isset($_REQUEST["notify_assignees"])) {

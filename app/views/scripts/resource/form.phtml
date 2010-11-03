@@ -14,19 +14,23 @@
 
 <?=$this->element->resource_type?>
 </dl>
-    <dl id="resource_id_with_issue_1_holder" class="hidden">
-    <?=$this->element->resource_id_with_issue_1?>
-    </dl>
-<dl>
+
+<dl id="resource_id_with_issue_1_holder" class="hidden">
+<?=$this->element->resource_id_with_issue_1?>
 </dl>
-    <dl id="resource_id_with_issue_2_holder" class="hidden">
-    <?=$this->element->resource_id_with_issue_2?>
-    </dl>
-<dl>
+<dl id="resource_id_with_issue_2_holder" class="hidden">
+<?=$this->element->resource_id_with_issue_2?>
 </dl>
-    <dl id="title_holder" class="hidden">
-    <?=$this->element->title?>
-    </dl>
+<dl id="type_holder" class="hidden">
+    <dt><label for="type">Affected Service</dt>
+    <dd id="type">
+    </dd>
+</dl>
+<dl id="title_holder" class="hidden">
+<?=$this->element->title?>
+</dl>
+
+
 <dl>
 <?=$this->element->admin?>
 <?=$this->element->detail?>
@@ -43,21 +47,26 @@ function show_resourcelist() {
     var grid_type = $("#resource_type").val();
     $("#resource_id_with_issue_"+grid_type+"_holder").show();
 }
-function settitle() 
+function setTitleAndType() 
 {
     var id = this.selectedIndex;
     if(!id) {
         $("#title_holder").hide();
+        $("#type_holder").hide();
     } else {
         var rname = this.options[id].text;
         $("#title").attr("value", "Resource Specific Issue on "+rname);
         $("#title_holder").show();
+
+        $("#type").load("<?=fullbase()?>/resource/loadtype?rid="+this.options[id].value, function() {
+            $("#type_holder").show();
+        });
     }
 }
 show_resourcelist();
 $("#resource_type").change(function() {
     show_resourcelist();
 });
-$("#resource_id_with_issue_1").change(settitle);
-$("#resource_id_with_issue_2").change(settitle);
+$("#resource_id_with_issue_1").change(setTitleAndType);
+$("#resource_id_with_issue_2").change(setTitleAndType);
 </script>

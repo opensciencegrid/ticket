@@ -12,6 +12,21 @@ class ResourceController extends BaseController
         $this->render();
     }
 
+    public function loadtypeAction() {
+        $rid = (int)$_REQUEST["rid"];
+        $model = new ResourceServices();
+        $services = $model->fetchByID($rid);
+        echo "<select name=\"service_id\">";
+        foreach($services as $service) {
+            $sid = $service->service_id;
+            $desc = $service->description;
+            echo "<option value=\"$sid\">$desc</option>";
+        }
+        echo "<option id=\"-1\">(N/A)</option>";
+        echo "</select>";
+        $this->render("none", null, true);
+    }
+
     public function submitAction()
     {
         $form = $this->getForm();
@@ -48,6 +63,7 @@ class ResourceController extends BaseController
             $footprint->setMetadata("ASSOCIATED_R_NAME", $resource_name);
             $footprint->setTitle($form->getValue('title'));
 
+            //set destination VO, primary admin, SC, etc..
             $admin = $_REQUEST["admin"];
             if($admin) {
                 //this is their own resource - maybe installation issue..
@@ -80,16 +96,27 @@ class ResourceController extends BaseController
                 }
                 $footprint->addPrimaryAdminContact($resource_id);
             }
+
+            //add few other assignee based on the service type
+            if(isset($_REQUEST["service_id"])) {
+                $service_id = $_REQUEST["service_id"];
+                switch($service_id){
+                case -1: //NA
+                    break;
+                //case 5: //GridFTP
+                case 3: //SRMv2
+                    $footprint->addAssignee("tlevshin"); //Tanya Levshina
+                    $footprint->addAssignee("neha"); //Neha Sharma
+                default:
+                    $footprint->setMetadata("SERVICE_ID", $service_id);
+                }
+            }
+
             try
             {
                 $mrid = $footprint->submit();
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
-/*
-                $data = new Data();
-                $data->setMetadata($mrid, "ASSOCIATED_R_NAME", $resource_name);
-                $data->setMetadata($mrid, "ASSOCIATED_R_ID", $resource_id);
-*/
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
                 $this->render("failed", null, true);

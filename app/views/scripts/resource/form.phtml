@@ -46,10 +46,14 @@ function show_resourcelist() {
     //find currently selected item
     var grid_type = $("#resource_type").val();
     $("#resource_id_with_issue_"+grid_type+"_holder").show();
+    var rid = $("#resource_id_with_issue_"+grid_type).val();
+    if(rid) {
+        loadServiceType(rid);
+    }
 }
 function setTitleAndType() 
 {
-    var id = this.selectedIndex;
+    id = this.selectedIndex;
     if(!id) {
         $("#title_holder").hide();
         $("#type_holder").hide();
@@ -57,12 +61,16 @@ function setTitleAndType()
         var rname = this.options[id].text;
         $("#title").attr("value", "Resource Specific Issue on "+rname);
         $("#title_holder").show();
-
-        $("#type").load("<?=fullbase()?>/resource/loadtype?rid="+this.options[id].value, function() {
-            $("#type_holder").show();
-        });
+        loadServiceType(this.options[id].value);
     }
 }
+function loadServiceType(rid)
+{
+    $("#type").load("<?=fullbase()?>/resource/loadtype?rid="+rid, function() {
+        $("#type_holder").show();
+    });
+}
+
 show_resourcelist();
 $("#resource_type").change(function() {
     show_resourcelist();

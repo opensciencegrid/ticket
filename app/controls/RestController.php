@@ -101,7 +101,7 @@ class RestController extends Zend_Controller_Action
             foreach(explode(" ", $ticket->mrassignees) as $assignee) {
                 if(substr($assignee, 0, 3) == "CC:") continue;
                 if(trim($assignee) != "") {
-                    echo "<Assignee>$assignee</Assignee>";
+                    echo "<Assignee>".htmlsafe($assignee)."</Assignee>";
                 }
             }
             echo "</Assignees>";

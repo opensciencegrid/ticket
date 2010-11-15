@@ -112,7 +112,7 @@ function cert_authenticate()
 */
 
             $user = new User($dn);
-            if($user->getPersonID()) {
+            if($user->getPersonID() && $_SERVER["SSL_CLIENT_VERIFY"] == "SUCCESS") {
                 Zend_Registry::set("user", $user);
             } else {
                 //unknown, non-active, or expired cert?

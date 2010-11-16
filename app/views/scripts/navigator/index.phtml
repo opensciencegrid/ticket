@@ -43,13 +43,24 @@ display: none;
 .dataTables_filter input {
 width: 150px;
 }
+
+.metadata_list {
+width: 200px;
+display: none;
+position: absolute;
+background-color: white;
+left: -5px;
+}
+.metadata_list button {
+width: 100%;
+}
 </style>
 
 <script type="text/javascript">
 <?
     $columns = array(
         array("name"=>"ID", "type"=>"numeric"), 
-        array("name"=>"Submitter", "type"=>"string"),
+        array("name"=>"Submitter", "type"=>"string", "meta"=>true),
         array("name"=>"Submit Date", "type"=>"date"),
         array("name"=>"Title", "type"=>"html"), 
         array("name"=>"Update Date", "type"=>"date"), 
@@ -59,7 +70,9 @@ width: 150px;
         array("name"=>"Assignees", "type"=>"string"), 
         array("name"=>"CCs", "type"=>"string"), 
         array("name"=>"Origin.&nbsp;VO", "type"=>"string"), 
-        array("name"=>"Dest.&nbsp;VO", "type"=>"string")
+        array("name"=>"Dest.&nbsp;VO", "type"=>"string"),
+        array("name"=>"Affected Resource Group", "type"=>"string", "meta"=>true),
+        array("name"=>"Affected SC", "type"=>"string", "meta"=>true)
         );
     $column_types = "";
     foreach($columns as $id=>$column) {
@@ -195,6 +208,9 @@ function showtickets($tickets, $id, $columns, $search, $submitters) {
         ?>
             <td><?=$ticket->mrorigin?></td>
             <td><?=$ticket->mrdest?></td>
+
+            <td>Resourrce Group</td>
+            <td>Affected SC</td>
         </tr>
         <?
     }
@@ -235,21 +251,34 @@ $(document).ready(function() {
 
     echo "<div class=\"column_buttons\"> Show Columns: ";
     $first = true;
+    $normal_column = "";
+    $meta_column = "";
     foreach($columns as $id=>$column) {
         $name = $column["name"];
         $active = "ui-state-active";
         if(isset($this->opened_table_cols[$id]) && $this->opened_table_cols[$id] == false) {
             $active = "";
         }
+        $corner = "";
         if($first) {
             $first = false;
-            $active .= " ui-corner-left";
+            $corner = " ui-corner-left";
         }
+/*
+        $meta_corner = "ui-corner-top";
         if($name == $columns[sizeof($columns)-1]["name"]) {
-            $active .= " ui-corner-right";
+            $meta_corner = " ui-corner-button";
         }
-        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
+*/
+        if(isset($column["meta"])) {
+            $meta_column .= "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
+        } else {
+            $normal_column .= "<button class=\"ui-state-default $active $corner\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
+        }
+        
     }
+    echo $normal_column;
+    ?><button class="ui-state-default ui-state-active ui-corner-right" onclick="$(\'.opened_toolbar .metadata_list\').toggle();">Metadata&nbsp;<span class="ui-icon ui-icon-triangle-1-s" style="display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button><div style="position: absolute;display: inline"><div class="metadata_list"><?=$meta_column?></div></div><?
     echo "</div>";
     ?>');
 

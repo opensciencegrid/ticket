@@ -73,7 +73,7 @@ class AdminController extends BaseController
     {
         $this->accesscheck();
 
-        set_time_limit(120);
+        set_time_limit(150);
 
         $model = new Tickets();
         $tickets = $model->getrecent();
@@ -145,7 +145,7 @@ class AdminController extends BaseController
         //$desc = preg_replace("/&[a-z]+;/", "?", $desc);
 
         //truncate if it's too long
-        $desc = substr($desc, 0, 1000);
+        $desc = substr($desc, 0, 800);
 
         //remove standard GOC signature
         $sig = "OSG Grid Operations Center

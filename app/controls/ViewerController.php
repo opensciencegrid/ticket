@@ -128,6 +128,33 @@ class ViewerController extends Zend_Controller_Action
             elog("Failed to connect to TX db - ignoring\n".$e->getMessage());
         }
 
+        $model = new Data();
+        $this->view->metadata = $model->getAllMetadata($id);
+
+        //load simmilar ticket info
+        $xml_file = config()->group_xml_path;
+        try {
+            $groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);
+            $match = false;
+            foreach($groups as $group) {
+                $tickets = array();
+                foreach($group as $ticket) {
+                    if($ticket->id == $id) {
+                        $match = true;
+                        continue;
+                    }
+                    $tickets[] = $ticket;
+                }
+                if($match) {
+                    uasort($tickets, "ticketcmp");
+                    $this->view->similar_tickets = $tickets;
+                    break;
+                }
+            }
+        } catch(exception $e) {
+            throw new exception($e->getMessage());
+        }
+
         return $detail;
     }
 
@@ -441,6 +468,10 @@ class ViewerController extends Zend_Controller_Action
         krsort($descs);
         $this->view->descs = $descs;
     }
+}
+
+function ticketcmp($a, $b) {
+    return (round($a->score, 2) > round($b->score, 2)) ? -1 : 1;
 }
 
 

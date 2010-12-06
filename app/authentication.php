@@ -103,7 +103,7 @@ function cert_authenticate()
         if(isset($_SERVER["SSL_CLIENT_S_DN"])) {
             $dn = $_SERVER["SSL_CLIENT_S_DN"];
 
-/*U
+/*
             //debug override
             if(config()->debug) {
                 $dn = "/DC=org/DC=doegrids/OU=People/CN=Dan Fraser 66495";

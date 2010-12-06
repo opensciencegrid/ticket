@@ -73,7 +73,7 @@ class AdminController extends BaseController
     {
         $this->accesscheck();
 
-        set_time_limit(120);
+        set_time_limit(150);
 
         $model = new Tickets();
         $tickets = $model->getrecent();
@@ -119,7 +119,7 @@ class AdminController extends BaseController
         echo "<title>".$this->formattitle($ticket->mrtitle)."</title>";
         echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
         echo "<dest>$ticket->mrdest</dest>";
-        echo "<url>https://ticket.grid.iu.edu/goc/viewer?id=$ticket->mrid</url>";
+        echo "<url>".fullbase()."/viewer?id=$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
         echo "<score>$p</score>";
         echo "</ticket>";
@@ -145,7 +145,7 @@ class AdminController extends BaseController
         //$desc = preg_replace("/&[a-z]+;/", "?", $desc);
 
         //truncate if it's too long
-        $desc = substr($desc, 0, 1000);
+        $desc = substr($desc, 0, 800);
 
         //remove standard GOC signature
         $sig = "OSG Grid Operations Center

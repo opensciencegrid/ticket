@@ -45,10 +45,8 @@ class NavigatorController extends Zend_Controller_Action
             $query = "WHERE mrstatus in $closed_status and mrupdatedate > '$recent_date'";
             $this->view->closed_tickets = $model->dosearch($query);
 
-            //load submitter
-            $this->view->submitters = array();
-            $this->loadSubmitters($this->view->assigned_tickets, $this->view->submitters);
-            $this->loadSubmitters($this->view->closed_tickets, $this->view->submitters);
+            //load metadata
+            $this->view->metadata = $this->loadMetadata(array_merge($this->view->assigned_tickets, $this->view->closed_tickets));
 
             $model = new Schema();
             $this->view->teams = $model->getteams();
@@ -61,18 +59,22 @@ class NavigatorController extends Zend_Controller_Action
         }
     }
 
-    function loadSubmitters($tickets, &$submitters) {
+    function loadMetadata($tickets) {
         if(count($tickets) == 0) return;
 
         foreach($tickets as $ticket) {
             $ids[] = $ticket->mrid;
         }
         $model = new Data();
-        $recs = $model->getAllMetadataForKey($ids, "SUBMITTER_NAME");
+        $recs = $model->getAllMetadataForTickets($ids);
+        $metadata = array();
         foreach($recs as $rec) {
-            $submitters[$rec->ticket_id] = $rec->value;
+            $key = $rec->key;
+            if(!isset($metadata[$rec->ticket_id])) {
+                $metadata[$rec->ticket_id] = array();
+            }
+            $metadata[$rec->ticket_id][$key] = $rec->value;
         }
+        return $metadata;
     }
-
-
 } 

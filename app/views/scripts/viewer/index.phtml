@@ -44,16 +44,14 @@ function gotoedit()
 <?if($this->editable) {?>
     <form action="<?=fullbase()?>/viewer/update" method="post">
         <input type="hidden" name="id" value="<?=$this->ticket_id?>"/>
-
-        <!--span class="header">Title:</span-->
-        <input type="text" style="width: 455px" name="title" value="<?=$this->title?>"/>
+        <input type="text" style="width: 100%" name="title" value="<?=$this->title?>"/>
         <br/>
 
         <h3>Ticket Detail</h3>
 
         <table class="ticket_detail" width="100%">
-        <tr><td width="430px">
-
+        <tr>
+        <td>
             <h4>Submitter</h4>
             <span class="header">First Name:</span>
             <input type="text" value="<?=$this->submitter_fname?>" name="submitter_fname"/>
@@ -70,7 +68,45 @@ function gotoedit()
             <span class="header">Phone:</span>
             <input type="text" value="<?=$this->submitter_phone?>" name="submitter_phone"/>
             <br/>
+        </td>  
+        <td>
+            <h4>Routing Information</h4>
+            <span class="header">Originating VO:</span>
+            <select name="submitter_vo">
+            <?
+            foreach($this->originating_vos as $id=>$vo) {
+                $selected = "";
+                $vo_p = Footprint::parse($vo);
+                if($vo_p == $this->submitter_vo) $selected = "selected=selected";
+                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+            }
+            ?>
+            </select>
+            <br/>
 
+            <span class="header">Originating Ticket ID:</span>
+            <input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/>
+            <br/>
+
+            <span class="header">Destination VO:</span>
+            <select name="destination_vo">
+            <?
+            foreach($this->destination_vos as $id=>$vo) {
+                $selected = "";
+                $vo_p = Footprint::parse($vo);
+                if($vo_p == $this->destination_vo) $selected = "selected=selected";
+                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+            }
+            ?>
+            </select>
+            <br/>
+
+            <span class="header">Destination Ticket ID:</span>
+            <input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/>
+            <br/>
+        </td>
+        </tr><tr>
+        <td>
             <h4>Other Information</h4>
             <span class="header">Ticket Type:</span>
             <select name="ticket_type">
@@ -120,11 +156,10 @@ function gotoedit()
             <input type="text" name="next_action" value="<?=$this->next_action?>"/>
             <br/>
 
-            <table><tr>
-            <td style="padding: 0px;">
-                <span class="header">CC:</span>
-            </td>
-            <td style="padding-left: 3px;">
+            <table width="100%">
+            <tr>
+            <td width="150px"><span class="header">CC:</span></td>
+            <td>
                 <div class="ccarea">
                     <?
                     include_once("app/views/cc_editor.php");
@@ -132,46 +167,11 @@ function gotoedit()
                     ?>
                 </div>
                 <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
-                <br/>
             </td>
             </tr></table>
+            <br/>
         </td>
-        <td>
-            <h4>Routing Information</h4>
-            <span class="header">Originating VO:</span>
-            <select name="submitter_vo">
-            <?
-            foreach($this->originating_vos as $id=>$vo) {
-                $selected = "";
-                $vo_p = Footprint::parse($vo);
-                if($vo_p == $this->submitter_vo) $selected = "selected=selected";
-                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
-            }
-            ?>
-            </select>
-            <br/>
-
-            <span class="header">Originating Ticket ID:</span>
-            <input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/>
-            <br/>
-
-            <span class="header">Destination VO:</span>
-            <select name="destination_vo">
-            <?
-            foreach($this->destination_vos as $id=>$vo) {
-                $selected = "";
-                $vo_p = Footprint::parse($vo);
-                if($vo_p == $this->destination_vo) $selected = "selected=selected";
-                echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
-            }
-            ?>
-            </select>
-            <br/>
-
-            <span class="header">Destination Ticket ID:</span>
-            <input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/>
-            <br/>
-
+        <td width="60%">
             <h4>Assignees:</h4>
             <?
             function showTeams($teams, $assignees, $ids, $txlinks) {
@@ -483,6 +483,34 @@ $(document).ready(function() {
         }
     }
     ?>
+    <table width="100%">
+    <tr><td width="33%" style="padding-right: 5px;">
+        <h3>Metadata</h3>
+        <div class="metadata">
+        <?
+        if(count($this->metadata) == 0) {
+            echo "No metadata stored for this ticket.";
+        }
+        foreach($this->metadata as $item) {
+            echo "<p><span class=\"header\">$item->key</span>&nbsp;";
+            echo $item->value."</p>";
+        }
+        ?>
+        </div>
+    </td><td width="66%">
+        <?
+        echo "<h3>Similar Tickets</h3>";
+        if(isset($this->similar_tickets)) { 
+            foreach($this->similar_tickets as $ticket) {
+                // ["id"]=> string(3) "386" ["title"]=> string(21) "This is a test ticket" ["status"]=> string(11) "Engineering" ["dest"]=> string(3) "MIS" ["url"]=> string(50) "https://localhost.localdomain/ticket/viewer?id=386" ["desc"]=> string(43) "[by Soichi Hayashi] This is a test ticket " ["score"]=> string(3) "100" } 
+                echo "<a href=\"".fullbase()."/viewer?id=".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
+            }
+        } else {
+            echo "No similar tickets found.";
+        }
+        ?>
+    </td></tr></table>
+
 </div>
 <script type="text/javascript">
 function reset_anchor() {

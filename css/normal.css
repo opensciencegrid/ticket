@@ -11,7 +11,7 @@ body {
 font-family: Verdana;
 color: black;
 font-size:11pt;
-min-width: 1000px;
+min-width: 1100px;
 }
 
 p {
@@ -136,11 +136,11 @@ input[type=text], select, textarea
     padding: 3px;
 }
 select {
-    width: 260px;
+    width: 258px;
 }
 
 textarea {
-    height: 200px;
+    height: 250px;
 }
 span.header {
     display: inline-block;
@@ -426,10 +426,7 @@ font-size:11px;
 }
 
 table.ticket_detail td {
-padding-right: 10px;
-}
-table.ticket_detail h4 {
-width: 410px;
+padding-right: 6px;
 }
 
 tr.record
@@ -538,10 +535,10 @@ padding-left: 3px;
 
 .cc input {
 background-color: white;
-width: 227px;
+width: 220px;
 }
-.cc {
-display: inline-block;
+.ccarea {
+width: 257px;
 }
 
 .list div {
@@ -627,4 +624,12 @@ color: white;
 margin-bottom: 5px;
 padding: 5px;
 }
-
+div.metadata p {
+border-bottom: 1px solid #eee;
+margin-bottom: 0px;
+}
+div.metadata .header {
+background-color: #ddd;
+padding-left: 5px;
+padding-right: 5px;
+}

@@ -30,8 +30,14 @@ class Data
         $sql = "SELECT `key`, value FROM gocticket.metadata WHERE ticket_id = $ticketid and project_id = ".config()->project_id; 
         return db("data")->fetchAll($sql);
     }
+/*
     public function getAllMetadataForKey($ids, $key) {
         $sql = "SELECT ticket_id, value FROM gocticket.metadata WHERE ticket_id in (".implode(",", $ids).") and `key` = '$key' and project_id = ".config()->project_id; 
+        return db("data")->fetchAll($sql);
+    }
+*/
+    public function getAllMetadataForTickets($ids) {
+        $sql = "SELECT ticket_id, `key`, value FROM gocticket.metadata WHERE ticket_id in (".implode(",", $ids).") and project_id = ".config()->project_id; 
         return db("data")->fetchAll($sql);
     }
 

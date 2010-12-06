@@ -14,11 +14,12 @@ display: inline-block;
 
 .column_buttons,
 .column_buttons button { 
-padding-top: 2px;
-padding-bottom: 2px;
+padding: 2px;
 }
 .column_buttons button:hover {
 cursor: pointer;
+background-color: #eee;
+background-image: none;
 }
 .column_buttons .ui-state-default {
 color: #ccc;
@@ -26,7 +27,6 @@ color: #ccc;
 .column_buttons .ui-state-active {
 color: #000;
 }
-
 span.ui-icon_disable {
 display: inline !important;
 }
@@ -49,10 +49,17 @@ width: 200px;
 display: none;
 position: absolute;
 background-color: white;
-left: -5px;
+top: 20px;
+padding: 5px;
+border: 1px solid #999;
 }
 .metadata_list button {
 width: 100%;
+}
+.metadata_block:hover button.group {
+cursor: pointer;
+background-color: #eee;
+background-image: none;
 }
 </style>
 
@@ -71,8 +78,8 @@ width: 100%;
         array("name"=>"CCs", "type"=>"string"), 
         array("name"=>"Origin.&nbsp;VO", "type"=>"string"), 
         array("name"=>"Dest.&nbsp;VO", "type"=>"string"),
-        array("name"=>"Affected Resource Group", "type"=>"string", "meta"=>true),
-        array("name"=>"Affected SC", "type"=>"string", "meta"=>true)
+        array("name"=>"Resource Group", "type"=>"string", "meta"=>true),
+        array("name"=>"Submitted Via", "type"=>"string", "meta"=>true)
         );
     $column_types = "";
     foreach($columns as $id=>$column) {
@@ -90,13 +97,13 @@ echo "You are here > View Tickets (use <a href=\"".fullbase()."/navigatorold\">O
 
 echo "<h3>Open Tickets</h3>";
 $search = $this->table_search["opened"];
-showtickets($this->assigned_tickets, "opened", $columns, $search, $this->submitters);
+showtickets($this->assigned_tickets, "opened", $columns, $search, $this->metadata);
 
 echo "<h3>Closed within ".$this->closed_days." days</h3>";
 $search = $this->table_search["closed"];
-showtickets($this->closed_tickets, "closed", $columns, $search, $this->submitters);
+showtickets($this->closed_tickets, "closed", $columns, $search, $this->metadata);
 
-function showtickets($tickets, $id, $columns, $search, $submitters) {
+function showtickets($tickets, $id, $columns, $search, $metadata) {
 ?>
     <table cellpadding="0" cellspacing="0" border="0" class="display" id="<?=$id?>">
     <thead>
@@ -184,8 +191,18 @@ function showtickets($tickets, $id, $columns, $search, $submitters) {
         }
 
         $submitter = "(N/A)";
-        if(isset($submitters[$ticket->mrid])) {
-            $submitter = $submitters[$ticket->mrid];
+        if(isset($metadata[$ticket->mrid]["SUBMITTER_NAME"])) {
+            $submitter = $metadata[$ticket->mrid]["SUBMITTER_NAME"];
+        }
+
+        $submitted_via = "(N/A)";
+        if(isset($metadata[$ticket->mrid]["SUBMITTED_VIA"])) {
+            $submitted_via = $metadata[$ticket->mrid]["SUBMITTED_VIA"];
+        }
+
+        $resource_group = "(N/A)";
+        if(isset($metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"])) {
+            $resource_group = $metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"];
         }
 
         ?>
@@ -209,8 +226,8 @@ function showtickets($tickets, $id, $columns, $search, $submitters) {
             <td><?=$ticket->mrorigin?></td>
             <td><?=$ticket->mrdest?></td>
 
-            <td>Resourrce Group</td>
-            <td>Affected SC</td>
+            <td><?=$resource_group?></td>
+            <td><?=$submitted_via?></td>
         </tr>
         <?
     }
@@ -247,66 +264,47 @@ $(document).ready(function() {
         "aoColumns": [ <?=$column_types?> ]
     });
 
-    $("div.opened_toolbar").html('<?
+    <?
 
-    echo "<div class=\"column_buttons\"> Show Columns: ";
-    $first = true;
-    $normal_column = "";
-    $meta_column = "";
-    foreach($columns as $id=>$column) {
-        $name = $column["name"];
-        $active = "ui-state-active";
-        if(isset($this->opened_table_cols[$id]) && $this->opened_table_cols[$id] == false) {
-            $active = "";
-        }
-        $corner = "";
-        if($first) {
-            $first = false;
-            $corner = " ui-corner-left";
-        }
-/*
-        $meta_corner = "ui-corner-top";
-        if($name == $columns[sizeof($columns)-1]["name"]) {
-            $meta_corner = " ui-corner-button";
-        }
-*/
-        if(isset($column["meta"])) {
-            $meta_column .= "<button class=\"ui-state-default $active\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
-        } else {
-            $normal_column .= "<button class=\"ui-state-default $active $corner\" onclick=\"fnShowHideOpened(this, $id);\">$name</button>";
-        }
-        
+    showColumnButtons("opened_toolbar", $this->opened_table_cols, $columns);
+    showColumnButtons("closed_toolbar", $this->closed_table_cols, $columns);
+
+    function showColumnButtons($cls, $table_cols, $columns) {
+        ?>$(".<?=$cls?>").html('<?
+            echo "<div class=\"column_buttons\"> Show Columns: ";
+            $first = true;
+            $normal_column = "";
+            $meta_column = "";
+            foreach($columns as $id=>$column) {
+                $name = $column["name"];
+                $active = "ui-state-active";
+                if(isset($table_cols[$id]) && $table_cols[$id] == false) {
+                    $active = "";
+                }
+                $corner = "";
+                if($first) {
+                    $first = false;
+                    $corner = " ui-corner-left";
+                }
+                if(isset($column["meta"])) {
+                    $meta_column .= "<button class=\"ui-state-default $active\" onclick=\"fnShowHide_$cls(this, $id);\">$name</button>";
+                } else {
+                    $normal_column .= "<button class=\"ui-state-default $active $corner\" onclick=\"fnShowHide_$cls(this, $id);\">$name</button>";
+                }
+            }
+            echo $normal_column;
+            ?><div class="metadata_block" style="position: absolute;display: inline" onmouseover="$(\'.<?=$cls?> .metadata_list\').show();" onmouseout="$(\'.<?=$cls?> .metadata_list\').hide();"><div class="metadata_list"><?=$meta_column?></div><button class="group ui-state-default ui-state-active ui-corner-right">Metadata ...</button></div><?
+
+            echo "</div>";
+
+        ?>');<?
     }
-    echo $normal_column;
-    ?><button class="ui-state-default ui-state-active ui-corner-right" onclick="$(\'.opened_toolbar .metadata_list\').toggle();">Metadata&nbsp;<span class="ui-icon ui-icon-triangle-1-s" style="display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></button><div style="position: absolute;display: inline"><div class="metadata_list"><?=$meta_column?></div></div><?
-    echo "</div>";
-    ?>');
 
-    $("div.closed_toolbar").html('<?
-    echo "<div class=\"column_buttons\"> Show Columns: ";
-    $first = true;
-    foreach($columns as $id=>$column) {
-        $name = $column["name"];
-        $active = "ui-state-active";
-        if(isset($this->closed_table_cols[$id]) && $this->closed_table_cols[$id] == false) {
-            $active = "";
-        }
-        if($first) {
-            $first = false;
-            $active .= " ui-corner-left";
-        }
-        if($name == $columns[sizeof($columns)-1]["name"]) {
-            $active .= " ui-corner-right";
-        }
-        echo "<button class=\"ui-state-default $active\" onclick=\"fnShowHideClosed(this, $id);\">$name</button>";
-    }
-    echo "</div>";
-    ?>');
-
+    ?>
     $("#content").show();
 });
 
-function fnShowHideOpened(button, iCol )
+function fnShowHide_opened_toolbar(button, iCol )
 {
     if($(button).hasClass("ui-state-active")) {
         $(button).removeClass("ui-state-active");
@@ -318,7 +316,7 @@ function fnShowHideOpened(button, iCol )
     opened_table.fnSetColumnVis( iCol, bVis ? false : true );
 }
 
-function fnShowHideClosed(button, iCol )
+function fnShowHide_closed_toolbar(button, iCol )
 {
     if($(button).hasClass("ui-state-active")) {
         $(button).removeClass("ui-state-active");

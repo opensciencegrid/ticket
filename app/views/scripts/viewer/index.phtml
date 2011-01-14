@@ -499,15 +499,37 @@ $(document).ready(function() {
         </div>
     </td><td width="66%">
         <?
-        echo "<h3>Similar Tickets</h3>";
+        echo "<h3>Similar Recent Tickets</h3>";
         if(isset($this->similar_tickets)) { 
             foreach($this->similar_tickets as $ticket) {
                 // ["id"]=> string(3) "386" ["title"]=> string(21) "This is a test ticket" ["status"]=> string(11) "Engineering" ["dest"]=> string(3) "MIS" ["url"]=> string(50) "https://localhost.localdomain/ticket/viewer?id=386" ["desc"]=> string(43) "[by Soichi Hayashi] This is a test ticket " ["score"]=> string(3) "100" } 
                 echo "<a href=\"".fullbase()."/viewer?id=".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
             }
         } else {
-            echo "No similar tickets found.";
+            echo "No similar tickets found that are modified within the last 30 days.";
         }
+
+/*
+        <div id="custom_search_area">
+            <a href="javascript:void(0);" onclick="return load_similar_tickets();">Search</a>
+        </div>
+        <script type="text/javascript">
+        function load_similar_tickets() {
+            $("#custom_search_area").html("<p class='loading'>Loading...</p>");
+            $.getScript("https://www.googleapis.com/customsearch/v1?key=<?=config()->google_search_api_key?>&cx=<?=config()->google_custom_search?>&q=ldap&callback=hndlr");
+        }
+        function hndlr(response) {
+            console.dir(response);
+            var e = document.getElementById("custom_search_area");-
+            e.innerHTML = "";
+            for (var i = 0; i < response.items.length; i++) {
+                var item = response.items[i];
+                e.innerHTML += "<a href=\""+item.link+"\">" + (item.htmlTitle) + "</a><br>";
+                e.innerHTML += "<p>" + (item.htmlSnippet) + "</p>";
+            }
+        }
+
+*/
         ?>
     </td></tr></table>
 

@@ -164,6 +164,14 @@ p.errors, ul.errors
     background-repeat: no-repeat;
     background-position: 5px 10px;
 }
+p.loading
+{
+    margin: 0px;
+    padding-left: 20px;
+    background-image: url('../images/loading.gif');
+    background-repeat: no-repeat;
+}
+
 ul.errors {
 padding-top: 5px;
 padding-bottom: 5px;
@@ -632,4 +640,8 @@ div.metadata .header {
 background-color: #ddd;
 padding-left: 5px;
 padding-right: 5px;
+}
+
+#custom_search_area .header {
+color: #2200c1;
 }

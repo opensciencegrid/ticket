@@ -19,7 +19,7 @@ class ViewerController extends Zend_Controller_Action
 
         if((string)$id !== $dirty_id) {
             //id that looks like non-id - forward to keyword search
-            $this->_redirect("http://www.google.com/cse?cx=016752695275174109936:9u1k_fz_bag&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
+            $this->_redirect("http://www.google.com/cse?cx=".config()->google_custom_search_cx."&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
         }
 
         $model = new Tickets();

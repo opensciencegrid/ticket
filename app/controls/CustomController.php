@@ -33,6 +33,7 @@ class CustomController extends Zend_Controller_Action
         //assignee, cc
         $this->view->assignees = array();
         $this->view->cc = array();
+        /*
         foreach(explode(" ", $detail->assignees) as $a) {
             //FP somehow put CCs on assginee field... 
             if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
@@ -52,6 +53,7 @@ class CustomController extends Zend_Controller_Action
             //store to assignee list
             $this->view->assignees[$a] = $aka_model->lookupName($a);
         }
+        */
     }
 
     public function submitAction()
@@ -158,7 +160,7 @@ class CustomController extends Zend_Controller_Action
 
             $this->view->nad = $_REQUEST["nad"];
             $this->view->next_action = $_REQUEST["next_action"];
-            $this->view->cc = $_REQUEST["cc"];
+            $this->view->cc = @$_REQUEST["cc"];
 
             $this->view->submitter_vo = $_REQUEST["submitter_vo"];
             $this->view->originating_ticket_id = $_REQUEST["originating_ticket_id"];

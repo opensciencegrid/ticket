@@ -1,0 +1,122 @@
+<?include("app/views/scripts/ticket_scripts.phtml");?>
+
+<form action="<?=fullbase()?>/viewer/updatebasic?id=<?=$this->ticket_id?>" method="post">
+<b><?=$this->title?></b>
+<table width="100%">
+<tr>
+    <td width="20%"></td>
+    <td width="30%"></td>
+    <td width="20%"></td>
+    <td width="30%"></td>
+</tr>
+<tr>
+    <td colspan="4"><h3>Ticket Detail</h3></td>
+</tr>
+<tr>
+    <td colspan="2"><h4>Submitter</h4></td>
+    <td colspan="2"><h4>Routing Information</h4></td>
+</tr>
+<tr>
+    <td class="header">Full Name</td><td><?=$this->submitter_name?></td>
+    <td class="header">Originating VO</td><td><?=$this->submitter_vo?></td>
+</tr>
+<tr>
+<?
+    if(!user()->isGuest()) {
+        echo "<td class=\"header\">Phone</td><td><?=$this->submitter_phone?></td>";
+    } else {
+        echo "<td></td><td></td>";
+    }
+?>
+    <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
+</tr>
+<tr>
+<?
+    if(!user()->isGuest()) {
+        echo "<td class=\"header\">Email</td><td><a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a></td>";
+    } else {
+        echo "<td></td><td></td>";
+    }
+?>
+    <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
+</tr>
+<tr>
+    <td></td><td></td>
+    <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
+</tr>
+
+<tr>
+    <td colspan="2"><h4>Other Information</h4></td>
+    <td colspan="2"><h4>Assignees</h4></td>
+</tr>
+<tr>
+    <td class="header">Ticket Type</td><td><?=$this->ticket_type?></td>
+    <td colspan="2" rowspan="6">
+    <?
+    foreach($this->teams as $team_id => $team) {
+        $out = "";
+
+        $name = Footprint::parse($team->team);
+        $out .= "<h5>$name</h5>";
+        $set = false;
+        foreach($team->members as $userid=>$username) {
+            if(isset($this->assignees[$userid])) {
+                $out .= "<div class=\"assignee\" style=\"width: 60%\">".$username."</div>";
+                $set = true;
+            }
+        }
+        if($set) {
+            echo $out;
+        }
+    }
+    ?>
+    </td>
+</tr>
+<tr>
+    <td class="header">Priority</td><td><?=$this->priority?></td>
+</tr>
+
+<tr>
+    <td class="header">Status</td><td><?=$this->status?></td>
+</tr>
+
+<tr>
+    <td class="header">Next Action Deadline</td><td class='<?$style = nadstyle($this->nad);if($style != "") echo "flag $style";?>'><?=$this->nad?></td>
+</tr>
+
+<tr>
+    <td class="header">Next Action Item</td><td><?=$this->next_action?></td>
+</tr>
+
+<tr>
+<?if(!user()->isGuest()) { ?>
+     <td class="header">CC:</td><td>
+            <div class="ccarea">
+            <?
+            include_once("app/views/cc_editor.php");
+            cceditor($this->cc);
+            ?>
+            </div>
+            <a href="#" onclick="addcc($(this).siblings('div.ccarea')); return false;">Add New CC</a>
+    </td>
+<?}?>
+</tr>
+
+</table>
+
+<?if(!user()->isGuest()) { ?>
+    <h4>New Update</h4>
+    <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
+    <br/>
+
+    <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+    &nbsp;&nbsp;
+    <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
+    &nbsp;&nbsp;
+    <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
+    &nbsp;&nbsp;
+    <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+    <br><br>
+<?}?>
+</form>
+

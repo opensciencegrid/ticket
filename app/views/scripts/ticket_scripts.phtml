@@ -1,0 +1,31 @@
+<script type="text/javascript" src="<?=fullbase()?>/lib/jquery-ui-1.8.1/plugins/jquery.textarearesizer.js"></script>
+<script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
+
+<style type="text/css">
+        div.grippie {
+                background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
+                border-color:#DDDDDD;
+                border-style:solid;
+                border-width:0pt 1px 1px;
+                cursor:s-resize;
+                height:9px;
+                overflow:hidden;
+        }
+        .resizable-textarea textarea {
+                display:block;
+                margin-bottom:0pt;
+                width:95%;
+                height: 20%;
+        }
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("input[name='nad']").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    $('textarea.resizable').TextAreaResizer();
+});
+</script>
+
+

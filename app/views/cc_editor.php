@@ -47,8 +47,10 @@ function setup_cc()
 
 <?
 function cceditor($ccs) {
-    foreach($ccs as $cc) {
-        echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a class=\"ac_input_remove\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+    if(isset($ccs)) {
+        foreach($ccs as $cc) {
+            echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a class=\"ac_input_remove\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+        }
     }
 }
 

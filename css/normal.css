@@ -159,12 +159,8 @@ p.errors, ul.errors
     margin: 0px;
     margin-bottom: 5px;
     color: white;
-    background-color: #f33;
-    padding: 10px;
-    padding-left: 25px;
-    background-image: url('../images/exclamation.png');
-    background-repeat: no-repeat;
-    background-position: 5px 10px;
+    padding: 5px;
+    background: url("../images/error_back.png") repeat scroll 50% 50% #B81900;
 }
 p.loading
 {
@@ -249,6 +245,7 @@ td.header, span.header
     font-weight: bold;
     color: #555;
     width: 150px;
+    padding-left: 3px;
 }
 tr.personal
 {
@@ -647,4 +644,14 @@ padding-right: 5px;
 
 #custom_search_area .header {
 color: #2200c1;
+}
+
+div.assignee {
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    background-color: #ddd;
+    border: 1px solid #aaa;
+    margin-bottom: 5px;
+    min-height: 16px;
+    padding: 2px 2px 2px 4px;
 }

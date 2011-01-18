@@ -1,0 +1,9 @@
+<?include("app/views/scripts/header.phtml");?>
+
+<div class="bread">You are here &gt; <a href="<?=base()?>/open"><?=submenutitle($this->submenu_selected)?></a> &gt; Custom</div>
+
+<?
+$form_action = "/custom/submit";
+$submit_label = "Submit";
+include("app/views/scripts/ticket_editor.phtml"); ?>
+<?include("app/views/scripts/footer.phtml");?>

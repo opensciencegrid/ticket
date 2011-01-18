@@ -42,6 +42,11 @@ width: 300px;
         <h4>Others</h4>
         <p><a href="security">Security Incident</a></p>
         <p><a href="other">Others Issue</a></p>
+        <?if(user()->allows("admin")) {?>
+            <br>
+            <h4>Admin</h4>
+            <p><a href="custom">Custom Ticket</a></p>
+        <?}?>
         </td>
 
     <?} else if(config()->app_id == "itbticket") {?>

@@ -68,8 +68,7 @@ class CustomController extends Zend_Controller_Action
         }
 
         //contact
-        $submit_fname = $_REQUEST["submitter_fname"];
-        $submit_lname = $_REQUEST["submitter_lname"];
+        $submit_name = $_REQUEST["submitter_name"];
         $submit_email = $_REQUEST["submitter_email"];
         $submit_phone = $_REQUEST["submitter_phone"];
 
@@ -113,7 +112,7 @@ class CustomController extends Zend_Controller_Action
             $this->setSubmitter($footprint);
 
             //contact
-            $footprint->setName($submit_fname." ".$submit_lname);
+            $footprint->setName($submit_name);
             $footprint->setOfficePhone($submit_phone);
             $footprint->setEmail($submit_email);
             //$footprint->setOriginatingVO($submit_vo);
@@ -148,8 +147,7 @@ class CustomController extends Zend_Controller_Action
         } else {
             //send data back to form
             $this->view->title = $_REQUEST["title"];
-            $this->view->submitter_fname = $_REQUEST["submitter_fname"];
-            $this->view->submitter_lname = $_REQUEST["submitter_lname"];
+            $this->view->submitter_name = $_REQUEST["submitter_name"];
             $this->view->submitter_email = $_REQUEST["submitter_email"];
             $this->view->submitter_phone = $_REQUEST["submitter_phone"];
 

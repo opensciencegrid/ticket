@@ -22,7 +22,7 @@ if(isset($this->error_messages)) {
     <table class="ticket_detail" width="100%">
     <tr>
     <td id="submitter">
-        <h4>Submitter</h4>
+        <h4>Contact</h4>
 
         <div id="populator" style="padding: 3px 0 0 0; background-color: #ddd;">
         <span class="header">Populate From:</span>
@@ -45,11 +45,14 @@ if(isset($this->error_messages)) {
                 }
             });
             $("#careof").result(function(event, data, formatted) {
+/*
                 var tokens = data.name.split(" ");
                 var fname = tokens.shift();
                 var lname = tokens.join(" ");
                 $("input[name=submitter_fname]").val(fname);
                 $("input[name=submitter_lname]").val(lname);
+*/
+                $("input[name=submitter_name]").val(data.name);
                 $("input[name=submitter_email]").val(data.email);
                 $("input[name=submitter_phone]").val(data.phone);
             });
@@ -64,12 +67,8 @@ if(isset($this->error_messages)) {
         });
         </script>
      
-        <span class="header">First Name:</span>
-        <input type="text" value="<?=$this->submitter_fname?>" name="submitter_fname"/>
-        <br>
-
-        <span class="header">Last Name:</span>
-        <input type="text" value="<?=$this->submitter_lname?>" name="submitter_lname"/>
+        <span class="header">Full Name:</span>
+        <input type="text" value="<?=$this->submitter_name?>" name="submitter_name"/>
         <br>
 
         <span class="header">Email:</span>

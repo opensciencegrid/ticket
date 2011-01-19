@@ -53,8 +53,6 @@ class ViewerController extends Zend_Controller_Action
 
         //submitter 
         $this->view->submitter_name = $detail->First__bName." ".$detail->Last__bName;
-        $this->view->submitter_fname = $detail->First__bName;
-        $this->view->submitter_lname = $detail->Last__bName;
 
         $this->view->submitter_email = $detail->Email__baddress;
         $this->view->cc = $detail->Email__baddress;
@@ -194,8 +192,7 @@ class ViewerController extends Zend_Controller_Action
             $title = $_REQUEST["title"]; //TODO - validate?
 
             //contact
-            $submit_fname = $_REQUEST["submitter_fname"];
-            $submit_lname = $_REQUEST["submitter_lname"];
+            $submit_name = $_REQUEST["submitter_name"];
             $submit_email = $_REQUEST["submitter_email"];
             $submit_phone = $_REQUEST["submitter_phone"];
             $submit_vo = $_REQUEST["submitter_vo"];
@@ -243,7 +240,7 @@ class ViewerController extends Zend_Controller_Action
                 $this->setSubmitter($footprint);
 
                 //contact
-                $footprint->setName($submit_fname." ".$submit_lname);
+                $footprint->setName($submit_name);
                 $footprint->setOfficePhone($submit_phone);
                 $footprint->setEmail($submit_email);
                 $footprint->setOriginatingVO($submit_vo);

@@ -33,27 +33,6 @@ class CustomController extends Zend_Controller_Action
         //assignee, cc
         $this->view->assignees = array();
         $this->view->cc = array();
-        /*
-        foreach(explode(" ", $detail->assignees) as $a) {
-            //FP somehow put CCs on assginee field... 
-            if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
-                $this->view->cc[] = substr($a, 3);
-                continue;
-            }
-            //FP somehow contains team names on assignee... ignore it
-            $team_name = false;
-            foreach($this->view->teams as $team) {
-                if($team->team == $a) {
-                    $team_name = true;
-                    break;
-                }
-            }
-            if($team_name) continue;
-
-            //store to assignee list
-            $this->view->assignees[$a] = $aka_model->lookupName($a);
-        }
-        */
     }
 
     public function submitAction()
@@ -68,8 +47,7 @@ class CustomController extends Zend_Controller_Action
         }
 
         //contact
-        $submit_fname = $_REQUEST["submitter_fname"];
-        $submit_lname = $_REQUEST["submitter_lname"];
+        $submit_name = $_REQUEST["submitter_name"];
         $submit_email = $_REQUEST["submitter_email"];
         $submit_phone = $_REQUEST["submitter_phone"];
 
@@ -113,7 +91,7 @@ class CustomController extends Zend_Controller_Action
             $this->setSubmitter($footprint);
 
             //contact
-            $footprint->setName($submit_fname." ".$submit_lname);
+            $footprint->setName($submit_name);
             $footprint->setOfficePhone($submit_phone);
             $footprint->setEmail($submit_email);
             //$footprint->setOriginatingVO($submit_vo);
@@ -148,8 +126,7 @@ class CustomController extends Zend_Controller_Action
         } else {
             //send data back to form
             $this->view->title = $_REQUEST["title"];
-            $this->view->submitter_fname = $_REQUEST["submitter_fname"];
-            $this->view->submitter_lname = $_REQUEST["submitter_lname"];
+            $this->view->submitter_name = $_REQUEST["submitter_name"];
             $this->view->submitter_email = $_REQUEST["submitter_email"];
             $this->view->submitter_phone = $_REQUEST["submitter_phone"];
 

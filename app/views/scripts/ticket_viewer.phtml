@@ -1,14 +1,8 @@
 <?include("app/views/scripts/ticket_scripts.phtml");?>
 
 <form action="<?=fullbase()?>/viewer/updatebasic?id=<?=$this->ticket_id?>" method="post">
-<b><?=$this->title?></b>
+<input type="text" style="width: 100%" disabled="disabled" value="<?=$this->title?>"/>
 <table width="100%">
-<tr>
-    <td width="20%"></td>
-    <td width="30%"></td>
-    <td width="20%"></td>
-    <td width="30%"></td>
-</tr>
 <tr>
     <td colspan="4"><h3>Ticket Detail</h3></td>
 </tr>
@@ -41,8 +35,8 @@
     <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
 </tr>
 <tr>
-    <td></td><td></td>
-    <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
+    <td width="20%"></td><td width="30%"></td>
+    <td width="20%" class="header">Destination Ticket ID</td><td width="30%"><?=$this->destination_ticket_id?></td>
 </tr>
 
 <tr>
@@ -109,7 +103,7 @@
     <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"></textarea>
     <br/>
 
-    <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+    <input type="submit" onclick="if($('textarea[name=description]').val().trim() == '') {return confirm('You have not entered any update. Do you really want to submit?');}" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
     &nbsp;&nbsp;
     <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
     &nbsp;&nbsp;

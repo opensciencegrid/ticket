@@ -158,7 +158,7 @@ class BaseController extends Zend_Controller_Action
                 $footprint->setSubmitter($agent);
             } else {
                 $footprint->addDescription("[by $name]\n\n");
-                $footprint->addMeta("Submitter DN: ".user()->getDN());
+                $footprint->addMeta("Submitter DN: ".user()->getDN()."\n");
                 //$footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
             }
 

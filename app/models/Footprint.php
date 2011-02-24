@@ -126,7 +126,7 @@ class Footprint
         $this->b_desc = true;
     }
     public function addMeta($v) { 
-        $this->meta .= $v;
+        $this->meta .= trim($v)."\n"; //make sure there is newline at the end
         $this->b_desc = true;
     }
     public function setMetadata($key, $value) {

@@ -59,4 +59,39 @@ class Data
         slog("executing: ".$sql);
         db("data")->query($sql);
     }
+
+    //return list of matching key/value grouped by ticket id
+    public function searchMetadataByValue($value) {
+        $value = addslashes($value);
+        $tokens = explode(" ", $value);
+        $where = "";
+        $first = true;
+        foreach($tokens as $token) {
+            if($first) $first = false;
+            else $where .= " OR "; //we do OR instead of AND here.. client needs to filter it out to perform "and" operations
+            $where .= "value LIKE '%".$token."%'";
+        }
+        $sql = "SELECT ticket_id, `key`, value FROM gocticket.metadata WHERE project_id = ".config()->project_id." and $where";
+        $recs = db("data")->fetchAll($sql);
+
+        $groups = array();
+        $current_id = null;
+        $group = array();
+        foreach($recs as $rec) {
+            if($rec->ticket_id != $current_id) {
+                //new group
+                if($current_id != null) {
+                    $groups[$current_id] = $group;
+                }
+                $group = array();
+                $current_id = $rec->ticket_id;
+            }
+            $group[] = $rec;
+        }
+        //add last one
+        if($current_id != null) {
+            $groups[$current_id] = $group;
+        }
+        return $groups;
+    }
 }

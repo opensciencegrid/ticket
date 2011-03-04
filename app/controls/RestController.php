@@ -123,4 +123,106 @@ class RestController extends Zend_Controller_Action
         $this->render("none", null, true);
         
     }
+
+    function searchAction() {
+        header('content-type: text/xml'); 
+        $q = $_REQUEST["q"];
+        echo "<SearchResult>";
+        echo "<Query>".htmlsafe($q)."</Query>";
+
+        echo "<Tickets>"; 
+
+        $final_list = array();
+
+        //search for title
+        $safe_q  = addslashes($q);
+        $tokens = explode(" ", $safe_q);
+        $where = "WHERE ";
+        $first = true;
+        foreach($tokens as $token) {
+            if($first) $first = false;
+            else $where .= " OR ";
+            $where .= "mrTITLE LIKE '%".$token."%'";
+        }
+        $query = "select mrID, mrTITLE from MASTER".config()->project_id." $where";
+        $tickets = fpCall("MRWebServices__search_goc", array(config()->webapi_user, config()->webapi_password, "", $query));
+        foreach($tickets as $ticket) {
+            if($this->containsTokens($tokens, $ticket, array())) {
+                $final_list[$ticket->mrid] = $ticket;
+            }
+        }
+
+        //search for metadata
+        $model = new Data();
+        $groups = $model->searchMetadataByValue($q);
+        if(count($groups) > 0) {
+            //add some meat
+            $query = "SELECT mrID, mrTITLE from MASTER".config()->project_id." WHERE mrid in (".implode(",",array_keys($groups)).")";
+            $tickets = fpCall("MRWebServices__search_goc", array(config()->webapi_user, config()->webapi_password, "", $query));
+            //and add it to the list
+            foreach($tickets as $ticket) {
+                if($this->containsTokens($tokens, $ticket, $groups)) {
+                    $final_list[$ticket->mrid] = $ticket;
+                }
+            }
+        }
+
+        //finally.. display tickets
+        foreach($final_list as $ticket_id=>$ticket) {
+            $title = htmlsafe($ticket->mrtitle);
+            echo "<Ticket>";
+            echo "<ID>$ticket_id</ID>";
+            echo "<Title>$title</Title>";
+            if(isset($groups[$ticket_id])) {
+                echo "<Metadatas>";
+                foreach($groups[$ticket_id] as $value) {
+                    echo "<Metadata>";
+                    echo "<Key>".htmlsafe($value->key)."</Key>";
+                    echo "<Value>".htmlsafe($value->value)."</Value>";
+                    echo "</Metadata>";
+                }
+                echo "</Metadatas>";
+            }
+            echo "</Ticket>";
+        }
+        echo "</Tickets>"; 
+        echo "</SearchResult>";
+        $this->render("none", null, true);
+    }
+
+    function containsTokens($tokens, $ticket, $metadata) {
+        $id = $ticket->mrid;
+        if($id == 9880) {
+            elog(print_r($tokens, true));
+            elog(print_r($ticket, true));
+            elog(print_r($metadata[$id], true));
+        }
+        
+        foreach($tokens as $token) {
+            if($id == 9880) {
+                elog("testing $token");
+            }
+
+            $token = strtolower($token);
+            //search in title
+            if(strpos(strtolower($ticket->mrtitle), $token) !== FALSE) {
+                continue; //found it.
+            }
+
+            //search in metadata value
+            if(isset($metadata[$id])) {
+                $found = false;
+                foreach($metadata[$id] as $meta) {
+                    if(strpos(strtolower($meta->value), $token) !== FALSE) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if($found) continue;
+            }
+            return false; //token failed
+        }
+        //passed all tokens
+        return true;
+    }
 } 

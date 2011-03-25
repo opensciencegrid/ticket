@@ -192,17 +192,7 @@ class RestController extends Zend_Controller_Action
 
     function containsTokens($tokens, $ticket, $metadata) {
         $id = $ticket->mrid;
-        if($id == 9880) {
-            elog(print_r($tokens, true));
-            elog(print_r($ticket, true));
-            elog(print_r($metadata[$id], true));
-        }
-        
         foreach($tokens as $token) {
-            if($id == 9880) {
-                elog("testing $token");
-            }
-
             $token = strtolower($token);
             //search in title
             if(strpos(strtolower($ticket->mrtitle), $token) !== FALSE) {

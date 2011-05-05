@@ -268,7 +268,12 @@ class FinderrorController extends Zend_Controller_Action
             $sc_name = null;
             if($sc_id !== false) {
                 $sc = $sc_model->get($sc_id); 
-                $sc_name = $sc->footprints_id;
+                if(empty($sc)) {
+                    $note .= "Support Center specified has been disabled. Please set active SC instead.";
+                    $this->berror = true;
+                } else {
+                    $sc_name = $sc->footprints_id;
+                }
             } else {
                 $note .= "Failed to find this resource in rsvextra.View_resourceSiteScPub";
                 $this->berror = true;

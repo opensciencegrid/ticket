@@ -34,7 +34,7 @@ foreach($this->overrides as $from=>$to) {
 <script type="text/javascript">
 var nextid = <?=$id?>;
 function add() {
-    $("#table").append("<tr><td><input name='rec_from["+nextid+"]' type='text'/></td><td<input name='rec_to["+nextid+"]' type='text'/></td><td><img src='images/delete.png' class='delete'/></td></tr>");
+    $("#table").append("<tr><td><input name='rec_from["+nextid+"]' type='text'/></td><td><input name='rec_to["+nextid+"]' type='text'/></td><td><img src='images/delete.png' class='delete'/></td></tr>");
     setup_input();
     nextid++;
 }

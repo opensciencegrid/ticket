@@ -139,7 +139,8 @@ class RaController extends BaseController
 
         $name = new Zend_Form_Element_Text('req_name');
         $name->setLabel("Requestor Name");
-        $name->addValidator(new Zend_Validate_Alpha(true)); //ture for allowWhiteSpace
+        $name->addValidator(new Zend_Validate_Regex("/^[a-z '\.]+$/i")); 
+        $name->addErrorMessage("Please use ASCII(a-z), space, period, or single quote.");
         $name->setRequired(true);
         $form->addElement($name);
 

@@ -56,10 +56,21 @@
 
         //hide meta information if user doesn't have metatag access
         if(!user()->allows("view_meta")) {
+            //hide it!
             $metapos = strpos($content, config()->metatag);
             if($metapos !== FALSE) {
                 //has metainfo.. hide it
                 $content = substr($content, 0, $metapos);
+            }
+        } else {
+            //show it!
+            $metapos = strpos($content, config()->metatag);
+            if($metapos !== FALSE) {
+                //has metainfo.. let's split the ticket into 2 parts
+                $meta_information = substr($content, $metapos + strlen(config()->metatag));
+                $content = trim(substr($content, 0, $metapos));
+            } else {
+                $meta_information = null;
             }
         }
 
@@ -72,10 +83,12 @@
             $human_time = date(config()->date_format_full, $time);
         }
 
+
+        //history == internal activities
         if($type == "history") {
             echo "<div class='update_history'>";
             $out = "<pre>".Footprint::parse($content)."</pre>";
-            echo outputToggle("Internal Activities ($human_time)", "Internal Activities ($human_time)", $out);
+            echo outputToggle("Footprints Activities ($human_time)", "Footprints Activities ($human_time)", $out);
             echo "</div>";
         }
         
@@ -123,6 +136,14 @@
                 //display all at once.
                 echo "<pre>$content</pre>";
             }
+            echo "</div>";
+        }
+
+        //meta information
+        if(!empty($meta_information)) {
+            echo "<div class=\"meta_information\">";
+            $out = "<pre>$meta_information</pre>";
+            echo outputToggle("Ticket Creation Information", "Ticket Creation Information", $out);
             echo "</div>";
         }
     }

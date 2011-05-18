@@ -286,6 +286,12 @@ pre
     padding-top: 0px;
 }
 
+div.meta_information {
+background-color: #f0f0fc;
+color: #333;
+margin-bottom: 3px;
+}
+
 .submenu
 {
 background: #000 url(../images/topnav_bg.gif);

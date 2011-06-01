@@ -9,17 +9,17 @@ class ViewerController extends Zend_Controller_Action
     
     public function loaddetail()
     {
-        if(!isset($_REQUEST["id"])) {
+        $dirty_id = trim($this->getRequest()->getParam("id"));
+        if(empty($dirty_id)) {
             $this->render("noid");
             return;
         }
 
-        $dirty_id = trim($_REQUEST["id"]);
         $id = (int)$dirty_id;
 
         if((string)$id !== $dirty_id) {
             //id that looks like non-id - forward to keyword search
-            $this->_redirect("http://www.google.com/cse?cx=".config()->google_custom_search_cx."&q=".urlencode($_REQUEST["id"]), array("exit"=>true));
+            $this->_redirect("http://www.google.com/cse?cx=".config()->google_custom_search_cx."&q=".urlencode($dirty_id), array("exit"=>true));
         }
 
         $model = new Tickets();

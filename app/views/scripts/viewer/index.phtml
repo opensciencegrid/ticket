@@ -149,20 +149,21 @@
     }
     ?>
     <table width="100%">
-    <tr><td width="33%" style="padding-right: 5px;">
+    <tr><td width="40%" style="padding-right: 5px;">
         <h3>Metadata</h3>
-        <div class="metadata">
         <?
         if(count($this->metadata) == 0) {
-            echo "No metadata stored for this ticket.";
-        }
-        foreach($this->metadata as $item) {
-            echo "<p><span class=\"header\">$item->key</span>&nbsp;";
-            echo $item->value."</p>";
+            echo "<p>No metadata stored for this ticket.</p>";
+        } else {
+            echo "<table class=\"metadata\">";
+            foreach($this->metadata as $item) {
+                echo "<tr><th>$item->key</th>";
+                echo "<td>".$item->value."</td></tr>";
+            }
+            echo "</table>";
         }
         ?>
-        </div>
-    </td><td width="66%">
+    </td><td width="60%">
         <?
         echo "<h3>Similar Recent Tickets</h3>";
         if(isset($this->similar_tickets)) { 

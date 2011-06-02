@@ -638,14 +638,22 @@ color: white;
 margin-bottom: 5px;
 padding: 5px;
 }
-div.metadata p {
+table.metadata {
+width: 100%;
+}
+table.metadata tr {
 border-bottom: 1px solid #eee;
 margin-bottom: 0px;
 }
-div.metadata .header {
+table.metadata td {
+padding-left: 3px;
+padding-right: 3px;
+}
+table.metadata th {
+color: #666;
 background-color: #ddd;
-padding-left: 5px;
-padding-right: 5px;
+padding-left: 3px;
+padding-right: 3px;
 }
 
 #custom_search_area .header {

@@ -149,6 +149,9 @@ class BaseController extends Zend_Controller_Action
             $name = $form->getValue('name');
             $footprint->setName($name);
             $footprint->setMetadata("SUBMITTER_NAME", $name);
+            if(user()->getDN() !== null) {
+                $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
+            }
             $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
 
             //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
@@ -158,7 +161,7 @@ class BaseController extends Zend_Controller_Action
                 $footprint->setSubmitter($agent);
             } else {
                 $footprint->addDescription("[by $name]\n\n");
-                $footprint->addMeta("Submitter DN: ".user()->getDN()."\n");
+                //$footprint->addMeta("Submitter DN: ".user()->getDN()."\n");
                 //$footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
             }
 

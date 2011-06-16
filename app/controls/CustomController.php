@@ -1,6 +1,7 @@
 <?
 
-class CustomController extends Zend_Controller_Action 
+//can't use BaseController since this form doesn't use zend form
+class CustomController extends Zend_Controller_Action  
 {
     public function init()
     {
@@ -92,9 +93,14 @@ class CustomController extends Zend_Controller_Action
 
             //contact
             $footprint->setName($submit_name);
+            $footprint->setMetadata("SUBMITTER_NAME", $submit_name);
             $footprint->setOfficePhone($submit_phone);
             $footprint->setEmail($submit_email);
-            //$footprint->setOriginatingVO($submit_vo);
+            if(user()->getDN() !== null) {
+                $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
+            }
+            $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
+
 
             //detail
             $footprint->resetAssignee();
@@ -168,7 +174,7 @@ class CustomController extends Zend_Controller_Action
             $footprint->setSubmitter($agent);
         } else {
             $footprint->addDescription("\n\n-- by ".user()->getPersonName());
-            $footprint->addMeta(user()->getDN());
+            //$footprint->addMeta(user()->getDN());
         }
     }
 

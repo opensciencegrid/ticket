@@ -184,6 +184,11 @@ if(isset($this->error_messages)) {
         <br/>
     </td>
     <td width="60%">
+
+        <?if(user()->allows("admin")) {?>
+        <span style="float: right;padding-right: 5px;"><a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a></span>
+        <?}?>
+
         <h4>Assignees:</h4>
         <?
         function showTeams($teams, $assignees, $ids, $txlinks) {

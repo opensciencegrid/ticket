@@ -17,18 +17,35 @@ function checked($e)
 <blockquote>
     <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/>
     GOC &nbsp;&nbsp;&nbsp;
-
+    <br><br>
+    
     <input type="hidden" name="rsecurity" value="0">
     <input type="checkbox" name="rsecurity" id="rsecurity" value="1" <?=checked($this->element->rsecurity)?>>
     Resource Security Contacts&nbsp;&nbsp;&nbsp;
+    <p class="indent"><?php
+        $address_model = new Address();
+        foreach($address_model->get_resource_security() as $address) { 
+            echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
+        }
+    ?></p>
 
     <input type="hidden" name="vsecurity" value="0">
     <input type="checkbox" name="vsecurity" id="vsecurity" value="1" <?=checked($this->element->vsecurity)?>>
     VO Security Contacts&nbsp;&nbsp;&nbsp;
+    <p class="indent"><?php
+        foreach($address_model->get_vo_security() as $address) { 
+            echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
+        }
+    ?></p>
 
     <input type="hidden" name="ssecurity" value="0">
     <input type="checkbox" name="ssecurity" id="ssecurity" value="1" <?=checked($this->element->ssecurity)?>>
     SC Security Contacts&nbsp;&nbsp;&nbsp;
+    <p class="indent"><?php
+        foreach($address_model->get_sc_security() as $address) { 
+            echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
+        }
+    ?></p>
 </blockquote>
 </dd>
 

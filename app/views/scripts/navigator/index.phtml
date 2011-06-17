@@ -129,8 +129,8 @@ function showtickets($tickets, $id, $columns, $search, $metadata) {
 
     foreach($tickets as $ticket) {
         if($ticket->tickettype == "Security") {
-            if(user()->isguest()) {
-                //don't show security ticket to guest user 
+            if(!user()->allows("view_security_incident_ticket")) {
+                //don't show security ticket to unauthorized users
                 continue;
             } 
         }

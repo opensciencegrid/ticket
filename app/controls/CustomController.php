@@ -82,7 +82,7 @@ class CustomController extends Zend_Controller_Action
 
         if($good) {
             //prepare and submit ticket update
-            $footprint = new Footprint;
+            $footprint = new Footprint(null, false);
             $footprint->setTitle($title); 
 
             if($description != "") {
@@ -103,7 +103,6 @@ class CustomController extends Zend_Controller_Action
 
 
             //detail
-            $footprint->resetAssignee();
             foreach($assignees as $assignee) {
                 $footprint->addAssignee($assignee);
             }

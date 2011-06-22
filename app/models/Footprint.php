@@ -7,7 +7,7 @@ class Footprint
     var $assignee_override;
 
     //if id is null, we will do insert. If not, update
-    public function __construct($id = null)
+    public function __construct($id = null, $auto_assign = true)
     {
         $this->id = $id; 
 
@@ -35,7 +35,9 @@ class Footprint
         if($id === null) {
             //insert
             $f = true; //insert everything by default
-            $this->addAssignee($this->chooseGOCAssignee()); //auto assign someone
+            if($auto_assign) {
+                $this->addAssignee($this->chooseGOCAssignee()); //auto assign someone
+            }
             $this->setOriginatingVO("other"); 
             $this->setDestinationVO("other"); 
             $this->setNextAction("ENG Action");

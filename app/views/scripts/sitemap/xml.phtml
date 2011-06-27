@@ -7,7 +7,7 @@ echo "<"."?xml version=\"1.0\" encoding=\"UTF-8\"?".">\n";
 <?
     foreach($this->tickets as $ticket) {
         $id = $ticket->mrid;
-        $url = fullbase()."/viewer?id=".$id;
+        $url = fullbase()."/".$id;
 
         $freq = "daily";
         if($ticket->mrstatus == "Closed") $freq = "yearly";

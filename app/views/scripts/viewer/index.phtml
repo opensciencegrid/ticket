@@ -168,8 +168,7 @@
         echo "<h3>Similar Recent Tickets</h3>";
         if(isset($this->similar_tickets)) { 
             foreach($this->similar_tickets as $ticket) {
-                // ["id"]=> string(3) "386" ["title"]=> string(21) "This is a test ticket" ["status"]=> string(11) "Engineering" ["dest"]=> string(3) "MIS" ["url"]=> string(50) "https://localhost.localdomain/ticket/viewer?id=386" ["desc"]=> string(43) "[by Soichi Hayashi] This is a test ticket " ["score"]=> string(3) "100" } 
-                echo "<a href=\"".fullbase()."/viewer?id=".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
+                echo "<a href=\"".fullbase()."/".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
             }
         } else {
             echo "No similar tickets found that are modified within the last 30 days.";

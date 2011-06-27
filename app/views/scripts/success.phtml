@@ -10,7 +10,7 @@ if(config()->simulate) {
     echo $content;
     include("app/views/scripts/footer.phtml");
 } else {
-    header("location: ".fullbase()."/viewer?id=".$this->mrid);
+    header("location: ".fullbase()."/".$this->mrid);
 
     //store message in session, and redirect
     addMessage("<p>Thank you for submitting your ticket.</p>");

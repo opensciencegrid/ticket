@@ -7,7 +7,7 @@ if(count($this->na_assignments) == 0) {
     echo "<p>Congulatulations. All ticket has GOC member assignments.</p>";
 } else {
     foreach($this->na_assignments as $na) {
-        echo "<p><a href=\"".fullbase()."/viewer?id=".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
+        echo "<p><a href=\"".fullbase()."/".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
     }
     echo "<blockquote>In order to fix this issue, assign at least one GOC member to these tickets via FP.";
     echo "</blockquote>";

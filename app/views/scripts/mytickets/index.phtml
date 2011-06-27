@@ -51,7 +51,7 @@ function showtickets($tickets, $id) {
     </thead>
     <?
     foreach($tickets as $ticket) {
-        $url = base()."/viewer?id=".$ticket->mrid;
+        $url = base()."/".$ticket->mrid;
         $target = "ticket_".$ticket->mrid;
     ?>
         <tr onclick="window.open('<?=$url?>','<?=$target?>');">

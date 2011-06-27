@@ -3,7 +3,7 @@ $search_comment = "Enter ticket ID or keywords";
 ?>
 <div class="searchbox">
         <div style="margin-top: 2px;">
-            <form action="#" onsubmit="document.location='<?=fullbase()?>/viewer?id='+$('#ticketid').val(); return false;">
+            <form action="#" onsubmit="document.location='<?=fullbase()?>/'+$('#ticketid').val(); return false;">
             <input type="text" id="ticketid" style="color: gray; width: 200px; padding: 3px;" value="<?=$search_comment?>" onfocus="if($(this).val() == '<?=$search_comment?>') $(this).val('').css('color', 'black');" onblur="if($(this).val() == '') $(this).val('<?=$search_comment?>').css('color', 'gray');"/>
             <input type="submit" value="Open / Search" />
             </form>

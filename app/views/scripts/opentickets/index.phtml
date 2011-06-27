@@ -15,7 +15,7 @@ foreach($this->tickets as $dest=>$tickets)
     foreach($tickets as $ticket) {
         $id = $ticket->mrid;
         $title = $ticket->mrtitle;
-        $url = base()."/viewer?id=$id";
+        $url = base()."/$id";
         $status = Footprint::parse($ticket->mrstatus);
         $moddate = $ticket->mrupdatedate;
 

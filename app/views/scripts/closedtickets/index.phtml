@@ -12,7 +12,7 @@ foreach($this->tickets as $dest=>$tickets)
     foreach($tickets as $ticket) {
         $id = $ticket->mrid;
         $title = $ticket->mrtitle;
-        $url = base()."/viewer?id=$id";
+        $url = base()."/$id";
         $status = Footprint::parse($ticket->mrstatus);
 
         echo "<p><a href='$url'>$id</a>$title ($status)<p>";

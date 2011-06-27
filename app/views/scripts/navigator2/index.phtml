@@ -158,7 +158,7 @@ function showtickets($tickets, $id, $column_names) {
     $aka_model = new AKA();
 
     foreach($tickets as $ticket) {
-        $url = base()."/viewer?id=".$ticket->mrid;
+        $url = base()."/".$ticket->mrid;
         $target = "ticket_".$ticket->mrid;
 
         //assignee, cc

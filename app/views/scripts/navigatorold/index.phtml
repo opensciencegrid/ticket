@@ -120,7 +120,7 @@ function sort_modified_down($a, $b)
         foreach($tickets as $ticket) {
             $id = $ticket->mrid;
             $title = $ticket->mrtitle;
-            $url = base()."/viewer?id=$id";
+            $url = base()."/$id";
             $status = Footprint::parse($ticket->mrstatus);
             $statusstyle = status2style($status);
             $status = str_replace(" ", "&nbsp;", $status);

@@ -126,7 +126,7 @@ class CustomController extends Zend_Controller_Action
 
             $mrid = $footprint->submit();
             addMessage("Successfully opened a ticket");
-            header("Location: ".fullbase()."/viewer?id=".$mrid);
+            header("Location: ".fullbase()."/".$mrid);
             exit;
         } else {
             //send data back to form

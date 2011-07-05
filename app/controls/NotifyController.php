@@ -85,7 +85,7 @@ class NotifyController extends BaseController
             $body = $form->getValue('body');
             $sig = $form->getValue('sig');
             if($ticket_id != "") { 
-                $body .= "\n\nPlease see ticket $ticket_id at:\n".fullbase()."/viewer?id=$ticket_id\n";
+                $body .= "\n\nPlease see ticket $ticket_id at:\n".fullbase()."/$ticket_id\n";
             }
             $e->setBody($body."\n".$sig);
 

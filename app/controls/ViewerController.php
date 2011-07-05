@@ -285,7 +285,7 @@ class ViewerController extends Zend_Controller_Action
                 if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "true") {
                     $close = "&close=true";
                 }
-                header("Location: ".fullbase()."/viewer?id=".$ticket_id.$close);
+                header("Location: ".fullbase()."/".$ticket_id.$close);
                 exit;
             }
         }
@@ -343,7 +343,7 @@ class ViewerController extends Zend_Controller_Action
 
             $footprint->submit();
             addMessage("Successfully updated this ticket!");
-            header("Location: ".fullbase()."/viewer?id=".$ticket_id);
+            header("Location: ".fullbase()."/".$ticket_id);
             exit;
         }
     }
@@ -382,7 +382,7 @@ class ViewerController extends Zend_Controller_Action
                     //can't close, the just show it without close
                     $ticket_id = (int)$_REQUEST["id"];
                     ?>
-                    document.location = "<?=fullbase()?>/viewer?id=<?=$ticket_id?>";
+                    document.location = "<?=fullbase()?>/<?=$ticket_id?>";
                 }
             </script>
         <?

@@ -119,7 +119,7 @@ class AdminController extends BaseController
         echo "<title>".$this->formattitle($ticket->mrtitle)."</title>";
         echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
         echo "<dest>$ticket->mrdest</dest>";
-        echo "<url>".fullbase()."/viewer?id=$ticket->mrid</url>";
+        echo "<url>".fullbase()."/$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
         echo "<score>$p</score>";
         echo "</ticket>";

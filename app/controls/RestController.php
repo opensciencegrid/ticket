@@ -96,7 +96,7 @@ class RestController extends Zend_Controller_Action
             echo "<Type>".htmlsafe(Footprint::parse($ticket->tickettype))."</Type>";
             echo "<NextAction>".htmlsafe($ticket->nextaction)."</NextAction>";
             echo "<NAD>".htmlsafe($ticket->nad)."</NAD>";
-            echo "<URL>".fullbase()."/viewer?id=".$ticket->mrid."</URL>";
+            echo "<URL>".fullbase()."/".$ticket->mrid."</URL>";
             echo "<Assignees>";
             foreach(explode(" ", $ticket->mrassignees) as $assignee) {
                 if(substr($assignee, 0, 3) == "CC:") continue;

@@ -297,7 +297,8 @@ margin-bottom: 3px;
 background: #000 url(../images/topnav_bg.gif);
 font-family: 'Trebuchet MS';
 padding: 3px 15px;
-height: 27px;
+height: 23px;
+line-height: 100%;
 }
 .submenu div {
 display: inline-block;

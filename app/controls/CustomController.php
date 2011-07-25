@@ -61,6 +61,10 @@ class CustomController extends Zend_Controller_Action
                 }
             }
         }
+        if(count($assignees) == 0) {
+            $this->view->error_messages[] = "Please assign at least one assignee.";
+            $good = false;
+        }
 
         //detail
         $ccs = @$_REQUEST["cc"]; //TODO - validate

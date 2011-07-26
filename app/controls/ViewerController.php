@@ -380,7 +380,7 @@ class ViewerController extends Zend_Controller_Action
                 } else {
                     <?
                     //can't close, the just show it without close
-                    $ticket_id = (int)$_REQUEST["id"];
+		    $ticket_id = (int)trim($this->getRequest()->getParam("id"));
                     ?>
                     document.location = "<?=fullbase()?>/<?=$ticket_id?>";
                 }

@@ -106,7 +106,8 @@ function cert_authenticate()
 /*
             //debug override
             if(config()->debug) {
-                $dn = "/DC=org/DC=doegrids/OU=People/CN=Dan Fraser 66495";
+                //$dn = "/DC=org/DC=doegrids/OU=People/CN=Dan Fraser 66495";
+                $dn = "/DC=org/DC=doegrids/OU=People/CN=Art Vandenberg 921499";
                 slog("Overriding DN to $dn");
             }
 */

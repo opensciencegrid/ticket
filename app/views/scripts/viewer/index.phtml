@@ -3,6 +3,55 @@
 <link rel="prefetch" href="../images/selected_back.gif"/>
 <link rel="prefetch" href="../images/pointer.png"/>
 
+<?if(isset($this->load_comet)) {?>
+    <script type="text/javascript">
+        var config = {
+            ticket_id: <?=$this->ticket_id?>,
+            contact_id: <?=$this->contact_id?>,
+            //contact_name: "<?=$this->contact_name?>"+Math.floor(Math.random() * 100)
+            contact_name: "<?=$this->contact_name?>"
+        };
+        function _update_ticket(data) {
+            if(data.request) {
+                if(data.request == "reload") {
+                    var submitter = data.submitter;
+                    if(confirm(data.submitter + " has submited an update to this ticket. Do you want to reload?")) {
+                        history.go(0);
+                    }
+                }
+            }
+        }
+        function _update_presence(presence) {
+            //var html = "Your contact_name: " + config.contact_name + "<br>";
+            var html = "";
+            html += "<ul class=\"editors\">";
+            var count = 0;
+            for(var id in presence) {
+                var contact_name = presence[id];
+                if(contact_name !=  config.contact_name) {
+                    html += "<li>" + contact_name + "</li>";
+                    count++;
+                }
+            }
+            html += "</ul>";
+            if(count != 0) {
+                html = "<b>Currently viewed by</b> " + html;
+            }
+            $("#presence").html(html);
+        }
+        function _handshakeFailed() {
+            $("#presence").html("<p class=\"warning\">Peer status unknown</p>");
+        }
+        $(function() {
+            $("#ticket_form").submit(function() {
+                $.cometd.publish("/ticket/<?=$this->ticket_id?>", { request: "reload", submitter: "<?=$this->contact_name?>" });
+                return true;
+            });
+        });
+    </script>
+<?}?>
+
+<div id="presence"></div>
 <div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
 <?if($this->ticket_type == "Security") {
     echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";

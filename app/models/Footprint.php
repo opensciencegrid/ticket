@@ -4,15 +4,15 @@
 
 class Footprint
 {
-    var $assignee_override;
+    //var $assignee_override;
 
     //if id is null, we will do insert. If not, update
     public function __construct($id = null, $auto_assign = true)
     {
         $this->id = $id; 
 
-        $model = new Override();
-        $this->assignee_override = $model->get();
+        //$model = new Override();
+        //$this->assignee_override = $model->get();
 
         $this->submitter = "OSG-GOC";
         $this->status = "Engineering";
@@ -139,12 +139,14 @@ class Footprint
             $this->resetAssignee();
         } 
 
+/*
         //apply override
         if(isset($this->assignee_override[$v])) {
             $newv = $this->assignee_override[$v];
             $this->addMeta("Original assignee $v was overridden by $newv\n");
             $v = $newv;
         }
+*/
         
         $this->assignees[] = $v;//no unparsing necessary
         $this->b_assignees = true;

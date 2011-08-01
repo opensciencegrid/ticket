@@ -29,6 +29,13 @@
     }
     ?>
 
+    <?if(isset($this->load_comet)) {?>
+        <script type="text/javascript" src="<?=base()?>/lib/json2.js"></script>
+        <script type="text/javascript" src="<?=base()?>/lib/cometd.js"></script>
+        <script type="text/javascript" src="<?=base()?>/lib/jquery.cometd.js"></script>
+        <script type="text/javascript" src="<?=base()?>/lib/cometd_application.js"></script>
+    <?}?>
+
     <!--[if lt IE 8]>
 <script src="<?=base()?>/lib/IE8.js" type="text/javascript"></script>
     <![endif]-->
@@ -52,6 +59,8 @@
         <a target="_blank" href="http://software.grid.iu.edu/">Software Cache</a> |
         <a target="_blank" href="http://is.grid.iu.edu/documentation.html">BDII</a> |
         <a target="_blank" href="https://twiki.grid.iu.edu/">TWiki</a> |
+        <a target="_blank" href="http://blogs.grid.iu.edu/">Blogs</a> |
+        <a target="_blank" href="http://display.grid.iu.edu/">Display</a> |
         <a target="_blank" href="http://osggoc.blogspot.com/">News</a>
     </p>
 </div>

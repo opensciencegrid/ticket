@@ -662,11 +662,34 @@ color: #2200c1;
 }
 
 div.assignee {
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    background-color: #ddd;
-    border: 1px solid #aaa;
-    margin-bottom: 5px;
-    min-height: 16px;
-    padding: 2px 2px 2px 4px;
+-webkit-border-radius: 4px 4px 4px 4px;
+-moz-border-radius: 4px 4px 4px 4px;
+background-color: #ddd;
+border: 1px solid #aaa;
+margin-bottom: 5px;
+min-height: 16px;
+padding: 2px 2px 2px 4px;
+}
+
+#presence {
+float: right;
+color: #961;
+height: 20px;
+position: relative;
+top: -12px;
+}
+
+#presence ul.editors {
+display: inline-block;
+list-style-image: none;
+list-style-position: outside;
+list-style-type: none;
+}
+
+#presence ul.editors li {
+display: inline-block;
+padding: 5px;
+margin: 5px;
+color: white;
+background-color: #961;
 }

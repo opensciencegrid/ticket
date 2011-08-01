@@ -56,6 +56,7 @@ class RestController extends Zend_Controller_Action
         $assignee = $model->getNextAssignee();
         $reason = $model->getReason();
         
+/*
         //apply override
         $model = new Override();
         $over = $model->apply($assignee);
@@ -63,6 +64,7 @@ class RestController extends Zend_Controller_Action
             $reason .= " The original assignee ".$assignee." was overriden by $over";
             $assignee = $over;
         }
+*/
 
         echo "<NextAssignee>";
         echo "<FootprintsID>".htmlspecialchars($assignee)."</FootprintsID>";

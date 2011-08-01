@@ -13,7 +13,7 @@ if(isset($this->error_messages)) {
 <?if(!isset($form_action)) {
     $form_action = "/viewer/update";
 }?>
-<form action="<?=fullbase(); echo $form_action?>" method="post">
+<form id="ticket_form" action="<?=fullbase(); echo $form_action?>" method="post">
     <input type="hidden" name="id" value="<?=$this->ticket_id?>"/>
     <input type="text" style="width: 100%" name="title" value="<?=$this->title?>"/>
     <br/>
@@ -251,7 +251,6 @@ if(isset($this->error_messages)) {
         <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
         &nbsp;&nbsp;
         <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
-
         &nbsp;&nbsp;
         <input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
     <?}?>

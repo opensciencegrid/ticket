@@ -32,6 +32,11 @@ class ViewerController extends Zend_Controller_Action
         $this->view->ticket_id = $id;
         $this->view->title = $detail->title;
         $this->view->page_title = "[$id] ".$detail->title;
+        if(!user()->isGuest()) {
+            $this->view->load_comet = true;
+            $this->view->contact_id = user()->contact_id;
+            $this->view->contact_name = user()->contact_name;
+        }
 
         //limit access to security announcement
         if($detail->Ticket__uType == "Security_Notification") {
@@ -380,7 +385,7 @@ class ViewerController extends Zend_Controller_Action
                 } else {
                     <?
                     //can't close, the just show it without close
-                    $ticket_id = (int)$_REQUEST["id"];
+                    $ticket_id = (int)trim($this->getRequest()->getParam("id"));
                     ?>
                     document.location = "<?=fullbase()?>/<?=$ticket_id?>";
                 }

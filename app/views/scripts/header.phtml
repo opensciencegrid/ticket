@@ -34,6 +34,15 @@
         <script type="text/javascript" src="<?=base()?>/lib/cometd.js"></script>
         <script type="text/javascript" src="<?=base()?>/lib/jquery.cometd.js"></script>
         <script type="text/javascript" src="<?=base()?>/lib/cometd_application.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$.cometd.configure({
+			    url: "<?=config()->cometd_url?>",
+			    logLevel: 'info'
+			});
+			$.cometd.handshake();
+		});
+	</script>
     <?}?>
 
     <!--[if lt IE 8]>

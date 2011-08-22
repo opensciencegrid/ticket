@@ -30,7 +30,6 @@
 <?=$this->element->title?>
 </dl>
 
-
 <dl>
 <?=$this->element->admin?>
 <?=$this->element->detail?>
@@ -67,6 +66,7 @@ function setTitleAndType()
 function loadServiceType(rid)
 {
     $("#type").load("<?=fullbase()?>/resource/loadtype?rid="+rid, function() {
+        $("#title_holder").show();
         $("#type_holder").show();
     });
 }

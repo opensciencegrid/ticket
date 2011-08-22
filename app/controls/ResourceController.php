@@ -144,61 +144,49 @@ class ResourceController extends BaseController
     {
         $form = $this->initForm("resource");
 
-        $element = new Zend_Form_Element_Select('resource_type');
-        $element->setLabel("I am having this issue on the following resource");
-        $element->setRequired(true);
+        $rt_element = new Zend_Form_Element_Select('resource_type');
+        $rt_element->setLabel("I am having this issue on the following resource");
+        $rt_element->setRequired(true);
         $gridtype_model = new GridType;
         $gridtypes = $gridtype_model->fetchAll();
         foreach($gridtypes as $gridtype) {
-            $element->addMultiOption($gridtype->id, $gridtype->description);
+            $rt_element->addMultiOption($gridtype->id, $gridtype->description);
         }
         if(config()->role_prefix == "itbticket_") {
             //set it to ITB list
-            $element->setValue(2);
+            $rt_element->setValue(2);
         }
-        //override with requested param
-        if(isset($_REQUEST["resource_type"])) {
-            $element->setValue((int)$_REQUEST["resource_type"]);
-        }
-        $form->addElement($element);
+        $form->addElement($rt_element);
 
-        $element = new Zend_Form_Element_Select('resource_id_with_issue_1');
-        $element->setLabel("Resource Name");
-        $element->addMultiOption(null, "(Please Select)");
+        $r1_element = new Zend_Form_Element_Select('resource_id_with_issue_1');
+        $r1_element->setLabel("Resource Name");
+        $r1_element->addMultiOption(null, "(Please Select)");
         $resource_model = new Resource;
         $resources = $resource_model->fetchAll(1);
         foreach($resources as $resource) {
-            $element->addMultiOption($resource->id, $resource->name);
+            $r1_element->addMultiOption($resource->id, $resource->name);
         }
-        //override with requested param
-        if(isset($_REQUEST["resource_id"])) {
-            $element->setValue((int)$_REQUEST["resource_id"]);
-        }
-        $form->addElement($element);
+        $form->addElement($r1_element);
 
-        $element = new Zend_Form_Element_Select('resource_id_with_issue_2');
-        $element->setLabel("Resource Name");
-        $element->addMultiOption(null, "(Please Select)");
+        $r2_element = new Zend_Form_Element_Select('resource_id_with_issue_2');
+        $r2_element->setLabel("Resource Name");
+        $r2_element->addMultiOption(null, "(Please Select)");
         $resources = $resource_model->fetchAll(2);
         foreach($resources as $resource) {
-            $element->addMultiOption($resource->id, $resource->name);
+            $r2_element->addMultiOption($resource->id, $resource->name);
         }
-        //override with requested param
-        if(isset($_REQUEST["resource_id"])) {
-            $element->setValue((int)$_REQUEST["resource_id"]);
-        }
-        $form->addElement($element);
+        $form->addElement($r2_element);
 
         $element = new Zend_Form_Element_Checkbox('admin');
         $element->setLabel("Check here if you are the admin for this resource (this will prevent the ticket from getting routed back to you!)");
         $form->addElement($element);
 
-        $e = new Zend_Form_Element_Text('title');
-        $e->setAttribs(array('size'=>50));
-        $e->setLabel("Title");
-        $e->setValue("(TBD)");
-        $e->setRequired(true);
-        $form->addElement($e);
+        $title = new Zend_Form_Element_Text('title');
+        $title->setAttribs(array('size'=>50));
+        $title->setLabel("Title");
+        $title->setValue("(TBD)");
+        $title->setRequired(true);
+        $form->addElement($title);
 
         $detail = new Zend_Form_Element_Textarea('detail');
         $detail->setLabel("Description");
@@ -208,6 +196,28 @@ class ResourceController extends BaseController
         $element = new Zend_Form_Element_Submit('submit_button');
         $element->setLabel("   Submit   ");
         $form->addElement($element);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        //resource type / resource preselection 
+        if(isset($_REQUEST["resource_id"])) {
+            //lookup resource group and its resource type
+            $rid = (int)$_REQUEST["resource_id"];
+            $resource = $resource_model->fetchById($rid);
+            $rgmodel = new ResourceGroup();
+            $rg = $rgmodel->fetchById($resource->resource_group_id); 
+            $resource_type_id = (int)$rg->osg_grid_type_id;
+            $rt_element->setValue($resource_type_id);
+
+            if($resource_type_id == 1) {
+                $r1_element->setValue($rid);
+            } else {
+                $r2_element->setValue($rid);
+            }
+            $title->setValue("Resource Specific Issue on ".$resource->name);
+        }
+        //
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
 
         return $form;
     }

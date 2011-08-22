@@ -1,6 +1,6 @@
 <?
 
-class BulkresourceController extends Zend_Controller_Action
+class BulkresourceController extends BaseController
 {
     function init()
     {
@@ -14,21 +14,51 @@ class BulkresourceController extends Zend_Controller_Action
             $fqdn = $resource->fqdn;
             $kv[$id] = "$name ($fqdn)";
         }
-        $this->view->kv = $kv;
+        Zend_Registry::set("resource_kv", $kv);
+        Zend_Registry::set("resource_ids", array());
+    }
 
-        $session = new Zend_Session_Namespace('bulkresource');
-        if(isset($session->resource_ids)) {
-            $this->view->resource_ids = $session->resource_ids;
+    public function indexAction()
+    {
+        if(!user()->allows("admin")) {
+            $this->render("error/access", null, true);
+            return;
         }
-        if(isset($session->title)) {
-            $this->view->title = $session->title;
-        } else {
-            $this->view->title = "Resource Issue for \$RESOURCE_NAME";
+
+        $form = $this->getForm();
+
+        //redo is set when user hit "cancel" button in the preview page
+        if(isset($_REQUEST["redo"])) {
+            //populate data from session
+            $session = new Zend_Session_Namespace('bulkresource');
+
+            Zend_Registry::set("resource_ids", $session->resource_ids);
+            Zend_Registry::set("passback_ccs", $session->cc);
+            $form->getElement("title")->setValue($session->title);
+            $form->getElement("template")->setValue($session->template);
+            $form->getElement("name")->setValue($session->name);
+            $form->getElement("email")->setValue($session->email);
+            $form->getElement("phone")->setValue($session->phone);
+            $form->getElement("vo_id")->setValue($session->vo_id);
         }
-        if(isset($session->template)) {
-            $this->view->template = $session->template;
-        } else {
-            $this->view->template = "Dear \$PRIMARY_ADMIN_NAME,
+        $this->view->form = $form;
+        $this->render();
+    }
+
+    public function getForm()
+    {
+        $form = $this->initForm("bulkresource");
+
+        $title = new Zend_Form_Element_Text('title');
+        $title->setLabel("Title");
+        $title->setRequired(true);
+        $title->setValue("Resource Issue for \$RESOURCE_NAME");
+        $form->addElement($title);
+
+        $template = new Zend_Form_Element_Textarea('template');
+        $template->setLabel("Description Template");
+        $template->setRequired(true);
+        $template->setValue("Dear \$PRIMARY_ADMIN_NAME,
 
 Something is screwed up on resource \$RESOURCE_NAME.
 
@@ -38,16 +68,9 @@ Thank You,
 OSG Grid Operations Center (GOC)
 Email/Phone: goc@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
-RSS Feed: http://osggoc.blogspot.com";
-        }
-    }
-
-    public function indexAction()
-    {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true);
-            return;
-        }
+RSS Feed: http://osggoc.blogspot.com");
+        $form->addElement($template);
+        return $form;
     }
 
     public function previewAction() 
@@ -57,28 +80,49 @@ RSS Feed: http://osggoc.blogspot.com";
             return;
         }
 
-        if(!isset($_REQUEST["list"])) {
-            addMessage("Please specify list of resource to send tickets to."); 
+        $resource_ids = @$_REQUEST["list"];
+
+        $form = $this->getForm();
+        if($form->isValid($_POST)) {
+            //do some additional validation - that wasn't checked via Zend form
+            if(!isset($_REQUEST["list"])) {
+                $this->view->errors = "Please specify list of resource to send tickets to.";
+                $this->view->form = $form;
+                $this->render("index");
+                return;
+            }
+
+            $title = $_REQUEST["title"];
+            $template = $_REQUEST["template"];
+
+            //store various data into session - so that submiAction can use it (also used by createTickets)
+            $session = new Zend_Session_Namespace('bulkresource');
+            $resource_ids = $session->resource_ids = $resource_ids;
+            $session->title = $title;
+            $session->template = $template;
+            $session->cc = $_REQUEST["cc"];
+            $session->name = $form->getValue("name");
+            $session->email = $form->getValue("email");
+            $session->phone = $form->getValue("phone");
+            $session->vo_id = $form->getValue("vo_id");
+
+            //all good... construct ticket & send to preview
+            $tickets = $this->createTickets($resource_ids, $title, $template);
+            $preview = array();
+            foreach($tickets as $rname=>$ticket) {
+                $preview[$rname] = $ticket->prepareParams();
+            }
+            $this->view->preview = $preview;
+        } else {
+            //selected resources are sent back through registry - since it's not controlled via zend form
+            Zend_Registry::set("resource_ids", $resource_ids);
+
+            //cc field is also non-zend, but BaseController::initForm pulls it from $_POST["cc"]
+
+            $this->view->errors = "Please correct the following issues.";
+            $this->view->form = $form;
             $this->render("index");
-            return;
         }
-
-        $resource_ids = $_REQUEST["list"];
-        $title = $_REQUEST["title"];
-        $template = $_REQUEST["template"];
-
-        $session = new Zend_Session_Namespace('bulkresource');
-        $session->resource_ids = $resource_ids;
-        $session->title = $title;
-        $session->template = $template;
-
-        $tickets = $this->createTickets($resource_ids, $title, $template);
-
-        $preview = array();
-        foreach($tickets as $rname=>$ticket) {
-            $preview[$rname] = $ticket->prepareParams();
-        }
-        $this->view->preview = $preview;
 
         return $tickets;
     }
@@ -147,12 +191,38 @@ RSS Feed: http://osggoc.blogspot.com";
     function createTicket($title, $desc, $resource) 
     {
         $name = user()->getPersonName();
+        $session = new Zend_Session_Namespace('bulkresource');
 
         $footprint = new Footprint();
-        $footprint->setName($name);
-        $footprint->setEmail(user()->getPersonEmail());
-        $footprint->setOfficePhone(user()->getPersonPhone());
-        $footprint->setOriginatingVO("MIS");
+
+        $footprint->setName($session->name);
+        $footprint->setEmail($session->email);
+        $footprint->setOfficePhone($session->phone);
+        $footprint->setOriginatingVO($session->vo);
+
+        //set VO
+        $void = $session->vo_id;
+        if($void == -1) {
+            $footprint->addMeta("Submitter doesn't know the VO he/she belongs.\n");
+        } else {
+            $vo_model = new VO();
+            $info = $vo_model->get($void);
+            if($info->footprints_id === null) {
+                $footprint->addMeta("Submitter's VO is ".$info->name. " but its footprints_id is not set in OIM. Please set it.");
+            } else {
+                $footprint->setOriginatingVO($info->footprints_id);
+            }
+        }
+
+        //process CC
+        $ccs = $session->cc;
+        foreach($ccs as $cc) {
+            $cc = trim($cc);
+            if($cc != "") {
+                $footprint->addCC($cc);
+            }
+        }
+
         $footprint->addDescription($desc);
         $footprint->setTitle($title);
 

@@ -1,0 +1,34 @@
+<form action="<?=fullbase()?>/bulkresource/preview" method="post">
+<dl>
+    <dd>
+    <?=$this->render("yourinfo.phtml", true)?>
+    </dd>
+
+    <dd>
+        <h3>Resources to Send Tickets</h3>
+        <div style="width: 400px">
+        <?
+            echo fblist("list",  Zend_Registry::get("resource_kv"), Zend_Registry::get("resource_ids") )
+        ?>
+        </div>
+    </dd>
+
+        <h3>Template</h3>
+        <div style="background-color: #eee; padding: 20px; padding-top: 15px; background-image: url('<?=fullbase();?>/images/iblard_jikan.jpg'); background-repeat: no-repeat; background-position: right bottom;">
+        <p>Primary admin will be CC-ed and responsible SC, destination VO will be assigned to each ticket (similar to resource specific issue form)</p>
+        <?=$this->element->title?>
+        <?=$this->element->template?>
+        <p>You can use following variables inside the template</p>
+        <p><b>$RESOURCE_NAME</b></p>
+        <p><b>$RESOURCE_FQDN</b></p>
+        <p><b>$PRIMARY_ADMIN_NAME</b></p>
+        </div>
+</dl>
+
+<dl>
+    <dd>
+        <br>
+        <input type="submit" value="Preview ...">
+    </dd>
+</dl>
+</form>

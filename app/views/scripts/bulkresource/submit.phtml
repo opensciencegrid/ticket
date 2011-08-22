@@ -20,7 +20,7 @@ foreach($this->success as $rname=>$id) {
         echo "<blockquote><pre>".print_r($id, true)."</pre></blockquote>";
     } else {
         $url = fullbase()."/".$id;
-        echo "<a href=\"$url\">$url</a><br/>";
+        echo "<a target=\"_blank\" href=\"$url\">$url</a><br/>";
     }
 }
 

@@ -41,6 +41,7 @@ class Schema
             }
             $count++;
         }
+        asort($descs);
         return $descs;
     }
 

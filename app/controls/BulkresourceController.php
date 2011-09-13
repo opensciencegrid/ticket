@@ -100,7 +100,9 @@ RSS Feed: http://osggoc.blogspot.com");
             $resource_ids = $session->resource_ids = $resource_ids;
             $session->title = $title;
             $session->template = $template;
-            $session->cc = $_REQUEST["cc"];
+            if(isset($_REQUEST["cc"])) {
+                $session->cc = $_REQUEST["cc"];
+            }
             $session->name = $form->getValue("name");
             $session->email = $form->getValue("email");
             $session->phone = $form->getValue("phone");
@@ -174,6 +176,9 @@ RSS Feed: http://osggoc.blogspot.com");
         }
         $this->view->success = $success;
         $this->view->failed = $failed;
+
+        //clear session
+        $session->resource_ids = null;
     }
 
     private function getFPAgent($name)
@@ -215,11 +220,13 @@ RSS Feed: http://osggoc.blogspot.com");
         }
 
         //process CC
-        $ccs = $session->cc;
-        foreach($ccs as $cc) {
-            $cc = trim($cc);
-            if($cc != "") {
-                $footprint->addCC($cc);
+        if(isset($session->cc)) {
+            $ccs = $session->cc;
+            foreach($ccs as $cc) {
+                $cc = trim($cc);
+                if($cc != "") {
+                    $footprint->addCC($cc);
+                }
             }
         }
 

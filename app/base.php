@@ -63,6 +63,8 @@ function sendSMS($users, $subject, $body)
     slog("Sent SMS notification to $recipient user:".print_r($users, true));
 }
 
+#email signing > http://ca.dutchgrid.nl/info/smime-manual.html
+#my favorite openssl doc > http://www.sslshopper.com/article-most-common-openssl-commands.html
 function signedmail($to, $from, $subject, $body, $header = "")
 {
     $key = config()->signed_email_key;

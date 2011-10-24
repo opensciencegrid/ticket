@@ -2,6 +2,26 @@
 
 <script type="text/javascript" src="<?=fullbase()?>/lib/jquery.focus.js"></script>
 
+<link rel="stylesheet" type="text/css" href="<?=base()?>/lib/Upload/jquery.fileupload-ui.css" />
+<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.fileupload-ui.js"></script>
+<style>
+td.routing table td {
+padding: 0px;
+}
+td.routing input {
+width: 145px;
+}
+td.routing select {
+width: 153px;
+}
+td.attachments {
+width: 420px;
+}
+</style>
+
 <?
 if(isset($this->error_messages)) {
     foreach($this->error_messages as $message) {
@@ -81,41 +101,154 @@ if(isset($this->error_messages)) {
 
             
     </td>  
-    <td>
+    <td class="routing">
         <h4>Routing Information</h4>
-        <span class="header">Originating VO:</span>
-        <select name="submitter_vo">
-        <?
-        foreach($this->originating_vos as $id=>$vo) {
-            $selected = "";
-            $vo_p = Footprint::parse($vo);
-            if($vo_p == $this->submitter_vo) $selected = "selected=selected";
-            echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Originating Ticket ID:</span>
-        <input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/>
-        <br/>
-
-        <span class="header">Destination VO:</span>
-        <select name="destination_vo">
-        <?
-        foreach($this->destination_vos as $id=>$vo) {
-            $selected = "";
-            $vo_p = Footprint::parse($vo);
-            if($vo_p == $this->destination_vo) $selected = "selected=selected";
-            echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Destination Ticket ID:</span>
-        <input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/>
-        <br/>
+        <table><tr>
+            <td><span class="header">Originating VO:</span></td>
+            <td>
+                <select name="submitter_vo">
+                <?
+                foreach($this->originating_vos as $id=>$vo) {
+                    $selected = "";
+                    $vo_p = Footprint::parse($vo);
+                    if($vo_p == $this->submitter_vo) $selected = "selected=selected";
+                    echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+                }
+                ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="header">Originating Ticket ID:</span></td>
+            <td><input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/></td>
+        </tr>
+        <tr>
+            <td><span class="header">Destination VO:</span></td>
+            <td>
+                <select name="destination_vo">
+                <?
+                foreach($this->destination_vos as $id=>$vo) {
+                    $selected = "";
+                    $vo_p = Footprint::parse($vo);
+                    if($vo_p == $this->destination_vo) $selected = "selected=selected";
+                    echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+                }
+                ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="header">Destination Ticket ID:</td>
+            <td><input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/></td>
+        </tr>
+        </table>
+    </td>
+    <td class="attachments">
+        <h4>Attachments</h4>
+        <div id="fileupload" style="width: 100%;">
+            <div class="fileupload-buttonbar">
+                <label class="fileinput-button">
+                    <span>Add Attachments ...</span>
+                    <input type="file" name="files[]" multiple>
+                </label>
+    <!--
+                <button type="submit" class="start">Start upload</button>
+                <button type="reset" class="cancel">Cancel upload</button>
+                <button type="button" class="delete">Delete files</button>
+    -->
+            </div>
+            <div class="fileupload-content">
+                <table class="files"></table>
+                <div style="text-align: center; color: gray;">Drag &amp; Drop Attachments Here</div>
+            </div>
+        </div>
+        <script id="template-upload" type="text/x-jquery-tmpl">
+            <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+                <td class="preview"></td>
+                <td class="name">
+                    ${name}<br>
+                    {{if error}}
+                        <div class="error">Error:
+                            {{if error === 'maxFileSize'}}File is too big
+                            {{else error === 'minFileSize'}}File is too small
+                            {{else error === 'acceptFileTypes'}}Filetype not allowed
+                            {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+                            {{else}}${error}
+                            {{/if}}
+                        </div>
+                    {{else}}
+                        <div class="progress" style="display: inline-block"><div></div></div>
+                    {{/if}}
+                </td>
+                <td class="size">${sizef}</td>
+                <td class="cancel" style="display: inline-block"><button>Cancel</button></td>
+            </tr>
+        </script>
+        <script id="template-download" type="text/x-jquery-tmpl">
+            <tr class="template-download{{if error}} ui-state-error{{/if}}">
+                {{if error}}
+                    <td colspan="3" class="name">${name} ${sizef}<br>
+                        <div class="error">Error:
+                            {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
+                            {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
+                            {{else error === 3}}File was only partially uploaded
+                            {{else error === 4}}No File was uploaded
+                            {{else error === 5}}Missing a temporary folder
+                            {{else error === 6}}Failed to write file to disk
+                            {{else error === 7}}File upload stopped by extension
+                            {{else error === 'maxFileSize'}}File is too big
+                            {{else error === 'minFileSize'}}File is too small
+                            {{else error === 'acceptFileTypes'}}Filetype not allowed
+                            {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
+                            {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
+                            {{else error === 'emptyResult'}}Empty file upload result
+                            {{else}}${error}
+                            {{/if}}
+                        </div>
+                    </td>
+                {{else}}
+                    <td class="preview">
+                        {{if thumbnail_url}}
+                            <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
+                        {{/if}}
+                    </td>
+                    <td class="name">
+                        <a href="${url}"{{if thumbnail_url}} target="_blank"{{/if}}>${name}</a>
+                    </td>
+                    <td class="size">${sizef}</td>
+                {{/if}}
+                <td class="delete">
+                    <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
+                </td>
+            </tr>
+        </script>
+        <script>
+        $(function () {
+            'use strict';
+            // Initialize the jQuery File Upload widget:
+            $('#fileupload').fileupload({
+                autoUpload: true,
+                url: '<?=fullbase()?>/viewer/uploadattachment?id='+escape($(this).val())
+            });
+            $.getJSON("<?=fullbase()?>/viewer/loadattachments?id=<?=$this->ticket_id?>", function (files) {
+                var fu = $('#fileupload').data('fileupload');
+                fu._adjustMaxNumberOfFiles(-files.length);
+                fu._renderDownload(files)
+                    .appendTo($('#fileupload .files'))
+                    .fadeIn(function () {
+                        // Fix for IE7 and lower:
+                        $(this).show();
+                    });
+            });
+            // Open download dialogs via iframes, to prevent aborting current uploads:
+            $('#fileupload .files a:not([target^=_blank])').live('click', function (e) {
+                e.preventDefault();
+                $('<iframe style="display:none;"></iframe>')
+                    .prop('src', this.href)
+                    .appendTo('body');
+            });
+        });
+        </script>
     </td>
     </tr><tr>
     <td>
@@ -181,9 +314,10 @@ if(isset($this->error_messages)) {
             <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
         </td>
         </tr></table>
+
         <br/>
     </td>
-    <td width="60%">
+    <td width="60%" colspan="2">
 
         <?if(user()->allows("admin")) {?>
         <span style="float: right;padding-right: 5px;"><a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a></span>
@@ -236,27 +370,32 @@ if(isset($this->error_messages)) {
     }
     ?>
     </select>
-    <textarea class="resizable" style="width: 98%" rows="5" name="description" onkeypress="checkTab(event);"><?=$this->description?></textarea>
-    <br/>
+    <br>
+    <div>
+        <textarea class="resizable" style="width: 100%" rows="5" name="description" onkeypress="checkTab(event);"><?=$this->description?></textarea>
+    </div>
 
-    <?if(!isset($submit_label)) {
-        $submit_label = "Update";
-    }?>
-    <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$submit_label?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+    <table width="100%"><tr>
+    <td>
+        <?if(!isset($submit_label)) {
+            $submit_label = "Update";
+        }?>
+        <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$submit_label?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
 
-    <?if(isset($suppression_control)) {?>
-        &nbsp;&nbsp;
-        <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
-        &nbsp;&nbsp;
-        <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
-        &nbsp;&nbsp;
-        <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
-        &nbsp;&nbsp;
-        <input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
-    <?}?>
+        <?if(isset($suppression_control)) {?>
+            &nbsp;&nbsp;
+            <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
+            &nbsp;&nbsp;
+            <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
+            &nbsp;&nbsp;
+            <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+            &nbsp;&nbsp;
+            <input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
+        <?}?>
 
-    <br/>
-    <br/>
+    </td>
+    </tr></table>
+
 
 </form>
 

@@ -470,6 +470,85 @@ class ViewerController extends Zend_Controller_Action
         krsort($descs);
         $this->view->descs = $descs;
     }
+
+    public function uploadattachmentAction() {
+        if(user()->isGuest()) {
+            if(in_array($_SERVER["REMOTE_ADDR"], config()->canupload_attachment)) {
+            } else {
+                elog($_SERVER["REMOTE_ADDR"]." is not member of ".print_r(config()->canupload_attachment, true)." who has access");
+                $this->render("error/access", null, true); 
+                return;
+            }
+        }
+        
+        $id = (int)$_REQUEST["id"];
+        if($id > 20000) return; //small attempt to block some kind of random access attack
+
+        $model = new Attachments();
+        $datas = $model->upload($id);
+
+        header('Pragma: no-cache');
+        header('Cache-Control: private, no-cache');
+        header('Content-Disposition: inline; filename="files.json"');
+        header('X-Content-Type-Options: nosniff');
+        header('Vary: Accept');
+        require_once("app/json.php");
+        echo json_encode($datas);
+        $this->render("none", null, true);
+    }
+
+    //generate thumbnail from attachment - THIS IS A PUBLIC FUNCTION (better be rock solid..)
+    public function thumbnailAction() {
+        $id = (int)$_REQUEST["id"];
+        $dirty_attachment_name = $_REQUEST["attachment"];
+        $attachment_id = basename($dirty_attachment_name);
+
+        $model = new Attachments();
+        $path = $model->getpath($id, $attachment_id);
+
+        require_once("app/thumbnail.php");
+        $tg = new thumbnailGenerator;
+        if(!$tg->generate($path, 100, 100)) {
+            header("Content-Type: image/png");
+            echo file_get_contents("images/unknown.png");
+            slog("output default icon");
+        }
+        $this->render("none", null, true);
+    }
+
+    public function deleteattachmentAction() {
+        if(user()->isGuest()) {
+            $this->render("error/access", null, true); 
+            return;
+        }
+
+        $id = (int)$_REQUEST["id"];
+        $dirty_attachment_name = $_REQUEST["attachment"];
+        $attachment_id = basename($dirty_attachment_name);
+
+        $model = new Attachments();
+        $ret = $model->remove($id, $attachment_id);
+
+        require_once("app/json.php");
+        echo json_encode($ret);
+        $this->render("none", null, true);
+    }
+
+    public function loadattachmentsAction() {
+        header('Pragma: no-cache');
+        header('Cache-Control: private, no-cache');
+        header('Content-Disposition: inline; filename="files.json"');
+        header('X-Content-Type-Options: nosniff');
+        header('Vary: Accept');
+
+        $id = (int)$_REQUEST["id"];
+
+        $model = new Attachments();
+        $datas = $model->listattachments($id);
+        require_once("app/json.php");
+        echo json_encode($datas);
+        $this->render("none", null, true);
+    }
 }
 
 function ticketcmp($a, $b) {

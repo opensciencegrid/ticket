@@ -811,6 +811,16 @@ if (class_exists('PEAR_Error')) {
                 }
         return $json->decode($content);
     }
+
+function json_encode($content, $assoc=false) {
+        if ( $assoc ){
+                $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+    } else {
+                $json = new Services_JSON;
+            }
+    return $json->encode($content);
+}
+
     
 ?>
 

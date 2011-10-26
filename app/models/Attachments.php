@@ -10,7 +10,7 @@ class Attachments {
         if (!file_exists($ticket_dir)) mkdir($ticket_dir);
 
         $adapter->setDestination($ticket_dir);
-        $adapter->addValidator('Extension', false, 'jpg,png,gif,txt,log,pdf,sh'); //TODO - how should I configure this
+        //$adapter->addValidator('Extension', false, 'jpeg,jpg,png,gif,txt,log,pdf,sh'); //TODO - how should I configure this
 
         $files = $adapter->getFileInfo();
         $datas = array();

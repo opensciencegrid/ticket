@@ -41,7 +41,7 @@ if(isset($this->error_messages)) {
     <h3>Ticket Detail</h3>
     <table class="ticket_detail" width="100%">
     <tr>
-    <td id="submitter">
+    <td>
         <h4>Contact</h4>
 
         <div id="populator" style="padding: 3px 0 0 0; background-color: #ddd;">
@@ -99,49 +99,136 @@ if(isset($this->error_messages)) {
         <input type="text" value="<?=$this->submitter_phone?>" name="submitter_phone"/>
         <br>
 
-            
-    </td>  
-    <td class="routing">
         <h4>Routing Information</h4>
-        <table><tr>
-            <td><span class="header">Originating VO:</span></td>
-            <td>
-                <select name="submitter_vo">
-                <?
-                foreach($this->originating_vos as $id=>$vo) {
-                    $selected = "";
-                    $vo_p = Footprint::parse($vo);
-                    if($vo_p == $this->submitter_vo) $selected = "selected=selected";
-                    echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+        <span class="header">Originating VO:</span>
+        <select name="submitter_vo">
+        <?
+        foreach($this->originating_vos as $id=>$vo) {
+            $selected = "";
+            $vo_p = Footprint::parse($vo);
+            if($vo_p == $this->submitter_vo) $selected = "selected=selected";
+            echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+        }
+        ?>
+        </select>
+        <br>
+
+        <span class="header">Originating Ticket ID:</span>
+        <input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/>
+        <br>
+
+        <span class="header">Destination VO:</span>
+        <select name="destination_vo">
+        <?
+        foreach($this->destination_vos as $id=>$vo) {
+            $selected = "";
+            $vo_p = Footprint::parse($vo);
+            if($vo_p == $this->destination_vo) $selected = "selected=selected";
+            echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
+        }
+        ?>
+        </select>
+        <br>
+
+        <span class="header">Destination Ticket ID:</span>
+        <input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/>
+        <br>
+    </td>  
+    <td width="60%" class="assignees">
+        <?if(user()->allows("admin")) {?>
+        <span style="float: right;padding-right: 5px;"><a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a></span>
+        <?}?>
+
+        <h4>Assignees:</h4>
+        <?
+        function showTeams($teams, $assignees, $ids, $txlinks) {
+            foreach($ids as $id) {
+                $team = $teams[$id];
+                echo "<h5>".Footprint::parse($team->team)."</h5>";
+                if(sizeof($team->members) > 7) {
+                    echo fblist("team_$id", $team->members, $assignees);
+                } else {
+                    echo checklist("team_$id", $team->members, $assignees, $txlinks);
                 }
-                ?>
-                </select>
-            </td>
-        </tr>
+            }
+        }
+        echo "<table width=\"100%\">";
+        echo "<tr><td>";
+        showTeams($this->teams, $this->assignees, config()->editor_teams[0], $this->txlinks);
+        echo "</td><td>";
+        showTeams($this->teams, $this->assignees, config()->editor_teams[1], $this->txlinks);
+        echo "</td><td>";
+        showTeams($this->teams, $this->assignees, config()->editor_teams[2], $this->txlinks);
+        echo "</td></tr>";
+        echo "</table>";
+        ?>
+    </td>
+    </tr><tr>
+    <td>
+        <h4>Other Information</h4>
+        <span class="header">Ticket Type:</span>
+        <select name="ticket_type">
+        <?
+        $ttype = Footprint::GetTicketTypes();
+        foreach($ttype as $type) {
+            $selected = "";
+            if($type == $this->ticket_type) $selected = "selected=selected";
+            echo "<option value=\"$type\" $selected>$type</option>";
+        }
+        ?>
+        </select>
+        <br/>
+
+        <span class="header">Priority:</span>
+        <select name="priority">
+        <?
+        $plist = Footprint::GetPriorityList();
+        foreach($plist as $id=>$p) {
+            $selected = "";
+            if($p == $this->priority) $selected = "selected=selected";
+            echo "<option value=\"$id\" value=\"$id\" $selected>$p</option>";
+        }
+        ?>
+        </select>
+        <br/>
+
+        <span class="header">Status:</span>
+        <?
+        $style = status2style($this->status);
+        echo "<select name=\"status\">";
+        foreach(Footprint::GetStatusList() as $status) {
+            $selected = "";
+            if($status == $this->status) $selected = "selected=selected";
+            $style = status2style($status);
+            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+        }
+        ?>
+        </select>
+        <br/>
+
+        <span class="header">Next Action Deadline:</span>
+        <input type="text" name="nad" value="<?=$this->nad?>"/>
+        <br/>
+
+        <span class="header">Next Action Item:</span>
+        <input type="text" name="next_action" value="<?=$this->next_action?>"/>
+        <br/>
+
+        <table width="100%">
         <tr>
-            <td><span class="header">Originating Ticket ID:</span></td>
-            <td><input type="text" value="<?=$this->originating_ticket_id?>" name="originating_ticket_id"/></td>
-        </tr>
-        <tr>
-            <td><span class="header">Destination VO:</span></td>
-            <td>
-                <select name="destination_vo">
+        <td width="150px"><span class="header">CC:</span></td>
+        <td>
+            <div class="ccarea">
                 <?
-                foreach($this->destination_vos as $id=>$vo) {
-                    $selected = "";
-                    $vo_p = Footprint::parse($vo);
-                    if($vo_p == $this->destination_vo) $selected = "selected=selected";
-                    echo "<option value=\"$vo_p\" $selected>$vo_p</option>";
-                }
+                include_once("app/views/cc_editor.php");
+                cceditor($this->cc);
                 ?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="header">Destination Ticket ID:</td>
-            <td><input type="text" value="<?=$this->destination_ticket_id?>" name="destination_ticket_id"/></td>
-        </tr>
-        </table>
+            </div>
+            <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
+        </td>
+        </tr></table>
+
+        <br/>
     </td>
     <td class="attachments">
         <h4>Attachments</h4>
@@ -250,103 +337,6 @@ if(isset($this->error_messages)) {
         });
         </script>
     </td>
-    </tr><tr>
-    <td>
-        <h4>Other Information</h4>
-        <span class="header">Ticket Type:</span>
-        <select name="ticket_type">
-        <?
-        $ttype = Footprint::GetTicketTypes();
-        foreach($ttype as $type) {
-            $selected = "";
-            if($type == $this->ticket_type) $selected = "selected=selected";
-            echo "<option value=\"$type\" $selected>$type</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Priority:</span>
-        <select name="priority">
-        <?
-        $plist = Footprint::GetPriorityList();
-        foreach($plist as $id=>$p) {
-            $selected = "";
-            if($p == $this->priority) $selected = "selected=selected";
-            echo "<option value=\"$id\" value=\"$id\" $selected>$p</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Status:</span>
-        <?
-        $style = status2style($this->status);
-        echo "<select name=\"status\">";
-        foreach(Footprint::GetStatusList() as $status) {
-            $selected = "";
-            if($status == $this->status) $selected = "selected=selected";
-            $style = status2style($status);
-            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Next Action Deadline:</span>
-        <input type="text" name="nad" value="<?=$this->nad?>"/>
-        <br/>
-
-        <span class="header">Next Action Item:</span>
-        <input type="text" name="next_action" value="<?=$this->next_action?>"/>
-        <br/>
-
-        <table width="100%">
-        <tr>
-        <td width="150px"><span class="header">CC:</span></td>
-        <td>
-            <div class="ccarea">
-                <?
-                include_once("app/views/cc_editor.php");
-                cceditor($this->cc);
-                ?>
-            </div>
-            <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
-        </td>
-        </tr></table>
-
-        <br/>
-    </td>
-    <td width="60%" colspan="2">
-
-        <?if(user()->allows("admin")) {?>
-        <span style="float: right;padding-right: 5px;"><a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a></span>
-        <?}?>
-
-        <h4>Assignees:</h4>
-        <?
-        function showTeams($teams, $assignees, $ids, $txlinks) {
-            foreach($ids as $id) {
-                $team = $teams[$id];
-                echo "<h5>".Footprint::parse($team->team)."</h5>";
-                if(sizeof($team->members) > 7) {
-                    echo fblist("team_$id", $team->members, $assignees);
-                } else {
-                    echo checklist("team_$id", $team->members, $assignees, $txlinks);
-                }
-            }
-        }
-        echo "<table width=\"100%\">";
-        echo "<tr><td>";
-        showTeams($this->teams, $this->assignees, config()->editor_teams[0], $this->txlinks);
-        echo "</td><td>";
-        showTeams($this->teams, $this->assignees, config()->editor_teams[1], $this->txlinks);
-        echo "</td><td>";
-        showTeams($this->teams, $this->assignees, config()->editor_teams[2], $this->txlinks);
-        echo "</td></tr>";
-        echo "</table>";
-        ?>
-    </td>
     </tr></table>
 
     <span class="header">New Update:</span>
@@ -394,6 +384,7 @@ if(isset($this->error_messages)) {
         <?}?>
 
     </td>
+    </tr><tr>
     </tr></table>
 
 

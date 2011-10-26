@@ -54,17 +54,13 @@
 }
 
 .fileupload-content .ui-progressbar {
-  width: 130px;
+width:100%;
   height: 20px;
+margin: 3px 0px;
 }
 
 .fileupload-content .ui-progressbar-value {
   background: url(pbar-ani.gif);
-}
-
-.fileupload-content .fileupload-progressbar {
-  width: 400px;
-  margin: 10px 0;
 }
 
 table.files {

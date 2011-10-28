@@ -68,8 +68,7 @@ slog("---------dispatching--------");
 $frontController = Zend_Controller_Front::getInstance();
 
 //add ticket viewer shortcut
-$route = new Zend_Controller_Router_Route_Regex(
-    '(\d+)',
+$route = new Zend_Controller_Router_Route_Regex('(\d+)',
     array('controller'=>'viewer', 'action'=>'index'),
     array(1=>'id')
 );

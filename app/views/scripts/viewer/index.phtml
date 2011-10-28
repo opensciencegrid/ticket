@@ -69,11 +69,23 @@
 
 <div id="updates" style="clear: both;">
     <?
-    $sort_order = "down";
+    $sort_order = "down"; //default
+    $expand_all = false; 
     if(isset($_REQUEST["sort"])) {
         $sort_order = $_REQUEST["sort"];
     }
-    $flip_url = str_replace(array("&sort=up", "&sort=down"), "", fullurl());
+    if(isset($_REQUEST["expandall"])) {
+        if($_REQUEST["expandall"] == "true") {
+            $expand_all = true;
+        }
+    }
+
+    $flip_url = fullurl();
+    if($expand_all) {
+        $flip_url = "?expandall=true";
+    } else {
+        $flip_url = "?expandall=false";
+    }
     if($sort_order == "down") {
         $flip_url .= "&sort=up";
         $flip_button = "images/up.png";
@@ -88,8 +100,8 @@
     <p>
         <span style="float: right"><a href="<?=$flip_url?>">Reverse Sorting Order</a>&nbsp;<img align="top" src="<?=$flip_button?>"/></span>
         <?
-        if(!isset($_REQUEST["expandall"])) {
-            $expand_all_url = fullurl()."&expandall=true";
+        if(!$expand_all) {
+            $expand_all_url = fullurl()."?expandall=true&sort=$sort_order";
             echo "<a style=\"float: right; margin-right: 10px;\" href=\"$expand_all_url\">Expand All Descriptions</a>";
         }
         $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;

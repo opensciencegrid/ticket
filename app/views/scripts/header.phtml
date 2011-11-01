@@ -59,7 +59,14 @@
     <![endif]-->
 
     <script type="text/javascript">
-        //something?
+        $(function() {
+            //prevent double submission
+            $("input[type='submit']").click(function() {
+                if($(this).data("submitted")) return false;
+                $(this).data("submitted", true);
+                return true;
+            });
+        });
     </script>
 </head>
 <body>

@@ -232,17 +232,13 @@ if(isset($this->error_messages)) {
     </td>
     <td class="attachments">
         <h4>Attachments</h4>
+        <?php if(isset($this->ticket_id)) { ?>
         <div id="fileupload" style="width: 100%;">
             <div class="fileupload-buttonbar">
                 <label class="fileinput-button">
                     <span>Add Attachments ...</span>
                     <input type="file" name="files[]" multiple>
                 </label>
-    <!--
-                <button type="submit" class="start">Start upload</button>
-                <button type="reset" class="cancel">Cancel upload</button>
-                <button type="button" class="delete">Delete files</button>
-    -->
             </div>
             <div class="fileupload-content">
                 <table class="files"></table>
@@ -336,6 +332,9 @@ if(isset($this->error_messages)) {
             });
         });
         </script>
+        <?php } else { ?>
+            <p>Please submit your ticket before adding any attachments.</p>
+        <?php } ?>
     </td>
     </tr></table>
 

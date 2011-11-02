@@ -68,7 +68,7 @@ class User
         $sql = "select d.*, c.*, d.id as dn_id from dn d left join contact c on (d.contact_id = c.id)
                     where
                         c.disable = 0 and
-                        dn_string = '$dn'";
+                        dn_string = \"$dn\"";
         $row = db("oim")->fetchRow($sql);
         if($row) {
             $this->dn_id = $row->dn_id;

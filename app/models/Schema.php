@@ -59,7 +59,7 @@ class Schema
         $teams = $this->getteams();
         foreach($teams as $team) {
             if($team->team == $team_name) {
-                return split(",", $team->members);
+                return explode(",", $team->members);
             }
         }
         return null;
@@ -73,14 +73,14 @@ class Schema
     public function getoriginatingvos()
     {
         $ret = $this->getvos();
-        $list = split(",", $ret[0]->originating_vo);
+        $list = explode(",", $ret[0]->originating_vo);
         asort($list);
         return $list;
     }
     public function getdestinationvos()
     {
         $ret = $this->getvos();
-        $list = split(",", $ret[1]->destination_vo);
+        $list = explode(",", $ret[1]->destination_vo);
         asort($list);
         return $list;
     }

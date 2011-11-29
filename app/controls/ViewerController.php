@@ -492,7 +492,9 @@ class ViewerController extends Zend_Controller_Action
         header('Content-Disposition: inline; filename="files.json"');
         header('X-Content-Type-Options: nosniff');
         header('Vary: Accept');
-        require_once("app/json.php");
+	if(!function_exists("json_encode")) {
+		require_once("app/json.php");
+	}
         echo json_encode($datas);
         $this->render("none", null, true);
     }
@@ -529,7 +531,9 @@ class ViewerController extends Zend_Controller_Action
         $model = new Attachments();
         $ret = $model->remove($id, $attachment_id);
 
-        require_once("app/json.php");
+	if(!function_exists("json_encode")) {
+		require_once("app/json.php");
+	}
         echo json_encode($ret);
         $this->render("none", null, true);
     }
@@ -545,7 +549,9 @@ class ViewerController extends Zend_Controller_Action
 
         $model = new Attachments();
         $datas = $model->listattachments($id);
-        require_once("app/json.php");
+	if(!function_exists("json_encode")) {
+		require_once("app/json.php");
+	}
         echo json_encode($datas);
         $this->render("none", null, true);
     }

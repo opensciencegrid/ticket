@@ -167,7 +167,7 @@
             echo "<img style=\"padding-right: 3px;\" class=\"anchor_img\" align=\"right\" src=\"images/application_link.png\"/>";
             echo "<a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b>";
             echo "</div>";
-            $lines_raw = split("\n", $content);
+            $lines_raw = explode("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {
                 $line = trim($line);

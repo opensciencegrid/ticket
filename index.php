@@ -34,6 +34,7 @@ try {
     ini_set('display_startup_errors', 1);
     ini_set('default_charset', 'UTF-8');
     ini_set('default_socket_timeout', 120);
+    date_default_timezone_set("UTC");//this will be later modified again (if user has valid timezone)
 
     remove_quotes();
     setup_logs();
@@ -41,7 +42,6 @@ try {
 
     cert_authenticate();
     if(!date_default_timezone_set(user()->getTimeZone())) {
-        date_default_timezone_set("UTC");
         addMessage("Your timezone '".user()->getTimeZone()."' is not valid. Please try using location based timezone such as 'America/Chicago'. Reverting to UTC.");
     }
     error_reporting(E_ALL | E_STRICT);

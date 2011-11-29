@@ -66,27 +66,32 @@ background-image: none;
 <script type="text/javascript">
 <?
     $columns = array(
-        array("name"=>"ID", "type"=>"numeric"), 
-        array("name"=>"Submitter", "type"=>"string", "meta"=>true),
-        array("name"=>"Submit Date", "type"=>"date"),
-        array("name"=>"Title", "type"=>"html"), 
-        array("name"=>"Update Date", "type"=>"date"), 
-        array("name"=>"Next Action", "type"=>"string"), 
-        array("name"=>"NAD", "type"=>"html"), 
-        array("name"=>"Priority", "type"=>"html"), 
-        array("name"=>"Assignees", "type"=>"string"), 
-        array("name"=>"CCs", "type"=>"string"), 
-        array("name"=>"Origin.&nbsp;VO", "type"=>"string"), 
-        array("name"=>"Dest.&nbsp;VO", "type"=>"string"),
-        array("name"=>"Resource Group", "type"=>"string", "meta"=>true),
-        array("name"=>"Submitted Via", "type"=>"string", "meta"=>true)
+        array("name"=>"ID", "type"=>"numeric", "visible"=>true), 
+        array("name"=>"Submitter", "type"=>"string", "meta"=>true, "visible"=>false),
+        array("name"=>"Submit Date", "type"=>"date", "visible"=>false),
+        array("name"=>"Title", "type"=>"html", "visible"=>true), 
+        array("name"=>"Update Date", "type"=>"date", "visible"=>false), 
+        array("name"=>"Next Action", "type"=>"string", "visible"=>true), 
+        array("name"=>"NAD", "type"=>"html", "visible"=>true), 
+        array("name"=>"Priority", "type"=>"html", "visible"=>true), 
+        array("name"=>"Assignees", "type"=>"string", "visible"=>true), 
+        array("name"=>"CCs", "type"=>"string", "visible"=>true), 
+        array("name"=>"Origin.&nbsp;VO", "type"=>"string", "visible"=>false), 
+        array("name"=>"Dest.&nbsp;VO", "type"=>"string", "visible"=>false),
+        array("name"=>"Resource Group", "type"=>"string", "meta"=>true, "visible"=>false),
+        array("name"=>"Submitted Via", "type"=>"string", "meta"=>true, "visible"=>false),
+        array("name"=>"GGUS Ticket ID", "type"=>"numeric", "meta"=>true, "visible"=>false)
         );
     $column_types = "";
     foreach($columns as $id=>$column) {
         if($column_types != "") {
             $column_types .= ", ";
         }
-        $column_types .= "{ \"sType\": \"".$column["type"]."\"}";
+	$visible = "false";
+	if($column["visible"]) {
+		$visible = "true";
+	}
+        $column_types .= "{ \"sType\": \"".$column["type"]."\", \"bVisible\": $visible }";
     }
 
 ?>
@@ -205,6 +210,12 @@ function showtickets($tickets, $id, $columns, $search, $metadata) {
             $resource_group = $metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"];
         }
 
+        $ggus_ticket_id = "";
+        if(isset($metadata[$ticket->mrid]["GGUS_TICKET_ID"])) {
+            $ggus_ticket_id = $metadata[$ticket->mrid]["GGUS_TICKET_ID"];
+        }
+
+
         ?>
         <tr onclick="window.open('<?=$url?>','<?=$target?>');">
             <td><?=$ticket->mrid?></td>
@@ -228,6 +239,7 @@ function showtickets($tickets, $id, $columns, $search, $metadata) {
 
             <td><?=$resource_group?></td>
             <td><?=$submitted_via?></td>
+            <td><?=$ggus_ticket_id?></td>
         </tr>
         <?
     }
@@ -278,9 +290,15 @@ $(document).ready(function() {
             foreach($columns as $id=>$column) {
                 $name = $column["name"];
                 $active = "ui-state-active";
-                if(isset($table_cols[$id]) && $table_cols[$id] == false) {
-                    $active = "";
-                }
+                if(isset($table_cols[$id])) {
+			if($table_cols[$id] == false) {
+			    $active = "";
+			}
+                } else {
+			if($column["visible"] == false) {
+		 	    $active = "";
+			}
+		}
                 $corner = "";
                 if($first) {
                     $first = false;

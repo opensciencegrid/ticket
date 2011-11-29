@@ -1,6 +1,8 @@
 <?
 
-require_once("app/json.php");
+if(!function_exists("json_decode")) {
+	require_once("app/json.php");
+}
 
 class NavigatorController extends Zend_Controller_Action 
 { 
@@ -18,14 +20,15 @@ class NavigatorController extends Zend_Controller_Action
         $this->view->closed_table_cols = array();
         $this->view->table_search = array("opened"=>array(), "closed"=>array());
         foreach($_COOKIE as $key=>$c) {
+	    $c = str_replace("'", "\"", $c); //php53's json_decode doesn't parse single quote..
             if(strpos($key, "SpryMedia_DataTables_opened") === 0){
                 $json = json_decode($c);
-                $this->view->opened_table_cols = $json->abVisCols;
-                $this->view->table_search["opened"] = $json->aaSearchCols;
+		$this->view->opened_table_cols = $json->abVisCols;
+		$this->view->table_search["opened"] = $json->aaSearchCols;
             } else if(strpos($key, "SpryMedia_DataTables_closed") === 0){
                 $json = json_decode($c);
-                $this->view->closed_table_cols = $json->abVisCols;
-                $this->view->table_search["closed"] = $json->aaSearchCols;
+		$this->view->closed_table_cols = $json->abVisCols;
+		$this->view->table_search["closed"] = $json->aaSearchCols;
             }
         }
 

@@ -59,6 +59,10 @@ class SimplenotifyController extends BaseController
             $e->setBody($form->getValue('body'));
             $e->setTo('goc@opensciencegrid.org');
 
+            if($form->getValue('sign')) {
+	        $e->setSign();
+	    }
+
             //the last minutes debug override
             if(config()->debug) {
                 $e->setTo("hayashis@indiana.edu");
@@ -121,6 +125,9 @@ class SimplenotifyController extends BaseController
         $detail->setLabel("Content");
         $detail->setRequired(true);
         $form->addElement($detail);
+
+        $e = new Zend_Form_Element_Checkbox('sign');
+        $form->addElement($e);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

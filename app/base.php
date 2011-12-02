@@ -87,7 +87,10 @@ function signedmail($to, $from, $subject, $body, $header = "")
     $signed_body = tempnam("/tmp", "gocticket");
     $command = "openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body";
     slog($command);
-    system($command);
+    system($command, $ret);
+    if($ret != 0) {
+	elog("command returned non-0 return code. code:$ret command:$command");
+    }
 
     //insert the signed content and my header to $header
     $header .= "From: $from\r\n";

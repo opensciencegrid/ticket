@@ -60,6 +60,11 @@ function checked($e)
 
 <?=$this->element->subject?>
 <?=$this->element->body?>
+
+<input type="hidden" name="sign" value="0">
+<input type="checkbox" name="sign" id="sign" value="1" <?=checked($this->element->sites)?>>
+Sign Email using GOC/DOEGrid user certificate&nbsp;&nbsp;&nbsp;
+
 <?=$this->element->submit_button?>
 
 </dl>

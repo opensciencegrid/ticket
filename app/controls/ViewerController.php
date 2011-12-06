@@ -287,7 +287,7 @@ class ViewerController extends Zend_Controller_Action
                 $footprint->submit();
                 addMessage("Successfully updated ticket $ticket_id!");
                 $close = "";
-                if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "true") {
+                if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
                     $close = "?close=true";
                 }
                 header("Location: ".fullbase()."/".$ticket_id.$close);

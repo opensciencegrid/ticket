@@ -235,27 +235,6 @@
             echo "No similar tickets found that are modified within the last 30 days.";
         }
 
-/*
-        <div id="custom_search_area">
-            <a href="javascript:void(0);" onclick="return load_similar_tickets();">Search</a>
-        </div>
-        <script type="text/javascript">
-        function load_similar_tickets() {
-            $("#custom_search_area").html("<p class='loading'>Loading...</p>");
-            $.getScript("https://www.googleapis.com/customsearch/v1?key=<?=config()->google_search_api_key?>&cx=<?=config()->google_custom_search?>&q=ldap&callback=hndlr");
-        }
-        function hndlr(response) {
-            console.dir(response);
-            var e = document.getElementById("custom_search_area");-
-            e.innerHTML = "";
-            for (var i = 0; i < response.items.length; i++) {
-                var item = response.items[i];
-                e.innerHTML += "<a href=\""+item.link+"\">" + (item.htmlTitle) + "</a><br>";
-                e.innerHTML += "<p>" + (item.htmlSnippet) + "</p>";
-            }
-        }
-
-*/
         ?>
     </td></tr></table>
 

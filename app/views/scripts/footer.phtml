@@ -3,26 +3,22 @@
 <div id="footer">
 <?
 
-echo "<p>".config()->app_name." Version ".config()->version;
-if(config()->debug) {
-    exec("svn info | grep \"Revision:\" |  awk '{print $2}'", $out);
-    echo " (Rev. ".$out[0].")";
-}
-echo " | ";
-?>
-<a href="https://ticket.grid.iu.edu/goc/gocticket?ref=<?=urlencode(fullurl())?>">Report Bugs on this page</a>
-<?
-echo "</p>";
-
 echo "<p>Logged in as <b>";
 if(user()->isGuest()) {
     echo "Guest";
 } else {
     echo user()->getDN()." (".user()->getTimeZone().")";
 }
-echo "</b>";
+echo "</b></p>";
 
+echo "<p>".config()->app_name." Version ".config()->version;
+if(config()->debug) {
+    exec("svn info | grep \"Revision:\" |  awk '{print $2}'", $out);
+    echo " (Rev. ".$out[0].")";
+}
 ?>
+ | <a href="https://ticket.grid.iu.edu/goc/gocticket?ref=<?=urlencode(fullurl())?>">Report Bugs</a>
+ | <a href="https://twiki.grid.iu.edu/bin/view/Operations/IUPrivacyPolicy">Privacy Policy</a>
 </p>
 
 <p> <img align="top" src="<?=base()?>/images/tag_orange.png"/>&nbsp;<?=config()->copyright?></p>

@@ -482,7 +482,7 @@ class ViewerController extends Zend_Controller_Action
         }
         
         $id = (int)$_REQUEST["id"];
-        if($id > 20000) return; //small attempt to block some kind of random access attack
+        //if($id > 20000) return; //small attempt to block some kind of random access attack
 
         $model = new Attachments();
         $datas = $model->upload($id);

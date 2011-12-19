@@ -1,7 +1,15 @@
-<?include("app/views/scripts/header.phtml");?>
-
-<link rel="prefetch" href="../images/selected_back.gif"/>
-<link rel="prefetch" href="../images/pointer.png"/>
+<?php include("app/views/scripts/header.phtml");?>
+<style>
+td.routing table td {
+padding: 0px;
+}
+td.routing input {
+width: 145px;
+}
+td.routing select {
+width: 153px;
+}
+</style>
 
 <?if(isset($this->load_comet)) {?>
     <script type="text/javascript">

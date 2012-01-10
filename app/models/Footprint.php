@@ -447,9 +447,16 @@ class Footprint
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
 
-            //For new ticket
+            //prepare message to publish on event server
+            $event = new EventPublisher();
+            $msg = "<ticket>";
+            $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
+            $msg .= "<description>".htmlspecialchars($this->description)."</description>";
+            $msg .= "<status>".htmlspecialchars($this->status)."</status>";
+            $msg .= "</ticket>";
+
             if($this->id === null) {
-                //Send SMS -- if the ticket didn't come from other ticketing system.
+                //For new ticket -- Send SMS -- if the ticket didn't come from other ticketing system.
                 //(We don't want GGUS to send us critical ticket which send us alarm in the middle of the night)
                 if(trim(@$this->project_fields["Originating__bTicket__bNumber"]) == "") {
                     $this->send_notification($params["assignees"], $newid);
@@ -457,6 +464,11 @@ class Footprint
 
                 //reset ticket ID with new ID that we just got
                 $this->id = $newid;
+
+                $event->publish($msg, $this->id.".create");
+            } else {
+                //ticket updated
+                $event->publish($msg, $this->id.".update");
             }
 
             //if assignee notification was suppressed, then send GOC-TX trigger email ourselves

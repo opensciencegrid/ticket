@@ -136,26 +136,30 @@ class ViewerController extends Zend_Controller_Action
 
         //load simmilar ticket info
         $xml_file = config()->group_xml_path;
-        try {
-            $groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);
-            $match = false;
-            foreach($groups as $group) {
-                $tickets = array();
-                foreach($group as $ticket) {
-                    if($ticket->id == $id) {
-                        $match = true;
-                        continue;
+        if(file_exists($xml_file)) {
+            try {
+                $groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);
+                $match = false;
+                foreach($groups as $group) {
+                    $tickets = array();
+                    foreach($group as $ticket) {
+                        if($ticket->id == $id) {
+                            $match = true;
+                            continue;
+                        }
+                        $tickets[] = $ticket;
                     }
-                    $tickets[] = $ticket;
+                    if($match) {
+                        uasort($tickets, "ticketcmp");
+                        $this->view->similar_tickets = $tickets;
+                        break;
+                    }
                 }
-                if($match) {
-                    uasort($tickets, "ticketcmp");
-                    $this->view->similar_tickets = $tickets;
-                    break;
-                }
+            } catch(exception $e) {
+                throw new exception($e->getMessage());
             }
-        } catch(exception $e) {
-            throw new exception($e->getMessage());
+        } else {
+            elog($xml_file." doesn't exist");
         }
 
         return $detail;

@@ -147,7 +147,7 @@ RSS Feed: http://osggoc.blogspot.com");
             $tickets[$resource->name] = $ticket;
         }
         return $tickets;
-     }
+    }
 
     public function submitAction() 
     {

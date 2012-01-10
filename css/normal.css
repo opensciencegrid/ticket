@@ -19,8 +19,8 @@ margin-bottom: 10px;
 }
 
 #header {
-/*background: #252525 url('../images/bg-menu-main.jpg') no-repeat 0% 0%;*/
-background: #252525 url('../images/bg-menu-main-christmas.jpg') no-repeat 0% 0%;
+background: #252525 url('../images/bg-menu-main.jpg') no-repeat 0% 0%;
+/*background: #252525 url('../images/bg-menu-main-christmas.jpg') no-repeat 0% 0%;*/
 height: 60px;
 }
 #header .title{

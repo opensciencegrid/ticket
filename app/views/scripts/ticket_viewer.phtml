@@ -29,16 +29,20 @@ padding-bottom: 0.3em;
         $out .= "<h5>$name</h5>";
         $set = false;
         foreach($team->members as $userid=>$username) {
-            list($extra, $url) = $this->txlinks[$userid];
             if(isset($this->assignees[$userid])) {
                 $out .= "<div class=\"assignee\" style=\"width: 60%\">".$username;
-                $out .= "<span class=\"sidenote\">";
-                if($url !== null) {
-                    $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>";
-                } else {
-                    $out .= $extra;
+
+                if(isset($this->txlinks[$userid])) {
+                    $out .= "<span class=\"sidenote\">";
+                    list($extra, $url) = $this->txlinks[$userid];
+                    if($url !== null) {
+                        $out .= "<a target=\"_blank\" href=\"$url\">$extra</a>";
+                    } else {
+                        $out .= $extra;
+                    }
+                    $out .= "</span>";
                 }
-                $out .= "</span></div>";
+                $out .= "</div>";
                 $set = true;
             }
         }

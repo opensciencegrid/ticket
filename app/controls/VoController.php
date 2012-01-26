@@ -22,6 +22,7 @@ class VoController extends BaseController
             $footprint->setTitle($form->getValue("title"));
 
             $void = $form->getValue("vo");
+            $footprint->setMetadata("ASSOCIATED_VO_ID", $void);
             $footprint->addPrimaryVOAdminContact($void);
 
             $model = new VO();
@@ -34,6 +35,7 @@ class VoController extends BaseController
             if(!$sc) {
                 $footprint->addMeta("Failed to find active support center with id ".$vo->sc_id);
             } else {
+                $footprint->setMetadata("SUPPORTING_SC_ID", $sc->id);
                 $scname = $sc->footprints_id;
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);

@@ -103,14 +103,12 @@ function cert_authenticate()
         if(isset($_SERVER["SSL_CLIENT_S_DN"])) {
             $dn = $_SERVER["SSL_CLIENT_S_DN"];
 
-/*
-            //debug override
-            if(config()->debug) {
-                //$dn = "/DC=org/DC=doegrids/OU=People/CN=Dan Fraser 66495";
-                $dn = "/DC=org/DC=doegrids/OU=People/CN=Art Vandenberg 921499";
+            //apply dn override (for debugging)
+            if(isset(config()->dn_override[$dn])) {
+                $override = config()->dn_override[$dn];
+                $dn = $override;
                 slog("Overriding DN to $dn");
             }
-*/
 
             $user = new User($dn);
             if($user->getPersonID() && $_SERVER["SSL_CLIENT_VERIFY"] == "SUCCESS") {

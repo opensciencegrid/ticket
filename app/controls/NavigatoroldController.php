@@ -121,11 +121,11 @@ class NavigatoroldController extends Zend_Controller_Action
                 $fp_goc = array();
                 foreach($teams as $id=>$team) {
                     if(in_array($id, config()->navigator_assignee_list)) {
-                        $fp_goc = array_merge($fp_goc, split(",", $team->members));
+                        $fp_goc = array_merge($fp_goc, explode(",", $team->members));
                     }
                 }
 
-                foreach(split(" ", $token) as $a) {
+                foreach(explode(" ", $token) as $a) {
                     if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
                         //ignore CCs
                         continue;

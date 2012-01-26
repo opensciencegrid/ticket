@@ -83,6 +83,10 @@ function signedmail($to, $from, $subject, $body, $header = "")
     fwrite($handle, $body);
     fclose($handle);
 
+    //convert to dos format
+    $command = "dos2unix $original_body";
+    system($command);
+
     //sign the body
     $signed_body = tempnam("/tmp", "gocticket");
     $command = "openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body";

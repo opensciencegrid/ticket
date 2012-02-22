@@ -16,7 +16,6 @@ width: 153px;
         var config = {
             ticket_id: <?=$this->ticket_id?>,
             contact_id: <?=$this->contact_id?>,
-            //contact_name: "<?=$this->contact_name?>"+Math.floor(Math.random() * 100)
             contact_name: "<?=$this->contact_name?>"
         };
         function _update_ticket(data) {
@@ -30,7 +29,6 @@ width: 153px;
             }
         }
         function _update_presence(presence) {
-            //var html = "Your contact_name: " + config.contact_name + "<br>";
             var html = "";
             html += "<ul class=\"editors\">";
             var count = 0;

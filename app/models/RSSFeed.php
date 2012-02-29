@@ -32,7 +32,7 @@ class RSSFeed
         $entry->content = $gdClient->newContent($body);
         $entry->content->setType('text');
         $createdPost = $gdClient->insertEntry($entry, $uri);
-        $idText = split('-', $createdPost->id->text);
+        $idText = explode('-', $createdPost->id->text);
         $newpostid = $idText[2];
 
         slog("Created new blogger post with post id of $newpostid");

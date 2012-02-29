@@ -141,7 +141,7 @@ class FinderrorController extends Zend_Controller_Action
         $fp_scs = array();
         foreach($teams as $team) {
              if($team->team == "OSG__bSupport__bCenters") {
-                $fp_scs = split(",", $team->members);
+                $fp_scs = explode(",", $team->members);
                 break;
             }
         }
@@ -149,7 +149,7 @@ class FinderrorController extends Zend_Controller_Action
         //find TX team
         foreach($teams as $team) {
              if($team->team == "Ticket__bExchange") {
-                $fp_scs = array_merge($fp_scs, split(",", $team->members));
+                $fp_scs = array_merge($fp_scs, explode(",", $team->members));
                 break;
             }
         }
@@ -225,7 +225,7 @@ class FinderrorController extends Zend_Controller_Action
                 $team == "OSG GOC Management" ||
                 $team == "OSG Security Coordinators" ||
                 $team == "OSG Storage Team") {
-                $members = array_merge($members, split(",", $team_entry->members));
+                $members = array_merge($members, explode(",", $team_entry->members));
             }
         }
 
@@ -237,7 +237,7 @@ class FinderrorController extends Zend_Controller_Action
         $this->view->na_assignments = array();
         foreach($tickets as $ticket) {
             $found = false;
-            foreach(split(" ",$ticket->mrassignees) as $ass) {
+            foreach(explode(" ",$ticket->mrassignees) as $ass) {
                 if(in_array($ass, $members)) {
                     $found = true;
                     break;

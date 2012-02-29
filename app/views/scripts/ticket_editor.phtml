@@ -45,25 +45,10 @@ if(isset($this->error_messages)) {
                 }
             });
             $("#careof").result(function(event, data, formatted) {
-/*
-                var tokens = data.name.split(" ");
-                var fname = tokens.shift();
-                var lname = tokens.join(" ");
-                $("input[name=submitter_fname]").val(fname);
-                $("input[name=submitter_lname]").val(lname);
-*/
                 $("input[name=submitter_name]").val(data.name);
                 $("input[name=submitter_email]").val(data.email);
                 $("input[name=submitter_phone]").val(data.phone);
             });
-/*
-            $("#submitter").focusin(function() {
-                $("#populator").slideDown(); 
-            });
-            $("#submitter").focusout(function() {
-                $("#populator").slideUp(); 
-            });
-*/
         });
         </script>
      

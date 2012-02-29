@@ -19,7 +19,7 @@ class RestController extends Zend_Controller_Action
         $recs_grouped = array();
         foreach($recs as $rec) {
             $assignees = $rec->mrassignees;
-            foreach(split(" ", $assignees) as $assignee) {
+            foreach(explode(" ", $assignees) as $assignee) {
                 $assignee = trim($assignee);
                 if($assignee != "") {
                     if(isset($counts[$assignee])) {

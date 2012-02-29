@@ -284,22 +284,6 @@ class Footprint
 
     private function chooseGOCAssignee()
     {
-/*
-        $people = array();
-
-        //find the list of people for assignees
-        $schema_model = new Schema();
-        $teams = $schema_model->getteams();
-        foreach($teams as $team) {
-            if($team->team == config()->assignee_team) {
-                $people = split(",", $team->members);
-            }
-        }
-
-        //randomly pick one of the GOCers
-        $lucky = rand(0, sizeof($people)-1);
-        return $people[$lucky]; 
-*/
         $model = new NextAssignee();
         $assignee = $model->getNextAssignee();
         $this->addMeta("Assignment Reason: ".$model->getReason()."\n");

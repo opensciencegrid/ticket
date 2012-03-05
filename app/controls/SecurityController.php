@@ -1,7 +1,5 @@
 <?
 
-include("lib/MyFormDecoratorCaptcha.php");
-
 class SecurityController extends BaseController
 { 
     public function init()
@@ -72,6 +70,7 @@ class SecurityController extends BaseController
         $detail->setLabel("Detail");
         $form->addElement($detail);
 
+/* -- this is now provided through BaseController if it's public submission
         //output captcha element
         $validatorNotEmpty = new Zend_Validate_NotEmpty();
         $validatorNotEmpty->setMessage('This field is required, you cannot leave it empty');
@@ -83,6 +82,7 @@ class SecurityController extends BaseController
         $captchaDecorator->setTag('div');
         $captcha->addDecorator($captchaDecorator);
         $form->addElement($captcha);
+*/
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

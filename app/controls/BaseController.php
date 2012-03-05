@@ -1,5 +1,7 @@
 <?
 
+require_once("lib/MyFormDecoratorCaptcha.php");
+
 class BaseController extends Zend_Controller_Action
 { 
     //send email & sms
@@ -42,14 +44,12 @@ class BaseController extends Zend_Controller_Action
         if (isset($session->registerCaptcha))
         {
             $captchaCode = $session->registerCaptcha;
-            //dlog("using captchacode: ".$captchaCode);
         }
         else
         {
             $md5Hash = md5($_SERVER['REQUEST_TIME']);
             $captchaCode = substr($md5Hash, rand(0, 25), 5);
             $session->registerCaptcha = $captchaCode ;
-            //dlog("generated captchacode: ".$captchaCode);
         }
         return $captchaCode;
     }
@@ -124,6 +124,22 @@ class BaseController extends Zend_Controller_Action
                 //spending several hours!!! Resorting to global
                 Zend_Registry::set("passback_ccs", $ccs);
             }
+        }
+
+        if(user()->isguest()) {
+            //guest must answer captcha
+            $validatorNotEmpty = new Zend_Validate_NotEmpty();
+            $validatorNotEmpty->setMessage('This field is required, you cannot leave it empty');
+            $captcha_identical = new Zend_Validate_Identical($this->getCaptchaCode());
+            $captcha_identical->setMessage("Captcha code is incorrect.");
+            $captcha = new Zend_Form_Element_Text('captcha');
+            $captcha->setLabel('Type the characters you see in the picture above')
+                ->addValidator($captcha_identical)
+                ->addValidator($validatorNotEmpty, true)->setRequired(true);
+            $captchaDecorator = new My_Form_Decorator_Captcha();
+            $captchaDecorator->setTag('div');
+            $captcha->addDecorator($captchaDecorator);
+            $form->addElement($captcha);
         }
 
         return $form;

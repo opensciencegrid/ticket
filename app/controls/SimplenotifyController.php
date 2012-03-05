@@ -69,7 +69,7 @@ class SimplenotifyController extends BaseController
             //the last minutes debug override
             if(config()->debug) {
                 $e->setTo("hayashis@indiana.edu");
-                $e->addAddress("hayashis@indiana.edu");
+                $e->addAddress("Kevin Hill <kevinh@fnal.gov>");
             }
 
             try

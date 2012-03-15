@@ -129,12 +129,13 @@ function checklist($id, $kv, $selected, $extrainfo)
 }
 
 
-function fblist($id, $kv, $selected)
+function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitrary number..
 {
     $out = "";
 
     //output list editor
-    $out .= "<div class=\"fblist_container\" id=\"${id}__list\"><div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
+    $out .= "<div class=\"fblist_container\" id=\"${id}__list\">";
+    $out .= "<div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
 
     //output script
     $delete_url = fullbase()."/images/delete.png";
@@ -145,7 +146,7 @@ function fblist($id, $kv, $selected)
     foreach($kv as $key=>$value) {
         $name = "$id"."[$key]";
         if(isset($selected[$key])) {
-            $pre_selected .= "<div><img onclick=\"$(this).parent().remove();\" src=\"$delete_url\"/>".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
+            $pre_selected .= "<div><img onclick=\"$(this).parent().siblings('.autocomplete').show(); $(this).parent().remove();\" src=\"$delete_url\"/>".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
         }
         if(!$first) {
             $script .= ",\n";
@@ -154,6 +155,9 @@ function fblist($id, $kv, $selected)
         $script .= "{ id: \"$key\", name: \"$value\", desc: \"\" }";
     }
     $script .= "];";
+    if(count($selected) >= $max_select) {
+        $script .= "$(\"#${id}__list input.autocomplete\").hide();";
+    }
     $script .= <<<BLOCK
     $("#${id}__list input.autocomplete").autocomplete(${id}__listdata, {
         max: 9999999,
@@ -168,7 +172,10 @@ function fblist($id, $kv, $selected)
     }).result(function(event, item) {
         if(item != null) {
             $(this).val("");
-            $(this).before("<div><img onclick=\"$(this).parent().remove();\" src=\"$delete_url\"/>"+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
+            $(this).before("<div><img onclick=\"$(this).parent().siblings('.autocomplete').show();$(this).parent().remove();\" src=\"$delete_url\"/>"+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
+            if($(this).siblings("div").length >= $max_select) {
+                $(this).hide();
+            }
         }
     });
 });</script>
@@ -181,8 +188,8 @@ BLOCK;
     //display note
     $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"z-index: -1; position: absolute; color: #999; font-size: 9px; right: 3px; bottom: -5px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
 
-    $out .= "</div>";
-    $out .= "</div>";
+    $out .= "</div>";//fblist
+    $out .= "</div>";//fblist_container
 
     return $out;
 }

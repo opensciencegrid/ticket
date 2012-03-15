@@ -1,0 +1,8 @@
+<?include("app/views/scripts/header.phtml");?>
+<div class="form">
+<?if($this->errors != "") {
+    echo "<p class='errors'>".$this->errors."</p>";
+}?>
+<?=$this->form?>
+</div>
+<?include("app/views/scripts/footer.phtml");?>

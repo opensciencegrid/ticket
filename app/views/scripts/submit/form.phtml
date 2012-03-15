@@ -1,0 +1,234 @@
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>" name="submit_form">
+<dl>
+
+    <style>
+    .column {
+    width: 350px;
+    float: left;
+    margin-right: 20px;
+    }
+    .group {
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    }
+    .fblist {
+    background-color: white;
+    z-index: 1;
+    }
+    #title, #detail {
+    width: 710px;
+    }
+    
+    p.help-block {
+    margin-bottom: 3px;
+    color: #999;
+    }
+    </style>
+
+    <?=$this->render("yourinfo.phtml", true)?>
+
+    <dd>
+        <h3>Optional Details</h3>
+    </dd>
+    <p class="help-block">Expedite ticket resolution by providing following details.</p>
+    <div class="column">
+        <p>This issue is for specific ...</p>
+        <div class="group">
+            <input type="checkbox" name="resource_issue_check" id="resource_issue_check" onclick="$('#resource_issue_area').toggle();"> Resources<br>
+            <div id="resource_issue_area" class="hidden">
+                <p class="help-block">Please enter resource names</p>
+                <?php
+                //controller can't pass variables to form via Zend_Form... so pulling it here.
+                $model = new Resource();
+                $resource_kvs = array();
+                foreach($model->fetchAll() as $resource) {
+                    $resource_kvs[$resource->id] = $resource->name." (".$resource->fqdn.")";
+                }
+                echo fblist("resources", $resource_kvs, @$_REQUEST["resources"], 1);//max 1
+                ?>
+            </div>
+        </div>
+        <div class="group">
+            <input type="checkbox" name="vo_issue_check" id="vo_issue_check" onclick="$('#vo_issue_area').toggle();"> Virtual Organizations<br>
+            <div id="vo_issue_area" class="hidden">
+                <p class="help-block">Please enter virtual organization</p>
+                <?php
+                $model = new VO();
+                $vo_kvs = array();
+                foreach($model->fetchAll() as $vo) {
+                    $vo_kvs[$vo->id] = $vo->name;
+                }
+                echo fblist("vos", $vo_kvs, @$_REQUEST["vos"], 1);//max 1
+                ?>
+            </div>
+        </div>
+        <div class="group">
+            <input type="checkbox" name="app_issue_check" id="app_issue_check" onclick="$('#app_issue_area').toggle();"> Application<br>
+            <div id="app_issue_area" class="hidden">
+                <select name="app_issue_type" id="app_issue_type" onchange="change_app($(this).val());">
+                    <option value="">(Please Select)</option>
+                    <option value="bdii">BDII</option>
+                    <option value="ress_dev">ReSS (Software Issue)</option>
+                    <option value="ress_ops">ReSS (Collector Issue)</option>
+                    <option value="gratia_dev">Gratia (Software Issue)</option>
+                    <option value="gratia_ops">Gratia (Collector Issue)</option>
+                    <option value="gratiaweb">Gratia Web (gratiaweb.grid.iu.edu)</option>
+                    <option value="vdt">OSG Software Stack</option>
+                    <option value="twiki">Twiki (twiki.grid.iu.edu)</option>
+                    <option value="goc">OIM MyOSG Ticket Repo Display Jira</option>
+                </select>
+
+                <div id="app_bdii" class="app_detail hidden">
+                    Which BDII instance are you having this issue?<br>
+                    <select name="bdiiserver" id="bdiiserver">
+                        <option value="is-osg">is.grid.iu.edu</option>
+                        <option value="lcg">lcg.bdii.cern.ch</option>
+                        <option value="other">(Other)</option>
+                    </select>
+                    <br>
+
+                    Is the BDII responding to ldapsearch?<br>
+                    <select name="bdiidown" id="bdiidown">
+                        <option value="false">Yes</option>
+                        <option value="true">No</option>
+                    </select>
+                    <br>
+                </div>
+
+                <div id="app_twiki" class="app_detail hidden">
+
+                    Is this issue regarding<br>
+                    <input type="radio" value="bug" name="twikitype" id="twikitype_bug"> Bugs or outage on TWiki itself<br>
+                    <input type="radio" value="content" name="twikitype" id="twikitype_content"> TWiki content or account issue<br>
+                </div>
+
+                <div id="app_gratia_dev" class="app_detail hidden">
+                    Issues regarding to development and maintenance of the Gratia system. Bug reports against probes or collectors, or requests for help with regional / local collectors.<br>
+                </div>
+
+                <div id="app_gratia_ops" class="app_detail hidden">
+                    Issues regarding Operation of the OSG collectors (gratia-osg-prod.opensciencegrid.org) and reporting of sites<br>
+                </div>
+
+                <div id="app_gratiaweb" class="app_detail hidden">
+                    Issues on Gratia Web Interface (gratiaweb.grid.iu.edu)<br>
+                </div>
+
+                <div id="app_ress_ops" class="app_detail hidden">
+                    ReSS production instance issues<br>
+                </div>
+                <div id="app_ress_dev" class="app_detail hidden">
+                    ReSS Development & Maintenance<br>
+                </div>
+
+                <div id="app_vdt" class="app_detail hidden">
+                    VDT tools<br>
+                </div>
+                <div id="app_goc" class="app_detail hidden">
+                    Affected URL<br>
+                    <input type="text" name="app_goc_url" id="app_goc_url"><br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="column">
+        <p>This issue is a ...</p>
+        <div class="group">
+            <input type="checkbox" name="security_issue_check" id="security_issue_check" onclick="$('#security_issue_area').toggle();"> Security Issue<br>
+            <div id="security_issue_area" class="hidden">
+                <br>
+                <!-- <p class="help-block">Select following check boxes to open this ticket in CRITICAL priority</p>-->
+                <input type="checkbox" name="security_issue_immediate" id="security_issue_immediate"> This issue needs immediate, undivided attention from GOC staff until resolved.<br>
+                <input type="checkbox" name="security_issue_available" id="security_issue_available"> Contact will be available immediately for contact by GOC staff for details regarding the reported problem.<br>
+            </div>
+        </div>
+        <div class="group">
+            <input type="checkbox" name="membership_issue_check" id="membership_issue_check" onclick="$('#membership_issue_area').toggle();"> OSG Membership Request<br>
+            <div id="membership_issue_area" style="display: none;">
+                Which VO would you like to be member of?
+                <select name="membership_vo" id="membership_vo">
+                    <option value="">(I don't know)</option>
+                <?php 
+                foreach($vo_kvs as $id=>$name) {
+                    echo "<option value=\"$id\">$name</option>";
+                }
+                ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br clear="all">
+
+    <dd>
+        <h3>Issue Details</h3>
+    </dd>
+    <?=$this->element->title?>
+    <?=$this->element->detail?>
+
+    <?=$this->element->submit_button?>
+
+</dl>
+</form>
+
+<script>
+function change_app(name) {
+    $(".app_detail").hide();
+    $("#app_"+name).show();
+}
+$(function() {
+    //repopulate optional details
+    <?php if(isset($_REQUEST["resource_issue_check"])) {?>
+        $("#resource_issue_check").attr("checked", "checked");
+        $("#resource_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["vo_issue_check"])) {?>
+        $("#vo_issue_check").attr("checked", "checked");
+        $("#vo_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["app_issue_check"])) {?>
+        $("#app_issue_check").attr("checked", "checked");
+        $("#app_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["app_issue_type"])) {?>
+        $("#app_issue_type").val("<?php echo $_REQUEST["app_issue_type"]?>");
+        change_app("<?php echo $_REQUEST["app_issue_type"]?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["bdiiserver"])) {?>
+        $("#bdiiserver").val("<?php echo $_REQUEST["bdiiserver"]?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["bdiidown"])) {?>
+        $("#bdiidown").val("<?php echo $_REQUEST["bdiidown"]?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["twikitype"])) {
+        switch($_REQUEST["twikitype"]) {
+        case "bug": echo "$(\"#twikitype_bug\").attr(\"checked\", \"checked\");";break;
+        case "content": echo "$(\"#twikitype_content\").attr(\"checked\", \"checked\");";break;
+        }
+    }?>
+    <?php if(isset($_REQUEST["app_goc_url"])) {?>
+        $("#app_goc_url").val("<?php echo $_REQUEST["app_goc_url"]?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["security_issue_check"])) {?>
+        $("#security_issue_check").attr("checked", "checked");
+        $("#security_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["security_issue_immediate"])) {?>
+        $("#security_issue_immediate").attr("checked", "checked");
+    <?php } ?>
+    <?php if(isset($_REQUEST["security_issue_available"])) {?>
+        $("#security_issue_available").attr("checked", "checked");
+    <?php } ?>
+    <?php if(isset($_REQUEST["membership_issue_check"])) {?>
+        $("#membership_issue_check").attr("checked", "checked");
+        $("#membership_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["membership_vo"])) {?>
+        $("#membership_vo").val("<?php echo $_REQUEST["membership_vo"]?>");
+    <?php } ?>
+});
+</script>

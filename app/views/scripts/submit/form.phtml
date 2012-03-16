@@ -37,7 +37,7 @@
     <div class="column">
         <p>This issue is for specific ...</p>
         <div class="group">
-            <input type="checkbox" name="resource_issue_check" id="resource_issue_check" onclick="$('#resource_issue_area').toggle();"> Resources<br>
+            <input type="checkbox" name="resource_issue_check" id="resource_issue_check" onclick="$('#resource_issue_area').toggle();"> Resource<br>
             <div id="resource_issue_area" class="hidden">
                 <p class="help-block">Please enter resource names</p>
                 <?php
@@ -47,12 +47,12 @@
                 foreach($model->fetchAll() as $resource) {
                     $resource_kvs[$resource->id] = $resource->name." (".$resource->fqdn.")";
                 }
-                echo fblist("resources", $resource_kvs, @$_REQUEST["resources"], 1);//max 1
+                echo fblist("resource", $resource_kvs, @$_REQUEST["resources"], 1);//max 1
                 ?>
             </div>
         </div>
         <div class="group">
-            <input type="checkbox" name="vo_issue_check" id="vo_issue_check" onclick="$('#vo_issue_area').toggle();"> Virtual Organizations<br>
+            <input type="checkbox" name="vo_issue_check" id="vo_issue_check" onclick="$('#vo_issue_area').toggle();"> Virtual Organization<br>
             <div id="vo_issue_area" class="hidden">
                 <p class="help-block">Please enter virtual organization</p>
                 <?php
@@ -61,7 +61,7 @@
                 foreach($model->fetchAll() as $vo) {
                     $vo_kvs[$vo->id] = $vo->name;
                 }
-                echo fblist("vos", $vo_kvs, @$_REQUEST["vos"], 1);//max 1
+                echo fblist("vo", $vo_kvs, @$_REQUEST["vos"], 1);//max 1
                 ?>
             </div>
         </div>
@@ -92,8 +92,8 @@
 
                     Is the BDII responding to ldapsearch?<br>
                     <select name="bdiidown" id="bdiidown">
-                        <option value="false">Yes</option>
-                        <option value="true">No</option>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
                     </select>
                     <br>
                 </div>

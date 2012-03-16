@@ -286,7 +286,7 @@ class Footprint
     {
         $model = new NextAssignee();
         $assignee = $model->getNextAssignee();
-        $this->addMeta("Assignment Reason: ".$model->getReason()."\n");
+        //$this->addMeta("Assignment Reason: ".$model->getReason()."\n");
         return $assignee;
     }
 

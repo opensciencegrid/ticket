@@ -17,17 +17,32 @@ class SubmitController extends BaseController
     {
         $form = $this->getForm();
         if($form->isValid($_POST)) {
-            $footprint = $this->initSubmit($form);
-            if(isset($_POST["resources"])) {
-                    $this->processResource($footprints, $_POST["resources"]);
+            $footprints = $this->initSubmit($form);
+            if(isset($_POST["resource_issue_check"]) && isset($_POST["resource"])) {
+                //grab first key
+                $ids = array_keys($_POST["resource"]);
+                $this->processResource($footprints, $ids[0]);
             }
-            $footprint->addDescription($form->getValue('detail'));
-            $footprint->setTitle($form->getValue('title'));
-            $footprint->setDestinationVO("MIS");//lie.. we should be deprecating this soon
+            if(isset($_POST["vo_issue_check"]) && isset($_POST["vo"])) {
+                $ids = array_keys($_POST["vo"]);
+                $this->processVO($footprints, $ids[0]);
+            }
+            if(isset($_POST["app_issue_check"])) {
+                $this->processApp($footprints, $_POST["app_issue_type"]);
+            }
+            if(isset($_POST["security_issue_check"])) {
+                $this->processSecurity($footprints);
+            }
+            if(isset($_POST["membership_issue_check"])) {
+                $this->processMembership($footprints);
+            }
+            $footprints->addDescription($form->getValue('detail'));
+            $footprints->setTitle($form->getValue('title'));
+            $footprints->setDestinationVO("MIS");//lie.. we should be deprecating this soon
 
             try
             {
-                $mrid = $footprint->submit();
+                $mrid = $footprints->submit();
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
             } catch(exception $e) {
@@ -41,62 +56,196 @@ class SubmitController extends BaseController
         }
     }
 
-    private function processResource($footprints, $dirty_resource_ids)
+    private function processResource($footprints, $dirty_rid)
     {
         $rs_model = new ResourceSite();
         $resource_model = new Resource();
         $resource_group_model = new ResourceGroup();
         $sc_model = new SC();
 
-        $meta_rg_ids = array();
-        $meta_rg_names = array();
-        $meta_r_ids = array();
-        $meta_r_names = array();
-        /*
-        $meta_vo_ids = array();
-        $meta_vo_names = array();
-        */
-        foreach($dirty_resource_ids as $dirty_rid) {
-            $resource_id = (int)$dirty_rid;
-            $resource = $resource_model->fetchByID($resource_id);
-            $resource_group = $resource_group_model->fetchByID($resource->resource_group_id);
-            /*
-            $primary_vo = $resource_model->getPrimaryOwnerVO($resource_id);
-            */
+        $resource_id = (int)$dirty_rid;
+        $resource = $resource_model->fetchByID($resource_id);
+        $resource_group = $resource_group_model->fetchByID($resource->resource_group_id);
 
-            $meta_r_ids[] = $resource_id;
-            $meta_r_names[] = $resource->name;
-            $meta_rg_ids[] = $resource->resource_group_id;
-            $meta_rg_names[] = $resource_group->name;
-            /*
-            if(!$vo) {
-                $meta_vo_ids[] = $primary_vo->id;
-                $meta_vo_names[] = $primary_vo->name;
-            }
-            */
-
-            $sc_id = $rs_model->fetchSCID($resource_id);
-            if(!$sc_id) {
-                $scname = "OSG-GOC";
-                $footprint->addMeta("Couldn't find the support center that supports resource (".$resource->name."). Please see finderror page for more detail.\n");
-            } else {
-                $sc = $sc_model->get($sc_id);
-                $meta_sc_ids[] = $sc->footprints_id;
-            }
-
-            $footprint->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
-            $footprint->addPrimaryAdminContact($resource_id);
+        //optinally set VO
+        $primary_vo = $resource_model->getPrimaryOwnerVO($resource_id);
+        if(!$primary_vo) {
+            $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->id);
+            $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->name);
         }
 
-        $footprint->setMetadata("ASSOCIATED_R_ID", implode(",",$meta_r_ids));
-        $footprint->setMetadata("ASSOCIATED_R_NAME", implode(",",$meta_r_names));
-        $footprint->setMetadata("ASSOCIATED_RG_ID", implode(",",$meta_rg_ids));
-        $footprint->setMetadata("ASSOCIATED_RG_NAME", implode(",",$meta_rg_names));
-        $footprint->setMetadata("SUPPORTING_SC_ID", implode(",",$meta_sc_ids)); //TODO -- GOC_TX won't work...
-        /*
-        $footprint->setMetadata("ASSOCIATED_VO_ID", implode(",", $meta_vo_ids));
-        $footprint->setMetadata("ASSOCIATED_VO_NAME", implode(",", $meta_vo_names));
-        */
+        //optionally set SC
+        $sc_id = $rs_model->fetchSCID($resource_id);
+        if(!$sc_id) {
+            $scname = "OSG-GOC";
+            $footprints->addMeta("Couldn't find the support center that supports resource (".$resource->name."). Please see finderror page for more detail.\n");
+        } else {
+            $sc = $sc_model->get($sc_id);
+            $fpid = $sc->footprints_id;
+            $footprints->setMetadata("SUPPORTING_SC_ID", $fpid);
+            $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
+
+            //add the SC to assignee if it's valid FP ID
+            if($footprints->isValidFPSC($fpid)) {
+                $footprints->addAssignee($fpid);
+                $footprints->addMeta("Assigned support center: $fpid which supports this resource\n");
+            } else {
+                $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
+                elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
+            }
+        }
+
+        $footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
+        $footprints->addPrimaryAdminContact($resource_id);
+        $footprints->setMetadata("ASSOCIATED_R_ID", $resource_id);
+        $footprints->setMetadata("ASSOCIATED_R_NAME", $resource->name);
+        $footprints->setMetadata("ASSOCIATED_RG_ID", $resource->resource_group_id);
+        $footprints->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
+    }
+
+    private function processVO($footprints, $dirty_void)
+    {
+        $void = (int)$dirty_void;
+
+        $model = new VO();
+        $vo = $model->get($void);
+        //$footprint->setDestinationVO($vo->footprints_id);
+        $footprints->addMeta("VO on which user is having this issue: ".$vo->name."($vo->id)\n");
+        $footprints->setMetadata("ASSOCIATED_VO_ID", $vo->id);
+        $footprints->setMetadata("ASSOCIATED_VO_NAME", $vo->name);
+
+        //lookup SC name
+        $sc_model = new SC();
+        $sc = $sc_model->get($vo->sc_id);
+        if(!$sc) {
+            $footprints->addMeta("Failed to find active support center with id ".$vo->sc_id);
+        } else {
+            $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
+            $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
+            $fpid = $sc->footprints_id;
+            if($footprints->isValidFPSC($fpid)) {
+                $footprints->addAssignee($fpid);
+            } else {
+                $footprints->addMeta("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
+                elog("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
+            }
+        }
+    }
+
+    private function processApp($footprints, $dirty_app_type) {
+
+        switch($dirty_app_type) {
+        case "bdii": $this->processAppBDII($footprints);break;
+        case "ress_dev": $this->processAppSC($footprints, 40);break;//Ress SC
+        case "ress_ops": $this->processAppSC($footprints, 7);break;//Fermilab SC (see ticket 11798 - Steve's comment)
+        case "gratia_dev": $this->processAppSC($footprints, 47);break;//GRATIA Dev SC
+        case "gratia_ops": $this->processAppSC($footprints, 39);break;//GRATIA Ops SC
+        case "vdt": $this->processAppVDT($footprints);break;
+        case "twiki": $this->processAppTWiki($footprints);break;
+        case "gratiaweb": 
+        case "goc":
+            $this->processAppInfra($footprints);
+            break;
+
+        default: elog("unknown app_type given: ".$dirty_app_type);return;
+        }
+        $footprints->addMeta("Application issue with type: $dirty_app_type");
+    }
+
+    private function processAppBDII($footprints) {
+        $bdiiserver = $_POST["bdiiserver"];
+        $footprints->addMeta("BDII Issue on ".$bdiiserver);
+
+        $down = $_POST["bdiidown"];
+        $footprints->addMeta("Is the BDII completely down?: ".$down);
+
+        if($down == "true" && $bdiiserver == "is-osg") {
+            $footprints->addMeta("Opening ticket with CRITICAL priority\n");
+            $footprints->setPriority(1); //set it to critical;
+            //$footprints->setTicketType("Unscheduled__bOutage");
+        }
+
+        $footprints->addAssignee("steige", true); //clear list
+        $footprints->addAssignee("hayashis");
+    }
+
+    private function processAppSC($footprints, $scid) {
+        $sc_model = new SC();
+        $sc = $sc_model->get($scid);//ReSS SC
+        $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
+        $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
+        $fpid = $sc->footprints_id;
+        if($footprints->isValidFPSC($fpid)) {
+            $footprints->addAssignee($fpid);
+        } else {
+            elog("Failed to assign $fpid since it doesn't exist in FP yet");
+        }
+    }
+
+    private function processAppInfra($footprints) {
+        $footprints->addAssignee("steige", true); //clear list
+        $footprints->addAssignee("hayashis");
+        if(@$_POST["app_goc_url"] != "") {
+            $footprints->addMeta("Affected URL: ".$_POST["app_goc_url"]);
+        }
+    }
+
+    private function processAppVDT($footprints) {
+        $footprints->addAssignee("osg-software-support-stream");//Software Support (Triage)
+    }
+
+    private function processAppTWiki($footprints) {
+        if($_POST["twikitype"] == "bug") {
+            //if it's bug, assign ticket to infrastructure
+            $footprints->addAssignee("steige", true); //clear list
+            $footprints->addAssignee("hayashis");
+        }
+    }
+
+    private function processSecurity($footprints) {
+        if(isset($_POST["security_issue_immediate"]) && isset($_POST["security_issue_available"])) {
+            $footprints->addMeta("User need immediate attention, and available for contact - opening ticket with CRITICAL priority");
+            $footprints->setPriority(1); //set it to critical
+        }
+
+        $footprints->addAssignee("rquick", true); 
+        $footprints->addAssignee("kagross");
+        $footprints->setTicketType("Security");
+    }
+
+    private function processMembership($footprints) {
+        if($_POST["membership_vo"] == "") {
+            $footprints->addMeta("Submitter doesn't know the VO they would like to request membership to.\n");
+        } else {
+            $void = (int)$_POST["membership_vo"];
+
+            $vo_model = new VO();
+            $info = $vo_model->get($void);
+            $sc_model = new SC;
+            $sc = $sc_model->get($info->sc_id);
+            $fpid = $sc->footprints_id;
+
+            $footprints->setMetadata("ASSOCIATED_VO_ID", $void);
+            $footprints->setMetadata("ASSOCIATED_VO_NAME", $info->name);
+            $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
+            $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
+            $footprints->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
+            $footprints->addMeta("This VO is supported by support center: $sc->name\n");
+            if($footprints->isValidFPSC($fpid)) {
+                $footprints->addAssignee($fpid);
+            } else {
+                $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
+                elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
+            }
+        }
+
+        //add DN as meta
+        $dn = user()->getDN();
+        if($dn == null) {
+            $footprints->addMeta("Submitter's DN is unknown.\n");
+        } else {
+            $footprints->addMeta("Submitter's DN: $dn\n");
+        }
     }
 
     private function getForm()

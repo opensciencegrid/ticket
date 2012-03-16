@@ -1,5 +1,4 @@
 <?
-
 class VoController extends BaseController
 { 
     public function init()

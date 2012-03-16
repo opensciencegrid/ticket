@@ -237,14 +237,6 @@ class SubmitController extends BaseController
                 elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
             }
         }
-
-        //add DN as meta
-        $dn = user()->getDN();
-        if($dn == null) {
-            $footprints->addMeta("Submitter's DN is unknown.\n");
-        } else {
-            $footprints->addMeta("Submitter's DN: $dn\n");
-        }
     }
 
     private function getForm()

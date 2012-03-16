@@ -39,7 +39,7 @@
         <div class="group">
             <input type="checkbox" name="resource_issue_check" id="resource_issue_check" onclick="$('#resource_issue_area').toggle();"> Resource<br>
             <div id="resource_issue_area" class="hidden">
-                <p class="help-block">Please enter resource names</p>
+                <p class="help-block">Please enter resource name</p>
                 <?php
                 //controller can't pass variables to form via Zend_Form... so pulling it here.
                 $model = new Resource();
@@ -54,7 +54,7 @@
         <div class="group">
             <input type="checkbox" name="vo_issue_check" id="vo_issue_check" onclick="$('#vo_issue_area').toggle();"> Virtual Organization<br>
             <div id="vo_issue_area" class="hidden">
-                <p class="help-block">Please enter virtual organization</p>
+                <p class="help-block">Please enter virtual organization name</p>
                 <?php
                 $model = new VO();
                 $vo_kvs = array();

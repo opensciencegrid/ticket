@@ -77,7 +77,6 @@ class SubmitController extends BaseController
         //optionally set SC
         $sc_id = $rs_model->fetchSCID($resource_id);
         if(!$sc_id) {
-            $scname = "OSG-GOC";
             $footprints->addMeta("Couldn't find the support center that supports resource (".$resource->name."). Please see finderror page for more detail.\n");
         } else {
             $sc = $sc_model->get($sc_id);

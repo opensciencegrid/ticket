@@ -29,23 +29,20 @@ class Attachments {
 
             // receive the files into the user directory
             $adapter->receive($file); // this has to be on top
+        
+            //rename to clean name
+            $clean_name = str_replace(array("#", "&"),"", $name);
+            rename($adapter->getfileName($file), $ticket_dir."/".$clean_name);
 
-            // you could apply a filter like this too (if you want), to rename the file:     
-            //  $filterFileRename = new Zend_Filter_File_Rename(array('target' => $rename));
-            //  $filterFileRename->filter($name); // this has to use name
-
-
-            // we stripped out the image thumbnail for our purpose, primarily for security reasons
-            // you could add it back in here.
             $fileclass->id = $name; //TODO - fow now, use file name as id
             $fileclass->name = $name;
             $fileclass->size = (int)$info["size"];
             $fileclass->type = $info["type"];
-            $fileclass->thumbnail_url = fullbase()."/viewer/thumbnail?id=$ticket_id&attachment=$name";
-            $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=$name";
+            $fileclass->thumbnail_url = fullbase()."/viewer/thumbnail?id=$ticket_id&attachment=$clean_name";
+            $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=$clean_name";
             $fileclass->delete_type = 'DELETE';
             $fileclass->error = $info["error"];
-            $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$name";
+            $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$clean_name";
 
             $datas[] = $fileclass;
         }

@@ -112,6 +112,7 @@ class SubmitController extends BaseController
         $footprints->addMeta("VO on which user is having this issue: ".$vo->name."($vo->id)\n");
         $footprints->setMetadata("ASSOCIATED_VO_ID", $vo->id);
         $footprints->setMetadata("ASSOCIATED_VO_NAME", $vo->name);
+	$footprints->addPrimaryVOAdminContact($vo->id);
 
         //lookup SC name
         $sc_model = new SC();

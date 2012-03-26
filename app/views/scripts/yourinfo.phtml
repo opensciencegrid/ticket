@@ -48,6 +48,7 @@ Primary contact for this ticket (usually you).<br/>
     <?=$this->element->captcha?>
 <?}?>
 
+<?if(user()->allows("admin")) {?>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#careof").autocomplete(persons, {
@@ -72,4 +73,6 @@ $(document).ready(function() {
     });
 });
 </script>
+<?php } ?>
+
 

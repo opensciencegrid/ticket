@@ -69,6 +69,8 @@ class thumbnailGenerator {
             }
 
             $target = imagecreatetruecolor($newWidth, $newHeight);
+           $white= imagecolorallocate($target, 255, 255, 255);
+           imagefill($target, 0, 0, $white);
             imagecopyresampled($target, $source, 0, 0, 0, 0, $newWidth, $newHeight, $size[0], $size[1]);
             imagejpeg($target);
         }

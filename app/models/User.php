@@ -82,6 +82,14 @@ class User
         }
     }
 
+    public function isGOCMachine() {
+        $remote_ip = $_SERVER["REMOTE_ADDR"];
+        foreach(config()->gocip as $prefix) {
+            if(strpos($remote_ip, $prefix) === 0) return true;
+        } 
+        return false;
+    }
+
     public function allows($action) {
         return in_array(config()->role_prefix.$action, $this->action);
     }

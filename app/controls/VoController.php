@@ -36,11 +36,14 @@ class VoController extends BaseController
             } else {
                 $footprint->setMetadata("SUPPORTING_SC_ID", $sc->id);
                 $scname = $sc->footprints_id;
+                $footprint->addAssignee($scname);
+                /*
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);
                 } else {
                     $footprint->addMeta("Couldn't add ".$sc->name." (footprints_id:$scname) support center as assignee for selected VO:$void since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)\n");
                 }
+                */
             }
 
             //now submit!

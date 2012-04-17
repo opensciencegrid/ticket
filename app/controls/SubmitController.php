@@ -85,6 +85,8 @@ class SubmitController extends BaseController
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
 
             //add the SC to assignee if it's valid FP ID
+            $footprints->addAssignee($fpid);
+            /*
             if($footprints->isValidFPSC($fpid)) {
                 $footprints->addAssignee($fpid);
                 $footprints->addMeta("Assigned support center: $fpid which supports this resource\n");
@@ -92,6 +94,7 @@ class SubmitController extends BaseController
                 $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
                 elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
             }
+            */
         }
 
         $footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
@@ -123,12 +126,15 @@ class SubmitController extends BaseController
             $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
             $fpid = $sc->footprints_id;
+            $footprints->addAssignee($fpid);
+            /*
             if($footprints->isValidFPSC($fpid)) {
                 $footprints->addAssignee($fpid);
             } else {
                 $footprints->addMeta("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
                 elog("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
             }
+            */
         }
     }
 
@@ -175,11 +181,14 @@ class SubmitController extends BaseController
         $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
         $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
         $fpid = $sc->footprints_id;
+        $footprints->addAssignee($fpid);
+        /*
         if($footprints->isValidFPSC($fpid)) {
             $footprints->addAssignee($fpid);
         } else {
             elog("Failed to assign $fpid since it doesn't exist in FP yet");
         }
+        */
     }
 
     private function processAppInfra($footprints) {
@@ -231,12 +240,15 @@ class SubmitController extends BaseController
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
             $footprints->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
             $footprints->addMeta("This VO is supported by support center: $sc->name\n");
+            $footprints->addAssignee($fpid);
+            /*
             if($footprints->isValidFPSC($fpid)) {
                 $footprints->addAssignee($fpid);
             } else {
                 $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
                 elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
             }
+            */
         }
     }
 

@@ -477,9 +477,8 @@ class ViewerController extends Zend_Controller_Action
 
     public function uploadattachmentAction() {
         if(user()->isGuest()) {
-            if(in_array($_SERVER["REMOTE_ADDR"], config()->canupload_attachment)) {
-            } else {
-                elog($_SERVER["REMOTE_ADDR"]." is not member of ".print_r(config()->canupload_attachment, true)." who has access");
+            if(!user()->isGOCMachine()) {
+                elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
                 $this->render("error/access", null, true); 
                 return;
             }

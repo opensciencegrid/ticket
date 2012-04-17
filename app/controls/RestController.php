@@ -2,17 +2,23 @@
 
 class RestController extends Zend_Controller_Action
 {
-    //TODO - apply access restriction
+    public function init()
+    {
+        header('content-type: text/xml'); 
+        $this->render("none", null, true);
+        if(!user()->isGOCMachine()) {
+            echo "access error";
+            exit;
+        }
+    }
 
     function indexAction()
     {
         echo "this controller provides various rest interface";
-        $this->render("none", null, true);
     }
 
     function getopencountsAction()
     {
-        header('content-type: text/xml'); 
         $model = new Tickets();
         $recs = $model->getopen();
         $counts = array();
@@ -45,38 +51,22 @@ class RestController extends Zend_Controller_Action
             echo "</Assignee>";
         }
         echo "</OpenCounts>";
-
-        $this->render("none", null, true);
     }
 
     function getnextassigneeAction()
     {
-        header('content-type: text/xml'); 
         $model = new NextAssignee();
         $assignee = $model->getNextAssignee();
         $reason = $model->getReason();
-        
-/*
-        //apply override
-        $model = new Override();
-        $over = $model->apply($assignee);
-        if($over != $assignee) {
-            $reason .= " The original assignee ".$assignee." was overriden by $over";
-            $assignee = $over;
-        }
-*/
 
         echo "<NextAssignee>";
         echo "<FootprintsID>".htmlspecialchars($assignee)."</FootprintsID>";
         echo "<Reason>".htmlspecialchars($reason)."</Reason>";
         echo "</NextAssignee>";
-
-        $this->render("none", null, true);
     }
 
     function listopenAction()
     {
-        header('content-type: text/xml'); 
         $model = new Tickets();
         $tickets = $model->getopen();
 
@@ -121,13 +111,9 @@ class RestController extends Zend_Controller_Action
             echo "</Ticket>";
         }
         echo "</Tickets>";
-
-        $this->render("none", null, true);
-        
     }
 
     function searchAction() {
-        header('content-type: text/xml'); 
         $q = $_REQUEST["q"];
         echo "<SearchResult>";
         echo "<Query>".htmlsafe($q)."</Query>";
@@ -189,7 +175,6 @@ class RestController extends Zend_Controller_Action
         }
         echo "</Tickets>"; 
         echo "</SearchResult>";
-        $this->render("none", null, true);
     }
 
     function containsTokens($tokens, $ticket, $metadata) {
@@ -217,4 +202,48 @@ class RestController extends Zend_Controller_Action
         //passed all tokens
         return true;
     }
-} 
+
+    //open ticket and return ticket id
+    function openAction() {
+        $footprint = new Footprint(null, false);
+
+        //set basic info
+        $footprint->setTitle($_POST["title"]);
+        $footprint->addDescription($_POST["description"]);
+        $footprint->setName($_POST["name"]);
+        $footprint->setOfficePhone($_POST["phone"]);
+        $footprint->setEmail($_POST["email"]);
+        $footprint->setNextAction($_POST["nextaction"]);
+
+        //set ccs
+        $footprint->resetCC();
+        foreach(@$_POST["cc"] as $cc) {
+            $footprint->addCC($cc);
+        }
+
+        //set assignee
+        $footprint->resetAssignee();
+        foreach(@$_POST["assignee"] as $assignee) {
+            $footprint->addAssignee($assignee);
+        }
+
+        //set metadata
+        foreach(@$_POST["metadata"] as $kv) {
+            $kv = explode("=", $kv, 2);
+            $footprint->setMetadata($kv[0], $kv[1]);
+        }
+
+        $mrid = $footprint->submit();
+        //TODO - need to deal with error condition
+        echo "<Result><Status>success</Status><TicketID>$mrid</TicketID></Result>";
+    }
+
+    //update existing ticket
+    function updateAction() {    
+        $footprint = new Footprint($_GET["id"]);
+        $footprint->addDescription($_POST["description"]);
+        $footprint->submit();
+        //TODO - need to deal with error condition
+        echo "<Result><Status>success</Status></Result>";
+    }
+}

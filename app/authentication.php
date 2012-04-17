@@ -88,6 +88,7 @@ function cert_authenticate()
     }
 
     if(!isset($_SERVER["HTTPS"])) {
+        /*
         if(config()->force_https and !isbot()) {
             //reload as https (if not bot)
             $SERVER_NAME=$_SERVER["SERVER_NAME"];
@@ -99,6 +100,8 @@ function cert_authenticate()
             //can't authenticate through http - so let's just assume a guest user
             _setguest();
         }
+        */
+        _setguest();
     } else {
         if(isset($_SERVER["SSL_CLIENT_S_DN"])) {
             $dn = $_SERVER["SSL_CLIENT_S_DN"];

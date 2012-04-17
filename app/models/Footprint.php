@@ -134,22 +134,33 @@ class Footprint
     public function setMetadata($key, $value) {
         $this->metadata[$key] = $value;
     }
-    public function addAssignee($v, $bClear = false) { 
-        if($bClear) {
-            $this->resetAssignee();
-        } 
 
-/*
-        //apply override
-        if(isset($this->assignee_override[$v])) {
-            $newv = $this->assignee_override[$v];
-            $this->addMeta("Original assignee $v was overridden by $newv\n");
-            $v = $newv;
+    public function isValidAssignee($assignee) {
+        $schema_model = new Schema();
+        $teams = $schema_model->getteams();
+        foreach($teams as $team) {
+            $fp_scs = explode(",", $team->members);
+            foreach($fp_scs as $fp_sc) {
+                $sc = Footprint::parse($fp_sc);
+                if($sc == $assignee) {
+                    return true;
+                }
+            }
         }
-*/
-        
-        $this->assignees[] = $v;//no unparsing necessary
-        $this->b_assignees = true;
+        return false;
+
+    }
+    public function addAssignee($v, $bClear = false) { 
+        if($this->isValidAssignee($v)) {
+            if($bClear) {
+                $this->resetAssignee();
+            } 
+            $this->assignees[] = $v;//no unparsing necessary
+            $this->b_assignees = true;
+        } else {
+            $this->addMeta("Couldn't add assignee $v since it doesn't exist on FP yet.. (Please sync!)\n");
+            elog("Couldn't add assignee $v since it doesn't exist on FP yet.. (Please sync!)\n");
+        }
     }
 
     //setting this means that we are doing ticket update
@@ -322,19 +333,20 @@ class Footprint
         return false;
     }
 
+    //deprecated
     public function isValidFPSC($name)
     {
         $schema_model = new Schema();
         $teams = $schema_model->getteams();
         foreach($teams as $team) {
             if($team->team == "OSG__bSupport__bCenters" || $team->team == "Ticket__bExchange") {
-                $fp_scs = explode(",", $team->members);
-                foreach($fp_scs as $fp_sc) {
-                    $sc = Footprint::parse($fp_sc);    
-                    if($sc == $name) {
-                        return true;
-                    }
+            $fp_scs = explode(",", $team->members);
+            foreach($fp_scs as $fp_sc) {
+                $sc = Footprint::parse($fp_sc);    
+                if($sc == $name) {
+                    return true;
                 }
+            }
             }
         }
         return false;

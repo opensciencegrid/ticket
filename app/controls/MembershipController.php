@@ -47,12 +47,15 @@ class MembershipController extends BaseController
                 $footprint->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
                 $footprint->addMeta("This VO is supported by support center: $scname\n");
 
+                $footprint->addAssignee($scname);
+                /*
                 if($footprint->isValidFPSC($scname)) {
                     $footprint->addAssignee($scname);
                 } else {
                     $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                     elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
                 }
+                */
                 //$footprint->addMeta("VO Detail for ".$info->footprints_id."\n".$this->dumprecord($info)."\n");
                 $title .= $info->name;
             } else {

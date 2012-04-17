@@ -275,6 +275,8 @@ RSS Feed: http://osggoc.blogspot.com");
             $footprint->setMetadata("SUPPORTING_SC_ID", $sc_id);
         }
 
+        $footprint->addAssignee($scname);
+        /*
         if($footprint->isValidFPSC($scname)) {
             $footprint->addAssignee($scname);
             $footprint->addMeta("Assigned support center: $scname which supports this resource\n");
@@ -282,6 +284,7 @@ RSS Feed: http://osggoc.blogspot.com");
             $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
             elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
         }
+        */
         $footprint->addPrimaryAdminContact($resource_id);
 
         return $footprint;

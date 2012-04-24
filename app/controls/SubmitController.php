@@ -81,7 +81,7 @@ class SubmitController extends BaseController
         } else {
             $sc = $sc_model->get($sc_id);
             $fpid = $sc->footprints_id;
-            $footprints->setMetadata("SUPPORTING_SC_ID", $fpid);
+            $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
 
             //add the SC to assignee if it's valid FP ID

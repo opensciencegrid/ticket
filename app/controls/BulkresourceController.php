@@ -111,10 +111,13 @@ RSS Feed: http://osggoc.blogspot.com");
             //all good... construct ticket & send to preview
             $tickets = $this->createTickets($resource_ids, $title, $template);
             $preview = array();
+            $metadata = array();
             foreach($tickets as $rname=>$ticket) {
                 $preview[$rname] = $ticket->prepareParams();
+                $metadata[$rname] = $ticket->metadata;
             }
             $this->view->preview = $preview;
+            $this->view->metadata = $metadata;
         } else {
             //selected resources are sent back through registry - since it's not controlled via zend form
             Zend_Registry::set("resource_ids", $resource_ids);
@@ -203,8 +206,9 @@ RSS Feed: http://osggoc.blogspot.com");
         $footprint->setName($session->name);
         $footprint->setEmail($session->email);
         $footprint->setOfficePhone($session->phone);
-        $footprint->setOriginatingVO($session->vo);
+        //$footprint->setOriginatingVO($session->vo);
 
+        /*
         //set VO
         $void = $session->vo_id;
         if($void == -1) {
@@ -218,6 +222,7 @@ RSS Feed: http://osggoc.blogspot.com");
                 $footprint->setOriginatingVO($info->footprints_id);
             }
         }
+        */
 
         //process CC
         if(isset($session->cc)) {
@@ -258,9 +263,12 @@ RSS Feed: http://osggoc.blogspot.com");
         $footprint->setMetadata("ASSOCIATED_R_ID", $resource_id);
         $footprint->setMetadata("ASSOCIATED_R_NAME", $resource_name);
 
-        $void = $footprint->setDestinationVOFromResourceID($resource_id);
-        if($void) {
-            $footprint->setMetadata("ASSOCIATED_VO_ID", $void);
+        //$void = $footprint->setDestinationVOFromResourceID($resource_id);
+        $model = new Resource();
+        $vo = $model->getPrimaryOwnerVO($resource_id);
+        if($vo !== null) {
+            $footprint->addMeta("Primary Owner VO: $vo->name");
+            $footprint->setMetadata("ASSOCIATED_VO_ID", $vo->vo_id);
         }
 
         $sc_id = $rs_model->fetchSCID($resource_id);

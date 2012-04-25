@@ -214,6 +214,7 @@ class RestController extends Zend_Controller_Action
         $footprint->setOfficePhone($_POST["phone"]);
         $footprint->setEmail($_POST["email"]);
         $footprint->setNextAction($_POST["nextaction"]);
+        $footprint->setNextActionTime($_POST["nextactiontime"]);
 
         //set ccs
         $footprint->resetCC();
@@ -242,6 +243,15 @@ class RestController extends Zend_Controller_Action
     function updateAction() {    
         $footprint = new Footprint($_GET["id"]);
         $footprint->addDescription($_POST["description"]);
+        if(isset($_POST["nextaction"])) {
+            $footprint->setNextAction($_POST["nextaction"]);
+        }
+        if(isset($_POST["nextactiontime"])) {
+            $footprint->setNextActionTime($_POST["nextactiontime"]);
+        }
+        if(isset($_POST["status"])) {
+            $footprint->setStatus($_POST["status"]);
+        }
         $footprint->submit();
         //TODO - need to deal with error condition
         echo "<Result><Status>success</Status></Result>";

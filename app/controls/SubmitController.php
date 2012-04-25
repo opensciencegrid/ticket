@@ -38,7 +38,7 @@ class SubmitController extends BaseController
             }
             $footprints->addDescription($form->getValue('detail'));
             $footprints->setTitle($form->getValue('title'));
-            $footprints->setDestinationVO("MIS");//lie.. we should be deprecating this soon
+            //$footprints->setDestinationVO("MIS");//lie.. we should be deprecating this soon
 
             try
             {
@@ -70,6 +70,8 @@ class SubmitController extends BaseController
         //optinally set VO
         $primary_vo = $resource_model->getPrimaryOwnerVO($resource_id);
         if(!$primary_vo) {
+            $footprints->addMeta("Couldn't find the primary owner vo for resource (".$resource->name."). Please see finderror page for more detail.\n");
+        } else {
             $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->id);
             $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->name);
         }
@@ -80,21 +82,9 @@ class SubmitController extends BaseController
             $footprints->addMeta("Couldn't find the support center that supports resource (".$resource->name."). Please see finderror page for more detail.\n");
         } else {
             $sc = $sc_model->get($sc_id);
-            $fpid = $sc->footprints_id;
-            $footprints->setMetadata("SUPPORTING_SC_ID", $fpid);
+            $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
-
-            //add the SC to assignee if it's valid FP ID
-            $footprints->addAssignee($fpid);
-            /*
-            if($footprints->isValidFPSC($fpid)) {
-                $footprints->addAssignee($fpid);
-                $footprints->addMeta("Assigned support center: $fpid which supports this resource\n");
-            } else {
-                $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
-                elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
-            }
-            */
+            $footprints->addAssignee($sc->footprints_id);
         }
 
         $footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
@@ -238,8 +228,7 @@ class SubmitController extends BaseController
             $footprints->setMetadata("ASSOCIATED_VO_NAME", $info->name);
             $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
-            $footprints->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
-            $footprints->addMeta("This VO is supported by support center: $sc->name\n");
+            $footprints->addMeta("Submitter is requesting membership to VO:$info->name which is supported by SC:$sc->name\n");
             $footprints->addAssignee($fpid);
             /*
             if($footprints->isValidFPSC($fpid)) {

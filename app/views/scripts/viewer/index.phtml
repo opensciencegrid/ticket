@@ -214,11 +214,7 @@ width: 153px;
             echo "</div>";
         }
     }
-    ?>
-    <table width="100%">
-    <tr><td width="40%" style="padding-right: 5px;">
-        <h3>Metadata</h3>
-        <?
+        /*
         if(count($this->metadata) == 0) {
             echo "<p>No metadata stored for this ticket.</p>";
         } else {
@@ -229,9 +225,7 @@ width: 153px;
             }
             echo "</table>";
         }
-        ?>
-    </td><td width="60%">
-        <?
+        */
         echo "<h3>Similar Recent Tickets</h3>";
         if(isset($this->similar_tickets)) { 
             foreach($this->similar_tickets as $ticket) {
@@ -242,7 +236,6 @@ width: 153px;
         }
 
         ?>
-    </td></tr></table>
 
 </div>
 <script type="text/javascript">

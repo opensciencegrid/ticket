@@ -18,7 +18,7 @@ abstract class GOCServiceController extends BaseController
             $footprint = $this->initSubmit($form);
             $footprint->addDescription($form->getValue('detail'));
             $footprint->setTitle($form->getValue('title'));
-            $footprint->setDestinationVO("MIS");
+            //$footprint->setDestinationVO("MIS");
             $footprint->addAssignee("hayashis", true); //reset assignee first
             $footprint->addAssignee("steige");
 

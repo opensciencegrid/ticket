@@ -20,7 +20,7 @@ padding-bottom: 0.3em;
 <tr>
     <td class="header" width="150px">Full Name</td>
     <td width="350px"><?=$this->submitter_name?></td>
-    <td rowspan="8">
+    <td rowspan="3">
     <?
     foreach($this->teams as $team_id => $team) {
         $out = "";
@@ -64,21 +64,6 @@ padding-bottom: 0.3em;
     <td>
     <?php if(!user()->isGuest()) { echo $this->submitter_phone; } else { echo "--"; }?>
     </td>
-</tr>
-<tr>
-    <td colspan="2"><h4>Routing Information</h4></td>
-</tr>
-<tr>
-    <td class="header">Originating VO</td><td><?=$this->submitter_vo?></td>
-</tr>
-<tr>
-    <td class="header">Originating Ticket ID</td><td><?=$this->originating_ticket_id?></td>
-</tr>
-<tr>
-    <td class="header">Destination VO</td><td><?=$this->destination_vo?></td>
-</tr>
-<tr>
-    <td class="header">Destination Ticket ID</td><td><?=$this->destination_ticket_id?></td>
 </tr>
 <tr>
     <td colspan="2"><h4>Other Information</h4></td>

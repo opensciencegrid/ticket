@@ -119,14 +119,14 @@ class CustomController extends Zend_Controller_Action
                     }
                 }
             }
-            $footprint->setDestinationVO($dest_vo);
+            //$footprint->setDestinationVO($dest_vo);
             $footprint->setNextAction($next_action);
             $footprint->setNextActionTime($nad);
             $footprint->setPriority($priority);
             $footprint->setStatus($status);
             $footprint->setTicketType($type);
-            $footprint->setOriginatingTicketNumber($orig_ticket_id);
-            $footprint->setDestinationTicketNumber($dest_ticket_id);
+            //$footprint->setOriginatingTicketNumber($orig_ticket_id);
+            //$footprint->setDestinationTicketNumber($dest_ticket_id);
 
             $mrid = $footprint->submit();
             addMessage("Successfully opened a ticket");

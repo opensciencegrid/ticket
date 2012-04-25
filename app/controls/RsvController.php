@@ -22,7 +22,7 @@ class RsvController extends BaseController
             $footprint = $this->initSubmit($form);
             $footprint->setName("OSG-GOC");
             $footprint->setEmail("goc@opensciencegrid.org");
-            $footprint->setOriginatingVO("MIS");
+            //$footprint->setOriginatingVO("MIS");
 
             //lookup service center
             $resource_id = $issue_element->getValue();
@@ -38,7 +38,7 @@ class RsvController extends BaseController
             $footprint->addDescription($template);
 
             //set destination VO
-            $footprint->setDestinationVOFromResourceID($resource_id);
+            //$footprint->setDestinationVOFromResourceID($resource_id);
 
             //lookup SC name
             $rs_model = new ResourceSite();

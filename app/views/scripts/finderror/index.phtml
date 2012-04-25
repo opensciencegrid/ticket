@@ -51,40 +51,6 @@ Here is how it works.. First, GOC Ticket pulls information from OIM. Each record
 <p>More instructions below..</p>
 </blockquote>
 
-<h3>Originating VOS</h3>
-<table>
-<tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
-<?
-foreach($this->error_origvos as $error) {
-    $note = $error[0];
-    $fp = $error[1];
-    $oim = $error[2];
-    echo "<tr><td>$oim</td><td>$fp</td><td><font color='red'>$note</font></td></tr>";
-}
-?>
-</table>
-<blockquote>
-<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
-<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Field Maintenance &gt; Select "Originating VO Support Center", click EDIT. Do the same process for "Destination VO Support Center".</p>
-</blockquote>
-
-<h3>Destination VOS</h3>
-<table>
-<tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
-<?
-foreach($this->error_destvos as $error) {
-    $note = $error[0];
-    $fp = $error[1];
-    $oim = $error[2];
-    echo "<tr><td>$oim</td><td>$fp</td><td><font color='red'>$note</font></td></tr>";
-}
-?>
-</table>
-<blockquote>
-<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
-<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Field Maintenance &gt; Select "Destination VO Support Center", click EDIT</p>
-</blockquote>
-
 <h3>Support Centers</h3>
 <table>
 <tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>

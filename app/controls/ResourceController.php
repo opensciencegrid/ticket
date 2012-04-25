@@ -67,13 +67,15 @@ class ResourceController extends BaseController
             $admin = $_REQUEST["admin"];
             if($admin) {
                 //this is their own resource - maybe installation issue..
-                $footprint->addMeta("User is the administator for this resource.\n");
-                $footprint->setDestinationVO("MIS");
+                //$footprint->addMeta("User is the administator for this resource.\n");
+                //$footprint->setDestinationVO("MIS");
             } else {
+                /*
                 $void = $footprint->setDestinationVOFromResourceID($resource_id);
                 if($void) {
                     $footprint->setMetadata("ASSOCIATED_VO_ID", $void);
                 }
+                */
 
                 $sc_id = $rs_model->fetchSCID($resource_id);
                 if(!$sc_id) {

@@ -46,14 +46,15 @@ class FinderrorController extends Zend_Controller_Action
             $this->render("error/access", null, true);
             return;
         }
-        $this->analyze_vo_originating();
-        $this->analyze_vo_destination();
+        //$this->analyze_vo_originating();
+        //$this->analyze_vo_destination();
         $this->analyze_sc();
         $this->analyze_scemail();
         $this->analyze_ticket_assignment();
         $this->analyze_resource_sc_link();
     }
 
+    /*
     public function analyze_vo_originating()
     { 
         $orig_vos = $this->schema_model->getoriginatingvos();
@@ -133,6 +134,7 @@ class FinderrorController extends Zend_Controller_Action
             }
         } 
     }
+    */
 
     public function analyze_sc()
     { 

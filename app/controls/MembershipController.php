@@ -36,15 +36,14 @@ class MembershipController extends BaseController
                 //lookup sc_id from void
                 $vo_model = new VO();
                 $info = $vo_model->get($void);
-
-                $footprint->setDestinationVO($info->footprints_id);
+                //$footprint->setDestinationVO($info->footprints_id);
+                //$footprint->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
 
                 //lookup SC name
                 $sc_model = new SC;
                 $sc = $sc_model->get($info->sc_id);
                 $scname = $sc->footprints_id;
 
-                $footprint->addMeta("Submitter is requesting membership to VO:".$info->footprints_id."\n");
                 $footprint->addMeta("This VO is supported by support center: $scname\n");
 
                 $footprint->addAssignee($scname);

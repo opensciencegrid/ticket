@@ -95,6 +95,7 @@ class BaseController extends Zend_Controller_Action
             $phone->setValue(user()->getPersonPhone());
             $form->addElement($phone);
 
+            /*
             $vo_model = new VO;
             $vos = $vo_model->fetchAll();
             $vo = new Zend_Form_Element_Select('vo_id');
@@ -109,6 +110,7 @@ class BaseController extends Zend_Controller_Action
                 $vo->setValue(25); //MIS
             }
             $form->addElement($vo);
+            */
 
             //repopulate cc (for resubmit..)
             $ccs = array();
@@ -197,6 +199,7 @@ class BaseController extends Zend_Controller_Action
                 }
             }
 
+            /*
             $void = $form->getValue('vo_id');
             if($void == -1) {
                 $footprint->addMeta("Submitter doesn't know the VO he/she belongs.\n");
@@ -209,6 +212,7 @@ class BaseController extends Zend_Controller_Action
                     $footprint->setOriginatingVO($info->footprints_id);
                 }
             }
+            */
         }
 
         return $footprint;

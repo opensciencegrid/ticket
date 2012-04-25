@@ -68,7 +68,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
                 //set description destination vo, assignee
                 $footprint->addMeta("Resource where user is having this issue: ".$name."($resource_id)\n");
 
-                $footprint->setDestinationVOFromResourceID($resource_id);
+                //$footprint->setDestinationVOFromResourceID($resource_id);
 
                 //lookup SC name
                 if($sc_id === false) {
@@ -98,7 +98,7 @@ Responsible Unit:        $xml->GHD_Responsible_Unit";
         $footprint->setPriority($foot_priority);
 
         $footprint->setSubmitter("ggus");
-        $footprint->setOriginatingTicketNumber($id);
+        //$footprint->setOriginatingTicketNumber($id);
     } else {
         ///////////////////////////////////////////////////////////////////////
         // Update

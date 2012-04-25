@@ -26,7 +26,7 @@ class VoController extends BaseController
 
             $model = new VO();
             $vo = $model->get($void);
-            $footprint->setDestinationVO($vo->footprints_id);
+            //$footprint->setDestinationVO($vo->footprints_id);
 
             //lookup SC name
             $sc_model = new SC();

@@ -6,9 +6,15 @@
 <?
 foreach($this->preview as $rname=>$preview) {
     echo "<h4>".$rname."</h4>";
-    echo "<blockquote><pre>";
+    echo "<blockquote><b>Ticket Detail</b><pre>";
     print_r($preview);
-    echo "</pre></blockquote>";
+    echo "</pre>";
+
+    echo "<b>Metadata</b><pre>";
+    print_r($this->metadata[$rname]);
+    echo "</pre>";
+
+    echo "</blockquote>";
 }
 ?>
 <br>

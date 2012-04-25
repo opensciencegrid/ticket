@@ -38,8 +38,10 @@ class Footprint
             if($auto_assign) {
                 $this->addAssignee($this->chooseGOCAssignee()); //auto assign someone
             }
-            $this->setOriginatingVO("other"); 
-            $this->setDestinationVO("other"); 
+            $this->project_fields["Originating__bVO__bSupport__bCenter"] = "other";
+            $this->project_fields["Destination__bVO__bSupport__bCenter"] = "other";
+            //$this->setOriginatingVO("other"); 
+            //$this->setDestinationVO("other"); 
             $this->setNextAction("ENG Action");
             $this->setNextActionTime(time());
             $this->setTicketType("Problem__fRequest");
@@ -206,7 +208,23 @@ class Footprint
         $this->b_proj = true;
     }
 
-    public function setOriginatingVO($voname) { 
+    /*
+    //this is now internal use only
+    private function setOriginatingTicketNumber($id)
+    {
+        $this->project_fields["Originating__bTicket__bNumber"] = $id;
+        $this->b_proj = true;
+    }
+
+    //this is now internal use only
+    private function setDestinationTicketNumber($id)
+    {
+        $this->project_fields["Destination__bTicket__bNumber"] = $id;
+        $this->b_proj = true;
+    }
+
+    //this is now internal use only
+    private function setOriginatingVO($voname) { 
         if(!$this->isValidFPOriginatingVO($voname)) {
             $this->addMeta("Couldn't set Originating VO to $voname - No such VO in FP (please sync!)\n");
             elog("Couldn't set Originating VO to $voname - no such vo in fp");
@@ -216,19 +234,8 @@ class Footprint
         $this->b_proj = true;
     }
 
-    public function setOriginatingTicketNumber($id)
-    {
-        $this->project_fields["Originating__bTicket__bNumber"] = $id;
-        $this->b_proj = true;
-    }
-
-    public function setDestinationTicketNumber($id)
-    {
-        $this->project_fields["Destination__bTicket__bNumber"] = $id;
-        $this->b_proj = true;
-    }
-
-    public function setDestinationVO($voname) { 
+    //this is now internal use only
+    private function setDestinationVO($voname) { 
         if(!$this->isValidFPDestinationVO($voname)) {
             $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
             elog("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
@@ -237,7 +244,9 @@ class Footprint
         $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
         $this->b_proj = true;
     }
+    */
 
+    /*
     //returns void selected
     public function setDestinationVOFromResourceID($resource_id)
     {
@@ -253,6 +262,7 @@ class Footprint
             return $vo->vo_id;
         }
     }
+    */
 
     //this is for resource
     public function addPrimaryAdminContact($resource_id)
@@ -311,7 +321,8 @@ class Footprint
         return "(unknown vo_id $id)";
     }
 
-    public function isValidFPOriginatingVO($name)
+/*
+    private function isValidFPOriginatingVO($name)
     {
         $schema_model = new Schema();
         $vos = $schema_model->getoriginatingvos();
@@ -322,7 +333,7 @@ class Footprint
         return false;
     }
 
-    public function isValidFPDestinationVO($name)
+    private function isValidFPDestinationVO($name)
     {
         $schema_model = new Schema();
         $vos = $schema_model->getdestinationvos();
@@ -332,6 +343,7 @@ class Footprint
         } 
         return false;
     }
+*/
 
     //deprecated
     public function isValidFPSC($name)

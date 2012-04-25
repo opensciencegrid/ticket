@@ -252,7 +252,7 @@ class ViewerController extends Zend_Controller_Action
                 $footprint->setName($submit_name);
                 $footprint->setOfficePhone($submit_phone);
                 $footprint->setEmail($submit_email);
-                $footprint->setOriginatingVO($submit_vo);
+                //$footprint->setOriginatingVO($submit_vo);
 
                 //detail
                 $footprint->resetAssignee();
@@ -268,14 +268,14 @@ class ViewerController extends Zend_Controller_Action
                         }
                     }
                 }
-                $footprint->setDestinationVO($dest_vo);
+                //$footprint->setDestinationVO($dest_vo);
                 $footprint->setNextAction($next_action);
                 $footprint->setNextActionTime($nad);
                 $footprint->setPriority($priority);
                 $footprint->setStatus($status);
                 $footprint->setTicketType($type);
-                $footprint->setOriginatingTicketNumber($orig_ticket_id);
-                $footprint->setDestinationTicketNumber($dest_ticket_id);
+                //$footprint->setOriginatingTicketNumber($orig_ticket_id);
+                //$footprint->setDestinationTicketNumber($dest_ticket_id);
 
                 //set suppression
                 if(!isset($_REQUEST["notify_assignees"])) {

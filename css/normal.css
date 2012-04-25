@@ -139,7 +139,7 @@ input[type=text], select, textarea
     padding: 3px;
 }
 select {
-    width: 258px;
+    width: 260px;
 }
 
 textarea {
@@ -641,6 +641,7 @@ margin-bottom: 5px;
 padding: 5px;
 }
 table.metadata {
+font-size: 90%;
 width: 100%;
 }
 table.metadata tr {
@@ -656,6 +657,9 @@ color: #666;
 background-color: #ddd;
 padding-left: 3px;
 padding-right: 3px;
+}
+span.metadata_key {
+font-size: 90%;
 }
 
 #custom_search_area .header {

@@ -194,7 +194,7 @@ class SubmitController extends BaseController
     }
 
     private function processAppTWiki($footprints) {
-        if($_POST["twikitype"] == "bug") {
+        if(@$_POST["twikitype"] == "bug") {
             //if it's bug, assign ticket to infrastructure
             $footprints->addAssignee("steige", true); //clear list
             $footprints->addAssignee("hayashis");

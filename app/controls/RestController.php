@@ -252,6 +252,14 @@ class RestController extends Zend_Controller_Action
         if(isset($_POST["status"])) {
             $footprint->setStatus($_POST["status"]);
         }
+        //only update cc if provided
+        if(isset($_POST["cc"])) {
+            $footprint->resetCC();
+            foreach($_POST["cc"] as $cc) {
+                $footprint->addCC($cc);
+            }
+        }
+
         $footprint->submit();
         //TODO - need to deal with error condition
         echo "<Result><Status>success</Status></Result>";

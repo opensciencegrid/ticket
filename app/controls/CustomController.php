@@ -69,9 +69,10 @@ class CustomController extends Zend_Controller_Action
         //detail
         $ccs = @$_REQUEST["cc"]; //TODO - validate
         $description = trim($_REQUEST["description"]); //TODO - validate?
-        $dest_vo = $_REQUEST["destination_vo"]; //TODO - validate
+        //$dest_vo = $_REQUEST["destination_vo"]; //TODO - validate
         $nad = strtotime($_REQUEST["nad"]);
         $next_action = trim($_REQUEST["next_action"]);//TODO - validate?
+        /*
         $orig_ticket_id = "";
         if(trim($_REQUEST["originating_ticket_id"]) != "") {
             $orig_ticket_id = $_REQUEST["originating_ticket_id"]; //TODO - validate..
@@ -80,6 +81,7 @@ class CustomController extends Zend_Controller_Action
         if(trim($_REQUEST["destination_ticket_id"]) != "") {
             $dest_ticket_id = $_REQUEST["destination_ticket_id"]; //TODO - validate..
         }
+        */
         $priority = (int)$_REQUEST["priority"];
         $status = $_REQUEST["status"]; //TODO - validate?
         $type = $_REQUEST["ticket_type"]; //TODO - validate

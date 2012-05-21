@@ -39,10 +39,10 @@ class Attachments {
             $fileclass->size = (int)$info["size"];
             $fileclass->type = $info["type"];
             $fileclass->thumbnail_url = fullbase()."/viewer/thumbnail?id=$ticket_id&attachment=".urlencode($clean_name);
-            $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=$clean_name";
+            $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=".urlencode($clean_name);
+            $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$clean_name";
             $fileclass->delete_type = 'DELETE';
             $fileclass->error = $info["error"];
-            $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$clean_name";
 
             $datas[] = $fileclass;
         }
@@ -79,10 +79,10 @@ class Attachments {
                 $fileclass->size = filesize($path."/".$name);
                 $fileclass->type = mime_content_type($path."/".$name);//php5.3 --finfo_file($finfo, $path.$name);
                 $fileclass->thumbnail_url = fullbase()."/viewer/thumbnail?id=$ticket_id&attachment=".urlencode($name);
-                $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=$name";
+                $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=".urlencode($name);
+                $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$name";
                 $fileclass->delete_type = 'DELETE';
                 //$fileclass->error = 'null';
-                $fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$name";
 
                 $datas[] = $fileclass;
             }

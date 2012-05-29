@@ -241,7 +241,8 @@ class SubmitController extends BaseController
             $footprints->addMeta("Submitter didn't specify the name of new campus grid VO");
         } else {
             $footprints->addMeta("Requested VO NAME: ".$_POST["campusvorequest_name"]);
-            $footprints->addCC("dweitzel@cse.unl.edu"); //for now, only add derek 
+            $footprints->addCC("dweitzel@cse.unl.edu");
+            $footprints->addCC("fraser@anl.gov");
         }
     }
 

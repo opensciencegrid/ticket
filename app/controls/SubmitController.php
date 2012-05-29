@@ -36,6 +36,9 @@ class SubmitController extends BaseController
             if(isset($_POST["membership_issue_check"])) {
                 $this->processMembership($footprints);
             }
+            if(isset($_POST["campusvorequest_issue_check"])) {
+                $this->processCampusVO($footprints);
+            }
             $footprints->addDescription($form->getValue('detail'));
             $footprints->setTitle($form->getValue('title'));
             //$footprints->setDestinationVO("MIS");//lie.. we should be deprecating this soon
@@ -230,14 +233,15 @@ class SubmitController extends BaseController
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
             $footprints->addMeta("Submitter is requesting membership to VO:$info->name which is supported by SC:$sc->name\n");
             $footprints->addAssignee($fpid);
-            /*
-            if($footprints->isValidFPSC($fpid)) {
-                $footprints->addAssignee($fpid);
-            } else {
-                $footprints->addMeta("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
-                elog("Couldn't add assignee $fpid since it doesn't exist on FP yet.. (Please sync!)\n");
-            }
-            */
+        }
+    }
+
+    private function processCampusVO($footprints) {
+        if($_POST["campusvorequest_name"] == "") {
+            $footprints->addMeta("Submitter didn't specify the name of new campus grid VO");
+        } else {
+            $footprints->addMeta("Requested VO NAME: ".$_POST["campusvorequest_name"]);
+            $footprints->addCC("dweitzel@cse.unl.edu"); //for now, only add derek 
         }
     }
 

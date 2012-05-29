@@ -148,7 +148,7 @@
             </div>
         </div>
         <div class="group">
-            <input type="checkbox" name="membership_issue_check" id="membership_issue_check" onclick="$('#membership_issue_area').toggle();"> OSG Membership Request<br>
+            <input type="checkbox" name="membership_issue_check" id="membership_issue_check" onclick="$('#membership_issue_area').toggle();"> Membership Request<br>
             <div id="membership_issue_area" style="display: none;">
                 Which VO would you like to be member of?
                 <select name="membership_vo" id="membership_vo">
@@ -159,6 +159,13 @@
                 }
                 ?>
                 </select>
+            </div>
+        </div>
+        <div class="group">
+            <input type="checkbox" name="campusvorequest_issue_check" id="campusvorequest_issue_check" onclick="$('#campusvorequest_issue_area').toggle();"> Campus Grid VO Registration Request<br>
+            <div id="campusvorequest_issue_area" style="display: none;">
+                Name of the new campus grid VO
+                <input type="text" name="campusvorequest_name" id="campusvorequest_name">
             </div>
         </div>
     </div>
@@ -223,12 +230,21 @@ $(function() {
     <?php if(isset($_REQUEST["security_issue_available"])) {?>
         $("#security_issue_available").attr("checked", "checked");
     <?php } ?>
+
     <?php if(isset($_REQUEST["membership_issue_check"])) {?>
         $("#membership_issue_check").attr("checked", "checked");
         $("#membership_issue_area").show();
     <?php } ?>
     <?php if(isset($_REQUEST["membership_vo"])) {?>
         $("#membership_vo").val("<?php echo $_REQUEST["membership_vo"]?>");
+    <?php } ?>
+
+    <?php if(isset($_REQUEST["campusvorequest_issue_check"])) {?>
+        $("#campusvorequest_issue_check").attr("checked", "checked");
+        $("#campusvorequest_issue_area").show();
+    <?php } ?>
+    <?php if(isset($_REQUEST["campusvorequest_name"])) {?>
+        $("#campusvorequest_name").val("<?php echo $_REQUEST["campusvorequest_name"]?>");
     <?php } ?>
 });
 </script>

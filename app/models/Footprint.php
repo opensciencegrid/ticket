@@ -299,8 +299,14 @@ class Footprint
     }
 
     public function addCC($address) {
-        $this->permanent_cc[] = $address;
-        $this->b_cc = true;
+        //validate emmail
+        require_once("email_validator.php");
+        if(validEmail($address)) {
+            $this->permanent_cc[] = $address;
+            $this->b_cc = true;
+        } else {
+            addMessage("Failed to validate email address: $address which is removed");
+        }
     }
 
     private function chooseGOCAssignee()

@@ -41,7 +41,6 @@ class SubmitController extends BaseController
             }
             $footprints->addDescription($form->getValue('detail'));
             $footprints->setTitle($form->getValue('title'));
-            //$footprints->setDestinationVO("MIS");//lie.. we should be deprecating this soon
 
             try
             {
@@ -120,14 +119,6 @@ class SubmitController extends BaseController
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
             $fpid = $sc->footprints_id;
             $footprints->addAssignee($fpid);
-            /*
-            if($footprints->isValidFPSC($fpid)) {
-                $footprints->addAssignee($fpid);
-            } else {
-                $footprints->addMeta("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
-                elog("Couldn't add ".$sc->name." (footprints_id:$fpid) support center as assignee since it doesn't exist on FP yet.. (Please correct issues reporeted in admin/finderror page!)");
-            }
-            */
         }
     }
 
@@ -175,13 +166,6 @@ class SubmitController extends BaseController
         $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
         $fpid = $sc->footprints_id;
         $footprints->addAssignee($fpid);
-        /*
-        if($footprints->isValidFPSC($fpid)) {
-            $footprints->addAssignee($fpid);
-        } else {
-            elog("Failed to assign $fpid since it doesn't exist in FP yet");
-        }
-        */
     }
 
     private function processAppInfra($footprints) {
@@ -246,8 +230,7 @@ class SubmitController extends BaseController
         }
     }
 
-    private function getForm()
-    {
+    private function getForm() {
         $form = $this->initForm("submit");
 
         $e = new Zend_Form_Element_Text('title');
@@ -267,5 +250,18 @@ class SubmitController extends BaseController
         $form->addElement($submit);
 
         return $form;
+    }
+
+    public function templateAction() {
+        //header("content-type", "text/html");
+        $id = $_GET["id"];
+        switch($id) {
+        case "campusvorequest_issue_check":
+            $this->render("template_campusvorequest");
+            break;
+        default:
+            error_log("invalid tepmlate id requested: $id");
+            $this->render("template_na");
+        }
     }
 } 

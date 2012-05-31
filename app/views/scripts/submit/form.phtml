@@ -162,7 +162,7 @@
             </div>
         </div>
         <div class="group">
-            <input type="checkbox" name="campusvorequest_issue_check" id="campusvorequest_issue_check" onclick="$('#campusvorequest_issue_area').toggle();"> Campus Grid VO Registration Request<br>
+            <input type="checkbox" name="campusvorequest_issue_check" id="campusvorequest_issue_check" onclick="processtemplate(this); $('#campusvorequest_issue_area').toggle();"> Campus Grid VO Registration Request<br>
             <div id="campusvorequest_issue_area" style="display: none;">
                 Name of the new campus grid VO
                 <input type="text" name="campusvorequest_name" id="campusvorequest_name">
@@ -183,6 +183,16 @@
 </form>
 
 <script>
+
+<?php if(isset($_REQUEST["detail"])) {?>
+    var detail_touched = true;
+<?php } else { ?>
+    var detail_touched = false;
+<?php } ?>
+$("#detail").keyup(function() {
+    detail_touched = true;
+});
+
 function change_app(name) {
     $(".app_detail").hide();
     $("#app_"+name).show();
@@ -247,4 +257,15 @@ $(function() {
         $("#campusvorequest_name").val("<?php echo $_REQUEST["campusvorequest_name"]?>");
     <?php } ?>
 });
+
+function processtemplate(check) {
+    //TODO - I need to prevent adding same template twice..
+    if(check.checked && !detail_touched) {
+        $.ajax({
+          url: "<?php echo fullbase()?>/submit/template?id="+check.id
+        }).success(function(content) {
+            $("#detail").val($("#detail").val() + content);
+        });
+    }
+}
 </script>

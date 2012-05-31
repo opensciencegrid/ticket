@@ -236,6 +236,7 @@ class RestController extends Zend_Controller_Action
 
         $mrid = $footprint->submit();
         //TODO - need to deal with error condition
+        //TODO - if running in simulation mode, submit() returns the entire ticket object to be submitted
         echo "<Result><Status>success</Status><TicketID>$mrid</TicketID></Result>";
     }
 

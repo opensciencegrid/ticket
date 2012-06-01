@@ -214,28 +214,16 @@ width: 153px;
             echo "</div>";
         }
     }
-        /*
-        if(count($this->metadata) == 0) {
-            echo "<p>No metadata stored for this ticket.</p>";
-        } else {
-            echo "<table class=\"metadata\">";
-            foreach($this->metadata as $item) {
-                echo "<tr><th>$item->key</th>";
-                echo "<td>".$item->value."</td></tr>";
-            }
-            echo "</table>";
+    echo "<h3>Similar Recent Tickets</h3>";
+    if(isset($this->similar_tickets)) { 
+        foreach($this->similar_tickets as $ticket) {
+            echo "<a href=\"".fullbase()."/".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
         }
-        */
-        echo "<h3>Similar Recent Tickets</h3>";
-        if(isset($this->similar_tickets)) { 
-            foreach($this->similar_tickets as $ticket) {
-                echo "<a href=\"".fullbase()."/".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
-            }
-        } else {
-            echo "No similar tickets found that are modified within the last 30 days.";
-        }
+    } else {
+        echo "No similar tickets found that are modified within the last 30 days.";
+    }
 
-        ?>
+?>
 
 </div>
 <script type="text/javascript">

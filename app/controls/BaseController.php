@@ -130,6 +130,7 @@ class BaseController extends Zend_Controller_Action
 
         if(user()->isguest()) {
             //guest must answer captcha
+            /*
             $validatorNotEmpty = new Zend_Validate_NotEmpty();
             $validatorNotEmpty->setMessage('This field is required, you cannot leave it empty');
             $captcha_identical = new Zend_Validate_Identical($this->getCaptchaCode());
@@ -142,6 +143,20 @@ class BaseController extends Zend_Controller_Action
             $captchaDecorator->setTag('div');
             $captcha->addDecorator($captchaDecorator);
             $form->addElement($captcha);
+            */
+
+            // create captcha
+            $adapter = new Zend_Captcha_ReCaptcha(); 
+            $recaptcha_service = new Zend_Service_ReCaptcha(config()->captcha_public_key, config()->captcha_private_key);
+            $adapter->setService( $recaptcha_service ); 
+            // then set  the captcha element to use the ReCaptcha Adapter 
+            $recaptcha = new Zend_Form_Element_Captcha('recaptcha', array( 
+                            'label' => "Are you a human?", 
+                            'captcha' => $adapter 
+            )); 
+            //Then only add the element to the form: 
+            $form->addElement ( $recaptcha ); 
+
         }
 
         return $form;

@@ -44,7 +44,7 @@ Primary contact for this ticket (usually you).<br/>
 <?} else {?>
     <h3>Public Submission</h3>
     <p>You have not provided OIM registered x509 certificate.</p>
-    <?=$this->element->captcha?>
+    <?=$this->element->recaptcha?>
 <?}?>
 
 <?if(user()->allows("admin")) {?>

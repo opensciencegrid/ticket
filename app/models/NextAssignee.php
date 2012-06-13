@@ -15,6 +15,7 @@ class NextAssignee
         $day = $time["tm_mday"];
         $weekday = $time["tm_wday"];
 
+/*
         //construct list of possible assignee based on each hours
         if($hour >= 5 and $hour < 8) {
             $members = array("adeximo");
@@ -27,6 +28,17 @@ class NextAssignee
         } else {
             $members = array("adeximo", "echism", "kagross");
         }
+*/
+        if ($hour >= 8 and $hour < 13) {
+            $members = array("echism", "kagross");
+        } else if ($hour >= 13 and $hour < 17) {
+            $members = array("echism", "kagross", "cpipes");
+        } else if ($hour >= 17 and $hour < 21) {
+            $members = array("cpipes");
+        } else {
+            $members = array("echism", "kagross");
+        }
+
 
         //report the pool of possible staff
         $this->reason .= "possible assignees at this hour ($hour):";

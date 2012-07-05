@@ -58,10 +58,12 @@ class NextAssignee
                 }
                 $count = $counts[$member];
 
+                /*
                 if($member == "cpipes") {
                     $count = $count*2;
                     $this->reason .= "doubling the ticket count for chris - since he works half time. ";
                 }
+                */
 
                 if($id === null || $min > $count) {
                     $id = $member;

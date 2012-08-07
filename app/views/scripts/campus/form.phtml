@@ -1,0 +1,94 @@
+<style>
+textarea {
+width: 70%;
+height: 80px;
+}
+.form-header {
+width: 70%;
+}
+.form-header h1 {
+font-family: Helvetica;
+color: #666;
+}
+</style>
+
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>" name="submit_form">
+<dl>
+    <div class="form-header">
+    <h1>Campus Researcher Club Request Form</h1>
+    <br>
+    <p>Thanks for your interest in the OSG's Campus Researchers Club - a program to partner individual researchers who have Distributed High Throughput Computing (DHTC) needs with an OSG member site. Once partnered with a member site, your sponsor will help you get your application running in a DHTC environment.</p>
+    <p>This program is not intended to be a long term solution to your research computing needs, but rather a production worthy proof of concept. Once validated, we can help you implement a DHTC solution at your institution to meet your longer-term goals.</p>
+    </div>
+
+    <?=$this->render("yourinfo.phtml", true)?>
+
+    <dd>
+        <h3>Research Details</h3>
+    </dd>
+    <p class="help-block">Tell us a little about your research</p>
+    
+    <div> <?=$this->element->institution?> </div>
+    <div> <?=$this->element->department?> </div>
+
+    <div>
+        Your Preferred Sponsor<br>
+        <select name="sponsor">
+        <option>I don't have a preference</option>
+        <option>Center for High Throughput Computing at UW-Madison</option>
+        <option>High Throughput Center at UCSD</option>
+        <option>Holland Computing Center at UN-Lincoln</option>
+        </select>
+    </div>
+
+    <div>
+        Please provide a brief description of your research to help us answer the question "What kind of research does the OSG help with?"<br>
+        <textarea name="desc"></textarea>
+    </div>
+
+    <div>
+        Why do you think DHTC is a good solution for advancing your research?<br>
+        <textarea name="fit"></textarea>
+    </div>
+
+    <div>
+        How did you hear about us? If someone referred you to us, please let us know whom.<br>
+        <textarea name="heard"></textarea>
+    </div>
+
+    <div>
+        Do you have any immediate questions or other comments?<br>
+        <textarea name="comments"></textarea>
+    </div>
+
+    <div>
+        We'd like to schedule an initial call to better understand your needs and determine next steps. What would be a good time to contact you?<br>
+        <textarea name="call"></textarea>
+    </div>
+
+    <?=$this->element->submit_button?>
+</dl>
+</form>
+
+<script>
+$(function() {
+    //repopulate optional details
+    <?php if(isset($_REQUEST["desc"])) {?>
+        $("textarea[name='desc']").val("<?php echo addslashes($_REQUEST["desc"])?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["fit"])) {?>
+        $("textarea[name='fit']").val("<?php echo addslashes($_REQUEST["fit"])?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["heard"])) {?>
+        $("textarea[name='heard']").val("<?php echo addslashes($_REQUEST["heard"])?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["comments"])) {?>
+        $("textarea[name='comments']").val("<?php echo addslashes($_REQUEST["comments"])?>");
+    <?php } ?>
+    <?php if(isset($_REQUEST["call"])) {?>
+        $("textarea[name='call']").val("<?php echo addslashes($_REQUEST["call"])?>");
+    <?php } ?>
+});
+
+</script>

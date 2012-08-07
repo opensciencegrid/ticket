@@ -260,7 +260,7 @@ class SubmitController extends BaseController
             $this->render("template_campusvorequest");
             break;
         default:
-            error_log("invalid tepmlate id requested: $id");
+            //error_log("invalid tepmlate id requested: $id");
             $this->render("template_na");
         }
     }

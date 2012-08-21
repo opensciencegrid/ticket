@@ -75,7 +75,7 @@ padding-bottom: 0.3em;
     <?php if(!user()->isGuest()) { 
         include("app/views/scripts/ticket_attachment.phtml");
     } else {
-        echo "--";
+        echo "<span class=\"muted\">Please login to see attachments</span>";
     } ?>
     </td>
 </tr>

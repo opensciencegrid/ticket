@@ -4,7 +4,7 @@ class SubmitController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "open";
+        $this->view->menu_selected = "submit";
     }
 
     public function indexAction() 
@@ -74,8 +74,8 @@ class SubmitController extends BaseController
         if(!$primary_vo) {
             $footprints->addMeta("Couldn't find the primary owner vo for resource (".$resource->name."). Please see finderror page for more detail.\n");
         } else {
-            $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->id);
-            $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->name);
+            $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->vo_id);
+            $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->vo_name);
         }
 
         //optionally set SC
@@ -234,8 +234,7 @@ class SubmitController extends BaseController
         $form = $this->initForm("submit");
 
         $e = new Zend_Form_Element_Text('title');
-        $e->setAttribs(array('size'=>50));
-        $e->setLabel("Short Description (Title)");
+        $e->setLabel("Title");
         //$e->setValue("Other Issues");
         $e->setRequired(true);
         $form->addElement($e);

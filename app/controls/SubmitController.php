@@ -74,8 +74,8 @@ class SubmitController extends BaseController
         if(!$primary_vo) {
             $footprints->addMeta("Couldn't find the primary owner vo for resource (".$resource->name."). Please see finderror page for more detail.\n");
         } else {
-            $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->id);
-            $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->name);
+            $footprints->setMetadata("ASSOCIATED_VO_ID", $primary_vo->vo_id);
+            $footprints->setMetadata("ASSOCIATED_VO_NAME", $primary_vo->vo_name);
         }
 
         //optionally set SC

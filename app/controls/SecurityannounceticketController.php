@@ -7,7 +7,7 @@ class SecurityAnnounceTicketController extends BaseController
     {
         user()->check("notify");
 
-        $this->view->page_title = "Security Announcement";
+        $this->view->page_title = "Security Ticket Submitter";
         $this->view->menu_selected = "user";
         $this->view->submenu_selected = "securityannounceticket";
     }

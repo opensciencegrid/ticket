@@ -6,7 +6,7 @@ class RaController extends BaseController
     {
         user()->check("ra");
 
-        $this->view->page_title = "Certificate Request";
+        $this->view->page_title = "Certificate Request Submitter";
         $this->view->menu_selected = "user";
         $this->view->submenu_selected = "ra";
 

@@ -151,7 +151,7 @@ class BaseController extends Zend_Controller_Action
             $adapter->setService( $recaptcha_service ); 
             // then set  the captcha element to use the ReCaptcha Adapter 
             $recaptcha = new Zend_Form_Element_Captcha('recaptcha', array( 
-                            'label' => "Are you a human?", 
+                            //'label' => "Are you a human?", 
                             'captcha' => $adapter 
             )); 
             //Then only add the element to the form: 

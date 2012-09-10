@@ -4,28 +4,21 @@ class SimplenotifyController extends BaseController
 {
     public function init()
     {
-        $this->view->pagename = "Send Notification Email";
-        $this->view->submenu_selected = "securitytasks";
+        user()->check("notify");
+
+        $this->view->page_title = "Security Notification";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "simplenotify";
     }
 
     public function indexAction()
     {
-        if(!user()->allows("notify")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $this->view->form = $this->getForm();
         $this->render();
     }
 
     public function submitAction()
     {
-        if(!user()->allows("notify")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $this->view->detail = "<h2>Process Detail</h2><br/>";

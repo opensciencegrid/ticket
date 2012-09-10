@@ -1,8 +1,13 @@
-<?include("app/views/scripts/header.phtml");?>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?></h2></div>
 <div class="form">
 <?if($this->errors != "") {
-    echo "<p class='errors'>".$this->errors."</p>";
+    echo "<div class='alert alert-error'>".$this->errors."</div>";
 }?>
 <?=$this->form?>
-</div>
-<?include("app/views/scripts/footer.phtml");?>
+</div><!--form-->
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

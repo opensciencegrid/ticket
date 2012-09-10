@@ -5,11 +5,13 @@ if(!function_exists("json_decode")) {
 }
 
 class NavigatorController extends Zend_Controller_Action 
-{ 
+{
     public function init()
     {
-        $this->view->submenu_selected = "view";
+        //$this->view->submenu_selected = "view";
         $this->view->page_title = "Ticket List";
+        $this->view->dt_cookie_openprefix="opened_156_";
+        $this->view->dt_cookie_closeprefix="closed_156_";
     }
 
     public function indexAction()
@@ -21,11 +23,11 @@ class NavigatorController extends Zend_Controller_Action
         $this->view->table_search = array("opened"=>array(), "closed"=>array());
         foreach($_COOKIE as $key=>$c) {
             $c = str_replace("'", "\"", $c); //php53's json_decode doesn't parse single quote..
-            if(strpos($key, "opened_") === 0){
+            if(strpos($key, $this->view->dt_cookie_openprefix) === 0){
                 $json = json_decode($c);
                 $this->view->opened_table_cols = $json->abVisCols;
                 $this->view->table_search["opened"] = $json->aoSearchCols;
-            } else if(strpos($key, "closed_") === 0){
+            } else if(strpos($key, $this->view->dt_cookie_closeprefix) === 0){
                 $json = json_decode($c);
                 $this->view->closed_table_cols = $json->abVisCols;
                 $this->view->table_search["closed"] = $json->aoSearchCols;
@@ -34,7 +36,7 @@ class NavigatorController extends Zend_Controller_Action
 
         try {
             $model = new Tickets();
-            $this->view->page_title = "Open Tickets";
+            $this->view->page_title = "View Tickets";
 
             //assigned tickets
             $closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";

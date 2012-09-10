@@ -1,51 +1,23 @@
-<h3>Contact Information</h3>
-Primary contact for this ticket (usually you).<br/>
-<table>
-<tr>
-<td>
-<?=$this->element->name?>
-<?=$this->element->email?>
-<?=$this->element->phone?>
-
-</td>
-<?  if(user()->allows("update")) { ?>
-    <td style="vertical-align: middle;">
-    <img src="<?=base()?>/images/populator_arrow.png">
-    </td>
-    <td style="vertical-align: middle;">
-    <div class="contact_populator">
-    Populate from someone else's contact information<br/>
-    <label class="required" for="careof">Name</label><br/>
-    <?
-    echo "<input type='text' id=\"careof\"/>";
-    ?>
-    </div>
-    </td>
-    <?
-}
+<div class="yourinfo">
+<div class="row-fluid">
+<?php
+$rl = "<span class=\"muted\">* Required</span>";
 ?>
-</table>
-<?if(!user()->isguest()) { ?>
-    <dt>CC this ticket to following email address</dt>
-    <dd>
-        <div class="ccarea" style="width:270px">
-            <?
-            $ccs = array();
-            if(Zend_Registry::isRegistered("passback_ccs")) {
-                $ccs = Zend_Registry::get("passback_ccs");
-            }
-            include_once("app/views/cc_editor.php");
-            cceditor($ccs);
-            ?>
-        </div>
-        <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
-    </dd>
-    <br/>
-<?} else {?>
-    <h3>Public Submission</h3>
-    <p>You have not provided OIM registered x509 certificate.</p>
-    <?=$this->element->recaptcha?>
-<?}?>
+<?php if(user()->allows("update")) { ?>
+    <div class="span3 contact_populator">
+    <label for="careof">Populate From</label>
+    <?php  echo "<input type='text' id=\"careof\"/>"; ?>
+    </div>
+    <div class="span3"><?=$this->element->name?></div>
+    <div class="span3"><?=$this->element->email?></div>
+    <div class="span3"><?=$this->element->phone?></div>
+<? } else { ?>
+    <div class="span4"><?=$this->element->name?></div>
+    <div class="span4"><?=$this->element->email?></div>
+    <div class="span4"><?=$this->element->phone?></div>
+<?php } ?>
+</div><!--row-->
+</div><!--yourinfo-->
 
 <?if(user()->allows("admin")) {?>
 <script type="text/javascript">

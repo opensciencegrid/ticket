@@ -1,5 +1,6 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread"><a href="<?=base()?>">Home</a> &gt; Ticket Viewer</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
 The ticket you are looking for can not be found, or already being removed.
-</div>
-<?include("app/views/scripts/footer.phtml");?>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

@@ -5,25 +5,13 @@ class Tickets
     public $closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";
     public function getopen()
     {
-        $ret = $this->dosearch("where mrSTATUS not in ".$this->closed_status." order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS not in ".$this->closed_status." order by mrID DESC");
         return $ret;
     }
-
-/*
-    public function getmytickets($assignee)
-    {
-        $time = time() - 3600*24*3;//3 days..
-        $start = date("Y-m-d", $time);
-        //pull open tickets or recently updated (closed) tickets that are assigned to me
-        $ret = $this->dosearch("where (mrUPDATEDATE > '$start' or mrSTATUS not in ".$this->closed_status.") and mrASSIGNEES like '%$assignee%'");
-        return $ret;
-    }
-*/
-
     public function getclosed($start_time)
     {
         $start = date("Y-m-d", $start_time);
-        $ret = $this->dosearch("where mrSTATUS in ".$this->closed_status." and mrUPDATEDATE > '$start' order by mrDEST, mrID DESC");
+        $ret = $this->dosearch("where mrSTATUS in ".$this->closed_status." and mrUPDATEDATE > '$start' order by mrID DESC");
         return $ret;
     }
     public function getall()
@@ -43,7 +31,6 @@ class Tickets
         $ret = $this->dosearch("where mrUPDATEDATE > '$start'", true);
         return $ret;
     }
-
     public function search($query)
     {
         $ret = $this->dosearch("where mrID = '$query' or mrALLDESCRIPTIONS like '%$query%' or mrTITLE like '%$query%' order by mrID");
@@ -53,7 +40,8 @@ class Tickets
     public function dosearch($query, $bIncludeDesc = false)
     {
         //contact-submitter is not available via this interface
-        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, mrSUBMITDATE, mrpriority, ticket__utype as tickettype, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
+        //$column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, mrSUBMITDATE, mrpriority, ticket__utype as tickettype, Destination__bVO__bSupport__bCenter as mrDEST, Originating__bVO__bSupport__bCenter mrORIGIN, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
+        $column = "mrID, mrSTATUS, mrTITLE, mrASSIGNEES, mrUPDATEDATE, mrSUBMITDATE, mrpriority, ticket__utype as tickettype, ENG__bNext__bAction__bItem as nextaction, ENG__bNext__bAction__bDate__fTime__b__PUTC__p as nad, ticket__utype as ticket_type";
 
         if($bIncludeDesc) {
             $column .= ", mrALLDESCRIPTIONS";

@@ -1,4 +1,7 @@
-<?include("app/views/scripts/header.phtml");?>
-Oops!
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
+<h3>Oops!</h3>
 <?=$this->content?>
-<?include("app/views/scripts/footer.phtml");?>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

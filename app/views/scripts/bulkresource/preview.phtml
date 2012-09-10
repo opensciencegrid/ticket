@@ -1,8 +1,10 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; <a href="<?=base()?>/bulkresource">Bulk Resource Ticket Submitter</a> &gt; Preview</div>
-<form action="<?=fullbase()?>/bulkresource/submit" method="post">
-<h3>Bulk Resource Ticket Submitter (Preview)</h3>
-<p>Click Submit button to submit following tickets.</p>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?> / Preview</h2></div>
+
+<form action="bulkresource/submit" method="post">
+<p class="help-block">Please verify below content and click Submit below.</p>
 <?
 foreach($this->preview as $rname=>$preview) {
     echo "<h4>".$rname."</h4>";
@@ -17,9 +19,13 @@ foreach($this->preview as $rname=>$preview) {
     echo "</blockquote>";
 }
 ?>
-<br>
-<input type="submit" value="Submit"> 
-or <a href="<?=fullbase()?>/bulkresource?redo=true">Modify</a>
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button> or <a href="bulkresource?redo=true">Modify</a>
+</div>
 
 </form>
-<?include("app/views/scripts/footer.phtml");?>
+
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
+

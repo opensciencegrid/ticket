@@ -7,7 +7,7 @@ class RestController extends Zend_Controller_Action
         header('content-type: text/xml'); 
         $this->render("none", null, true);
         if(!user()->isGOCMachine()) {
-            echo "access error";
+            echo "access error";//let's not use AuthException - which leads to html page
             exit;
         }
     }

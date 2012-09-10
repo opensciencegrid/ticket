@@ -4,7 +4,12 @@ class RaController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "admin";
+        user()->check("ra");
+
+        $this->view->page_title = "Certificate Request";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "ra";
+
         //load sponsor list
         $model = new RAContact();
         $this->sponsors = $model->fetchall();
@@ -13,23 +18,12 @@ class RaController extends BaseController
 
     public function indexAction() 
     { 
-        if(!user()->allows("ra")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $this->view->form = $this->getForm();
         $this->render();
     }
 
     public function submitAction()
     {
-        //only goc users are allowed
-        if(!user()->allows("ra")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $form = $this->getForm();
 
         if($_REQUEST["req_type"] == "host") {
@@ -138,7 +132,7 @@ class RaController extends BaseController
         $form->addElement($e);
 
         $name = new Zend_Form_Element_Text('req_name');
-        $name->setLabel("Requestor Name");
+        $name->setLabel("Requestor Full Name");
         $name->addValidator(new Zend_Validate_Regex("/^[a-z '\.]+$/i")); 
         $name->addErrorMessage("Please use ASCII(a-z), space, period, or single quote.");
         $name->setRequired(true);

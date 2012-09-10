@@ -36,8 +36,8 @@ function outputToggle($show, $hide, $content, $open_by_default = false)
     ob_start();
 
     if(true) {
-        $showbutton_style = "button";
-        $hidebutton_style = "button";
+        $showbutton_style = "";
+        $hidebutton_style = "";
         $detail_style = "detail";
         if($open_by_default) {
             $showbutton_style .= " hidden";
@@ -45,21 +45,14 @@ function outputToggle($show, $hide, $content, $open_by_default = false)
             $hidebutton_style .= " hidden";
             $detail_style .= " hidden";
         }
-        ?>
-        <div id='show_<?=$divid?>' class='<?=$showbutton_style?>'><img src='<?=base()?>/images/plusbutton.gif'/> <?=$show?></div>
-        <? if($hide != "") { ?>
-            <div id='hide_<?=$divid?>' class='<?=$hidebutton_style?>'><img src='<?=base()?>/images/minusbutton.gif'/> <?=$hide?></div>
-        <? } ?>
-        <div class='<?=$detail_style?>' id='detail_<?=$divid?>'><?=$content?></div>
-        <script type='text/javascript'>
+        echo "<div id='show_$divid' class='$showbutton_style'>$show</div>";
+        if($hide != "") { 
+            echo "<div id='hide_$divid' class='$hidebutton_style'>$hide</div>";
+        }
+        echo "<div class='$detail_style' id='detail_$divid'>$content</div>";
+        ?><script type='text/javascript'>
         $('#show_<?=$divid?>').click(function() {
-            $('#detail_<?=$divid?>').slideDown("normal", function() {
-/*
-                if(uwa()) {
-                    widget.callback('onUpdateBody');
-                }
-*/
-            });
+            $('#detail_<?=$divid?>').slideDown("normal");
             $('#show_<?=$divid?>').hide();
             $('#hide_<?=$divid?>').show();
         });
@@ -68,8 +61,7 @@ function outputToggle($show, $hide, $content, $open_by_default = false)
             $('#hide_<?=$divid?>').hide();
             $('#show_<?=$divid?>').show();
         });
-        </script>
-        <?
+        </script><?
     }
 
     $content = ob_get_contents();
@@ -104,7 +96,7 @@ function checklist($id, $kv, $selected, $extrainfo)
             $label_class = "checked";
         }
         $name = "$id"."[$key]";
-        $out .= "<div class=\"$label_class\">";
+        $out .= "<div class=\"item $label_class\">";
 
         //add some extra info .. if provided for this key
         if(isset($extrainfo[$key])) {
@@ -119,8 +111,8 @@ function checklist($id, $kv, $selected, $extrainfo)
             $out .= "</span>";
         }
 
-        $out .= "<input type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
-        $out .= $value;
+        $out .= "<input id=\"cl_$name\" type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
+        $out .= "<label for=\"cl_$name\">$value</label>";
 
         $out .= "</div>";
     }
@@ -129,7 +121,7 @@ function checklist($id, $kv, $selected, $extrainfo)
 }
 
 
-function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitrary number..
+function fblist($id, $kv, $selected, $max_select=1000, $width=400)//1000 is just some arbitrary number..
 {
     $out = "";
 
@@ -138,7 +130,6 @@ function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitr
     $out .= "<div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
 
     //output script
-    $delete_url = fullbase()."/images/delete.png";
     $script = "<script type='text/javascript'>$(document).ready(function() {";
     $script .= "var ${id}__listdata = [";
     $first = true;
@@ -146,7 +137,7 @@ function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitr
     foreach($kv as $key=>$value) {
         $name = "$id"."[$key]";
         if(isset($selected[$key])) {
-            $pre_selected .= "<div><img onclick=\"$(this).parent().siblings('.autocomplete').show(); $(this).parent().remove();\" src=\"$delete_url\"/>".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
+            $pre_selected .= "<div><i onclick=\"$(this).parent().siblings('.autocomplete').show(); $(this).parent().remove();\" class=\"icon-remove\"></i> ".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
         }
         if(!$first) {
             $script .= ",\n";
@@ -164,15 +155,16 @@ function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitr
         minChars: 0,
         mustMatch: true,
         matchContains: true,
-        width: 280,
+        width: $width,
         formatItem: function(item) {
             if(item.desc == "") return item.name; 
             return item.name + " (" + item.desc + ")";
         }
     }).result(function(event, item) {
         if(item != null) {
+            $("#${id}__acnote").hide();
             $(this).val("");
-            $(this).before("<div><img onclick=\"$(this).parent().siblings('.autocomplete').show();$(this).parent().remove();\" src=\"$delete_url\"/>"+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
+            $(this).before("<div><i class=\"icon-remove\" onclick=\"$(this).parent().siblings('.autocomplete').show();$(this).parent().remove();\"></i> "+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
             if($(this).siblings("div").length >= $max_select) {
                 $(this).hide();
             }
@@ -182,11 +174,11 @@ function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitr
 BLOCK;
 
     $out .= $pre_selected;
-    $out .= "<input type='text' style='background-color: transparent;' class='autocomplete' onfocus='$(\"#${id}__acnote\").fadeIn(\"slow\");' onblur='$(\"#${id}__acnote\").fadeOut(\"slow\");'/>";
+    $out .= "<input type='text' class='autocomplete ac_input' style='background-color: transparent;' onfocus='$(\"#${id}__acnote\").fadeIn(\"slow\");' onblur='$(\"#${id}__acnote\").fadeOut(\"slow\");'/>";
     $out .= $script;
 
     //display note
-    $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"z-index: -1; position: absolute; color: #999; font-size: 9px; right: 3px; bottom: -5px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
+    $out .= "<p id=\"${id}__acnote\" class=\"hidden\" style=\"z-index: -1; position: absolute; color: #999; font-size: 9px; right: 5px; bottom: -5px; text-align: right; font-size: 10px;line-height: 100%;\">Double click to show all</p>";
 
     $out .= "</div>";//fblist
     $out .= "</div>";//fblist_container

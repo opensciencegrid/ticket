@@ -5,9 +5,185 @@ class SearchController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "search";
+        $this->host="http://soichi.grid.iu.edu:8983/solr/collection1";//TODO - make it configurable
     }    
 
-    public function indexAction() 
-    { 
+    public function indexAction()
+    {
+        $facet_fields = array(
+            "status"=>array("name"=>"Status"),
+            "priority"=>array("name"=>"Priority"),
+            "assignees"=>array("name"=>"Assignees"),
+            "SUPPORTING_SC_ID"=>array("name"=>"Support Center"),
+            "ASSOCIATED_VO_ID"=>array("name"=>"Virtual Organization"),
+            "ASSOCIATED_RG_ID"=>array("name"=>"Resource Group"),
+            //"ASSOCIATED_R_ID"=>array("name"=>"Resource"),
+            "SUBMITTER_NAME"=>array("name"=>"Submitter", "type"=>"string")
+        );
+        $this->view->facet_fields = $facet_fields;
+
+        if(isset($_REQUEST["q"]) && $_REQUEST["q"] != "") {
+            $q = $this->clean($_REQUEST["q"]);
+
+            //apply facet query
+            $fq = "";
+            foreach($facet_fields as $key=>$prop) {
+                if(isset($_REQUEST[$key])) {
+                    if(@$prop["type"] == "string") {
+                        $fq .= " +$key:\"".$_REQUEST[$key]."\"";
+                    } else {
+                        //int by default
+                        $fq .= " +$key:".$_REQUEST[$key];
+                    }
+                }
+                /*
+                if(isset($_REQUEST["priority"])) {
+                    $fq .= " +priority:".$_REQUEST["priority"];
+                }
+                if(isset($_REQUEST["assignees"])) {
+                    $fq .= " +assignees:".$_REQUEST["assignees"];
+                }
+                */
+            }
+
+            //do search
+            $start = 0;
+            if(isset($_REQUEST["s"])) {
+                $start = (int)$_REQUEST["s"];
+            }
+            $url = $this->host."/select?q=".urlencode("{!lucene q.op=AND}".$q)."&wt=json&fq=".urlencode($fq)."&start=$start";
+            slog($url);
+            $ret_json = file_get_contents($url);
+            $this->view->result = json_decode($ret_json);
+            $this->view->query = $q;//pass back to form
+
+            //paging
+            $this->view->page_items = 10;
+            $this->view->page_current = (int)($start/$this->view->page_items);
+            $this->view->page_num = ceil($this->view->result->response->numFound / $this->view->page_items);
+            slog($this->view->page_current);
+
+            //load oim stuff
+            $scmodel = new SC();
+            $vomodel = new VO();
+            $rgmodel = new ResourceGroup();
+
+            //do facet search
+            $this->view->facets = array();
+            $this->view->faceted = array();
+            foreach($facet_fields as $key=>$prop) {
+                if(!isset($_REQUEST[$key])) {
+                    $f_url = $url."&rows=0&facet=true&facet.mincount=1&facet.field=$key";
+                    $ret_json = file_get_contents($f_url);
+                    $ret = json_decode($ret_json);
+                    $recs = $ret->facet_counts->facet_fields->$key;
+                    $frecs = array();
+                    for($i = 0;$i < count($recs);$i+=2) {
+                        $frecs[$recs[$i]] = array("count"=>$recs[$i+1], "label"=>$recs[$i]);
+                    }
+
+                    //update label for special columns
+                    switch($key) {
+                    case "SUPPORTING_SC_ID":
+                        foreach($frecs as $id=>&$frec) {
+                            $sc = $scmodel->get($id);
+                            $frec["label"] = $sc->name;
+                        }
+                        break;
+                    case "ASSOCIATED_VO_ID":
+                        foreach($frecs as $id=>&$frec) {
+                            $vo = $vomodel->get($id);
+                            $frec["label"] = $vo->name;
+                        }
+                        break;
+                    case "ASSOCIATED_RG_ID":
+                        foreach($frecs as $id=>&$frec) {
+                            $rg = $rgmodel->fetchByID($id);
+                            $frec["label"] = $rg->name;
+                        }
+                        break;
+                    }
+                    
+                    $this->view->facets[$key] = $frecs;
+                } else {
+                    $label = $_REQUEST[$key];
+                    switch($key) {
+                    case "SUPPORTING_SC_ID":
+                        $sc = $scmodel->get($label);
+                        $label = $sc->name;
+                        break;
+                    case "ASSOCIATED_VO_ID":
+                        $vo = $vomodel->get($label);
+                        $label = $vo->name;
+                        break;
+                    case "ASSOCIATED_RG_ID":
+                        $rg = $rgmodel->fetchByID($label);
+                        $label = $rg->name;
+                        break;
+                    }
+                    $this->view->faceted[$key] = array("value"=>$_REQUEST[$key], "label"=>$label);
+                }
+            }
+            /*
+            if(!isset($_REQUEST["priority"])) {
+                $f_url = $url."&rows=0&facet=true&facet.mincount=1&facet.field=priority";
+                $ret_json = file_get_contents($f_url);
+                $ret = json_decode($ret_json);
+                $recs = $ret->facet_counts->facet_fields->priority;
+                $frecs = array();
+                for($i = 0;$i < count($recs);$i+=2) {
+                    $frecs[$recs[$i]] = $recs[$i+1];
+                }
+                $this->view->facets["priority"] = $frecs;
+            }
+
+            if(!isset($_REQUEST["assignees"])) {
+                $f_url = $url."&rows=0&facet=true&facet.mincount=1&facet.field=assignees";
+                $ret_json = file_get_contents($f_url);
+                $ret = json_decode($ret_json);
+                $recs = $ret->facet_counts->facet_fields->assignees;
+                $frecs = array();
+                for($i = 0;$i < count($recs);$i+=2) {
+                    $frecs[$recs[$i]] = $recs[$i+1];
+                }
+                $this->view->facets["assignees"] = $frecs;
+            }
+            */
+        }
+    }
+
+    public function clean($dirty) {
+        return trim(preg_replace('/[^a-zA-Z0-9_ +-\.]/', '', $dirty));
+    }
+
+    public function autocompleteAction() {
+        $q = $this->clean($_REQUEST["q"]);
+        $limit = (int)$_REQUEST["limit"];
+        $timestamp = $_REQUEST["timestamp"];//what for?
+
+        //$url = "$host/select?rows=0&q=*:*&facet=true&facet.field=text_auto&facet.mincount=1&wt=json&facet.prefix=$q"; //do facet search on solr
+        $url = $this->host."/suggest?q=".urlencode($q)."&wt=json"; //use /suggest
+
+        $ret_json = file_get_contents($url);
+        $ret = json_decode($ret_json);
+        
+        //process result
+        $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
+        slog(print_r($ret->spellcheck->suggestions, true));
+        $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
+        $found = $sugs->numFound;
+        $start = $sugs->startOffset;
+        $base = substr($q, 0, $start);
+        foreach($sugs->suggestion as $id=>$sug) {
+            $suggests[] = $base.$sug;
+        }
+        $this->view->suggests = $suggests;
+
+        /*
+        foreach($recs as $rec) {
+            if(!isset($rec->v2)) $rec->v2 = "";
+            echo $rec->v1."\t".$rec->v2."\t".$rec->type."\n";
+        }
+        */
     }
 } 

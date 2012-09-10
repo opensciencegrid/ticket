@@ -1,18 +1,41 @@
+<style>
+input[type=text],
+select,
+textarea {
+width: 100%;
+}
+textarea {
+height: 200px;
+}
+.ccarea {
+width: 48%;
+}
+</style>
 <form action="<?=$this->escape($this->element->getAction())?>"
       method="<?=$this->escape($this->element->getMethod())?>">
-<dl>
 
 <?=$this->render("yourinfo.phtml", true)?>
 
-<h3>Issue Detail</h3>
+<legend>Issue Detail</legend>
 <?=$this->element->title?>
-
-<br/>
-
 <?=$this->element->detail?>
-<br/><br/>
 
-<?=$this->element->submit_button?>
-</dl>
+<label>CC</label>
+<div class="ccarea">
+    <?php
+    $ccs = array();
+    if(Zend_Registry::isRegistered("passback_ccs")) {
+        $ccs = Zend_Registry::get("passback_ccs");
+    }
+    include_once("app/views/cc_editor.php");
+    cceditor($ccs);
+    ?>
+</div>
+<a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a> 
+
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
+
 </form>
 

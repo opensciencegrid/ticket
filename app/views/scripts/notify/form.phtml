@@ -1,57 +1,77 @@
-<form action="<?=$this->escape($this->element->getAction())?>"
-      method="<?=$this->escape($this->element->getMethod())?>">
-<dl>
-<dd>
-    <h3>Send To</h3>
-</dd>
-
-<?
+<style>
+textarea {
+width: 100%;
+height: 200px;
+}
+select, input[type=text] {
+width: 100%;
+}
+</style>
+<?php
 function checked($e)
 {
     if($e->checked) return "checked=checked";
 }
 ?>
 
-<dd>
-<label>Security Contacts</label>
-<blockquote>
-    <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/>
-    GOC &nbsp;&nbsp;&nbsp;
-    <br><br>
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>" class="">
+
+<legend>Send To</legend>
+
+<div class="well">
+    <div class="well-title">Security Contacts</div>
+
+    <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/> GOC &nbsp;&nbsp;&nbsp;
     
     <input type="hidden" name="rsecurity" value="0">
-    <input type="checkbox" name="rsecurity" id="rsecurity" value="1" <?=checked($this->element->rsecurity)?>>
-    Resource Security Contacts&nbsp;&nbsp;&nbsp;
-    <p class="indent"><?php
+    <input type="checkbox" name="rsecurity" id="rsecurity" value="1" <?=checked($this->element->rsecurity)?>> Resource Security Contacts
+    <?php
         $address_model = new Address();
-        foreach($address_model->get_resource_security() as $address) { 
-            echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
+        $addresses = $address_model->get_resource_security();
+        /*
+        $content = "";
+        foreach($addresses as $address) { 
+            $content .= "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
-    ?></p>
+        */
+        echo " (".count($addresses)." contacts)";
+    ?>
+    &nbsp;&nbsp;&nbsp;
 
     <input type="hidden" name="vsecurity" value="0">
     <input type="checkbox" name="vsecurity" id="vsecurity" value="1" <?=checked($this->element->vsecurity)?>>
-    VO Security Contacts&nbsp;&nbsp;&nbsp;
-    <p class="indent"><?php
+    VO Security Contacts
+    <?php
+        $addresses = $address_model->get_vo_security();
+        /*
         foreach($address_model->get_vo_security() as $address) { 
             echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
-    ?></p>
+        */
+        echo " (".count($addresses)." contacts)";
+    ?>
+    &nbsp;&nbsp;&nbsp;
 
     <input type="hidden" name="ssecurity" value="0">
     <input type="checkbox" name="ssecurity" id="ssecurity" value="1" <?=checked($this->element->ssecurity)?>>
-    SC Security Contacts&nbsp;&nbsp;&nbsp;
-    <p class="indent"><?php
+    SC Security Contacts
+    <?php
+        $addresses = $address_model->get_sc_security();
+        /*
         foreach($address_model->get_sc_security() as $address) { 
             echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
-    ?></p>
-</blockquote>
-</dd>
+        */
+        echo " (".count($addresses)." contacts)";
+    ?>
+    &nbsp;&nbsp;&nbsp;
 
-<dd>
-    <label>Mailing Lists</label>
-<blockquote>
+</div><!-- well-->
+
+<div class="well">
+    <div class="well-title">Mailing Lists</div>
+
     <input type="hidden" name="support" value="0">
     <input type="checkbox" name="support" id="support" value="1" <?=checked($this->element->support)?>>
     Support Centers&nbsp;&nbsp;&nbsp;
@@ -67,25 +87,21 @@ function checked($e)
     <input type="hidden" name="sites" value="0">
     <input type="checkbox" name="sites" id="sites" value="1" <?=checked($this->element->sites)?>>
     OSG-Sites&nbsp;&nbsp;&nbsp;
-</blockquote>
-</dd>
+</div><!-- well -->
 
-<dd>
-<h3>Message</h3>
-</dd>
+<legend>Message</legend>
 
 <?=$this->element->email_from?>
-
 <?=$this->element->subject?>
 <?=$this->element->ticket?>
 <?=$this->element->body?>
 <?=$this->element->sig?>
 <?=$this->element->rss?>
 <?=$this->element->sign?>
-</dl>
 
-<dl>
-<?=$this->element->submit_button?>
-</dl>
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
+
 </form>
 

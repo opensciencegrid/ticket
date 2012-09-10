@@ -4,6 +4,7 @@ class SubmitController extends BaseController
 { 
     public function init()
     {
+        $this->view->page_title = "Submit GOC Ticket";
         $this->view->menu_selected = "submit";
     }
 

@@ -1,28 +1,67 @@
+<style>
+input[type=text],
+select {
+width: 100%;
+}
+.ccarea {
+width: 48%;
+}
+</style>
+
 <form action="<?=$this->escape($this->element->getAction())?>"
       method="<?=$this->escape($this->element->getMethod())?>">
 
-<?=$this->render("yourinfo.phtml", true)?>
+<legend>Contact Information</legend>
+<?php echo $this->render("yourinfo.phtml", true); ?>
 
-    <h3>Request Detail</h3>
+<legend>Request Detail</legend>
+<div class="row-fluid">
+<div class="span3">
     <?=$this->element->req_type?>
+</div>
+<div class="span3">
     <?=$this->element->req_id?>
-    <br/>
-
+</div>
+<div class="span3">
     <?=$this->element->vo?>
-    <br/>
-
-</dl>
-    <dl id="sponsor_holder">
+</div>
+<div class="span3">
     <?=$this->element->req_sponsor?>
-    </dl>
-<dl>
-    <?=$this->element->req_name?>
-    <?=$this->element->req_email?>
-    <?=$this->element->req_phone?>
-    <?=$this->element->req_dn?>
-    <br/>
+</div>
+</div><!--row-->
 
-    <?=$this->element->submit_button?>
+<legend>Requestor Information</legend>
+<div class="row-fluid">
+<div class="span3">
+    <?=$this->element->req_dn?>
+</div>
+<div class="span3">
+    <?=$this->element->req_name?>
+</div>
+<div class="span3">
+    <?=$this->element->req_email?>
+</div>
+<div class="span3">
+    <?=$this->element->req_phone?>
+</div>
+</div><!--row-->
+
+<label>CC</label>
+<div class="ccarea">
+    <?php
+    $ccs = array();
+    if(Zend_Registry::isRegistered("passback_ccs")) {
+        $ccs = Zend_Registry::get("passback_ccs");
+    }
+    include_once("app/views/cc_editor.php");
+    cceditor($ccs);
+    ?>
+</div>
+<a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a>
+
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
 
 </form>
 

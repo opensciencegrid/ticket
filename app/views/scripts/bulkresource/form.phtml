@@ -1,34 +1,59 @@
+<style>
+input[type=text],
+select,
+textarea {
+width: 100%;
+}
+textarea {
+height: 200px;
+}
+.ccarea {
+width: 48%;
+}
+</style>
+
 <form action="<?=fullbase()?>/bulkresource/preview" method="post">
-<dl>
-    <dd>
-    <?=$this->render("yourinfo.phtml", true)?>
-    </dd>
 
-    <dd>
-        <h3>Resources to Send Tickets</h3>
-        <div style="width: 400px">
-        <?
-            echo fblist("list",  Zend_Registry::get("resource_kv"), Zend_Registry::get("resource_ids") )
-        ?>
-        </div>
-    </dd>
+<legend>Contact Information</legend>
+<?=$this->render("yourinfo.phtml", true)?>
 
-        <h3>Template</h3>
-        <div style="background-color: #eee; padding: 20px; padding-top: 15px; background-image: url('<?=fullbase();?>/images/iblard_jikan.jpg'); background-repeat: no-repeat; background-position: right bottom;">
-        <p>Primary admin will be CC-ed and responsible SC, destination VO will be assigned to each ticket (similar to resource specific issue form)</p>
-        <?=$this->element->title?>
-        <?=$this->element->template?>
-        <p>You can use following variables inside the template</p>
-        <p><b>$RESOURCE_NAME</b></p>
-        <p><b>$RESOURCE_FQDN</b></p>
-        <p><b>$PRIMARY_ADMIN_NAME</b></p>
-        </div>
-</dl>
+<legend>Resources to send tickets</legend>
+<div style="span6">
+<?php echo fblist("list",  Zend_Registry::get("resource_kv"), Zend_Registry::get("resource_ids") ); ?>
+</div>
 
-<dl>
-    <dd>
-        <br>
-        <input type="submit" value="Preview ...">
-    </dd>
-</dl>
+<legend>Template</legend>
+<p class="help-block">Primary admin will be CC-ed and responsible SC, destination VO will be assigned to each ticket (similar to resource specific issue form)</p>
+<?=$this->element->title?>
+<div class="row-fluid">
+<div class="span10">
+    <?=$this->element->template?>
+</div>
+<div class="span2">
+    <br>
+    <p class="help-block">* Template Variable</p>
+    <p><b>$RESOURCE_NAME</b></p>
+    <p><b>$RESOURCE_FQDN</b></p>
+    <p><b>$PRIMARY_ADMIN_NAME</b></p>
+</div>
+</div><!--row-fluid-->
+
+<label>CC</label>
+<div class="ccarea">
+    <?php
+    $ccs = array();
+    if(Zend_Registry::isRegistered("passback_ccs")) {
+        $ccs = Zend_Registry::get("passback_ccs");
+    }
+    include_once("app/views/cc_editor.php");
+    cceditor($ccs);
+    ?>
+</div>
+<a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a> 
+
+
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Preview ...</button>
+</div>
+
 </form>

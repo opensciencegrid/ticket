@@ -1,0 +1,64 @@
+<script>
+//used by searchbox
+function parseValue(value) {
+    var obj = new Object();
+    var tokens = value.split("\t");
+    obj.str = tokens[0];
+    obj.count = tokens[1];
+    return obj;
+}
+
+
+$(function() {
+    //bootstrap-2.0.4 stuff
+    $(".alert-message").alert();
+    $(".dropdown-toggle").dropdown();
+    $("span[rel='tooltip']").tooltip();
+    $("a[rel=popover]").popover();
+
+    //activate menu that user is currently on
+    $("#menu_<?php echo $this->menu_selected?>").addClass("active"); 
+    $("#submenu_<?php echo $this->submenu_selected?>").addClass("active"); 
+
+    /*
+    <?php
+    $front = Zend_Controller_Front::getInstance();
+    $controllerName = $front->getRequest()->getControllerName();
+    ?>
+    $("#menu_<?php echo $controllerName?>").addClass("active"); 
+    */
+
+    
+
+    //translate zend validation error message to bootstrap
+    $(".errors").addClass("alert").addClass("alert-error");
+
+    //enable autocomplete for search box
+    $("#search").autocomplete("search/autocomplete", {
+        width: 320,
+        minChars: 3,
+        scrollHeight: 400,
+        delay: 100,
+        selectFirst: false,
+        //autoFill: true,
+        max: 300,
+        formatItem: function(data, i, n, value) {
+            var obj = parseValue(value);
+            //return obj.str + "<code>"+obj.count+"</code>";
+            return obj.str;
+        },
+        formatResult: function(data, value) {
+            var obj = parseValue(value);
+            return obj.str;
+        },
+    }).result(function(input, value) {
+        value = value[0];
+        var obj = parseValue(value);
+        document.location = "search?q="+escape(obj.str);
+    });
+});
+</script>
+
+  </body>
+</html>
+

@@ -1,17 +1,73 @@
-<?php include("app/views/scripts/header.phtml");?>
+<?php echo $this->render("bootheader.phtml", true);?>
+<script type='text/javascript' src='lib/jquery.timeago.js'></script>
+
 <style>
-td.routing table td {
-padding: 0px;
+#updates .toolbar {
+position: relative;
+top: -5px;
+font-weight: normal;
 }
-td.routing input {
-width: 145px;
+#updates a.anchor {
+position: relative;
+top: -50px;
 }
-td.routing select {
-width: 153px;
+#updates .selected pre {
+animation:selected 2s;
+animation-iteration-count: 2;
+animation-direction: alternate;
+-webkit-animation:selected 2s; 
+-webkit-animation-iteration-count: 2;
+-webkit-animation-direction: alternate;
+box-shadow: inset 1px 1px 20px #9ad;
+border: 1px solid #9ab;
 }
+@keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ab;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+@-webkit-keyframes selected {
+    from  {
+        box-shadow: inset 1px 1px 20px #9ad;
+        border: 1px solid #9ad;
+    }
+    to {
+        box-shadow: inset 1px 1px 20px #05c;
+        border: 1px solid #05c;
+    }
+}
+#updates pre {
+background-color: inherit;
+line-height: 15px;
+}
+#updates .header {
+color: #666;
+}
+#updates .update_history pre {
+background-color: #eee;
+color: #666;
+font-size: 85%;
+}
+#updates .clickable {
+cursor: pointer;
+}
+#updates .clickable:hover {
+color: #D98719;
+}
+#updates .meta_information pre {
+background-color: #fed;
+}
+
 </style>
 
-<?if(isset($this->load_comet)) {?>
+<div class="container-fluid">
+
+<?php if(isset($this->load_comet)) {?>
     <script type="text/javascript">
         var config = {
             ticket_id: <?=$this->ticket_id?>,
@@ -41,7 +97,7 @@ width: 153px;
             }
             html += "</ul>";
             if(count != 0) {
-                html = "<b>Currently viewed by</b> " + html;
+                html = "Viewers " + html;
             }
             $("#presence").html(html);
         }
@@ -55,65 +111,63 @@ width: 153px;
             });
         });
     </script>
-<?}?>
+<?php } 
 
-<div id="presence"></div>
-<div class="bread">You are here &gt; <a href="<?=base()?>/navigator"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->ticket_id?></div>
-<?if($this->ticket_type == "Security") {
-    echo "<p class=\"errors\">This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent</p>";
-} else if($this->ticket_type == "Security_Notification") {
-    echo "<p class=\"errors\">This is a security notification ticket which is only accessible to registered OIM users. Please do not forward the content of this ticket to anyone.</p>";
-}?>
-
-<?if($this->editable) {?>
-    <?
+echo $this->alerts();
+echo "<div id=\"presence\" class=\"pull-right\"></div>";
+echo "<div class=\"ticketgui\">";
+if($this->editable) {
     $suppression_control = true;
-    include("app/views/scripts/ticket_editor.phtml");?>
-<?} else {?>
-    <?include("app/views/scripts/ticket_viewer.phtml");?>
-<?}?>
+    include("app/views/scripts/ticket_editor.phtml");
+} else {
+    include("app/views/scripts/ticket_viewer.phtml");
+}
+echo "</div>";
+?>
 
 <div id="updates" style="clear: both;">
-    <?
-    $sort_order = "down"; //default
-    $expand_all = false; 
-    if(isset($_REQUEST["sort"])) {
-        $sort_order = $_REQUEST["sort"];
-    }
-    if(isset($_REQUEST["expandall"])) {
-        if($_REQUEST["expandall"] == "true") {
-            $expand_all = true;
+    <legend>Past Updates
+    <div class="btn-toolbar pull-right toolbar">
+        <div class="btn-group">
+        <?php
+        $sort_order = "down"; //default
+        if(isset($_REQUEST["sort"])) {
+            $sort_order = $_REQUEST["sort"];
         }
-    }
+        if($sort_order == "down") {
+            $flip_url = $this->updateurl(array("sort"=>"up"));
+            $flip_button = "icon-arrow-up";
+            krsort($this->descs, SORT_NUMERIC);
+        } else {
+            $flip_url = $this->updateurl(array("sort"=>"down"));
+            $flip_button = "icon-arrow-down";
+            ksort($this->descs, SORT_NUMERIC);
+        }
+        ?>
+        <a class="btn btn-small" href="<?=$flip_url?>"><i class="<?=$flip_button?>"></i> Sort Order</a>
 
-    $flip_url = fullurl();
-    if($expand_all) {
-        $flip_url = "?expandall=true";
-    } else {
-        $flip_url = "?expandall=false";
-    }
-    if($sort_order == "down") {
-        $flip_url .= "&sort=up";
-        $flip_button = "images/up.png";
-        krsort($this->descs, SORT_NUMERIC);
-    } else {
-        $flip_url .= "&sort=down";
-        $flip_button = "images/down.png";
-        ksort($this->descs, SORT_NUMERIC);
-    }
-    ?>
-    <h3>Past Updates</h3>
-    <p>
-        <span style="float: right"><a href="<?=$flip_url?>">Reverse Sorting Order</a>&nbsp;<img align="top" src="<?=$flip_button?>"/></span>
         <?
-        if(!$expand_all) {
-            $expand_all_url = fullurl()."?expandall=true&sort=$sort_order";
-            echo "<a style=\"float: right; margin-right: 10px;\" href=\"$expand_all_url\">Expand All Descriptions</a>";
+        $expand_all = false; 
+        if(isset($_REQUEST["expandall"])) {
+            if($_REQUEST["expandall"] == "true") {
+                $expand_all = true;
+            }
         }
+        if(!$expand_all) {
+            $expand_all_url = $this->updateurl(array("expandall"=>"true"));
+            echo "<a class=\"btn btn-small\" href=\"$expand_all_url\">Expand All Descriptions</a>";
+        } else {
+            $expand_all_url = $this->updateurl(array("expandall"=>"false"));
+            echo "<a class=\"btn active btn-small\" href=\"$expand_all_url\">Expand All Descriptions</a>";
+        }
+
         $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
         ?>
-        <a href="mailto:<?=config()->ticket_update_address?>?subject=<?=rawurlencode($subject)?>">Send Update Via Email</a>
-    </p>
+        <a class="btn btn-small" target="_blank" href="mailto:<?=config()->ticket_update_address?>?subject=<?=rawurlencode($subject)?>"><i class="icon-envelope"></i> Send Update Via Email</a>
+        </div>
+    </div><!--btn-toolbar-->
+    </legend>
+
     <?
     foreach($this->descs as $time=>$desc)
     {
@@ -141,6 +195,7 @@ width: 153px;
             }
         }
 
+        /*
         if($time > time() - 60*60*24) {
             //show in "ago" format
             $detail = date(config()->date_format_full, $time);
@@ -149,13 +204,18 @@ width: 153px;
         } else {
             $human_time = date(config()->date_format_full, $time);
         }
+        */
 
+        $iso = date("c", $time);
+        $timestr = date(config()->date_format_full, $time);
+        $human_time = "<time datetime=\"$iso\">$timestr</time>";
 
         //history == internal activities
         if($type == "history") {
             echo "<div class='update_history'>";
-            $out = "<pre>".Footprint::parse($content)."</pre>";
-            echo outputToggle("Footprints Activities ($human_time)", "Footprints Activities ($human_time)", $out);
+            $out = "<div class=\"header\">$human_time</div><pre>".Footprint::parse($content)."</pre>";
+            //echo outputToggle("<span class=\"header clickable\">Show Footprints Activities ($human_time)</span>", "", $out);
+            echo $out;
             echo "</div>";
         }
         
@@ -168,12 +228,16 @@ width: 153px;
             }
 
             $anchor = $time;
-            echo "<div class='update_description'>";
-            echo "<div class='header' onclick=\"document.location='#$anchor'; reset_anchor();\">";
-            echo "<img style=\"padding-right: 3px;\" class=\"anchor_img\" align=\"right\" src=\"images/application_link.png\"/>";
-            echo "<a name=\"$anchor\">&nbsp;</a>$human_time by <b>$by</b>";
+            echo "<div class='update_description' onclick=\"document.location='".$this->ticket_id."#$anchor'; reset_anchor();\">";
+            echo "<div class=\"header\">";
+            echo "$human_time";
+            if($by != "goc") {
+                //this means update was made by fpuser:goc onbehalf of user who doesn't have footprints account
+                echo " by <b>$by</b>";
+            }
+            echo "<a class=\"anchor\" name=\"$anchor\">&nbsp;</a>";
             echo "</div>";
-            $lines_raw = explode("\n", $content);
+            $lines_raw = explode("\n", trim($content));
             $lines = array();
             foreach($lines_raw as $line) {
                 $line = trim($line);
@@ -189,38 +253,38 @@ width: 153px;
                 for(;$i < config()->description_showlines; $i++) {
                     echo $lines[$i]."\n";
                 }
-                echo "</pre>";
                 //and toggle the rest..
                 $out = "";
-                $out .= "<pre>";
                 for(;$i < count($lines);$i++) {
                     $out .= $lines[$i]."\n";
                 }
-                $out .= "</pre>\n";
+                echo outputToggle("<button class=\"btn\">Show More</button>", "", $out);
+                echo "</pre>";
 
-                echo outputToggle("Show More", "", $out);
             } else {
                 //display all at once.
                 echo "<pre>$content</pre>";
             }
-            echo "</div>";
+            echo "</div>";//update_description
         }
 
         //meta information
         if(!empty($meta_information)) {
             echo "<div class=\"meta_information\">";
             $out = "<pre>$meta_information</pre>";
-            echo outputToggle("Ticket Creation Information", "Ticket Creation Information", $out);
+            //echo outputToggle("<button class=\"btn btn-warning btn-small\">Show Ticket Creation Information</button>", "", $out);
+            echo $out;
             echo "</div>";
         }
     }
-    echo "<h3>Similar Recent Tickets</h3>";
+
+    echo "<legend>Similar Recent Tickets</legend>";
     if(isset($this->similar_tickets)) { 
         foreach($this->similar_tickets as $ticket) {
-            echo "<a href=\"".fullbase()."/".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
+            echo "<a href=\"".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
         }
     } else {
-        echo "No similar tickets found that are modified within the last 30 days.";
+        echo "<p class=\"muted\">No similar tickets found that are modified within the last 30 days.</p>";
     }
 
 ?>
@@ -255,6 +319,27 @@ $(document).ready(function() {
     $("#closewindow").click(function() {
         $.cookie("closewindow", $(this).attr('checked'), options);
     });
+
+    function updateTimeago() {
+        $("time").timeago();
+        setTimeout(updateTimeago, 30*1000);
+    }
+    updateTimeago();
+
+    var expanded = false;
+    $(".description").focus(function() {
+        if(!expanded) {
+            expanded = true;
+            //expand to minheight
+            var min = 200;
+            if($(this).height() < min) {
+                $(this).animate({height: min}, 500);
+            }
+        }
+    });
 });
+
 </script>
-<?include("app/views/scripts/footer.phtml");?>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

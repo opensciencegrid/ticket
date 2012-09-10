@@ -14,37 +14,40 @@ class ErrorController extends Zend_Controller_Action
                 $this->render('404');
                 break;
             default:
-                //application error !!
                 $exception = $errors->exception;
-                $log = "";
-                $log .= "Error Message ---------------------------------------\n";
-                $log .= $exception->getMessage()."\n\n";
+                if($exception instanceof AuthException) {
+                    $this->render("access");
+                }  else {
+                    $log = "";
+                    $log .= "Error Message ---------------------------------------\n";
+                    $log .= $exception->getMessage()."\n\n";
 
-                $log .= "Stack Trace -----------------------------------------\n";
-                $log .= $exception->getTraceAsString()."\n\n";
+                    $log .= "Stack Trace -----------------------------------------\n";
+                    $log .= $exception->getTraceAsString()."\n\n";
 
-                $log .= "REQUEST -----------------------------------------\n";
-                $log .= print_r($_REQUEST, true)."\n\n";
+                    $log .= "REQUEST -----------------------------------------\n";
+                    $log .= print_r($_REQUEST, true)."\n\n";
 
-                $log .= "Server Parameter ------------------------------------\n";
-                $log .= print_r($_SERVER, true)."\n\n";
+                    $log .= "Server Parameter ------------------------------------\n";
+                    $log .= print_r($_SERVER, true)."\n\n";
 
-                if(config()->debug) {
-                    $this->view->content = "<pre>".$log."</pre>";
-                } else {
-                    $this->view->content = "Encountered an application error.\n\n";
-                    if(config()->elog_email) {
-                        elog("Sending Error Log");
-                        mail(config()->elog_email_address, "[gocticket] error has occured", $log, "From: ".config()->email_from);
+                    if(config()->debug) {
+                        $this->view->content = "<pre>".$log."</pre>";
+                    } else {
+                        $this->view->content = "Encountered an application error.\n\n";
+                        if(config()->elog_email) {
+                            elog("Sending Error Log");
+                            mail(config()->elog_email_address, "[gocticket] error has occured", $log, "From: ".config()->email_from);
 
-                        //also send SMS
-                        sendSMS(config()->error_sms_to, "Application Error", $exception->getMessage());
+                            //also send SMS
+                            sendSMS(config()->error_sms_to, "Application Error", $exception->getMessage());
 
-                        $this->view->content .= "Detail of this error has been sent to the development team for further analysis.";
+                            $this->view->content .= "Detail of this error has been sent to the development team for further analysis.";
+                        }
                     }
+                    elog($log);
+                    $this->render("error");
                 }
-
-                elog($log);
                 break;
         }
     } 

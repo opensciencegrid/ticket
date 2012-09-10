@@ -8,16 +8,15 @@ class GroupController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->submenu_selected = "admin";
+        user()->check("admin");
+
+        $this->view->page_title = "Ticket Clustering";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "group";
     }
 
     public function indexAction()
     {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $xml_file = config()->group_xml_path;
         try {
             $groups = new SimpleXmlElement(file_get_contents($xml_file), LIBXML_NOCDATA);

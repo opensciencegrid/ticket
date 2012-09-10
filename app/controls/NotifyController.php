@@ -4,28 +4,21 @@ class NotifyController extends BaseController
 { 
     public function init()
     {
-        $this->view->pagename = "Send Notification Email/RSS";
-        $this->view->submenu_selected = "admin";
+        user()->check("notify");
+
+        $this->view->page_title = "GOC Email / RSS Notification";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "notify";
     }
 
     public function indexAction() 
     { 
-        if(!user()->allows("notify")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $this->view->form = $this->getForm();
         $this->render();
     }
 
     public function submitAction()
     {
-        if(!user()->allows("notify")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $do_rss = false;
         if(@$_REQUEST["rss"] == 1) { $do_rss = true; }
 
@@ -148,7 +141,7 @@ class NotifyController extends BaseController
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Select('email_from');
-        $e->setLabel("Sender Address");
+        $e->setLabel("From");
         $e->addMultiOption(-1, config()->email_from);
         $e->addMultiOption(-2, config()->email_from_security);
 

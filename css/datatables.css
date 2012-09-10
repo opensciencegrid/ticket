@@ -310,6 +310,7 @@ table.display tr.odd.row_selected td {
  * Sorting classes for columns
  */
 /* For the standard odd/even */
+/*
 td.sorting_1 {
         background-color: #e0e0e0;
 }
@@ -321,12 +322,17 @@ td.sorting_2 {
 td.sorting_3 {
         background-color: #f0f0f0;
 }
+*/
+tr:hover td {
+background-color: #eee;
+}
+/*
 tr:hover td.sorting_1,
 tr:hover td.sorting_2,
 tr:hover td.sorting_3 {
     background-color: inherit;
 }
-
+*/
 /* For the Conditional-CSS grading rows */
 /*
         Colour calculations (based off the main row colours)

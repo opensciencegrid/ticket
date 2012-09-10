@@ -138,7 +138,4 @@ if(config()->role_prefix == "itbticket_") {
     echo "<p class=\"errors\">This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.grid.iu.edu/goc\">go here</a></p>";
 }
 
-$messages = flushMessage();
-foreach($messages as $message) {
-    echo "<div class=\"message\">$message</div>";
-}
+$this->alerts();

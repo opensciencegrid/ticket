@@ -1,42 +1,41 @@
+<style>
+#title, #detail {
+width: 100%;
+}
+#detail {
+height: 150px;
+}
+input[type=text],
+select {
+width: 100%;
+}
+.ccarea {
+width: 48%;
+}
+
+p.help-block {
+margin-bottom: 3px;
+color: #999;
+}
+label.required:after {
+content: " * Required";
+color: #ccc;
+}
+</style>
+
 <form action="<?=$this->escape($this->element->getAction())?>"
       method="<?=$this->escape($this->element->getMethod())?>" name="submit_form">
-<dl>
-
-    <style>
-    .column {
-    width: 350px;
-    float: left;
-    margin-right: 20px;
-    }
-    .group {
-    background-color: #eee;
-    border-radius: 10px;
-    padding: 10px 15px;
-    margin-bottom: 5px;
-    }
-    .fblist {
-    background-color: white;
-    z-index: 1;
-    }
-    #title, #detail {
-    width: 710px;
-    }
-    
-    p.help-block {
-    margin-bottom: 3px;
-    color: #999;
-    }
-    </style>
+    <!--
+    <p class="help-block">Expedite ticket resolution by providing following details.</p>
+    -->
 
     <?=$this->render("yourinfo.phtml", true)?>
+    <?=$this->element->title?>
+    <div class="row-fluid">
+        <div class="span6">
+            <p>This issue is for specific ...</p>
 
-    <dd>
-        <h3>Optional Details</h3>
-    </dd>
-    <p class="help-block">Expedite ticket resolution by providing following details.</p>
-    <div class="column">
-        <p>This issue is for specific ...</p>
-        <div class="group">
+            <div class="well">
             <input type="checkbox" name="resource_issue_check" id="resource_issue_check" onclick="$('#resource_issue_area').toggle();"> Resource<br>
             <div id="resource_issue_area" class="hidden">
                 <p class="help-block">Please enter resource name</p>
@@ -50,8 +49,9 @@
                 echo fblist("resource", $resource_kvs, @$_REQUEST["resource"], 1);//max 1
                 ?>
             </div>
-        </div>
-        <div class="group">
+            </div><!--well-->
+
+            <div class="well">
             <input type="checkbox" name="vo_issue_check" id="vo_issue_check" onclick="$('#vo_issue_area').toggle();"> Virtual Organization<br>
             <div id="vo_issue_area" class="hidden">
                 <p class="help-block">Please enter virtual organization name</p>
@@ -64,8 +64,9 @@
                 echo fblist("vo", $vo_kvs, @$_REQUEST["vo"], 1);//max 1
                 ?>
             </div>
-        </div>
-        <div class="group">
+            </div><!--well-->
+
+            <div class="well">
             <input type="checkbox" name="app_issue_check" id="app_issue_check" onclick="$('#app_issue_area').toggle();"> Software or Service<br>
             <div id="app_issue_area" class="hidden">
                 <select name="app_issue_type" id="app_issue_type" onchange="change_app($(this).val());">
@@ -133,12 +134,14 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+            </div><!--well-->
 
-    <div class="column">
-        <p>This issue is a ...</p>
-        <div class="group">
+        </div><!--span-->
+        <div class="span6">
+
+            <p>This issue is a ...</p>
+
+            <div class="well">
             <input type="checkbox" name="security_issue_check" id="security_issue_check" onclick="$('#security_issue_area').toggle();"> Security Issue<br>
             <div id="security_issue_area" class="hidden">
                 <br>
@@ -146,8 +149,9 @@
                 <input type="checkbox" name="security_issue_immediate" id="security_issue_immediate"> This issue needs immediate, undivided attention from GOC staff until resolved.<br>
                 <input type="checkbox" name="security_issue_available" id="security_issue_available"> Contact will be available immediately for contact by GOC staff for details regarding the reported problem.<br>
             </div>
-        </div>
-        <div class="group">
+            </div><!--well-->
+
+            <div class="well">
             <input type="checkbox" name="membership_issue_check" id="membership_issue_check" onclick="$('#membership_issue_area').toggle();"> Membership Request<br>
             <div id="membership_issue_area" style="display: none;">
                 Which VO would you like to be member of?
@@ -160,26 +164,43 @@
                 ?>
                 </select>
             </div>
-        </div>
-        <div class="group">
+            </div><!--well-->
+
+            <div class="well">
             <input type="checkbox" name="campusvorequest_issue_check" id="campusvorequest_issue_check" onclick="processtemplate(this); $('#campusvorequest_issue_area').toggle();"> Campus Grid VO Registration Request<br>
             <div id="campusvorequest_issue_area" style="display: none;">
                 Name of the new campus grid VO
                 <input type="text" name="campusvorequest_name" id="campusvorequest_name">
             </div>
+            </div><!--well-->
+        </div><!--span-->
+    </div><!--row-fluid-->
+
+    <?php echo $this->element->detail?>
+    
+    <?php if(user()->isguest()) { ?>
+        <!--
+        <p class="muted">You have not provided OIM registered x509 certificate.</p>
+        -->
+        <?=$this->element->recaptcha?>
+    <?php } else {?>
+        <label>CC</label>
+        <div class="ccarea">
+            <?php
+            $ccs = array();
+            if(Zend_Registry::isRegistered("passback_ccs")) {
+                $ccs = Zend_Registry::get("passback_ccs");
+            }
+            include_once("app/views/cc_editor.php");
+            cceditor($ccs);
+            ?>
         </div>
+        <a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a> 
+    <?php } ?>
+
+    <div class="form-actions">
+    <button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
     </div>
-    <br clear="all">
-
-    <dd>
-        <h3>Issue Details</h3>
-    </dd>
-    <?=$this->element->title?>
-    <?=$this->element->detail?>
-
-    <?=$this->element->submit_button?>
-
-</dl>
 </form>
 
 <script>

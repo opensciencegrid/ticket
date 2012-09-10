@@ -85,21 +85,14 @@ function slog($obj)
     Zend_Registry::get("logger")->log($obj, Zend_Log::INFO);
 }
 
-//session message (in HTML format)
-function addMessage($content)
-{
-    $message = new Zend_Session_Namespace("message");
-    if(!isset($message->msgs)) {
-        $message->msgs = array();
+//set $html to true if you want to pass html message
+//type could be one of : error, success, info, block(use html), or warning
+function message($type, $content, $html=false) {
+    $message = new Zend_Session_Namespace('message');
+    if(!$html) {
+        $content = htmlentities($content);
     }
-    $message->msgs[] = $content;
+    //index by content to prevent dup
+    $message->alerts[$content] = array("type"=>$type, "html"=>$content);
 }
-function flushMessage() {
-    $message = new Zend_Session_Namespace("message");
-    if(isset($message->msgs)) {
-        $msgs = $message->msgs;
-        $message->msgs = array();
-        return $msgs;
-    }
-    return array();
-}
+

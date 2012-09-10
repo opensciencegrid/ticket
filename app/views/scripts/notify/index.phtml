@@ -1,13 +1,9 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <a href="<?=base()?>/<?=$this->submenu_selected?>"><?=submenutitle($this->submenu_selected)?></a> &gt; <?=$this->pagename?></div>
-<div class="form">
-<?
-if($this->errors != "") {
-    echo "<p class='errors'>".$this->errors."</p>";
-}
-?>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?></h2></div>
 <?=$this->form?>
-</div>
-<?include("app/views/scripts/footer.phtml");?>
-
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
 

@@ -1,0 +1,276 @@
+/**************************************************************************************************
+boostrap fixer for 2.0.4
+*/
+.hidden {
+visibility: inherit; /*boostrap-responsive.css sets this.. which breaks jquery's show/hide*/
+}
+.page-header {
+padding-bottom: 5px;
+margin: 10px 0px 5px 0px;
+}
+img {
+max-width: inherit;
+vertical-align: top;
+}
+input[type="radio"], input[type="checkbox"] {
+margin: 0 0 3px 0px;
+}
+.navbar input {
+margin-bottom: 0px;
+}
+.navbar .nav > li > a {
+padding: 9px 8px 11px;
+}
+/*fix issues with bootstrap-responsive.min.css*/
+.navbar-fixed-top {
+margin-bottom: 0px !important;
+}
+a {
+color: #D98719;
+}
+.alert {
+margin-bottom: 9px;
+}
+textarea,
+input[type=text] {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+input[type=text] {
+height: 28px;
+}
+legend {
+margin-bottom: 6px;
+}
+.well {
+margin-bottom: 6px;
+}
+
+/**************************************************************************************************
+fix for zend
+*/
+ul.errors {
+margin: 0px;
+margin-bottom: 5px;
+}
+ul.errors li {
+list-style: none;
+}
+dd {
+margin-left: 0px;
+}
+
+/**************************************************************************************************
+fix for jquery-ui
+*/
+.ui-state-default {
+font-weight: normal;
+color: #666;
+}
+.ui-widget {
+font-family: inherit;
+font-size: inherit;
+}
+
+/**************************************************************************************************
+GOC Ticket style
+*/
+.contact_populator input
+{
+background-color: #eee;
+}
+.page-header h2 {
+color: #5a5a5a;
+}
+img[onclick] {
+cursor: pointer;
+}
+
+/**************************************************************************************************
+fblist
+*/
+.fblist_container {
+background-color: white;
+}
+.fblist
+{
+border: 1px solid #ccc;
+padding: 2px;
+margin-bottom: 5px;
+z-index: 1;
+}
+.fblist input.autocomplete
+{
+border: 0;
+width: 95%;
+border: none;
+box-shadow: none;
+margin-bottom: 0px;
+}
+.fblist div
+{
+padding: 2px;
+background-color:#DDDDDD;
+border:1px solid #AAAAAA;
+margin:1px;
+}
+.fblist div img
+{
+vertical-align: text-top;
+cursor: pointer;
+padding-right: 2px;
+}
+i[onclick] {
+cursor: pointer;
+}
+
+/**************************************************************************************************
+cc editor
+*/
+.ccarea {
+width: 100%;
+}
+.ccarea .cc {
+position: relative;
+}
+.ccarea .cc .icon-remove {
+background-color: white;
+position: absolute;
+top: 7px;
+right: 3px;
+z-index: 2;
+}
+
+/**************************************************************************************************
+presence
+*/
+#presence {
+float: right;
+color: #999;
+height: 20px;
+position: relative;
+font-size: 90%;
+}
+
+#presence ul.editors {
+display: inline-block;
+list-style-image: none;
+list-style-position: outside;
+list-style-type: none;
+margin: 0px;
+}
+
+#presence ul.editors li {
+display: inline-block;
+padding: 3px;
+margin: 3px 0px 3px 3px;
+color: white;
+background-color: #999;
+}
+
+/**************************************************************************************************
+ticket list
+*/
+
+.ticket-list {
+display: none;
+}
+.ticket-list .toolbar {
+display: inline-block;
+}
+.ticket-list .toolbar .navbar {
+margin-bottom: 2px;
+}
+.ticket-list input.search {
+margin: 0px;
+}
+.ticket-list th {
+padding: 3px;
+}
+.ticket-list .dataTables_filter input {
+width: 150px;
+}
+.ticket-list tr[onclick] {
+cursor: pointer;
+}
+.ticket-list .DataTables_sort_wrapper {
+position: relative;
+}
+.ticket-list .DataTables_sort_icon {
+position: absolute;
+top: 0px;
+right: 0px;
+}
+
+/**************************************************************************************************
+ticket gui
+*/
+.ticketgui .form-actions label {
+display: inline-block;
+cursor: pointer;
+}
+.ticketgui .form-actions {
+padding: 5px;
+margin: 5px 0px;
+}
+.ticketgui .quickdesc {
+position: relative;
+float: right;
+top: -6px;
+}
+.ticketgui .description {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+width: 100%;
+height: 70px;
+}
+.ticketgui b.teamname {
+color: #555;
+}
+.ticketgui .form-horizontal .control-group {
+margin: 5px 0px;
+}
+.ticketgui .list div {
+padding: 1px;
+margin:1px;
+padding-left: 3px;
+}
+.ticketgui .list .item label {
+display: inline-block;
+margin-bottom: 0px;
+cursor: pointer;
+}
+.ticketgui .list .item:hover {
+background-color: #eee;
+}
+.ticketgui .list div.checked  {
+padding: 1px;
+background-color:#aaa !important;
+color: white;
+margin:1px;
+padding-left: 3px;
+}
+.ticketgui legend {
+margin-bottom: 4px;
+font-size: 17px;
+line-height: 25px;
+font-weight: bold;
+color: #888;
+}
+
+/**************************************************************************************************
+misc..
+*/
+
+/* Echo out a label for the example */
+.well .well-title {
+position: relative;
+top: -8px;
+text-transform: uppercase;
+font-size: 12px;
+font-weight: bold;
+background-color: #f5f5f5;
+color: #9da0a4;
+}

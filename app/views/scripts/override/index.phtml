@@ -1,5 +1,8 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Assignment Override</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?></h2></div>
+
 <style>
 #table td {
 padding-right: 5px;
@@ -9,12 +12,14 @@ cursor: pointer;
 }
 </style>
 
-<h3>Assignment Override</h3>
-<p>Following assingment override will be applied during next assignee calculation.</p>
+<p class="help-block">Following assingment override will be applied during next assignee calculation.</p>
 
 <form action="override/submit" method="post">
-<table id="table" width="600px">
-<tr><th width="47%">From</th><th width="47%">To</th><th width="6%">&nbsp;</th></tr>
+<table id="table" class="table">
+<thead>
+<tr><th>From</th><th>To</th><th></th></tr>
+</thead>
+<tbody>
 <?
 $id = 0;
 foreach($this->overrides as $from=>$to) {
@@ -26,9 +31,14 @@ foreach($this->overrides as $from=>$to) {
     $id++;
 }
 ?>
+</tbody>
 </table>
-<p><a href="javascript:void(0)" onclick="add();">Add New Override</a></p>
-<input type="submit" value="Submit"/>
+<p><a class="btn" href="javascript:void(0)" onclick="add();">Add New Override</a></p>
+
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
+
 </form>
 
 <script type="text/javascript">
@@ -77,6 +87,8 @@ $(document).ready(function() {
 });
 </script>
 
-<?include("app/views/scripts/footer.phtml");?>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
 
 

@@ -1,5 +1,8 @@
-<?include("app/views/scripts/header.phtml");?>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
 <h3>Authorization Error</h3>
-<p>Sorry! You do not have necessary authorization to access the requested page.</p>
-<p>If you are supposed to be able to access it, please open a ticket at GOC.</p>
-<?include("app/views/scripts/footer.phtml");?>
+<p>You don't have authorization to access this page.</p>
+<p>If you are supposed to be able to access it, please submit a <a href="submit">GOC ticket</a>.</p>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

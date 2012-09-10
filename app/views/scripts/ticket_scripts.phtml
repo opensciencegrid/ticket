@@ -1,6 +1,9 @@
+<!--
 <script type="text/javascript" src="<?=fullbase()?>/lib/jquery-ui-1.8.1/plugins/jquery.textarearesizer.js"></script>
+-->
 <script type="text/javascript" src="<?=fullbase()?>/lib/checktab.js"></script>
 
+<!--
 <style type="text/css">
         div.grippie {
                 background:#EEEEEE url(<?=base()?>/images/grippie.png) no-repeat scroll center 2px;
@@ -18,13 +21,14 @@
                 height: 20%;
         }
 </style>
+-->
 
 <script type="text/javascript">
 $(document).ready(function() {
     $("input[name='nad']").datepicker({
         dateFormat: 'yy-mm-dd'
     });
-    $('textarea.resizable').TextAreaResizer();
+    //$('textarea.resizable').TextAreaResizer();
 });
 </script>
 

@@ -1,5 +1,11 @@
 <?
 
+class AuthException extends Exception {
+    public function __construct($message, $code = 0, Exception $previous = null) {
+        parent::__construct($message, $code, $previous);
+    }
+}
+
 //lookup person information
 class User
 {
@@ -92,6 +98,11 @@ class User
 
     public function allows($action) {
         return in_array(config()->role_prefix.$action, $this->action);
+    }
+    public function check($action) {
+        if(!$this->allows($action)) {
+            throw new AuthException();
+        }
     }
 
     public function isGuest() { return $this->guest; }

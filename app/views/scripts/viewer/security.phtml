@@ -1,6 +1,7 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread"><a href="<?=base()?>">Home</a> &gt; Ticket Viewer</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
 <p>Permission Denied to view ticket id <?=$this->ticket_id?></p>
 <p>This is a Security Incident ticket. It can only be viewed by authorized personnel.</p>
-</div>
-<?include("app/views/scripts/footer.phtml");?>
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

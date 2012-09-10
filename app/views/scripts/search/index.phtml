@@ -1,23 +1,133 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; Search Ticket </div>
-<h3>Search Ticket</h3>
-<div class="menu">
-        By Keyword<br/>
-        <form action="http://www.google.com/cse" id="cse-search-box">
-          <div>
-            <input type="hidden" name="cx" value="016752695275174109936:9u1k_fz_bag" />
-            <input type="hidden" name="ie" value="UTF-8" />
-            <input type="text" name="q"/>
-            <input type="submit" name="sa" value="Search" style="min-width: 100px;"/>
-          </div>
-        </form>
-        <script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
+<?php echo $this->render("bootheader.phtml", true);?>
+<style>
+.hidden {
+display: none;
+}
+</style>
+<div class="container-fluid">
+<h2>Search Results</h2>
+<?php
+function showfacet($it, $field, $props, $facets) {
+    if(isset($_REQUEST[$field])) {
+        $url = $it->updateurl(array($field=>null, "s"=>0));
+        echo "<p>";
+        echo "<h3>".$props["name"]."</h3>";
+        $label = $it->faceted[$field]["label"];
+        echo "<a href=\"$url\">".$label." <i class=\"icon icon-remove\"></i></a>";
+        echo "</p>";
+    } else{
+        if(count($facets[$field]) > 1) { 
+            echo "<h3>".$props["name"]."</h3>";
+            echo "<p>";
+            foreach($facets[$field] as $value=>$vprop) {
+                $count = $vprop["count"];
+                $label = $vprop["label"];
+                $url = $it->updateurl(array("s"=>0, $field=>$value));
+                echo "<a href=\"$url\">$label ($count)</a><br>";
+            }
+            echo "</p>";
+        }
+    }
+}
 
-        <br/>
-        By Ticket ID<br/>
-        <input type="text" id="ticketid" style="width: 135px;padding: 1px;"/>
-        <input type="button" value="Open" style="min-width: 100px;" onclick="document.location='<?=fullbase()."/"?>'+$('#ticketid').val();"/>
-</div>
-<?include("app/views/scripts/footer.phtml");?>
+if(isset($this->result)) {
+    $response = $this->result->response;
+    $curpage = $this->page_current;
+    $pages = $this->page_num;
+    $perpage = $this->page_items;
+
+    echo "<div class=\"row-fluid\">";
+
+    echo "<div class=\"span9\">";
+    echo "<p class=\"muted\">Found ".$response->numFound." tickets (".$perpage." per page)</p>";
+
+    //paging
+    if($pages > 1) {
+        echo "<div class=\"pagination\">";
+        echo "<ul>";
+        if($curpage == 0) {
+            echo "<li class=\"disabled\"><a>Prev</a></li>";
+        } else {
+            $url = $this->updateurl(array("s"=>$perpage*($curpage-1)));
+            echo "<li><a href=\"$url\">Prev</a></li>";
+        }
+        for($i=0;$i<$pages;$i++) {
+            if($pages > 15 && ($i > 5 && $i < $pages-5)) {
+                echo "<li><a>...</a></li>";
+                $i = $pages-6;
+            } else {
+                if($i == $curpage) {
+                    echo "<li class=\"active\"><a>".($i+1)."</a></li>";
+                } else {
+                    $url = $this->updateurl(array("s"=>$perpage*$i));
+                    echo "<li><a href=\"$url\">".($i+1)."</a></li>";
+                }
+            }
+        }
+        if($curpage < $pages-1) {
+            $url = $this->updateurl(array("s"=>$perpage*($curpage+1)));
+            echo "<li><a href=\"$url\">Next</a></li>";
+        } else {
+            echo "<li class=\"disabled\"><a>Next</a></li>";
+        }
+        echo "</ul>";
+        echo "</div>";
+    }
+
+    //results
+    $start = $response->start;
+    foreach($response->docs as $doc) {
+        $url = $doc->url;
+        $id = $doc->id;
+        $title = $doc->title;
+        $descs = $doc->descriptions;
+        $status = $doc->status;
+        $priority = $doc->priority;
+        echo "<div>";
+        echo "<a href=\"$url\">$id: $title</a> ";
+        echo "<span class=\"pull-right muted\">Status: $status</span>";
+        echo "<br>";
+        echo "<pre>";
+
+        echo $descs[0];
+        /*
+        $line = 0;
+        $hidden = "";
+        foreach($descs as $desc) {
+            $line++;
+            if($line > 1) {
+                $hidden .= $desc."\n";
+            } else {
+                echo $desc."\n";
+            }
+        }
+
+        if($hidden != "") {
+            echo "<button class=\"btn\">Show More</button>";
+            echo "<div class=\"hidden\">";
+            echo $hidden;
+            echo "</div>";
+        }
+        */
+        echo "</pre>";
+        echo "</div>";
+    }
+    echo "</div>"; //span
+
+    echo "<div class=\"span3\">";
+    foreach($this->facet_fields as $key=>$props) {
+        showfacet($this, $key, $props, $this->facets);
+    }
+    echo "</div>"; //span
+    echo "</div>"; //row-fluid
+
+} else {
+    echo "<p class=\"muted\">Please specify query</p>";
+}
+?>
+
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
 
 

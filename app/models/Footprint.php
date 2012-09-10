@@ -305,7 +305,7 @@ class Footprint
             $this->permanent_cc[] = $address;
             $this->b_cc = true;
         } else {
-            addMessage("Failed to validate email address: $address which is removed");
+            message("error", "Failed to validate email address: $address which is removed");
         }
     }
 

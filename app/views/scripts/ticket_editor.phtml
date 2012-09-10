@@ -1,236 +1,238 @@
 <?include("app/views/scripts/ticket_scripts.phtml");?>
-
-<!--<script type="text/javascript" src="<?=fullbase()?>/lib/jquery.focus.js"></script>-->
-
-<?
-if(isset($this->error_messages)) {
-    foreach($this->error_messages as $message) {
-        echo "<p class=\"errors\"><img align=\"top\" src=\"".fullbase()."/images/exclamation.png\"/> $message</p>";
-    }
+<?php
+if(!isset($form_action)) {
+    $form_action = "viewer/update";
 }
 ?>
 
-<?if(!isset($form_action)) {
-    $form_action = "/viewer/update";
-}?>
-<form id="ticket_form" action="<?=fullbase(); echo $form_action?>" method="post">
-    <input type="hidden" name="id" value="<?=$this->ticket_id?>"/>
-    <input type="text" style="width: 100%" name="title" value="<?=$this->title?>"/>
-    <br/>
+<form id="ticket_form" class="form-horizontal" action="<?php echo $form_action?>" method="post">
+    <div class="control-group">
+        <input type="hidden" name="id" value="<?=$this->ticket_id?>"/>
+        <?php if(isset($this->ticket_id)) {?>
+            <div class="input-prepend">
+                <span class="add-on"><?php echo $this->ticket_id?></span><input class="span7" type="text" name="title" value="<?=$this->title?>"/>
+            </div>
+        <?php } else {?>
+            <input style="width: 100%;" type="text" name="title" placeholder="Ticket Title" value="<?php echo $this->title?>"/>
+        <?php } ?>
+    </div>
 
-    <h3>Ticket Detail</h3>
-    <table class="ticket_detail" width="100%">
-    <tr>
-    <td>
-        <h4>Contact</h4>
-
-        <div id="populator" style="padding: 3px 0 0 0; background-color: #ddd;">
-        <span class="header">Populate From</span>
-        <input type='text' id="careof"/>
+    <div class="row-fluid">
+    <div class="span5">
+        <legend>Contact</legend>
+        <div class="control-group" style="background-color: #eee;">
+            <label class="control-label" for="careof">Populate From</label>
+            <div class="controls"><input type='text' id="careof" class="span12"/></div>
+            <script type="text/javascript">
+            $(document).ready(function() {
+                $("#careof").autocomplete(persons, {
+                    mustMatch: true,
+                    matchContains: true,
+                    width: 500,
+                    formatItem: function(row, i, max) {
+                        return row.name + "<br/>" + row.email;
+                    },
+                    formatMatch: function(row, i, max) {
+                        return row.name + " " + row.email;
+                    },
+                    formatResult: function(row) {
+                        return row.name;
+                    }
+                });
+                $("#careof").result(function(event, data, formatted) {
+                    $("input[name=submitter_name]").val(data.name);
+                    $("input[name=submitter_email]").val(data.email);
+                    $("input[name=submitter_phone]").val(data.phone);
+                });
+            });
+            </script>
         </div>
-        <script type="text/javascript">
-        $(document).ready(function() {
-            $("#careof").autocomplete(persons, {
-                mustMatch: true,
-                matchContains: true,
-                width: 500,
-                formatItem: function(row, i, max) {
-                    return row.name + "<br/>" + row.email;
-                },
-                formatMatch: function(row, i, max) {
-                    return row.name + " " + row.email;
-                },
-                formatResult: function(row) {
-                    return row.name;
-                }
-            });
-            $("#careof").result(function(event, data, formatted) {
-                $("input[name=submitter_name]").val(data.name);
-                $("input[name=submitter_email]").val(data.email);
-                $("input[name=submitter_phone]").val(data.phone);
-            });
-        });
-        </script>
-     
-        <span class="header">Full Name</span>
-        <input type="text" value="<?=$this->submitter_name?>" name="submitter_name"/>
-        <br>
+        <div class="control-group">
+            <label class="control-label" for="name">Full Name</label>
+            <div class="controls"><input type='text' class="span12" name="submitter_name" value="<?php echo $this->submitter_name?>"/></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="email">Email</label>
+            <div class="controls"><input type='text' class="span12" name="submitter_email" value="<?php echo $this->submitter_email?>"/></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="email">Phone</label>
+            <div class="controls"><input type='text' class="span12" name="submitter_phone" value="<?php echo $this->submitter_phone?>"/></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="cc">CC</label>
+            <div class="controls">
+                <div class="ccarea">
+                    <?
+                    include_once("app/views/cc_editor.php");
+                    cceditor($this->cc);
+                    ?>
+                </div>
+                <a class="btn btn-mini" href="#" onclick="addcc($('.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a>
+            </div>
+        </div>
 
-        <span class="header">Email</span>
-        <input type="text" value="<?=$this->submitter_email?>" name="submitter_email"/>
-        <br>
-
-        <span class="header">Phone</span>
-        <input type="text" value="<?=$this->submitter_phone?>" name="submitter_phone"/>
-        <br>
-
-        <h4>Metadata</h4>
+        <legend>Details</legend>
         <?php
-           if(count($this->metadata) == 0) {
-                echo "<p>No metadata stored for this ticket.</p>";
-           } else {
+           if(count($this->metadata) != 0) {
                 foreach($this->metadata as $item) {
-                    echo "<span class=\"header metadata_key\">$item->key</span> ";
-                    echo "<input type=\"text\" disabled value=\"$item->value\" name=\"metadata[$item->key]\"/>";
-                    echo "<br>";
+                    echo "<div class=\"control-group\">";
+                    echo "<label class=\"control-label\">$item->key</label>";
+                    echo "<div class=\"controls\">";
+                    echo "<input type=\"text\" disabled class=\"span12\" value=\"$item->value\" name=\"metadata[$item->key]\"/>";
+                    echo "</div>";
+                    echo "</div>";
                 }
             }
         ?>
-    </td>  
-    <td width="60%" class="assignees">
-        <?if(user()->allows("admin")) {?>
-        <span style="float: right;padding-right: 5px;"><a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a></span>
-        <?}?>
 
-        <h4>Assignees:</h4>
-        <?
+        <div class="control-group">
+            <label class="control-label" for="ticket_type">Ticket Type</label>
+            <div class="controls">
+            <select name="ticket_type" class="span12">
+            <?
+            $ttype = Footprint::GetTicketTypes();
+            foreach($ttype as $type) {
+                $selected = "";
+                if($type == $this->ticket_type) $selected = "selected=selected";
+                echo "<option value=\"$type\" $selected>$type</option>";
+            }
+            ?>
+            </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="priority">Priority</label>
+            <div class="controls">
+            <select name="priority" class="span12">
+            <?
+            $plist = Footprint::GetPriorityList();
+            foreach($plist as $id=>$p) {
+                $selected = "";
+                if($p == $this->priority) $selected = "selected=selected";
+                echo "<option value=\"$id\" value=\"$id\" $selected>$p</option>";
+            }
+            ?>
+            </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="status">Status</label>
+            <div class="controls">
+            <select name="status" class="span12">
+            <?
+            $style = status2style($this->status);
+            foreach(Footprint::GetStatusList() as $status) {
+                $selected = "";
+                if($status == $this->status) $selected = "selected=selected";
+                $style = status2style($status);
+                echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+            }
+            ?>            
+            </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="next_action">Next Action</label>
+            <div class="controls">
+            <input type="text" class="span12" name="next_action" value="<?=$this->next_action?>"/>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="nad">Next Action Deadline</label>
+            <div class="controls">
+            <input type="text" class="span12" name="nad" value="<?=$this->nad?>"/>
+            </div>
+        </div>
+
+    </div><!-- span-->
+
+    <div class="span7">
+        <?php 
+        echo "<legend>Assignees";
+        if(user()->allows("admin")) {
+            ?> 
+            <span class="pull-right" style="font-size: 11px">
+            <a target="_blank" href="https://internal.grid.iu.edu/twiki/bin/view/Documentation/Ticketing/TicketAssignmentTips">Assignment Tip</a>
+            </span> <?php 
+        } 
+        echo "</legend>";
         function showTeams($teams, $assignees, $ids, $txlinks) {
             foreach($ids as $id) {
                 $team = $teams[$id];
-                echo "<h5>".Footprint::parse($team->team)."</h5>";
+                echo "<b class=\"teamname\">".Footprint::parse($team->team)."</b>";
                 if(sizeof($team->members) > 12) {
-                    echo fblist("team_$id", $team->members, $assignees);
+                    echo fblist("team_$id", $team->members, $assignees, 1000, 200);
                 } else {
                     echo checklist("team_$id", $team->members, $assignees, $txlinks);
                 }
+                echo "<br>";
             }
         }
-        echo "<table width=\"100%\">";
-        echo "<tr><td>";
+        echo "<div class=\"row-fluid control-group\">";
+        echo "<div class=\"span4\">";
         showTeams($this->teams, $this->assignees, config()->editor_teams[0], $this->txlinks);
-        echo "</td><td>";
+        echo "</div>";
+        echo "<div class=\"span4\">";
         showTeams($this->teams, $this->assignees, config()->editor_teams[1], $this->txlinks);
-        echo "</td><td>";
+        echo "</div>";
+        echo "<div class=\"span4\">";
         showTeams($this->teams, $this->assignees, config()->editor_teams[2], $this->txlinks);
-        echo "</td></tr>";
-        echo "</table>";
-        ?>
-    </td>
-    </tr><tr>
-    <td>
-        <h4>Other Information</h4>
-        <span class="header">Ticket Type</span>
-        <select name="ticket_type">
-        <?
-        $ttype = Footprint::GetTicketTypes();
-        foreach($ttype as $type) {
-            $selected = "";
-            if($type == $this->ticket_type) $selected = "selected=selected";
-            echo "<option value=\"$type\" $selected>$type</option>";
-        }
-        ?>
-        </select>
-        <br/>
+        echo "</div>";
+        echo "</div>";//row
 
-        <span class="header">Priority</span>
-        <select name="priority">
-        <?
-        $plist = Footprint::GetPriorityList();
-        foreach($plist as $id=>$p) {
-            $selected = "";
-            if($p == $this->priority) $selected = "selected=selected";
-            echo "<option value=\"$id\" value=\"$id\" $selected>$p</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Status</span>
-        <?
-        $style = status2style($this->status);
-        echo "<select name=\"status\">";
-        foreach(Footprint::GetStatusList() as $status) {
-            $selected = "";
-            if($status == $this->status) $selected = "selected=selected";
-            $style = status2style($status);
-            echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
-        }
-        ?>
-        </select>
-        <br/>
-
-        <span class="header">Next Action Deadline</span>
-        <input type="text" name="nad" value="<?=$this->nad?>"/>
-        <br/>
-
-        <span class="header">Next Action Item</span>
-        <input type="text" name="next_action" value="<?=$this->next_action?>"/>
-        <br/>
-
-        <table width="100%">
-        <tr>
-        <td width="150px"><span class="header">CC</span></td>
-        <td>
-            <div class="ccarea">
-                <?
-                include_once("app/views/cc_editor.php");
-                cceditor($this->cc);
-                ?>
-            </div>
-            <a class="button" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;">Add New CC</a>
-        </td>
-        </tr></table>
-
-        <br/>
-    </td>
-    <td class="attachments">
-        <h4>Attachments</h4>
-        <?php if(isset($this->ticket_id)) {
+        if(isset($this->ticket_id)) {
+            echo "<div class=\"control-group\">";
             include("app/views/scripts/ticket_attachment.phtml");
-        } else { ?>
-            <p>Please submit your ticket before adding any attachments.</p>
-        <?php } ?>
-    </td>
-    </tr></table>
+            echo "</div>";
+        } else { 
+            //echo "<p class=\"muted\">Please submit your ticket before adding any attachments.</p>";
+        } 
+        ?>
+        
+    </div><!-- span-->
+    </div><!-- row-->
 
-    <span class="header">New Update</span>
-    <select name="quickdesc" onchange="
+    <legend>New Update
+    <select class="quickdesc" name="quickdesc" onchange="
         if($(this).val()) {
-            $('.resizable').val('Loading...');
+            $('.description').val('Loading...');
             $.ajax({
-                url: '<?=fullbase()?>/viewer/quickdesc?id='+escape($(this).val()),
+                url: 'viewer/quickdesc?id='+escape($(this).val()),
                 success: function(data) {
-                    $('.resizable').val(data);
+                    $('.description').val(data);
                 }
             });
         }
-        ">  
-    <?
+        ">
+    <?php
     $model = new Schema();
     $descs = $model->getquickdesc();
-    echo "<option value=\"\">(Quick Description)</option>";
+    echo "<option value=\"\">(Template)</option>";
     foreach($descs as $name=>$desc) {
         echo "<option value=\"$name\">$name</option>";
     }
     ?>
     </select>
-    <br>
-    <div>
-        <textarea class="resizable" style="width: 100%" rows="10" name="description" onkeypress="checkTab(event);"><?=$this->description?></textarea>
-    </div>
-
-    <table width="100%"><tr>
-    <td>
+    </legend>
+    <textarea class="description" name="description" onkeypress="checkTab(event);"><?=$this->description?></textarea>
+    <div class="form-actions">
         <?if(!isset($submit_label)) {
             $submit_label = "Update";
         }?>
-        <input type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$submit_label?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
-
+        <div class="controls">
+        <button type="submit" class="btn btn-primary"><?php echo $submit_label?></button>
         <?if(isset($suppression_control)) {?>
-            &nbsp;&nbsp;
-            <input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
-            &nbsp;&nbsp;
-            <input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
-            &nbsp;&nbsp;
-            <input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
-            &nbsp;&nbsp;
-            <input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
+            &nbsp;&nbsp;<input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
+            &nbsp;&nbsp;<input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
+            &nbsp;&nbsp;<input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+            &nbsp;&nbsp;<input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
         <?}?>
-
-    </td>
-    </tr><tr>
-    </tr></table>
-
+        </div>
+    </div>
 
 </form>
-

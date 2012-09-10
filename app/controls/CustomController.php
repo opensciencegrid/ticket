@@ -5,14 +5,11 @@ class CustomController extends Zend_Controller_Action
 {
     public function init()
     {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true); 
-            exit;
-        }
-        $this->view->submenu_selected = "open";
+        user()->check("admin");
 
-        //store form errors
-        $this->view->error_messages = array();
+        $this->view->page_title = "Custom Ticket Submitter";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "custom";
 
         //schema, team
         $aka_model = new AKA();
@@ -43,14 +40,19 @@ class CustomController extends Zend_Controller_Action
 
         $title = trim($_REQUEST["title"]);
         if($title == "") {
-            $this->view->error_messages[] = "Title cannot be empty.";
+            message("error", "Title cannot be empty.");
             $good = false;
         }
 
         //contact
-        $submit_name = $_REQUEST["submitter_name"];
-        $submit_email = $_REQUEST["submitter_email"];
-        $submit_phone = $_REQUEST["submitter_phone"];
+        $submit_name = trim($_REQUEST["submitter_name"]);
+        $submit_email = trim($_REQUEST["submitter_email"]);
+        $submit_phone = trim($_REQUEST["submitter_phone"]);
+
+        if($submit_name == "") {
+            message("error", "Please specify contact fullname.");
+            $good = false;
+        }
 
         //consolidate assignee list
         $assignees = array();
@@ -62,26 +64,15 @@ class CustomController extends Zend_Controller_Action
             }
         }
         if(count($assignees) == 0) {
-            $this->view->error_messages[] = "Please assign at least one assignee.";
+            message("error", "Please assign at least one assignee.");
             $good = false;
         }
 
         //detail
         $ccs = @$_REQUEST["cc"]; //TODO - validate
         $description = trim($_REQUEST["description"]); //TODO - validate?
-        //$dest_vo = $_REQUEST["destination_vo"]; //TODO - validate
         $nad = strtotime($_REQUEST["nad"]);
         $next_action = trim($_REQUEST["next_action"]);//TODO - validate?
-        /*
-        $orig_ticket_id = "";
-        if(trim($_REQUEST["originating_ticket_id"]) != "") {
-            $orig_ticket_id = $_REQUEST["originating_ticket_id"]; //TODO - validate..
-        }
-        $dest_ticket_id = "";
-        if(trim($_REQUEST["destination_ticket_id"]) != "") {
-            $dest_ticket_id = $_REQUEST["destination_ticket_id"]; //TODO - validate..
-        }
-        */
         $priority = (int)$_REQUEST["priority"];
         $status = $_REQUEST["status"]; //TODO - validate?
         $type = $_REQUEST["ticket_type"]; //TODO - validate
@@ -131,7 +122,7 @@ class CustomController extends Zend_Controller_Action
             //$footprint->setDestinationTicketNumber($dest_ticket_id);
 
             $mrid = $footprint->submit();
-            addMessage("Successfully opened a ticket");
+            message("success", "Successfully opened a ticket");
             header("Location: ".fullbase()."/".$mrid);
             exit;
         } else {

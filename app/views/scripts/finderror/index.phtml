@@ -1,5 +1,7 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Find Error</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?></h2></div>
 
 <h3>Open Tickets with no GOC member assignments</h3>
 <?
@@ -9,12 +11,11 @@ if(count($this->na_assignments) == 0) {
     foreach($this->na_assignments as $na) {
         echo "<p><a href=\"".fullbase()."/".$na->mrid."\" style='color:red;'>".$na->mrid.": ".$na->mrtitle."</a></p>";
     }
-    echo "<blockquote>In order to fix this issue, assign at least one GOC member to these tickets via FP.";
-    echo "</blockquote>";
+    echo "<p class=\"help-block\">In order to fix this issue, assign at least one GOC member to these tickets via FP.</p>";
 }
 
 echo "<h3>Team Dump</h3>";
-echo "<blockquote>Please note that the team information is cached for about 10 minutes</blockquote>";
+echo "<p class=\"help-block\">Please note that the team information is cached for about 10 minutes</p>";
 echo "<p>";
 foreach($this->teams as $team_entry) {
     $team = Footprint::parse($team_entry->team);
@@ -32,27 +33,30 @@ echo "</p>";
 <br/><br/>
 
 <h3>OIM/FP Match</h3>
-<blockquote>
-<p>GOC Ticket submitter pulls information from OIM and submit tickets on FP system which means that certain types of information needs to be synchronized in order to prevent melt down of the system (or I should say, un-defined behavior..) </p>
-<p>
+<p class="help-block">
+GOC Ticket submitter pulls information from OIM and submit tickets on FP system which means that certain types of information needs to be synchronized in order to prevent melt down of the system (or I should say, un-defined behavior..) </p>
+
+<p class="help-block">
 Following lists shows any records that needs to be synclonized and they are marked in <font color='red'>RED</font>. If you don't see any notes in red, everything is synchronized correctly.
 </p>
-<p>
+
+<p class="help-block">
 Here is how it works.. First, GOC Ticket pulls information from OIM. Each records in OIM has a field called "footprints_id" which are the FP counterpart of that record. GOC Ticket forms uses that footprint_id values to submit ticket to FP.
 </p>
-<br/>
-<p>
+
+<p class="help-block">
 <font color='red'>only in oim</font> means that the record is in OIM but not yet added to the FP. Please go to FP/administration page and add that value to appropriate schema. It could be, that you just need to remove that value from OIM.
 </p>
-<p>
+
+<p class="help-block">
 <font color='red'>only in fp</font> means that the record is in FP but either it doesn't exist in OIM or mapping for footprints_id is not correct. If could also means that the record needs to be removed from FP.
 </p>
-<br/>
-<p>More instructions below..</p>
-</blockquote>
+
+<p class="help-block">
+More instructions below..</p>
 
 <h3>Support Centers</h3>
-<table>
+<table class="table">
 <tr><th>OIM(footprints_id)</th><th>Footprint</th><th></th></tr>
 <?
 foreach($this->error_sc as $error) {
@@ -63,13 +67,10 @@ foreach($this->error_sc as $error) {
 }
 ?>
 </table>
-<blockquote>
-<p>In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this)</p>
-<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents</p>
-</blockquote>
+<p class="help-block">In order to update these entries on OIM, go to (TODO: currently OIM doesn't allow users to update this). In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents</p>
 
 <h3>Email Address</h3>
-<table>
+<table class="table">
 <tr><th>OIM</th><th>Footprint</th><th></th></tr>
 <?
 foreach($this->error_email as $error) {
@@ -82,13 +83,10 @@ foreach($this->error_email as $error) {
 }
 ?>
 </table>
-<blockquote>
-<p>In order to update these entries on OIM, go to OIM / SC. Find the SC, change the Primary Operations Contact or if the correct contact is selected, go to Contact page for that contact to update the email address</p>
-<p>In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents, select Agent, click GO, and look under primary email address</p>
-</blockquote>
+<p class="help-block">In order to update these entries on OIM, go to OIM / SC. Find the SC, change the Primary Operations Contact or if the correct contact is selected, go to Contact page for that contact to update the email address. In order to update the list of VOs on FP, go to Footprints &gt; Administration &gt; Project &gt; Add Agents / Edit Agents, select Agent, click GO, and look under primary email address</p>
 
 <h3>Resource To Support Center Link</h3>
-<table>
+<table class="table">
 <tr><th>Resource Name(Resource ID)</th><th>Footprint SC(SC ID)</th><th></th></tr>
 <?
 foreach($this->resource_sclink as $rec) {
@@ -101,11 +99,10 @@ foreach($this->resource_sclink as $rec) {
 }
 ?>
 </table>
-<blockquote>
-<p>When user submit issue specific to Resource, gocticket app tries to find a corresponding support center. The view used to do this lookup relies on resource_group to be active for the resource (resource group is tied to SC), and if this is not the case the lookup will fail. There might be other reasons that this could fail also.. If the lookup fails, the OSG-GOC will be used as SC.</p>
-</blockquote>
 
+<p class="help-block">When user submit issue specific to Resource, gocticket app tries to find a corresponding support center. The view used to do this lookup relies on resource_group to be active for the resource (resource group is tied to SC), and if this is not the case the lookup will fail. There might be other reasons that this could fail also.. If the lookup fails, the OSG-GOC will be used as SC.</p>
 
-<?include("app/views/scripts/footer.phtml");?>
-
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
 

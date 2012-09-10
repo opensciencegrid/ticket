@@ -4,7 +4,8 @@ class ViewerController extends Zend_Controller_Action
 {
     public function init()
     {
-        $this->view->submenu_selected = "view";
+        $this->view->menu_selected = "navigator";
+        //message("success", "here is my message");
     }
     
     public function loaddetail()
@@ -45,6 +46,7 @@ class ViewerController extends Zend_Controller_Action
                 $this->render("securityannounceticket");
                 return null;
             }
+            message("normal", "This is a security notification ticket which is only accessible to registered OIM users. Please do not forward the content of this ticket to anyone.");
         }
         
         //limit access to security ticket
@@ -54,6 +56,7 @@ class ViewerController extends Zend_Controller_Action
                 $this->render("security");
                 return null;
             }
+            message("error", "This is a security ticket that only authorized persons can view. Please do NOT forward the contents of this ticket to any one without the OSG security team's consent");
         }
 
         //submitter 
@@ -162,6 +165,8 @@ class ViewerController extends Zend_Controller_Action
             elog($xml_file." doesn't exist");
         }
 
+
+
         return $detail;
     }
 
@@ -191,141 +196,78 @@ class ViewerController extends Zend_Controller_Action
 
     public function updateAction()
     {
-        if(!user()->allows("update")) {
-            $this->render("error/access", null, true); 
-        } else {
-            //pull & validate the request 
-            $good = true;
+        user()->check("update");
 
-            $ticket_id = (int)$_REQUEST["id"];
-            $title = $_REQUEST["title"]; //TODO - validate?
+        //pull & validate the request 
+        $good = true;
 
-            //contact
-            $submit_name = $_REQUEST["submitter_name"];
-            $submit_email = $_REQUEST["submitter_email"];
-            $submit_phone = $_REQUEST["submitter_phone"];
+        $ticket_id = (int)$_REQUEST["id"];
+        $title = $_REQUEST["title"]; //TODO - validate?
 
-            //consolidate assignee list
-            $assignees = array();
-            foreach($_REQUEST as $key=>$param) {
-                if(substr($key, 0, 5) == "team_") {
-                    foreach($param as $assignee=>$flag) {
-                        $assignees[] = $assignee;
-                    }
+        //contact
+        $submit_name = $_REQUEST["submitter_name"];
+        $submit_email = $_REQUEST["submitter_email"];
+        $submit_phone = $_REQUEST["submitter_phone"];
+
+        //consolidate assignee list
+        $assignees = array();
+        foreach($_REQUEST as $key=>$param) {
+            if(substr($key, 0, 5) == "team_") {
+                foreach($param as $assignee=>$flag) {
+                    $assignees[] = $assignee;
                 }
             }
-
-            //detail
-            $ccs = @$_REQUEST["cc"]; //TODO - validate
-            $description = trim($_REQUEST["description"]); //TODO - validate?
-            $nad = strtotime($_REQUEST["nad"]);
-            $next_action = trim($_REQUEST["next_action"]);//TODO - validate?
-            $priority = (int)$_REQUEST["priority"];
-            $status = $_REQUEST["status"]; //TODO - validate?
-            $type = $_REQUEST["ticket_type"]; //TODO - validate
-
-            if(!$good) {
-                //TODO - implement mechanism to allow re-editing
-                echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
-            } else {
-                //prepare and submit ticket update
-                $footprint = new Footprint($ticket_id);
-                $footprint->setTitle($title); 
-
-                if($description != "") {
-                    $footprint->addDescription($description);
-                }
-
-                $this->setSubmitter($footprint);
-
-                //contact
-                $footprint->setName($submit_name);
-                $footprint->setOfficePhone($submit_phone);
-                $footprint->setEmail($submit_email);
-                //$footprint->setOriginatingVO($submit_vo);
-
-                //detail
-                $footprint->resetAssignee();
-                foreach($assignees as $assignee) {
-                    $footprint->addAssignee($assignee);
-                }
-                $footprint->resetCC();
-                if(isset($ccs)) {
-                    foreach($ccs as $cc) {
-                        $cc = trim($cc);
-                        if($cc != "") {
-                            $footprint->addCC($cc);
-                        }
-                    }
-                }
-                //$footprint->setDestinationVO($dest_vo);
-                $footprint->setNextAction($next_action);
-                $footprint->setNextActionTime($nad);
-                $footprint->setPriority($priority);
-                $footprint->setStatus($status);
-                $footprint->setTicketType($type);
-
-                //set suppression
-                if(!isset($_REQUEST["notify_assignees"])) {
-                    $footprint->suppress_assignees();
-                }
-                if(!isset($_REQUEST["notify_submitter"])) {
-                    $footprint->suppress_submitter();
-                }
-                if(!isset($_REQUEST["notify_ccs"])) {
-                    $footprint->suppress_ccs();
-                }
-            
-                $footprint->submit();
-                addMessage("Successfully updated ticket $ticket_id!");
-                $close = "";
-                if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
-                    $close = "?close=true";
-                }
-                header("Location: ".fullbase()."/".$ticket_id.$close);
-                exit;
-            }
         }
-        $this->render("none", null, true);
-    }
 
-    public function setSubmitter($footprint) 
-    {
-        $agent = $this->getFPAgent(user()->getPersonName());
-        if($agent !== null) {
-            $footprint->setSubmitter($agent);
+        //detail
+        $ccs = @$_REQUEST["cc"]; //TODO - validate
+        $description = trim($_REQUEST["description"]); //TODO - validate?
+        $nad = strtotime($_REQUEST["nad"]);
+        $next_action = trim($_REQUEST["next_action"]);//TODO - validate?
+        $priority = (int)$_REQUEST["priority"];
+        $status = $_REQUEST["status"]; //TODO - validate?
+        $type = $_REQUEST["ticket_type"]; //TODO - validate
+
+        if(!$good) {
+            //TODO - implement mechanism to allow re-editing
+            echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
         } else {
-            $footprint->addDescription("\n\n-- by ".user()->getPersonName());
-            $footprint->addMeta(user()->getDN());
-        }
-    }
- 
-    public function updatebasicAction()
-    {
-        if(user()->isGuest()) {
-            $this->render("error/access", null, true); 
-        } else {
-            $ticket_id = (int)$_REQUEST["id"];
+            //prepare and submit ticket update
             $footprint = new Footprint($ticket_id);
+            $footprint->setTitle($title); 
 
-            //cc list
-            if(isset($_REQUEST["cc"])) {
-                $ccs = $_REQUEST["cc"]; //TODO - validate
-                foreach($ccs as $cc) {
-                    $cc = trim($cc);
-                    if($cc != "") {
-                        $footprint->addCC($cc);
-                   }
-                }
-            }
-
-            //new update
-            $description = trim($_REQUEST["description"]); //TODO - should validate?
             if($description != "") {
                 $footprint->addDescription($description);
             }
 
             $this->setSubmitter($footprint);
+
+            //contact
+            $footprint->setName($submit_name);
+            $footprint->setOfficePhone($submit_phone);
+            $footprint->setEmail($submit_email);
+            //$footprint->setOriginatingVO($submit_vo);
+
+            //detail
+            $footprint->resetAssignee();
+            foreach($assignees as $assignee) {
+                $footprint->addAssignee($assignee);
+            }
+            $footprint->resetCC();
+            if(isset($ccs)) {
+                foreach($ccs as $cc) {
+                    $cc = trim($cc);
+                    if($cc != "") {
+                        $footprint->addCC($cc);
+                    }
+                }
+            }
+            //$footprint->setDestinationVO($dest_vo);
+            $footprint->setNextAction($next_action);
+            $footprint->setNextActionTime($nad);
+            $footprint->setPriority($priority);
+            $footprint->setStatus($status);
+            $footprint->setTicketType($type);
 
             //set suppression
             if(!isset($_REQUEST["notify_assignees"])) {
@@ -337,12 +279,73 @@ class ViewerController extends Zend_Controller_Action
             if(!isset($_REQUEST["notify_ccs"])) {
                 $footprint->suppress_ccs();
             }
-
+        
             $footprint->submit();
-            addMessage("Successfully updated this ticket!");
-            header("Location: ".fullbase()."/".$ticket_id);
+            message("success", "Successfully updated ticket $ticket_id!");
+            $close = "";
+            if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
+                $close = "?close=true";
+            }
+            header("Location: ".fullbase()."/".$ticket_id.$close);
             exit;
         }
+        $this->render("none", null, true);
+    }
+
+    public function setSubmitter($footprint) 
+    {
+        $agent = $this->getFPAgent(user()->getPersonName());
+        if($agent !== null) {
+            $footprint->setSubmitter($agent);
+        } else {
+            //$footprint->addDescription("\n\n-- by ".user()->getPersonName());
+            //$footprint->addMeta(user()->getDN());
+            $footprint->addDescription("\n\nby ".user()->getDN());
+        }
+    }
+ 
+    public function updatebasicAction()
+    {
+        if(user()->isGuest()) {
+            throw new AuthException();
+        } 
+        $ticket_id = (int)$_REQUEST["id"];
+        $footprint = new Footprint($ticket_id);
+
+        //cc list
+        if(isset($_REQUEST["cc"])) {
+            $ccs = $_REQUEST["cc"]; //TODO - validate
+            foreach($ccs as $cc) {
+                $cc = trim($cc);
+                if($cc != "") {
+                    $footprint->addCC($cc);
+               }
+            }
+        }
+
+        //new update
+        $description = trim($_REQUEST["description"]); //TODO - should validate?
+        if($description != "") {
+            $footprint->addDescription($description);
+        }
+
+        $this->setSubmitter($footprint);
+
+        //set suppression
+        if(!isset($_REQUEST["notify_assignees"])) {
+            $footprint->suppress_assignees();
+        }
+        if(!isset($_REQUEST["notify_submitter"])) {
+            $footprint->suppress_submitter();
+        }
+        if(!isset($_REQUEST["notify_ccs"])) {
+            $footprint->suppress_ccs();
+        }
+
+        $footprint->submit();
+        message("success", "Successfully updated this ticket!");
+        header("Location: ".fullbase()."/".$ticket_id);
+        exit;//needed?
     }
  
     private function getFPAgent($name)
@@ -379,7 +382,7 @@ class ViewerController extends Zend_Controller_Action
                     //can't close, the just show it without close
                     $ticket_id = (int)trim($this->getRequest()->getParam("id"));
                     ?>
-                    document.location = "<?=fullbase()?>/<?=$ticket_id?>";
+                    document.location = "<?=$ticket_id?>";
                 }
             </script>
         <?

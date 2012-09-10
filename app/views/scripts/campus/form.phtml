@@ -1,74 +1,78 @@
 <style>
+input[type=text],
+select {
+width: 100%;
+}
 textarea {
-width: 70%;
+width: 100%;
 height: 80px;
 }
-.form-header {
-width: 70%;
+.ccarea {
+width: 48%;
 }
-.form-header h1 {
-font-family: Helvetica;
-color: #666;
-}
+
 </style>
 
 <form action="<?=$this->escape($this->element->getAction())?>"
       method="<?=$this->escape($this->element->getMethod())?>" name="submit_form">
-<dl>
-    <div class="form-header">
-    <h1>Campus Researcher Club Request Form</h1>
-    <br>
-    <p>Thanks for your interest in the OSG's Campus Researchers Club - a program to partner individual researchers who have Distributed High Throughput Computing (DHTC) needs with an OSG member site. Once partnered with a member site, your sponsor will help you get your application running in a DHTC environment.</p>
-    <p>This program is not intended to be a long term solution to your research computing needs, but rather a production worthy proof of concept. Once validated, we can help you implement a DHTC solution at your institution to meet your longer-term goals.</p>
+
+<p>Thanks for your interest in the OSG's Campus Researchers Club - a program to partner individual researchers who have Distributed High Throughput Computing (DHTC) needs with an OSG member site. Once partnered with a member site, your sponsor will help you get your application running in a DHTC environment.</p>
+<p>This program is not intended to be a long term solution to your research computing needs, but rather a production worthy proof of concept. Once validated, we can help you implement a DHTC solution at your institution to meet your longer-term goals.</p>
+
+<legend>Contact Information</legend>
+<p class="help-block">We use this information to contact you</p>
+<?=$this->render("yourinfo.phtml", true)?>
+
+<legend>Research Details</legend>
+<p class="help-block">Tell us a little about your research</p>
+<?=$this->element->institution?>
+<?=$this->element->department?>
+
+<label>Your Preferred Sponsor</label>
+<select name="sponsor">
+<option>I don't have a preference</option>
+<option>Center for High Throughput Computing at UW-Madison</option>
+<option>High Throughput Center at UCSD</option>
+<option>Holland Computing Center at UN-Lincoln</option>
+</select>
+
+<label>Please provide a brief description of your research to help us answer the question "What kind of research does the OSG help with?"</label>
+<textarea name="desc"></textarea>
+
+<label>Why do you think DHTC is a good solution for advancing your research?</label>
+<textarea name="fit"></textarea>
+
+How did you hear about us? If someone referred you to us, please let us know whom.<br>
+<textarea name="heard"></textarea>
+
+Do you have any immediate questions or other comments?<br>
+<textarea name="comments"></textarea>
+
+We'd like to schedule an initial call to better understand your needs and determine next steps. What would be a good time to contact you?<br>
+<textarea name="call"></textarea>
+
+
+<?php if(user()->isguest()) { ?>
+    <?=$this->element->recaptcha?>
+<?php } else {?>
+    <label>CC</label>
+    <div class="ccarea">
+        <?php
+        $ccs = array();
+        if(Zend_Registry::isRegistered("passback_ccs")) {
+            $ccs = Zend_Registry::get("passback_ccs");
+        }
+        include_once("app/views/cc_editor.php");
+        cceditor($ccs);
+        ?>
     </div>
+    <a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a> 
+<?php } ?>
 
-    <?=$this->render("yourinfo.phtml", true)?>
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
 
-    <dd>
-        <h3>Research Details</h3>
-    </dd>
-    <p class="help-block">Tell us a little about your research</p>
-    
-    <div> <?=$this->element->institution?> </div>
-    <div> <?=$this->element->department?> </div>
-
-    <div>
-        Your Preferred Sponsor<br>
-        <select name="sponsor">
-        <option>I don't have a preference</option>
-        <option>Center for High Throughput Computing at UW-Madison</option>
-        <option>High Throughput Center at UCSD</option>
-        <option>Holland Computing Center at UN-Lincoln</option>
-        </select>
-    </div>
-
-    <div>
-        Please provide a brief description of your research to help us answer the question "What kind of research does the OSG help with?"<br>
-        <textarea name="desc"></textarea>
-    </div>
-
-    <div>
-        Why do you think DHTC is a good solution for advancing your research?<br>
-        <textarea name="fit"></textarea>
-    </div>
-
-    <div>
-        How did you hear about us? If someone referred you to us, please let us know whom.<br>
-        <textarea name="heard"></textarea>
-    </div>
-
-    <div>
-        Do you have any immediate questions or other comments?<br>
-        <textarea name="comments"></textarea>
-    </div>
-
-    <div>
-        We'd like to schedule an initial call to better understand your needs and determine next steps. What would be a good time to contact you?<br>
-        <textarea name="call"></textarea>
-    </div>
-
-    <?=$this->element->submit_button?>
-</dl>
 </form>
 
 <script>

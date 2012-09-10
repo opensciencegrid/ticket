@@ -1,12 +1,9 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread">You are here &gt; <a href="<?=base()?>/admin"><?=submenutitle($this->submenu_selected)?></a> &gt; Ticket Clustering</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container">
+<?php echo $this->alerts();?>
+<div class="page-header"><h2><?php echo $this->page_title?></h2></div>
 
-
-<h3>Ticket Clustering</h3>
-<br/>
-<p>
-Following are groupings of similar tickets that are modified withtin last 30 days. Only groups with more than 3 tickets are displayed.
-</p>
+<p class="help-block">Following are groupings of similar tickets that are modified withtin last 30 days. Only groups with more than 3 tickets are displayed. </p>
 <?
 foreach($this->groups as $tickets) 
 {
@@ -16,10 +13,8 @@ foreach($this->groups as $tickets)
             if($first) {
                 $first = false;
                 $desc = $ticket->desc;
-                echo "<h3>[$ticket->id] $ticket->title</h3>";
-                echo "<blockquote>";
+                echo "<h3>$ticket->id / $ticket->title</h3>";
                 echo "<pre>$desc</pre>";
-                echo "</blockquote>";
                 echo "<p><a href='$ticket->url'>Open This Ticket</a></p>";
                 echo "<div class='indent'>";
                 echo "<h4>Similar Tickets</h4>";
@@ -32,4 +27,7 @@ foreach($this->groups as $tickets)
     }
 }
 ?>
-<?include("app/views/scripts/footer.phtml");?>
+
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

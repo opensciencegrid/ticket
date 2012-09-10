@@ -1,7 +1,7 @@
 <script type="text/javascript">
 function addcc(node)
 {
-    var template = "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\"/><img onclick=\"$(this).parents('div.cc').remove();\" class=\"ac_input_remove\" src=\"<?=fullbase()?>/images/delete.png\"/></div>";
+    var template = $("<div class=\"input-append cc\" style=\"width: 100%;\"><input class=\"span12\" type=\"text\" name=\"cc[]\"/><i onclick=\"$(this).parents('div.cc').remove();return false;\" class=\"icon-remove\"></i></div>");
     node.append(template);
     setup_cc();
 }
@@ -22,12 +22,9 @@ foreach($persons as $person)
 var persons = [
     <?=$persons_json?>
 ];
-$(document).ready(function() {
-    setup_cc();
-});
 function setup_cc()
 {
-    $(".cc").autocomplete(persons, {
+    $(".cc input").autocomplete(persons, {
         mustMatch: false,
         matchContains: true,
         width: 500,
@@ -42,6 +39,9 @@ function setup_cc()
         }
     });
 }
+$(function() {
+    setup_cc();
+});
 
 </script>
 
@@ -49,7 +49,7 @@ function setup_cc()
 function cceditor($ccs) {
     if(isset($ccs)) {
         foreach($ccs as $cc) {
-            echo "<div class=\"cc\"><input type=\"text\" class=\"cc\" name=\"cc[]\" value=\"$cc\"/><a class=\"ac_input_remove\" href=\"#\" onclick=\"$(this).parents('div.cc').remove();return false;\"><img src=\"".fullbase()."/images/delete.png\"/></a></div>";
+            echo "<div class=\"cc\" style=\"width: 100%;\"><input type=\"text\" class=\"span12\" name=\"cc[]\" value=\"$cc\"/><i onclick=\"$(this).parents('div.cc').remove();return false;\" class=\"icon-remove\"></i></div>";
         }
     }
 }

@@ -4,7 +4,11 @@ class BulkresourceController extends BaseController
 {
     function init()
     {
-        $this->view->submenu_selected = "admin";
+        user()->allows("admin");
+
+        $this->view->page_title = "Bulk Resource Ticket Submitter";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "bulkresource";
 
         $model = new Resource();
         $kv = array();
@@ -20,11 +24,6 @@ class BulkresourceController extends BaseController
 
     public function indexAction()
     {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $form = $this->getForm();
 
         //redo is set when user hit "cancel" button in the preview page
@@ -39,7 +38,6 @@ class BulkresourceController extends BaseController
             $form->getElement("name")->setValue($session->name);
             $form->getElement("email")->setValue($session->email);
             $form->getElement("phone")->setValue($session->phone);
-            $form->getElement("vo_id")->setValue($session->vo_id);
         }
         $this->view->form = $form;
         $this->render();
@@ -75,11 +73,6 @@ RSS Feed: http://osggoc.blogspot.com");
 
     public function previewAction() 
     {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $resource_ids = @$_REQUEST["list"];
 
         $form = $this->getForm();
@@ -106,7 +99,6 @@ RSS Feed: http://osggoc.blogspot.com");
             $session->name = $form->getValue("name");
             $session->email = $form->getValue("email");
             $session->phone = $form->getValue("phone");
-            $session->vo_id = $form->getValue("vo_id");
 
             //all good... construct ticket & send to preview
             $tickets = $this->createTickets($resource_ids, $title, $template);
@@ -154,11 +146,6 @@ RSS Feed: http://osggoc.blogspot.com");
 
     public function submitAction() 
     {
-        if(!user()->allows("admin")) {
-            $this->render("error/access", null, true);
-            return;
-        }
-
         $session = new Zend_Session_Namespace('bulkresource');
         $resource_ids = $session->resource_ids;
         $title = $session->title;
@@ -206,23 +193,6 @@ RSS Feed: http://osggoc.blogspot.com");
         $footprint->setName($session->name);
         $footprint->setEmail($session->email);
         $footprint->setOfficePhone($session->phone);
-        //$footprint->setOriginatingVO($session->vo);
-
-        /*
-        //set VO
-        $void = $session->vo_id;
-        if($void == -1) {
-            $footprint->addMeta("Submitter doesn't know the VO he/she belongs.\n");
-        } else {
-            $vo_model = new VO();
-            $info = $vo_model->get($void);
-            if($info->footprints_id === null) {
-                $footprint->addMeta("Submitter's VO is ".$info->name. " but its footprints_id is not set in OIM. Please set it.");
-            } else {
-                $footprint->setOriginatingVO($info->footprints_id);
-            }
-        }
-        */
 
         //process CC
         if(isset($session->cc)) {
@@ -284,15 +254,6 @@ RSS Feed: http://osggoc.blogspot.com");
         }
 
         $footprint->addAssignee($scname);
-        /*
-        if($footprint->isValidFPSC($scname)) {
-            $footprint->addAssignee($scname);
-            $footprint->addMeta("Assigned support center: $scname which supports this resource\n");
-        } else {
-            $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
-            elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
-        }
-        */
         $footprint->addPrimaryAdminContact($resource_id);
 
         return $footprint;

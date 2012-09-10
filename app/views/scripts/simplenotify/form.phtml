@@ -1,11 +1,12 @@
-<form action="<?=$this->escape($this->element->getAction())?>"
-      method="<?=$this->escape($this->element->getMethod())?>">
-
-<dl>
-<dd>
-    <h3>Send To</h3>
-</dd>
-
+<style>
+textarea {
+width: 100%;
+height: 200px;
+}
+select, input[type=text] {
+width: 100%;
+}
+</style>
 <?
 function checked($e)
 {
@@ -13,9 +14,12 @@ function checked($e)
 }
 ?>
 
-<dd>
-<label>Security Contacts</label>
-<blockquote>
+<form action="<?=$this->escape($this->element->getAction())?>"
+      method="<?=$this->escape($this->element->getMethod())?>">
+
+<legend>Send To</legend>
+<div class="well">
+    <div class="well-title">Security Contacts</div>
     <input type="checkbox" name="goc" id="goc" value="1" disabled="disabled" checked=checked/>
     GOC &nbsp;&nbsp;&nbsp;
 
@@ -30,12 +34,10 @@ function checked($e)
     <input type="hidden" name="ssecurity" value="0">
     <input type="checkbox" name="ssecurity" id="ssecurity" value="1" <?=checked($this->element->ssecurity)?>>
     SC Security Contacts&nbsp;&nbsp;&nbsp;
-</blockquote>
-</dd>
+</div>
 
-<dd>
-    <label>Mailing Lists</label>
-<blockquote>
+<div class="well">
+    <div class="well-title">Mailing Lists</div>
     <input type="hidden" name="support" value="0">
     <input type="checkbox" name="support" id="support" value="1" <?=checked($this->element->support)?>>
     Support Centers&nbsp;&nbsp;&nbsp;
@@ -55,12 +57,9 @@ function checked($e)
     <input type="hidden" name="vulnerability" value="0">
     <input type="checkbox" name="vulnerability" id="vulnerability" value="1" <?=checked($this->element->vulnerability)?>>
     OSG-SECURITY-SOFTW-VULNERABILITY&nbsp;&nbsp;&nbsp;
-</blockquote>
-</dd>
+</div>
 
-<dd>
-<h3>Message</h3>
-</dd>
+<legend>Message</legend>
 
 <?=$this->element->subject?>
 <?=$this->element->body?>
@@ -69,8 +68,9 @@ function checked($e)
 <input type="checkbox" checked="checked" name="sign" id="sign" value="1" <?=checked($this->element->sites)?>>
 Sign Email using GOC/DOEGrid user certificate&nbsp;&nbsp;&nbsp;
 
-<?=$this->element->submit_button?>
+<div class="form-actions">
+<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+</div>
 
-</dl>
 </form>
 

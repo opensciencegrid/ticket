@@ -1,0 +1,308 @@
+<?php echo $this->render("bootheader.phtml", true);?>
+<link rel="stylesheet" type="text/css" href="<?=fullbase()?>/css/datatables.css" />
+<script type="text/javascript" src="<?=fullbase()?>/lib/DataTables-1.9.0/media/js/jquery.dataTables.min.js"></script>
+
+<div class="container-fluid ticket-list">
+<?php
+echo $this->alerts();
+echo "<ul class=\"nav nav-tabs\">";
+
+$active = "";
+if($this->submenu_selected == "listopen") { $active = "active"; }
+echo "<li class=\"$active\">";
+echo "<a href=\"list/open\">Open Tickets</a>";
+echo "</li>";
+
+$active = "";
+if($this->submenu_selected == "listrecentclose") { $active = "active"; }
+echo "<li class=\"$active\">";
+echo "<a href=\"list/recentclose\">Recently Closed Tickets</a>";
+echo "</li>";
+
+echo "</ul>";
+
+$columns = array(
+    array("name"=>"ID", "type"=>"numeric", "visible"=>true), 
+    array("name"=>"Submitter", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"Submit Date", "type"=>"date", "visible"=>false),
+    array("name"=>"Title", "type"=>"html", "visible"=>true), 
+    array("name"=>"Update Date", "type"=>"date", "visible"=>false), 
+    array("name"=>"Next Action", "type"=>"string", "visible"=>true), 
+    array("name"=>"NAD", "type"=>"html", "visible"=>true), 
+    array("name"=>"Priority", "type"=>"html", "visible"=>true), 
+    array("name"=>"Assignees", "type"=>"string", "visible"=>true), 
+    array("name"=>"CCs", "type"=>"string", "visible"=>true), 
+
+    array("name"=>"Resource", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"Resource Group", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"Support Center", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"Virtual Organization", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"Submitted Via", "type"=>"string", "meta"=>true, "visible"=>false),
+    array("name"=>"GGUS Ticket Type", "type"=>"numeric", "meta"=>true, "visible"=>false),
+    array("name"=>"GGUS Ticket ID", "type"=>"numeric", "meta"=>true, "visible"=>false),
+
+    array("name"=>"SNOW Ticket ID", "type"=>"numeric", "meta"=>true, "visible"=>false)
+
+    //not yet published.. (anyone wants to see these?)
+    //array("name"=>"GGUS Ticket Type", "type"=>"string", "meta"=>true, "visible"=>false),
+    //array("name"=>"GGUS Problem Type", "type"=>"string", "meta"=>true, "visible"=>false),
+);
+
+$column_types = "";
+foreach($columns as $cid=>$column) {
+    if($column_types != "") {
+        $column_types .= ", ";
+    }
+    $visible = "false";
+    if($column["visible"]) {
+            $visible = "true";
+    }
+    $column_types .= "{ \"sType\": \"".$column["type"]."\", \"bVisible\": $visible }";
+}
+
+$search = $this->table;
+$tickets = $this->tickets;
+$metadata = $this->metadata;
+
+?>
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="tickets">
+<thead>
+    <tr>
+    <?php
+    foreach($columns as $cid=>$column) {
+        echo "<th>".str_replace(" ", "&nbsp;", $column["name"]);
+        //I have to include search field inside column header so that DataTable will hide it correctly
+        $search_value = "";
+        if(isset($search[$cid]->sSearch)) {
+            $search_value = $search[$cid]->sSearch;
+        }
+        echo "<br/>";
+        echo "<input pos=\"$cid\" onkeyup=\"table.fnFilter(jQuery.trim(this.value), $(this).attr('pos'));\" value=\"$search_value\" type=\"text\" class=\"search\" style=\"width: 88%;\" onclick=\"event.cancelBubble = true;this.focus();\"/>";
+        echo "</th>";
+    }?>
+    </tr>
+</thead>
+
+<?php
+$model = new Schema();
+$teams = $model->getteams();
+$aka_model = new AKA();
+
+foreach($tickets as $ticket) {
+    if($ticket->tickettype == "Security") {
+        if(!user()->allows("view_security_incident_ticket")) {
+            //don't show security ticket to unauthorized users
+            continue;
+        } 
+    }
+
+    $url = base()."/".$ticket->mrid;
+    $target = "ticket_".$ticket->mrid;
+
+    //assignee, cc
+    $assignees = array();
+    $ccs = array();
+    foreach(explode(" ", $ticket->mrassignees) as $a) {
+        //FP somehow put CCs on assginee field...-
+        if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
+            $ccs[] = substr($a, 3);
+            continue;
+        }
+        //FP somehow contains team names on assignee... ignore it
+        $team_name = false;
+        foreach($teams as $team) {
+            if($team->team == $a) {
+                $team_name = true;
+                break;
+            }
+        }
+        if($team_name) continue;
+
+        //store to assignee list
+        $aka = $aka_model->lookupName($a);
+        $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
+    }
+
+    //priority
+    $priority = Footprint::getPriority($ticket->mrpriority);
+    switch($ticket->mrpriority) {
+    case 3: $priority = "<font color='#c90'>$priority</font>"; break;
+    case 2: $priority = "<font color='red'>$priority</font>"; break;
+    case 1: $priority = "<font color='red'>$priority</font>"; break;
+    }
+
+    //nad
+    $nad_unix = strtotime($ticket->nad);
+    $nad = date("Y-m-d", $nad_unix);
+    if($nad_unix < time()) {
+        $nad = "<font color='red'>$nad</font>";
+    } else if($nad < time() + 3600*config()->nad_alert_hours) {
+        $nad = "<font color='#c90'>$nad</font>";
+    }
+
+    //dates
+    //for some reason, datatable doesn't sort the date correctly if there is timestamp on it.. just show date
+    $submit_date = substr($ticket->mrsubmitdate, 0, 10);
+    $update_date = substr($ticket->mrupdatedate, 0, 10);
+
+    //ticket type
+    $title = $ticket->mrtitle;
+    if($ticket->tickettype == "Security") {
+        $title = "<span class='red tag'>Security</span>$title";
+    }
+
+    $submitter = "";
+    if(isset($metadata[$ticket->mrid]["SUBMITTER_NAME"])) {
+        $submitter = $metadata[$ticket->mrid]["SUBMITTER_NAME"];
+    }
+
+    $submitted_via = "";
+    if(isset($metadata[$ticket->mrid]["SUBMITTED_VIA"])) {
+        $submitted_via = $metadata[$ticket->mrid]["SUBMITTED_VIA"];
+    }
+
+    $resource_group = "";
+    if(isset($metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"])) {
+        $resource_group = $metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"];
+    }
+
+    $ggus_ticket_id = "";
+    if(isset($metadata[$ticket->mrid]["GGUS_TICKET_ID"])) {
+        $ggus_ticket_id = $metadata[$ticket->mrid]["GGUS_TICKET_ID"];
+    }
+
+    $ggus_ticket_type = "";
+    if(isset($metadata[$ticket->mrid]["GGUS_TICKET_TYPE"])) {
+        $ggus_ticket_type = $metadata[$ticket->mrid]["GGUS_TICKET_TYPE"];
+    }
+
+    $resource = "";
+    if(isset($metadata[$ticket->mrid]["ASSOCIATED_R_NAME"])) {
+        $resource = $metadata[$ticket->mrid]["ASSOCIATED_R_NAME"];
+    }
+
+    $sc = "";
+    if(isset($metadata[$ticket->mrid]["SUPPORTING_SC_NAME"])) {
+        $sc = $metadata[$ticket->mrid]["SUPPORTING_SC_NAME"];
+    }
+
+    $vo = "";
+    if(isset($metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"])) {
+        $vo = $metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"];
+    }
+
+    $snow_ticket_id = "";
+    if(isset($metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"])) {
+        $snow_ticket_id = $metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"];
+    }
+
+    ?>
+    <tr onclick="window.open('<?=$url?>','<?=$target?>');">
+        <td><?=$ticket->mrid?></td>
+        <td><?=$submitter?></td>
+        <td><?=$submit_date?></td>
+        <td><?=$title?></td>
+        <td><?=$update_date?></td>
+        <td><?=$ticket->nextaction?></td>
+        <td><?=$nad?></td>
+        <td><?=$priority?></td>
+        <td><?=implode("<br>", $assignees)?></td>
+        <?if(!user()->isguest()) {
+                echo "<td>".implode("<br>", $ccs)."</td>";
+        } else {
+            echo "<td>(Only Visible for OIM users)</td>";
+        }?>
+        <td><?=$resource?></td>
+        <td><?=$resource_group?></td>
+        <td><?=$sc?></td>
+        <td><?=$vo?></td>
+        <td><?=$submitted_via?></td>
+        <td><?=$ggus_ticket_type?></td>
+        <td><?=$ggus_ticket_id?></td>
+        <td><?=$snow_ticket_id?></td>
+    </tr>
+    <?
+}
+?>  
+</table>
+
+<script type="text/javascript">
+var table;
+
+$(function() {
+     table = $('#tickets').dataTable({
+        "bJQueryUI": true,
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bStateSave": true,
+        "bInfo": false,
+        "sCookiePrefix": "<?php echo $this->dt_cookie_prefix?>",
+        "iCookieDuration": 60*60*24*90, /*90 days*/
+        "sDom": '<"toolbar">frtip',
+        "aoColumns": [ <?php echo $column_types?> ]
+    });
+
+    $(".toolbar").html('<?
+
+        //split normal v.s. metadata column
+        $normal_column = "";
+        $meta_column = "";
+        foreach($columns as $cid=>$column) {
+            $name = $column["name"];
+            $active = "active";
+
+            if(isset($this->table_cols[$cid])) {
+                    if($this->table_cols[$cid] == false) { $active = ""; }
+            } else {
+                    if($column["visible"] == false) { $active = ""; }
+            }
+
+            if(isset($column["meta"])) {
+                $meta_column .= "<li class=\"$active\" onclick=\"fnShowHide(this, $cid); return false;\"><a href=\"#\">$name</a></li>";
+            } else {
+                $normal_column .= "<li class=\"$active\" onclick=\"fnShowHide(this, $cid); return false;\"><a href=\"#\">$name</a></li>";
+            }
+        }
+
+
+        //display metadata column
+        echo "<div class=\"navbar\">";
+        echo "<div class=\"navbar-inner\">";
+        echo "<div class=\"container\">";
+
+        echo "<ul class=\"nav\">";
+        //echo "<a class=\"brand\">$title</a>";
+        echo $normal_column;
+        echo "<li class=\"divider-vertical\"></li>";
+        echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Metadata <b class=\"caret\"></b></a>";
+        echo "<ul class=\"dropdown-menu\">";
+        echo $meta_column;
+        echo "</ul>";//dropdow
+        echo "</li>";//metadata menu
+
+        echo "</ul>";//nav
+
+        echo "</div>";//container
+        echo "</div>";//navbar-inner
+        echo "</div>";//navbar
+    ?>');
+    $(".ticket-list").show();
+});
+
+function fnShowHide(button, iCol )
+{
+    if($(button).hasClass("active")) {
+        $(button).removeClass("active");
+    } else {
+        $(button).addClass("active");
+    }
+
+    var bVis = table.fnSettings().aoColumns[iCol].bVisible;
+    table.fnSetColumnVis( iCol, bVis ? false : true );
+}
+
+</script>
+
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

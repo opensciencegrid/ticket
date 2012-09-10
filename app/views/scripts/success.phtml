@@ -1,20 +1,25 @@
 <?
 $content = "";
 if(config()->simulate) {
-    include("app/views/scripts/header.phtml");
+    echo $this->render("bootheader.phtml", true);
+    echo "<div class=\"container-fluid\">";
+    echo $this->alerts();
     $content .= "<h3>Simulation Dump</h3>";
     $content .= "<p>Running in simulation mode. The ticket was not actually created. Following is what would've been sent to FP in real mode.</p>";
     $content .= "<pre style=\"background-color: #ccc;\">";
     $content .= htmlspecialchars($this->mrid);
     $content .= "</pre>";
     echo $content;
-    include("app/views/scripts/footer.phtml");
+
+    echo $this->render("pagefooter.phtml", true);
+    echo "</div><!--container-fluid-->";
+    echo $this->render("bootfooter.phtml", true);
+
 } else {
     header("location: ".fullbase()."/".$this->mrid);
 
     //store message in session, and redirect
-    addMessage("<p>Thank you for submitting your ticket.</p>");
-    addMessage("<p>If your issues needs action in less than <b>24 hours</b> as stated in the <a href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by responding to this ticket via email.</p>");
+    message("success", "<p>Thank you for submitting your ticket.</p><p>If your issues needs action in less than <b>24 hours</b> as stated in the <a href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by updating this ticket.</p>", true);
 
     //we now need to add exit - or header(location) won't take effect..
     exit;

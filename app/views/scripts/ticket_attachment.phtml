@@ -9,17 +9,14 @@ width: 420px;
 }
 </style>
 
-
 <div id="fileupload" style="width: 100%;">
-    <div class="fileupload-buttonbar">
-        <label class="fileinput-button">
-            <span>Add&nbsp;Attachments<span>
-            <input type="file" name="files[]" multiple>
-        </label>
-    </div>
-    <div class="fileupload-content">
+    <div class="well" style="padding: 10px;">
         <table class="files"></table>
-        <div style="text-align: center; color: gray;">Drag &amp; Drop Attachments Here</div>
+        <label class="fileinput-button" style="position: relative; top: 6px;">
+            <a class="btn btn-small"><i class="icon-plus"></i>  Add Attachments</a>
+            <input style="display: none;" type="file" name="files[]" multiple>
+        </label>
+        <div style="float: right; color: gray; position: relative; top: -22px;">Drag &amp; Drop Attachments Here</div>
     </div>
 </div>
 <script id="template-upload" type="text/x-jquery-tmpl">
@@ -78,7 +75,7 @@ width: 420px;
             <td class="size">${sizef}</td>
         {{/if}}
         <td class="delete">
-            <button data-type="${delete_type}" data-url="${delete_url}">Delete</button>
+            <button data-type="${delete_type}" data-url="${delete_url}" class="btn"><i class="icon-remove"/></button>
         </td>
     </tr>
 </script>

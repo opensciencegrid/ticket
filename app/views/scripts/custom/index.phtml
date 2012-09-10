@@ -1,9 +1,34 @@
-<?include("app/views/scripts/header.phtml");?>
-
-<div class="bread">You are here &gt; <a href="<?=base()?>/open"><?=submenutitle($this->submenu_selected)?></a> &gt; Custom</div>
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
 
 <?
-$form_action = "/custom/submit";
+$form_action = "custom/submit";
 $submit_label = "Submit";
-include("app/views/scripts/ticket_editor.phtml"); ?>
-<?include("app/views/scripts/footer.phtml");?>
+
+echo $this->alerts();
+echo "<div class=\"page-header\"><h2>".$this->page_title."</h2></div>";
+
+echo "<div class=\"ticketgui\">";
+include("app/views/scripts/ticket_editor.phtml"); 
+echo "</div>";
+?>
+<script>
+$(function() {
+    var expanded = false;
+    $(".description").focus(function() {
+        if(!expanded) {
+            expanded = true;
+            //expand to minheight
+            var min = 200;
+            if($(this).height() < min) {
+                $(this).animate({height: min}, 500);
+            }
+        }
+    });
+});
+</script>
+
+<?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>
+

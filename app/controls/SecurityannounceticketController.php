@@ -5,7 +5,11 @@ class SecurityAnnounceTicketController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "securitytasks";
+        user()->check("notify");
+
+        $this->view->page_title = "Security Announcement";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "securityannounceticket";
     }
     public function indexAction() 
     { 

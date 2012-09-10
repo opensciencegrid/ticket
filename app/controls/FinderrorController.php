@@ -1,29 +1,27 @@
-<?
+<?php
 
 class FinderrorController extends Zend_Controller_Action 
 { 
     public function init()
     {
-        $this->view->submenu_selected = "admin";
+        if(!islocal()) {
+            user()->check("admin");
+        }
+
+        $this->view->page_title = "Footprints Error";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "finderror";
 
         $this->schema_model = new Schema();
         $model = new VO();
         $this->oim_vos = $model->fetchAll();
-
         $this->berror = false;
-
-        $this->view->error_origvos = array();
-        $this->view->error_destvos = array();
         $this->view->error_sc = array();
         $this->view->error_email = array();
     }
 
     public function emailerrorAction()
     {
-        if(!user()->allows("admin") and !islocal()) {
-            $this->render("error/access", null, true);
-            return;
-        }
         if(islocal()) {
             $this->indexAction();
             if($this->berror) {
@@ -42,99 +40,11 @@ class FinderrorController extends Zend_Controller_Action
 
     public function indexAction() 
     { 
-        if(!user()->allows("admin") and !islocal()) {
-            $this->render("error/access", null, true);
-            return;
-        }
-        //$this->analyze_vo_originating();
-        //$this->analyze_vo_destination();
         $this->analyze_sc();
         $this->analyze_scemail();
         $this->analyze_ticket_assignment();
         $this->analyze_resource_sc_link();
     }
-
-    /*
-    public function analyze_vo_originating()
-    { 
-        $orig_vos = $this->schema_model->getoriginatingvos();
-
-        //find FP only
-        foreach($orig_vos as $orig_vo) {
-            $orig_vo2 = Footprint::parse($orig_vo);
-            //find it in the oim_vo
-            $found = false;
-            foreach($this->oim_vos as $oim_vo) {
-                if($oim_vo->footprints_id == $orig_vo2) {
-                    $found = true;
-                    $this->view->error_origvos[] = array("", $orig_vo2, $oim_vo->name."(".$oim_vo->footprints_id.")");
-                    break;
-                }
-            }
-            if(!$found) {
-                if($orig_vo2 == "other") continue;
-                $this->view->error_origvos[] = array("only in fp", $orig_vo2, "");
-                $this->berror = true;
-            }
-        } 
-        //find oim only
-        foreach($this->oim_vos as $oim_vo) {
-            //find it in the oim_vo
-            $found = false;
-            foreach($orig_vos as $orig_vo) {
-                $orig_vo2 = Footprint::parse($orig_vo);
-                if($oim_vo->footprints_id == $orig_vo2) {
-                    $found = true;
-                    break;
-                }
-            }
-            if(!$found) {
-                $this->view->error_origvos[] = array("only in oim", "", $oim_vo->name."(".$oim_vo->footprints_id.")");
-                $this->berror = true;
-            }
-        } 
-    }
-
-    public function analyze_vo_destination()
-    { 
-        $dest_vos = $this->schema_model->getdestinationvos();
-
-        //find FP only
-        foreach($dest_vos as $dest_vo) {
-            $dest_vo2 = Footprint::parse($dest_vo);
-            //find it in the oim_vo
-            $found = false;
-            foreach($this->oim_vos as $oim_vo) {
-                if($oim_vo->footprints_id == $dest_vo2) {
-                    $found = true;
-                    $this->view->error_destvos[] = array("", $dest_vo2, $oim_vo->name."(".$oim_vo->footprints_id.")");
-                    break;
-                }
-            }
-            if(!$found) {
-                if($dest_vo2 == "other") continue;
-                $this->view->error_destvos[] = array("only in fp", $dest_vo2, "");
-                $this->berror = true;
-            }
-        } 
-        //find oim only
-        foreach($this->oim_vos as $oim_vo) {
-            //find it in the oim_vo
-            $found = false;
-            foreach($dest_vos as $dest_vo) {
-                $dest_vo2 = Footprint::parse($dest_vo);
-                if($oim_vo->footprints_id == $dest_vo2) {
-                    $found = true;
-                    break;
-                }
-            }
-            if(!$found) {
-                $this->view->error_destvos[] = array("only in oim", "", $oim_vo->name."(".$oim_vo->footprints_id.")");
-                $this->berror = true;
-            }
-        } 
-    }
-    */
 
     public function analyze_sc()
     { 

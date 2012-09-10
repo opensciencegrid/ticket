@@ -4,7 +4,9 @@ class CampusController extends BaseController
 { 
     public function init()
     {
-        $this->view->submenu_selected = "open";
+        $this->view->page_title = "Campus Researcher Club Request Form";
+        $this->view->menu_selected = "user";
+        $this->view->submenu_selected = "campus";
     }
 
     public function indexAction() 
@@ -19,6 +21,7 @@ class CampusController extends BaseController
         if($form->isValid($_POST)) {
             $footprints = $this->initSubmit($form);
             $footprints->setTitle("Campus Researcher Club Request Form from ".$form->getValue('institution'));
+            $desc = "";
             $desc .= "Institution: ".$form->getValue("institution")."\n\n";
             $desc .= "Departmennt: ".$form->getValue("department")."\n\n";
             $desc .= "Preferred Sponsor: ".$_REQUEST["sponsor"]."\n\n";
@@ -46,19 +49,6 @@ class CampusController extends BaseController
         }
     }
 
-    private function processCampus($footprints) {
-        /*
-        if($_POST["campusvorequest_name"] == "") {
-            $footprints->addMeta("Submitter didn't specify the name of new campus grid VO");
-        } else {
-            $footprints->addMeta("Requested VO NAME: ".$_POST["campusvorequest_name"]);
-            $footprints->addCC("dweitzel@cse.unl.edu");
-            $footprints->addCC("fraser@anl.gov");
-        }
-        */
-
-    }
-
     private function getForm() {
         $form = $this->initForm("campus");
 
@@ -73,14 +63,6 @@ class CampusController extends BaseController
         $e->setLabel("Your Department");
         $e->setRequired(true);
         $form->addElement($e);
-
-
-        /*
-        $detail = new Zend_Form_Element_Textarea('detail');
-        $detail->setLabel("Description");
-        $detail->setRequired(true);
-        $form->addElement($detail);
-        */
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

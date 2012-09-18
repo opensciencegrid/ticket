@@ -96,7 +96,8 @@ function checklist($id, $kv, $selected, $extrainfo)
             $label_class = "checked";
         }
         $name = "$id"."[$key]";
-        $out .= "<div class=\"item $label_class\">";
+        //$out .= "<div class=\"item $label_class\" onclick=\"if(\$(this).find('input').is(':checked')) {\$(this).addClass('checked');} else {\$(this).removeClass('checked');}\">";
+        $out .= "<div class=\"item $label_class\" onclick=\"\$(this).toggleClass('checked'); var c = \$(this).find('input').is(':checked'); console.log(c);\">";
 
         //add some extra info .. if provided for this key
         if(isset($extrainfo[$key])) {
@@ -111,8 +112,8 @@ function checklist($id, $kv, $selected, $extrainfo)
             $out .= "</span>";
         }
 
-        $out .= "<input id=\"cl_$name\" type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"if(this.checked) {\$(this).parent().addClass('checked');} else {\$(this).parent().removeClass('checked');}\"/>&nbsp;";
-        $out .= "<label for=\"cl_$name\">$value</label>";
+        $out .= "<input id=\"cl_$name\" type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"return false;\"/>&nbsp;";
+        $out .= "<label>$value</label>";
 
         $out .= "</div>";
     }

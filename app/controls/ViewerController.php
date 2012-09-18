@@ -238,6 +238,7 @@ class ViewerController extends Zend_Controller_Action
 
             if($description != "") {
                 $footprint->addDescription($description);
+                $footprint->addDescription("\n\nby ".user()->getDN());
             }
 
             $this->setSubmitter($footprint);
@@ -300,7 +301,7 @@ class ViewerController extends Zend_Controller_Action
         } else {
             //$footprint->addDescription("\n\n-- by ".user()->getPersonName());
             //$footprint->addMeta(user()->getDN());
-            $footprint->addDescription("\n\nby ".user()->getDN());
+            //$footprint->addDescription("\n\nby ".user()->getDN());
         }
     }
  
@@ -327,6 +328,7 @@ class ViewerController extends Zend_Controller_Action
         $description = trim($_REQUEST["description"]); //TODO - should validate?
         if($description != "") {
             $footprint->addDescription($description);
+            $footprint->addDescription("\n\nby ".user()->getDN());
         }
 
         $this->setSubmitter($footprint);

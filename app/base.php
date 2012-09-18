@@ -88,17 +88,30 @@ function signedmail($to, $from, $subject, $body, $header = "")
     system($command);
 
     //sign the body
+    $error = tempnam("/tmp", "gocticket");
     $signed_body = tempnam("/tmp", "gocticket");
-    $command = "openssl smime -sign -text -inkey $key -signer $cert -in $original_body | dos2unix > $signed_body";
+    $command = "openssl smime -sign -text -inkey $key -signer $cert -in $original_body > $signed_body 2> $error";
     slog($command);
     system($command, $ret);
     if($ret != 0) {
-	elog("command returned non-0 return code. code:$ret command:$command");
+        elog("openssl command returned non-0 return code:$ret");
+        elog(file_get_contents($error));
+        throw new exception("Failed to sign email");
+    }
+
+    //dos2unix (not sure what the reason was that we couldn't do this in php..)
+    $signed_body_dos = tempnam("/tmp", "gocticket");
+    $command = "cat $signed_body | dos2unix > $signed_body_dos";
+    slog($command);
+    system($command, $ret);
+    if($ret != 0) {
+        elog("dos2unix command returned non-0 return code:$ret");
+        throw new exception("Failed to dos encode email");
     }
 
     //insert the signed content and my header to $header
     $header .= "From: $from\r\n";
-    $header .= file_get_contents($signed_body);
+    $header .= file_get_contents($signed_body_dos);
 
     //send everything from $header
     if(!mail($to, $subject, "", $header)) {

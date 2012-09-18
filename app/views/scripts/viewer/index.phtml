@@ -62,7 +62,12 @@ color: #D98719;
 #updates .meta_information pre {
 background-color: #fed;
 }
-
+#similar_tickets {
+max-height: 300px;
+overflow-y: auto;
+padding: 5px;
+background-color: #f4f4f4;
+}
 </style>
 
 <div class="container-fluid">
@@ -172,7 +177,7 @@ echo "</div>";
     foreach($this->descs as $time=>$desc)
     {
         $by = $desc["by"];
-        $content = $desc["content"];
+        $content = trim($desc["content"]);
         $type = $desc["type"];
 
         //hide meta information if user doesn't have metatag access
@@ -189,7 +194,7 @@ echo "</div>";
             if($metapos !== FALSE) {
                 //has metainfo.. let's split the ticket into 2 parts
                 $meta_information = substr($content, $metapos + strlen(config()->metatag));
-                $content = trim(substr($content, 0, $metapos));
+                $content = substr($content, 0, $metapos);
             } else {
                 $meta_information = null;
             }
@@ -237,7 +242,7 @@ echo "</div>";
             }
             echo "<a class=\"anchor\" name=\"$anchor\">&nbsp;</a>";
             echo "</div>";
-            $lines_raw = explode("\n", trim($content));
+            $lines_raw = explode("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {
                 $line = trim($line);
@@ -278,14 +283,16 @@ echo "</div>";
         }
     }
 
-    echo "<legend>Similar Recent Tickets</legend>";
-    if(isset($this->similar_tickets)) { 
+    echo "<legend>Similar Recent Tickets <small>modified within the last 30 days</small></legend>";
+    echo "<div id=\"similar_tickets\">";
+    if(isset($this->similar_tickets) && count($this->similar_tickets) > 0) { 
         foreach($this->similar_tickets as $ticket) {
             echo "<a href=\"".$ticket->id."\"><b>".$ticket->id."</b> ".$ticket->title." (".$ticket->status.")</a><p>".$ticket->desc."</p>";
         }
     } else {
-        echo "<p class=\"muted\">No similar tickets found that are modified within the last 30 days.</p>";
+        echo "<p class=\"muted\">No similar tickets found.</p>";
     }
+    echo "</div>";
 
 ?>
 

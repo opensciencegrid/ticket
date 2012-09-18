@@ -236,6 +236,7 @@ margin: 5px 0px;
 padding: 1px;
 margin:1px;
 padding-left: 3px;
+border: 1px solid white;
 }
 .ticketgui .list .item label {
 display: inline-block;
@@ -247,8 +248,8 @@ background-color: #eee;
 }
 .ticketgui .list div.checked  {
 padding: 1px;
-background-color:#aaa !important;
-color: white;
+background-color:#ddd !important;
+border: 1px solid #aaa;
 margin:1px;
 padding-left: 3px;
 }

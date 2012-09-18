@@ -9,7 +9,7 @@ class Zend_View_Helper_Alerts extends Zend_View_Helper_Abstract {
         $out = "";
 
         if(config()->banner) {
-            message("success", config()->banner);
+            message("success", config()->banner, true);
         }
         if(config()->simulate) {
             message("warning", "Simulation Mode - No email / ticket will be actually created");

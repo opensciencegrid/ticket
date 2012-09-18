@@ -6,6 +6,10 @@ class ListController extends Zend_Controller_Action
     {
         $this->view->menu_selected = "view";
         $this->closed_status = "('Closed', '_DELETED_', '_SOLVED_', 'Resolved')";
+
+        //remove cookie from old navigator - we are exceeding max cookie size of 8k
+        setcookie('opened_opened_navigator', null, -1, "/goc/");
+        setcookie('closed_closed_navigator', null, -1, "/goc/");
     }
 
     public function openAction()

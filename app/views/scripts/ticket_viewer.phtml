@@ -86,14 +86,12 @@
                 $out .= "<div class=\"assignee\" style=\"width: 60%\">".$username;
 
                 if(isset($this->txlinks[$userid])) {
-                    $out .= "<span class=\"sidenote\">";
                     list($extra, $url) = $this->txlinks[$userid];
                     if($url !== null) {
-                        $out .= "<a target=\"_blank\" href=\"$url\">$extra</a>";
+                        $out .= "&nbsp;<a target=\"_blank\" href=\"$url\">$extra</a>";
                     } else {
-                        $out .= $extra;
+                        $out .= "&nbsp;$extra";
                     }
-                    $out .= "</span>";
                 }
                 $out .= " <span class=\"muted\"> / $teamname</span></div>";
                 $set = true;

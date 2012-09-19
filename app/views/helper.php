@@ -102,9 +102,9 @@ function checklist($id, $kv, $selected, $extrainfo)
         if(isset($extrainfo[$key])) {
             list($extra, $url) = $extrainfo[$key];
             
-            $out .= "<span class=\"sidenote\">";
+            $out .= "<span class=\"pull-right\">";
             if($url !== null) {
-                $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>";
+                $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>&nbsp;";
             } else {
                 $out .= $extra;
             }

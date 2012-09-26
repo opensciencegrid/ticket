@@ -24,7 +24,7 @@ if(!isset($form_action)) {
             <label class="control-label" for="careof">Populate From</label>
             <div class="controls"><input type='text' id="careof" class="span12"/></div>
             <script type="text/javascript">
-            $(document).ready(function() {
+            $(function() {
                 $("#careof").autocomplete(persons, {
                     mustMatch: true,
                     matchContains: true,
@@ -230,7 +230,9 @@ if(!isset($form_action)) {
             &nbsp;&nbsp;<input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
             &nbsp;&nbsp;<input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
             &nbsp;&nbsp;<input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>
+            <div id="closewindow_area" style="display: inline-block">
             &nbsp;&nbsp;<input id="closewindow" type="checkbox" name="closewindow" value="on"/> <label for="closewindow">Close Window</label>
+            </div>
         <?}?>
         </div>
     </div>

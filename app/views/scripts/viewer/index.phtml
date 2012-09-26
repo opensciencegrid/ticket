@@ -307,25 +307,27 @@ function reset_anchor() {
         $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
     }
 }
-$(document).ready(function() {
+$(function() {
     reset_anchor();
     var ADDITIONAL_COOKIE_NAME = 'gocticket';
     var options = { path: '/', expires: 365};
-    v = $.cookie("closewindow");
-    if(!v) {
-        //default
-        $("#closewindow").attr("checked", "", options);
-    } else {
-        if(v == "true") {
-            $("#closewindow").attr("checked", "checked", options);
-        } else {
-            $("#closewindow").attr("checked", "", options);
-        }
-    }
 
-    $("#closewindow").click(function() {
-        $.cookie("closewindow", $(this).attr('checked'), options);
-    });
+    if(window.opener) {
+        v = $.cookie("closewindow");
+        if(!v) {
+            $("#closewindow").attr("checked", "checked"); //on by default
+        } else {
+            if(v == "checked") {
+                $("#closewindow").attr("checked", "checked");
+            }
+        }
+
+        $("#closewindow").click(function() {
+            $.cookie("closewindow", $(this).attr('checked'), options);
+        });
+    } else {
+        $("#closewindow_area").hide();
+    }
 
     function updateTimeago() {
         $("time").timeago();

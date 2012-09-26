@@ -9,6 +9,7 @@ class AdminController extends BaseController
         //2) accepting request from cron from localhost
     }
 
+/*
     public function indexAction()
     {
         $this->view->submenu_selected = "admin";
@@ -36,6 +37,7 @@ class AdminController extends BaseController
             $this->view->link_teams[$team->team] = $links;
         }
     }
+*/
 
     private function accesscheck($remote_addr = null)
     {
@@ -118,7 +120,7 @@ class AdminController extends BaseController
         echo "<id>$ticket->mrid</id>";
         echo "<title>".$this->formattitle($ticket->mrtitle)."</title>";
         echo "<status>".Footprint::parse($ticket->mrstatus)."</status>";
-        echo "<dest>$ticket->mrdest</dest>";
+        //echo "<dest>$ticket->mrdest</dest>";
         echo "<url>".fullbase()."/$ticket->mrid</url>";
         echo "<desc><![CDATA[$content]]></desc>";
         echo "<score>$p</score>";

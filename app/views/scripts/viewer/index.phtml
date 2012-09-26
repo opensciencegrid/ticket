@@ -68,6 +68,10 @@ overflow-y: auto;
 padding: 5px;
 background-color: #f4f4f4;
 }
+.btn-toolbar {
+margin-bottom: 0;
+height: 30px;
+}
 </style>
 
 <div class="container-fluid">
@@ -233,7 +237,8 @@ echo "</div>";
             }
 
             $anchor = $time;
-            echo "<div class='update_description' onclick=\"document.location='".$this->ticket_id."#$anchor'; reset_anchor();\">";
+            echo "<div class='update_description'>";
+            echo "<i onclick=\"document.location='".$this->ticket_id."#$anchor'; reset_anchor();\" class=\"pull-right icon icon-share\"></i>";
             echo "<div class=\"header\">";
             echo "$human_time";
             if($by != "goc") {

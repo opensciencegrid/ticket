@@ -236,12 +236,16 @@ class ViewerController extends Zend_Controller_Action
             $footprint = new Footprint($ticket_id);
             $footprint->setTitle($title); 
 
+            $agent = $this->getFPAgent(user()->getPersonName());
             if($description != "") {
                 $footprint->addDescription($description);
-                $footprint->addDescription("\n\nby ".user()->getDN());
+                if($agent === null) {
+                    $footprint->addDescription("\n\nby ".user()->getDN());
+                }
             }
-
-            $this->setSubmitter($footprint);
+            if($agent !== null) {
+                $footprint->setSubmitter($agent);
+            }
 
             //contact
             $footprint->setName($submit_name);
@@ -293,18 +297,6 @@ class ViewerController extends Zend_Controller_Action
         $this->render("none", null, true);
     }
 
-    public function setSubmitter($footprint) 
-    {
-        $agent = $this->getFPAgent(user()->getPersonName());
-        if($agent !== null) {
-            $footprint->setSubmitter($agent);
-        } else {
-            //$footprint->addDescription("\n\n-- by ".user()->getPersonName());
-            //$footprint->addMeta(user()->getDN());
-            //$footprint->addDescription("\n\nby ".user()->getDN());
-        }
-    }
- 
     public function updatebasicAction()
     {
         if(user()->isGuest()) {
@@ -325,13 +317,17 @@ class ViewerController extends Zend_Controller_Action
         }
 
         //new update
+        $agent = $this->getFPAgent(user()->getPersonName());
         $description = trim($_REQUEST["description"]); //TODO - should validate?
         if($description != "") {
             $footprint->addDescription($description);
-            $footprint->addDescription("\n\nby ".user()->getDN());
+            if($agent === null) {
+                $footprint->addDescription("\n\nby ".user()->getDN());
+            }
         }
-
-        $this->setSubmitter($footprint);
+        if($agent !== null) {
+            $footprint->setSubmitter($agent);
+        }
 
         //set suppression
         if(!isset($_REQUEST["notify_assignees"])) {

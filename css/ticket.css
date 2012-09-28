@@ -49,6 +49,9 @@ margin-bottom: 6px;
 pre {
 word-break: inherit;
 }
+.form-horizontal .control-label {
+text-align: inherit;
+}
 
 /**************************************************************************************************
 fix for zend

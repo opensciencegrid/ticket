@@ -30,12 +30,10 @@ class User
                 $this->lookupActions();
             }
         }
-        /*
         if(config()->debug) {
             slog("Debug Dump of User Object");
             slog(print_r($this, true));
         }
-        */
     }
 
     private function lookupActions()

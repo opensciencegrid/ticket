@@ -52,7 +52,10 @@ class Zend_Service_ReCaptcha extends Zend_Service_Abstract
      *
      * @var string
      */
-    const API_SECURE_SERVER = 'https://api-secure.recaptcha.net';
+    //const API_SECURE_SERVER = 'https://api-secure.recaptcha.net';
+    //this url changes on april 11 
+    //see https://groups.google.com/forum/?fromgroups=#!searchin/recaptcha/api-secure/recaptcha/V7qswqBnA1o/sBUeMhan0doJ
+    const API_SECURE_SERVER = 'https://www.google.com/recaptcha/api';
 
     /**
      * URI to the verify server

@@ -8,10 +8,19 @@ class NavigatorController extends Zend_Controller_Action
 {
     public function init()
     {
+	header("Location: list/open", true, 301);
+	setcookie('opened_opened_navigator', null, -1, "/goc/");
+	setcookie('closed_closed_navigator', null, -1, "/goc/");
+	setcookie('opened_156_opened_navigator', null, -1, "/goc/");
+	setcookie('closed_156_closed_navigator', null, -1, "/goc/");
+	exit;
+
+/*
         //$this->view->submenu_selected = "view";
         $this->view->page_title = "Ticket List";
         $this->view->dt_cookie_openprefix="opened_156_";
         $this->view->dt_cookie_closeprefix="closed_156_";
+*/
     }
 
     public function indexAction()

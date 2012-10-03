@@ -118,6 +118,9 @@ function cert_authenticate()
                 //not yet registered?
                 Zend_Registry::set("unregistered_dn", $dn);
                 _setguest();
+            } else if($user->isDisabled()) {
+                Zend_Registry::set("disabled_dn", $dn);
+                _setguest();
             } else {
                 Zend_Registry::set("user", $user);
                 slog("authenticated:".$user->getPersonName()."($dn)". " from ".$_SERVER["REMOTE_ADDR"]);

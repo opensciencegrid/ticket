@@ -42,7 +42,7 @@ try {
 
     cert_authenticate();
     if(!date_default_timezone_set(user()->getTimeZone())) {
-        addMessage("Your timezone '".user()->getTimeZone()."' is not valid. Please try using location based timezone such as 'America/Chicago'. Reverting to UTC.");
+        message("WARNING", "Your timezone '".user()->getTimeZone()."' is not valid. Please try updating to location based timezone such as 'America/Chicago' via OIM profile. Reverting to UTC.");
     }
     error_reporting(E_ALL | E_STRICT);
 

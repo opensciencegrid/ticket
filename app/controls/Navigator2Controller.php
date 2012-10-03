@@ -6,8 +6,12 @@ class Navigator2Controller extends Zend_Controller_Action
 { 
     public function init()
     {
+/*
         $this->view->submenu_selected = "view";
         $this->view->page_title = "Ticket List";
+*/
+        header("Location: list/open", true, 301);
+        exit;
     }
 
 /*

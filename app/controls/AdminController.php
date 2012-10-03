@@ -9,9 +9,12 @@ class AdminController extends BaseController
         //2) accepting request from cron from localhost
     }
 
-/*
     public function indexAction()
     {
+
+        header("Location: submit", true, 301);
+        exit;
+/*
         $this->view->submenu_selected = "admin";
 
         if(!user()->allows("admin")) {
@@ -36,8 +39,8 @@ class AdminController extends BaseController
             }
             $this->view->link_teams[$team->team] = $links;
         }
-    }
 */
+    }
 
     private function accesscheck($remote_addr = null)
     {

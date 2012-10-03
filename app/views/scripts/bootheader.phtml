@@ -160,6 +160,8 @@
                 } else if(@$_SERVER['HTTPS'] == "on") {
                     if(Zend_Registry::isRegistered("unregistered_dn")) {
                         echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                    } else if(Zend_Registry::isRegistered("disabled_dn")) {
+                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
                     } else {
                         echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
                     }

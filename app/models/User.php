@@ -21,6 +21,7 @@ class User
         $this->contact_email = "";
         $this->contact_phone = "";
         $this->timezone = "UTC";
+        $this->disable = true;
 
         $this->guest = true;
         if($dn !== null) {
@@ -69,10 +70,8 @@ class User
     private function lookupDN($dn)
     {
         //make sure user DN exists and active
-        $sql = "select d.*, c.*, d.id as dn_id from dn d left join contact c on (d.contact_id = c.id)
-                    where
-                        c.disable = 0 and
-                        dn_string = \"$dn\"";
+        $sql = "select d.*, c.*, d.id as dn_id, d.disable as dn_disable from dn d left join contact c on (d.contact_id = c.id)
+                    where dn_string = \"$dn\"";
         $row = db("oim")->fetchRow($sql);
         if($row) {
             $this->dn_id = $row->dn_id;
@@ -81,6 +80,7 @@ class User
             $this->contact_email = $row->primary_email;
             $this->contact_phone = $row->primary_phone;
             $this->timezone = $row->timezone;
+            $this->disable = ($row->disable || $row->dn_disable);
         } else {
             slog("DN: $dn doesn't exist in oim");
         }
@@ -104,6 +104,7 @@ class User
     }
 
     public function isGuest() { return $this->guest; }
+    public function isDisabled() { return $this->disable; }
     public function getPersonID() { return $this->contact_id; }
     public function getPersonName() { return $this->contact_name; }
     public function getPersonEmail() { return $this->contact_email; }

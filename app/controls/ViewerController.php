@@ -308,7 +308,7 @@ class ViewerController extends Zend_Controller_Action
     public function updatebasicAction()
     {
         if(user()->isGuest()) {
-            throw new AuthException();
+            throw new AuthException("you have to be an oim user");
         } 
         $ticket_id = (int)$_REQUEST["id"];
         $footprint = new Footprint($ticket_id);

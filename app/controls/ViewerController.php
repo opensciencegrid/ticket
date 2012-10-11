@@ -1,6 +1,7 @@
 <?
 
-class ViewerController extends Zend_Controller_Action 
+//class ViewerController extends Zend_Controller_Action 
+class ViewerController extends BaseController
 {
     public function init()
     {
@@ -346,6 +347,7 @@ class ViewerController extends Zend_Controller_Action
         exit;//needed?
     }
  
+/*
     private function getFPAgent($name)
     {
         $model = new Schema();
@@ -357,6 +359,7 @@ class ViewerController extends Zend_Controller_Action
         }
         return null;
     }
+*/
 
     public function indexAction() 
     { 

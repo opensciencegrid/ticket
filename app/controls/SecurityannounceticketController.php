@@ -22,7 +22,7 @@ class SecurityAnnounceTicketController extends BaseController
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue('detail'));
+            //$footprint->addDescription($form->getValue('detail'));//done by init
             $footprint->addMeta("Opening security announcement ticket with normal priority.");
 
             //security ticket is assigned to rob - and CC Kyle

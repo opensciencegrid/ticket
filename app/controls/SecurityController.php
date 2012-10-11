@@ -18,7 +18,7 @@ class SecurityController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue('detail'));
+            //$footprint->addDescription($form->getValue('detail'));//done by init
 
             if($form->getValue('critical_1') == 1 and $form->getValue('critical_2') == 1) {
                 $footprint->addMeta("User has checked both CRITICAL criterias - opening ticket with  CRITICAL priority");

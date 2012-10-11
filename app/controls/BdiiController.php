@@ -18,7 +18,7 @@ class BdiiController extends BaseController
         $form = $this->getForm();
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue('detail'));
+            //$footprint->addDescription($form->getValue('detail'));//done by initSubmit now
             $footprint->setTitle($form->getValue('title'));
 
             $bdiiserver = $form->getValue("bdiiserver");

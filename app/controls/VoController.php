@@ -17,7 +17,7 @@ class VoController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue("detail"));
+            //$footprint->addDescription($form->getValue("detail"));//done by init
             $footprint->setTitle($form->getValue("title"));
 
             $void = $form->getValue("vo");

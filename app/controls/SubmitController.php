@@ -40,8 +40,19 @@ class SubmitController extends BaseController
             if(isset($_POST["campusvorequest_issue_check"])) {
                 $this->processCampusVO($footprints);
             }
-            $footprints->addDescription($form->getValue('detail'));
+            //$footprints->addDescription($form->getValue('detail'));//done by init
             $footprints->setTitle($form->getValue('title'));
+
+/* done by init
+            //settting submitter
+            $agent = $this->getFPAgent(user()->getPersonName());
+            if($agent === null) {
+                $footprints->addDescription("\n\nby ".user()->getDN());
+            }
+            if($agent !== null) {
+                $footprints->setSubmitter($agent);
+            }
+*/
 
             try
             {

@@ -169,8 +169,7 @@ class CustomController extends Zend_Controller_Action
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         } else {
-            $footprint->addDescription("\n\n-- by ".user()->getPersonName());
-            //$footprint->addMeta(user()->getDN());
+            $footprint->addDescription("\n\nby ".user()->getDN());
         }
     }
 

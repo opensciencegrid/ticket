@@ -166,7 +166,7 @@ class BaseController extends Zend_Controller_Action
         return $form;
     }
 
-    private function getFPAgent($name) 
+    protected function getFPAgent($name) 
     {
         $model = new Schema();        
         $users = $model->getusers();
@@ -188,18 +188,21 @@ class BaseController extends Zend_Controller_Action
             $footprint->setMetadata("SUBMITTER_NAME", $name);
             if(user()->getDN() !== null) {
                 $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
+
             }
             $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
 
-            //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
-            $agent = $this->getFPAgent($name);
-            $agent = null;
-            if($agent !== null) {
-                $footprint->setSubmitter($agent);
+            $footprint->addDescription($form->getValue("detail"));
+            if(!user()->isguest()) {
+                //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
+                $agent = $this->getFPAgent(user()->getPersonName());
+                if($agent !== null) {
+                    $footprint->setSubmitter($agent);
+                } else {
+                    $footprint->addDescription("\n\nby ".user()->getDN());
+                }
             } else {
-                $footprint->addDescription("[by $name]\n\n");
-                //$footprint->addMeta("Submitter DN: ".user()->getDN()."\n");
-                //$footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
+                $footprint->addDescription("\n\nby $name (guest)");
             }
 
             $footprint->setOfficePhone($form->getValue('phone'));

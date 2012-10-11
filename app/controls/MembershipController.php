@@ -25,7 +25,7 @@ class MembershipController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue('detail'));
+            //$footprint->addDescription($form->getValue('detail'));//done by init
 
             $name = $form->getValue('name');
             $title = $name. " requesting VO membership to ";

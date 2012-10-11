@@ -43,7 +43,7 @@ class ResourceController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            $footprint->addDescription($form->getValue('detail'));
+            //$footprint->addDescription($form->getValue('detail'));//initsubmit
 
             //lookup service center
             $resource_id = $issue_element->getValue();

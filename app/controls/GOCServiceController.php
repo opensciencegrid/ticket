@@ -3,9 +3,12 @@ abstract class GOCServiceController extends BaseController
 { 
     public function indexAction()
     {
+        header("Location: submit?app_issue_check=true&app_issue_type=goc", true, 301);
+/*
         $this->view->form = $this->getForm();
         $this->view->form_title = $this->form_title;
         $this->render();
+*/
     }
 
     abstract function processFields($form, $footprint);

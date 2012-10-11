@@ -9,8 +9,11 @@ class BdiiController extends BaseController
 
     public function indexAction() 
     { 
+        header("Location: submit?app_issue_check=true&app_issue_type=bdii", true, 301);
+/*
         $this->view->form = $this->getForm();
         $this->render();
+*/
     }
 
     public function submitAction()

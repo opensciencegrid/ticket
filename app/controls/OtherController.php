@@ -8,8 +8,11 @@ class OtherController extends BaseController
     }
     public function indexAction() 
     { 
+        header("Location: submit", true, 301);
+/*
         $this->view->form = $this->getForm();
         $this->render();
+*/
     }
 
     public function submitAction()

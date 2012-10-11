@@ -8,8 +8,11 @@ class MembershipController extends BaseController
     }
     public function indexAction() 
     { 
+        header("Location: submit?membership_issue_check=true", true, 301);
+/*
         $this->view->form = $this->getForm();
         $this->render();
+*/
     }
 
     public function submitAction()

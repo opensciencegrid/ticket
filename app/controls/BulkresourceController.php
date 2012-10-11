@@ -171,6 +171,7 @@ RSS Feed: http://osggoc.blogspot.com");
         $session->resource_ids = null;
     }
 
+/*
     private function getFPAgent($name)
     {
         $model = new Schema();
@@ -182,7 +183,7 @@ RSS Feed: http://osggoc.blogspot.com");
         }
         return null;
     }
-
+*/
     function createTicket($title, $desc, $resource) 
     {
         $name = user()->getPersonName();

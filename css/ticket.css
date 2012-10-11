@@ -218,7 +218,7 @@ cursor: pointer;
 }
 .ticketgui .form-actions {
 padding: 5px;
-margin: 5px 0px;
+margin: 5px 0px 0px 0px;
 }
 .ticketgui .quickdesc {
 position: relative;
@@ -259,7 +259,7 @@ border: 1px solid #aaa;
 margin:1px;
 padding-left: 3px;
 }
-.ticketgui legend {
+legend {
 margin-bottom: 4px;
 font-size: 17px;
 line-height: 25px;
@@ -285,12 +285,25 @@ color: #9da0a4;
 /*http://www.longren.org/wrapping-text-inside-pre-tags/*/
 pre
 {
- overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
- white-space: pre-wrap; /* css-3 */
- white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
- white-space: -pre-wrap; /* Opera 4-6 */
- white-space: -o-pre-wrap; /* Opera 7 */
- /* width: 99%; */
- word-wrap: break-word; /* Internet Explorer 5.5+ */
+overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+white-space: pre-wrap; /* css-3 */
+white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+white-space: -pre-wrap; /* Opera 4-6 */
+white-space: -o-pre-wrap; /* Opera 7 */
+/* width: 99%; */
+word-wrap: break-word; /* Internet Explorer 5.5+ */
+border: none;
 }
-
+.update_history .header {
+float: right;
+}
+.update_description .header {
+border-bottom: 1px solid #ddd;
+padding-bottom: 2px;
+}
+.update_description pre {
+padding-top: 2px;
+padding-left: 0px;
+padding-bottom: 2px;
+margin-bottom: 0px;
+}

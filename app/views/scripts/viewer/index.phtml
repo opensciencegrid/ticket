@@ -4,7 +4,8 @@
 <style>
 #updates .toolbar {
 position: relative;
-top: -5px;
+margin-top: 0px;
+top: -10px;
 font-weight: normal;
 }
 #updates a.anchor {
@@ -20,6 +21,8 @@ animation-direction: alternate;
 -webkit-animation-direction: alternate;
 box-shadow: inset 1px 1px 20px #9ad;
 border: 1px solid #9ab;
+margin: 5px 0px;
+padding-left: 10px;
 }
 @keyframes selected {
     from  {
@@ -153,7 +156,7 @@ echo "</div>";
             ksort($this->descs, SORT_NUMERIC);
         }
         ?>
-        <a class="btn btn-small" href="<?=$flip_url?>"><i class="<?=$flip_button?>"></i> Sort Order</a>
+        <a class="btn btn-small" href="<?=$flip_url?>"><i class="<?=$flip_button?>"></i> Sort</a>
 
         <?
         $expand_all = false; 
@@ -164,7 +167,7 @@ echo "</div>";
         }
         if(!$expand_all) {
             $expand_all_url = $this->updateurl(array("expandall"=>"true"));
-            echo "<a class=\"btn btn-small\" href=\"$expand_all_url\">Expand All Descriptions</a>";
+            echo "<a class=\"btn btn-small\" href=\"$expand_all_url\">Expand Descriptions</a>";
         } else {
             $expand_all_url = $this->updateurl(array("expandall"=>"false"));
             echo "<a class=\"btn active btn-small\" href=\"$expand_all_url\">Expand All Descriptions</a>";
@@ -172,7 +175,7 @@ echo "</div>";
 
         $subject = "Open Science Grid: $this->title ISSUE=$this->ticket_id PROJ=".config()->project_id;
         ?>
-        <a class="btn btn-small" target="_blank" href="mailto:<?=config()->ticket_update_address?>?subject=<?=rawurlencode($subject)?>"><i class="icon-envelope"></i> Send Update Via Email</a>
+        <a class="btn btn-small" target="_blank" href="mailto:<?=config()->ticket_update_address?>?subject=<?=rawurlencode($subject)?>"><i class="icon-envelope"></i> Update w/Email</a>
         </div>
     </div><!--btn-toolbar-->
     </legend>
@@ -222,9 +225,9 @@ echo "</div>";
         //history == internal activities
         if($type == "history") {
             echo "<div class='update_history'>";
-            $out = "<div class=\"header\">$human_time</div><pre>".Footprint::parse($content)."</pre>";
+            //$out = "<div class=\"header\">$human_time</div>";
+            echo "<pre>".Footprint::parse($content)."</pre>";
             //echo outputToggle("<span class=\"header clickable\">Show Footprints Activities ($human_time)</span>", "", $out);
-            echo $out;
             echo "</div>";
         }
         
@@ -256,7 +259,7 @@ echo "</div>";
                 }
                 $lines[] = $line;
             }
-            $content = implode("\n", $lines);
+            $content = trim(implode("\n", $lines));
             if(!isset($_REQUEST["expandall"]) && count($lines) > config()->description_showlines) {
                 $i = 0;
                 echo "<pre>";

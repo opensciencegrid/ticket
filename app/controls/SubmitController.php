@@ -235,7 +235,7 @@ class SubmitController extends BaseController
         $form = $this->initForm("submit");
 
         $e = new Zend_Form_Element_Text('title');
-        $e->setLabel("Title");
+        $e->setLabel("Ticket Title");
         //$e->setValue("Other Issues");
         $e->setRequired(true);
         $form->addElement($e);

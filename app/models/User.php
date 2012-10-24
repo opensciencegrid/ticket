@@ -99,7 +99,7 @@ class User
     }
     public function check($action) {
         if(!$this->allows($action)) {
-            throw new AuthException();
+            throw new AuthException("You don't have $action permission to access this page.");
         }
     }
 

@@ -224,7 +224,13 @@ class RestController extends Zend_Controller_Action
 
         //set assignee
         $footprint->resetAssignee();
+        $omodel = new Override();
         foreach(@$_POST["assignee"] as $assignee) {
+            $over = $omodel->apply($assignee);
+            if($over != $assignee) {
+                $footprint->addMeta("Assignee $assignee was overriden by $over");
+                $assignee = $over;
+            }
             $footprint->addAssignee($assignee);
         }
 

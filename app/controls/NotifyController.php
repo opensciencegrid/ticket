@@ -26,8 +26,8 @@ class NotifyController extends BaseController
         if($form->isValid($_POST)) {
             $this->view->detail = "<h2>Process Detail</h2><br/>";
 
-            //construct security email object
-            $e = new SecurityEmail();
+            //construct email object
+            $e = new Email();
             if($form->getValue('rsecurity')) {
                 $e->addResourceSecurityAddresses();
             }
@@ -48,6 +48,20 @@ class NotifyController extends BaseController
             }
             if($form->getValue('sites')) {
                 $e->addAddress("osg-sites@opensciencegrid.org");
+            }
+
+            //pki
+            if($form->getValue('raa')) {
+                $e->addRAAAddresses();
+            }
+            if($form->getValue('rasponsor')) {
+                $e->addRASponsorAddresses();
+            }
+            if($form->getValue('gridadmin')) {
+                $e->addGridAdminAddresses();
+            }
+            if($form->getValue('osgra')) {
+                $e->addAddress("osg-ra@opensciencegrid.org");
             }
 
             $person_id = $form->getValue('email_from');
@@ -138,6 +152,15 @@ class NotifyController extends BaseController
         $e = new Zend_Form_Element_Checkbox('sites');
         $form->addElement($e);
         $e = new Zend_Form_Element_Checkbox('operations');
+        $form->addElement($e);
+
+        $e = new Zend_Form_Element_Checkbox('raa');
+        $form->addElement($e);
+        $e = new Zend_Form_Element_Checkbox('rasponsor');
+        $form->addElement($e);
+        $e = new Zend_Form_Element_Checkbox('gridadmin');
+        $form->addElement($e);
+        $e = new Zend_Form_Element_Checkbox('osgra');
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Select('email_from');

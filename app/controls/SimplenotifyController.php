@@ -24,7 +24,7 @@ class SimplenotifyController extends BaseController
             $this->view->detail = "<h2>Process Detail</h2><br/>";
 
             //construct security email object
-            $e = new SecurityEmail();
+            $e = new Email();
             if($form->getValue('rsecurity')) {
                 $e->addResourceSecurityAddresses();
             }

@@ -1,6 +1,6 @@
 <?php
 
-class SecurityEmail
+class Email
 {
     public function __construct()
     {
@@ -55,6 +55,26 @@ class SecurityEmail
         $recs = $this->paddress_model->get_sc();
         $this->addAddresses($recs);
     }
+
+    public function addRAAAddresses()
+    {
+        $recs = $this->address_model->get_raa();
+        $this->addAddresses($recs);
+    }
+
+    public function addRASponsorAddresses()
+    {
+        $recs = $this->address_model->get_rasponsor();
+        $this->addAddresses($recs);
+    }
+
+    public function addGridAdminAddresses()
+    {
+        $recs = $this->address_model->get_gridadmin();
+        $this->addAddresses($recs);
+    }
+
+
     public function dump()
     {
         $out = "";

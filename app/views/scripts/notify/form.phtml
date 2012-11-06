@@ -35,7 +35,7 @@ function checked($e)
             $content .= "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
         */
-        echo " (".count($addresses)." contacts)";
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
     ?>
     &nbsp;&nbsp;&nbsp;
 
@@ -49,7 +49,7 @@ function checked($e)
             echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
         */
-        echo " (".count($addresses)." contacts)";
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
     ?>
     &nbsp;&nbsp;&nbsp;
 
@@ -63,7 +63,7 @@ function checked($e)
             echo "<a href=\"mailto:".$address->primary_email."\">".($address->name)."</a> ";
         }
         */
-        echo " (".count($addresses)." contacts)";
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
     ?>
     &nbsp;&nbsp;&nbsp;
 
@@ -88,6 +88,38 @@ function checked($e)
     <input type="checkbox" name="sites" id="sites" value="1" <?=checked($this->element->sites)?>>
     OSG-Sites&nbsp;&nbsp;&nbsp;
 </div><!-- well -->
+
+<div class="well">
+    <div class="well-title">PKI</div>
+
+    <input type="hidden" name="raa" value="0">
+    <input type="checkbox" name="raa" id="raa" value="1" <?=checked($this->element->raa)?>> RA Agents
+    <?php
+        $addresses = $address_model->get_raa();
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
+    ?>
+    &nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="rasponsor" value="0">
+    <input type="checkbox" name="rasponsor" id="rasponsor" value="1" <?=checked($this->element->rasponsor)?>> RA Sponsors
+    <?php
+        $addresses = $address_model->get_rasponsor();
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
+    ?>
+    &nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="gridadmin" value="0">
+    <input type="checkbox" name="gridadmin" id="gridadmin" value="1" <?=checked($this->element->gridadmin)?>> GridAdmins
+    <?php
+        $addresses = $address_model->get_gridadmin();
+        echo " <span class=\"label\">".count($addresses)." contacts</span>";
+    ?>
+    &nbsp;&nbsp;&nbsp;
+
+    <input type="hidden" name="osgra" value="0">
+    <input type="checkbox" name="osgra" id="osgra" value="1" <?=checked($this->element->osgra)?>>
+    OSG-RA@opensciencegrid.org&nbsp;&nbsp;&nbsp;
+</div><!-- well-->
 
 <legend>Message</legend>
 

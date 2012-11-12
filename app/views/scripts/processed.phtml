@@ -1,7 +1,8 @@
-<?include("app/views/scripts/header.phtml");?>
-<div class="bread"><a href="<?=base()?>">Home</a> &gt; Success!</div>
-<p>Your request has been processed successfully.</p>
-<div class="indent">
+<?php echo $this->render("bootheader.phtml", true);?>
+<div class="container-fluid">
+    <?php echo $this->alerts();?>
+    <p>Your request has been processed successfully.</p>
     <?=$this->detail?>
-</div>
-<?include("app/views/scripts/footer.phtml");?>
+    <?php echo $this->render("pagefooter.phtml", true);?>
+</div><!--container-fluid-->
+<?php echo $this->render("bootfooter.phtml", true);?>

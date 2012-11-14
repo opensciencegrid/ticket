@@ -197,7 +197,7 @@ foreach($tickets as $ticket) {
     }
 
     ?>
-    <tr onclick="window.open('<?=$url?>','<?=$target?>');">
+    <tr onclick="window.name = 'gocticket_list'; window.open('<?=$url?>','<?=$target?>');">
         <td><?=$ticket->mrid?></td>
         <td><?=$submitter?></td>
         <td><?=$submit_date?></td>

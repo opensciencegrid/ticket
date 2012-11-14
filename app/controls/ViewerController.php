@@ -375,12 +375,15 @@ class ViewerController extends BaseController
         if(isset($_REQUEST["close"])) {
         ?>
             <script type="text/javascript">
-                if (window.opener && !window.opener.closed) {
-                    window.close();
+                //reload opener list
+                if(window.opener && window.opener.name == "gocticket_list") {
                     window.opener.location.reload();
-                } else {
+                }
+
+                //try closing 
+                if (!window.close()) {
                     <?
-                    //can't close, the just show it without close
+                    //can't close, then reload the page we are trying to close
                     $ticket_id = (int)trim($this->getRequest()->getParam("id"));
                     ?>
                     document.location = "<?=$ticket_id?>";

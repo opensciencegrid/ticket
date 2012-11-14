@@ -321,7 +321,7 @@ $(function() {
     var ADDITIONAL_COOKIE_NAME = 'gocticket';
     var options = { path: '/', expires: 365};
 
-    if(window.opener) {
+    if(window.opener && window.opener.name == "gocticket_list") {
         v = $.cookie("closewindow");
         if(!v) {
             $("#closewindow").attr("checked", "checked"); //on by default

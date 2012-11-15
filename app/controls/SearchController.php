@@ -5,7 +5,7 @@ class SearchController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "search";
-        $this->host="http://soichi.grid.iu.edu:8983/solr/collection1";//TODO - make it configurable
+        $this->host="http://localhost:8983/solr/collection1";//TODO - make it configurable
     }    
 
     public function indexAction()
@@ -166,7 +166,7 @@ class SearchController extends Zend_Controller_Action
 
         $ret_json = file_get_contents($url);
         $ret = json_decode($ret_json);
-        
+
         //process result
         $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
         slog(print_r($ret->spellcheck->suggestions, true));

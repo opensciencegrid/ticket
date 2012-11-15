@@ -84,12 +84,24 @@ if(isset($this->result)) {
         $status = $doc->status;
         $priority = $doc->priority;
         echo "<div>";
-        echo "<a href=\"$url\">$id: $title</a> ";
+        echo "<a href=\"".fullbase()."/$id\">$id: $title</a> ";
         echo "<span class=\"pull-right muted\">Status: $status</span>";
         echo "<br>";
-        echo "<pre>";
 
-        echo $descs[0];
+        $tokens = explode(" ", $this->query);
+        
+        //find first description that has first token
+        $found_id = 0; 
+        foreach($descs as $id=>$desc) {
+            if(strstr($desc, $tokens[0]) !== FALSE) {
+                $found_id = $id;
+                break;
+            }
+        }
+        echo "<pre>";
+        echo $descs[$found_id];
+        echo "</pre>";
+
         /*
         $line = 0;
         $hidden = "";
@@ -109,7 +121,7 @@ if(isset($this->result)) {
             echo "</div>";
         }
         */
-        echo "</pre>";
+        //var_dump($doc);
         echo "</div>";
     }
     echo "</div>"; //span

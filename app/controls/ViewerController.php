@@ -21,7 +21,8 @@ class ViewerController extends BaseController
 
         if((string)$id !== $dirty_id) {
             //id that looks like non-id - forward to keyword search
-            $this->_redirect("http://www.google.com/cse?cx=".config()->google_custom_search_cx."&q=".urlencode($dirty_id), array("exit"=>true));
+            //$this->_redirect("http://www.google.com/cse?cx=".config()->google_custom_search_cx."&q=".urlencode($dirty_id), array("exit"=>true));
+            $this->_redirect("/search?q=".urlencode($dirty_id));
         }
 
         $model = new Tickets();

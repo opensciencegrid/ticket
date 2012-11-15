@@ -1,0 +1,30 @@
+<add><doc>
+<field name="id">12982</field>
+<field name="url">https://ticket.opensciencegrid.org/goc/12982</field>
+<field name="title">OSG&amp;#58;OSG User Certificate Request for Richard T. Jones</field>
+<field name="status">Engineering</field>
+<field name="priority">4</field>
+<field name="nextaction">Check for a response back from Richard</field>
+<field name="assignees">adeximo</field>
+<field name="assignees">hayashis</field>
+<field name="ccs">kagross@iu.edu</field>
+<field name="ccs">echism@iu.edu</field>
+<field name="ccs">cpipes@iu.edu</field>
+<field name="ccs">adeximo@iu.edu</field>
+<field name="ccs">osg-ra@opensciencegrid.org</field>
+<field name="descriptions">Richard,
+
+Do you know anyone who would own a current DOEGrid cert that will be able to act as a sponsor for your request?
+
+Thanks,
+-Alain</field>
+<field name="descriptions">Dear Kyle Gross, Elizabeth Prout, Christopher Pipes, Alain Deximo (OSG VO RA/Sponsors),
+
+An OIM Authenticated user; Richard T. Jones &amp;#60;richard.t.jones@uconn.edu&amp;#62; has requested a user certificate. Please determine this request&amp;#39;s authenticity, and approve / disapprove at https&amp;#58;//oim.grid.iu.edu/oim/certificateuser?id=67
+
+NOTE&amp;#58; Additional user certificate request
+NOTE&amp;#58; Requested DN&amp;#58; /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=People/CN=Richard T. Jones 594</field>
+<field name="ASSOCIATED_VO_ID">30</field>
+<field name="SUBMITTER_NAME">0</field>
+<field name="SUPPORTING_SC_ID">3</field>
+</doc></add>

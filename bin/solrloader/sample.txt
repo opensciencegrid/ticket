@@ -1,0 +1,700 @@
+fp_detail
+object(stdClass)#2 (116) {
+  ["Earliest__bRequested__bDate__b__PUTC__p"]=>
+  string(0) ""
+  ["Outage__bType"]=>
+  string(0) ""
+  ["Activity"]=>
+  string(0) ""
+  ["Vendor__b1__bCase__b__3"]=>
+  string(0) ""
+  ["Maps__b__7__bDocuments__bModified__Q"]=>
+  string(0) ""
+  ["__Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g"]=>
+  string(0) ""
+  ["Vendor__b2"]=>
+  string(0) ""
+  ["Attack__bType"]=>
+  string(0) ""
+  ["Country"]=>
+  string(0) ""
+  ["ENG__bNext__bAction__bDate__fTime__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["IM__bHandle"]=>
+  string(0) ""
+  ["City"]=>
+  string(0) ""
+  ["Type__bof__bFSR"]=>
+  string(0) ""
+  ["allDescriptions"]=>
+  array(11) {
+    [0]=>
+    object(stdClass)#3 (3) {
+      ["data"]=>
+      string(94) "Rebus Team,
+
+How can I add Vanderbilt to http&#58;//gstat-wlcg.cern.ch/apps/topology ?
+
+Soichi"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(67) "Entered on 08/15/2012 at 15:03:01 UTC (GMT+0000) by Soichi Hayashi:"
+    }
+    [1]=>
+    object(stdClass)#4 (3) {
+      ["data"]=>
+      string(1040) "Hi Soichi,
+There is no mapping for T2_US_Vanderbilt at ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json i.e. (﻿oim[wlcgName] = oimName)
+
+Where as there is an entry for Vanderbilt at http&#58;//myosg.grid.iu.edu/rgsummary/xml?datasource=summary&summary_attrs_showhierarchy=on&summary_attrs_showwlcg=on&summary_attrs_showvoownership=on&gip_status_attrs_showtestresults=on&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=01%2F19%2F2010&end_type=now&end_date=01%2F19%2F2010&sc=on&sc_19=on&sc_29=on&sc_30=on&sc_65=on&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1
+
+To resolve this either T2_US_Vanderbilt needs to be added to ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json or taken out from url in bullet point 2.
+I am not sure who maintains those lists.
+
+Ashu
+
+-- by Ashu Guru
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Ashu Guru 897726"
+      ["internal"]=>
+      string(0) ""
+      ["stamp"]=>
+      string(56) "Entered on 08/15/2012 at 14:30:01 UTC (GMT+0000) by goc:"
+    }
+    [2]=>
+    object(stdClass)#5 (3) {
+      ["data"]=>
+      string(132) "-- by Wilhelm Buehler at Wed Aug 15 05&#58;35&#58;58 UTC 2012
+
+GOCTX Source&#58; https&#58;//ggus.eu/ws/ticket_info.php?ticket=85197"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(60) "Entered on 08/15/2012 at 05:36:19 UTC (GMT+0000) by OSG-GOC:"
+    }
+    [3]=>
+    object(stdClass)#6 (3) {
+      ["data"]=>
+      string(362) "(Re-opening this ticket)
+
+The records Scott mentioned is for RSV&#62;SAM metrics - not WLCG topology. 
+
+Ashu,
+
+Do you know how Rebus topology is defined? I don&#39;t see Vanderbilt listed in the Rebus capacity pages
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/capacities/federations/
+
+What does Vanderbilt need to do in order for it to show up on the Rebus?
+
+Soichi"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(67) "Entered on 08/14/2012 at 21:05:32 UTC (GMT+0000) by Soichi Hayashi:"
+    }
+    [4]=>
+    object(stdClass)#7 (3) {
+      ["data"]=>
+      string(97) "-- by Elizabeth Prout
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Elizabeth Chism 100912"
+      ["internal"]=>
+      string(0) ""
+      ["stamp"]=>
+      string(56) "Entered on 08/07/2012 at 18:43:27 UTC (GMT+0000) by goc:"
+    }
+    [5]=>
+    object(stdClass)#8 (3) {
+      ["data"]=>
+      string(218) "Hi Scott,
+
+I believe that is what Soichi asked me to do.  Thanks...
+
+Kevin
+
+On Aug 2, 2012, at 2&#58;54 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]"
+      ["internal"]=>
+      string(0) ""
+      ["stamp"]=>
+      string(69) "Entered on 08/02/2012 at 20:29:07 UTC (GMT+0000) by Kevin Buterbaugh:"
+    }
+    [6]=>
+    object(stdClass)#9 (3) {
+      ["data"]=>
+      string(166) "I&#39;m seeing records associated with se1.accre.vanderbilt.edu, se3..., ce1...,ce2 being uploaded to WLCG. Kevin, if this is your intent the ticket can close.
+
+Scott"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(64) "Entered on 08/02/2012 at 19:54:28 UTC (GMT+0000) by Scott Teige:"
+    }
+    [7]=>
+    object(stdClass)#10 (3) {
+      ["data"]=>
+      string(46) "May I close this ticket?
+
+Thank you,
+Elizabeth"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(68) "Entered on 08/01/2012 at 21:39:13 UTC (GMT+0000) by Elizabeth Chism:"
+    }
+    [8]=>
+    object(stdClass)#11 (3) {
+      ["data"]=>
+      string(191) "Hi Soichi,
+
+I&#39;ve reconfigured us...
+
+Kevin
+
+On Jul 31, 2012, at 4&#58;59 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]"
+      ["internal"]=>
+      string(0) ""
+      ["stamp"]=>
+      string(69) "Entered on 08/01/2012 at 17:20:07 UTC (GMT+0000) by Kevin Buterbaugh:"
+    }
+    [9]=>
+    object(stdClass)#12 (3) {
+      ["data"]=>
+      string(11) "CC-ing Ashu"
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(67) "Entered on 07/31/2012 at 21:59:49 UTC (GMT+0000) by Soichi Hayashi:"
+    }
+    [10]=>
+    object(stdClass)#13 (3) {
+      ["data"]=>
+      string(682) "[by Soichi Hayashi]
+
+Ashu Guru and I were working to update the installed capacity report to include USCMS_Tier2 SC supported sites in the report.
+
+Ashu noticed that Vanderbilt isn&#39;t included in WLCG topology
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json
+
+I believe this is due to Vanderbilt resource not configured to send interop accounting information to WLCG
+&#62; https&#58;//oim.grid.iu.edu/oim/resource?id=137
+
+Should Vanderbilt resource reconfigured to forward interop accounting information?
+
+Soichi
+
+[META Information]
+Resource on which user is having this issue&#58; Vanderbilt(137)
+Primary Admin for Vanderbilt is Kevin Buterbaugh and has been CC&#39;d."
+      ["internal"]=>
+      int(1)
+      ["stamp"]=>
+      string(60) "Entered on 07/31/2012 at 21:58:59 UTC (GMT+0000) by OSG-GOC:"
+    }
+  }
+  ["Part__bModel__b__3"]=>
+  string(0) ""
+  ["Part__bSerial__b__3__b__Pnew__p"]=>
+  string(0) ""
+  ["Ticket__uType"]=>
+  string(17) "Problem__fRequest"
+  ["Organization"]=>
+  string(0) ""
+  ["Vendor__b2__bCase__b__3"]=>
+  string(0) ""
+  ["Tracking__b__3__bTO__bSite"]=>
+  string(0) ""
+  ["Last__bName"]=>
+  string(7) "Hayashi"
+  ["Vendor__b1"]=>
+  string(0) ""
+  ["__Gi__gActual__bEnd__bTime__b__PUTC__p__G__fi__g__bLink"]=>
+  string(0) ""
+  ["__Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g"]=>
+  string(0) ""
+  ["lastdate"]=>
+  string(10) "2012-08-15"
+  ["Announcements__bSent__Q"]=>
+  string(0) ""
+  ["__Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g"]=>
+  string(0) ""
+  ["Summary__bof__bCurrent__bStatus__bUpdated__Q"]=>
+  string(0) ""
+  ["Vendor__b3__bCase__b__3"]=>
+  string(0) ""
+  ["Hours"]=>
+  string(0) ""
+  ["Originating__bVO__bSupport__bCenter"]=>
+  string(5) "other"
+  ["entrytime"]=>
+  string(8) "21:58:59"
+  ["__Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g__bLink"]=>
+  string(0) ""
+  ["Suite"]=>
+  string(0) ""
+  ["Comments"]=>
+  string(0) ""
+  ["Email__baddress"]=>
+  string(15) "hayashis@iu.edu"
+  ["Shipper__bTO__bSite"]=>
+  string(0) ""
+  ["When__bwas__bPart__bReceived__Q__b__PUTC__p"]=>
+  string(0) ""
+  ["Ready__bto__bClose__Q"]=>
+  string(2) "No"
+  ["Infrastructure__bAttack__Q"]=>
+  string(0) ""
+  ["Access__bInformation"]=>
+  string(0) ""
+  ["Send__bwhich__bdescription__bto__bassignees__Q"]=>
+  string(0) ""
+  ["Site__bAddress"]=>
+  string(0) ""
+  ["Earliest__bRequested__bDate__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Site__bDescription"]=>
+  string(0) ""
+  ["Latest__bRequested__bDate__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["__Gi__gSummary__bof__bCurrent__bStatus__G__fi__g"]=>
+  string(0) ""
+  ["history"]=>
+  string(6702) "07/31/2012____________history 9:58 PM____________historyOSG-GOC (via Web Services)____________historyCreated: Should vanderbilt sent interop accounting information to WLCG?
+07/31/2012____________history 9:58 PM____________historyOSG-GOC (via Web Services)____________historyAdded Assignee : USCMS Tier 2 Elizabeth Chism
+07/31/2012____________history 9:58 PM____________historyOSG-GOC (via Web Services)____________historyAdded CC: klb@accre.vanderbilt.edu
+07/31/2012____________history 9:59 PM____________historyEscalated____________historyEscalated: Ticket Creation Notification
+07/31/2012____________history 9:59 PM____________historyEscalated____________historyEscalation email sent: hayashis@iu.edu
+07/31/2012____________history 9:58 PM____________historyOSG-GOC (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Assignee: USCMS Tier 2 Elizabeth Chism; Cc: klb@accre.vanderbilt.edu
+07/31/2012____________history 9:59 PM____________historySoichi Hayashi (via Web Services)____________historyAppended a Description
+07/31/2012____________history 9:59 PM____________historySoichi Hayashi (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+07/31/2012____________history 9:59 PM____________historySoichi Hayashi (via Web Services)____________historyAdded CC: aguru2@unl.edu
+07/31/2012____________history 9:59 PM____________historySoichi Hayashi (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: USCMS Tier 2 Elizabeth Chism
+08/01/2012____________history 5:20 PM____________historyklb@accre.vanderbilt.edu____________historyAppended a Description.
+08/01/2012____________history 5:20 PM____________historyklb@accre.vanderbilt.edu____________historyIncoming mail: From: klb@accre.vanderbilt.edu; To: osg@tick.globalnoc.iu.edu
+08/01/2012____________history 5:20 PM____________historyklb@accre.vanderbilt.edu____________historyNotification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: USCMS Tier 2 Elizabeth Chism
+08/01/2012____________history 9:39 PM____________historyElizabeth Chism (via Web Services)____________historyAppended a Description
+08/01/2012____________history 9:39 PM____________historyElizabeth Chism (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+08/01/2012____________history 9:39 PM____________historyElizabeth Chism (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Assignee: USCMS Tier 2 Elizabeth Chism; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu
+08/02/2012____________history 7:54 PM____________historyScott Teige (via Web Services)____________historyAppended a Description
+08/02/2012____________history 7:54 PM____________historyScott Teige (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+08/02/2012____________history 7:54 PM____________historyScott Teige (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Assignee: USCMS Tier 2 Elizabeth Chism; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu
+08/02/2012____________history 8:29 PM____________historyklb@accre.vanderbilt.edu____________historyAppended a Description.
+08/02/2012____________history 8:29 PM____________historyklb@accre.vanderbilt.edu____________historyIncoming mail: From: klb@accre.vanderbilt.edu; To: osg@tick.globalnoc.iu.edu
+08/02/2012____________history 8:29 PM____________historyklb@accre.vanderbilt.edu____________historyNotification mail sent: Customer: hayashis@iu.edu; Assignee: USCMS Tier 2 Elizabeth Chism; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu
+08/07/2012____________history 6:43 PM____________historygoc (via Web Services)____________historyChanged <i>Status</i> to Closed
+08/07/2012____________history 6:43 PM____________historygoc (via Web Services)____________historyAppended a Description
+08/07/2012____________history 6:43 PM____________historygoc (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+08/07/2012____________history 6:43 PM____________historyEscalated____________historyEscalated: Ticket Resolution Notification
+08/07/2012____________history 6:43 PM____________historyEscalated____________historyChanged <i>Status</i> to Closed from Closed
+08/07/2012____________history 6:43 PM____________historyEscalated____________historyEscalation email sent: hayashis@iu.edu
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyChanged <i>Status</i> to Engineering
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyAppended a Description
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyAdded Assignee : GGUS (Prod)
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyDeleted Assignee: USCMS Tier 2
+08/14/2012____________history 9:05 PM____________historySoichi Hayashi (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: GGUS (Prod) Elizabeth Chism
+08/15/2012____________history 5:36 AM____________historyOSG-GOC (via Web Services)____________historyAppended a Description
+08/15/2012____________history 5:36 AM____________historyOSG-GOC (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Assignee: GGUS (Prod) Elizabeth Chism; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu
+08/15/2012____________history 2:30 PM____________historygoc (via Web Services)____________historyAppended a Description
+08/15/2012____________history 2:30 PM____________historygoc (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: GGUS (Prod) Elizabeth Chism
+08/15/2012____________history 3:03 PM____________historySoichi Hayashi (via Web Services)____________historyAppended a Description
+08/15/2012____________history 3:03 PM____________historySoichi Hayashi (via Web Services)____________historyChanged ENG__bNext__bAction__bDate__fTime__b__PUTC__p
+08/15/2012____________history 3:03 PM____________historySoichi Hayashi (via Web Services)____________historyNotification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: GGUS (Prod) Elizabeth Chism"
+  ["priority"]=>
+  int(4)
+  ["Scheduled__bFSR__bStart__bTime__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Minutes"]=>
+  string(0) ""
+  ["Originating__bTicket__bNumber"]=>
+  string(0) ""
+  ["Scheduled__bFSR__bStart__bTime__b__PUTC__p"]=>
+  string(0) ""
+  ["Type"]=>
+  string(0) ""
+  ["Scheduled__bFSR__bEnd__bTime__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Cell__bPhone"]=>
+  string(0) ""
+  ["When__bwas__bRMA__bGenerated__Q__b__PUTC__p"]=>
+  string(0) ""
+  ["submitter"]=>
+  string(7) "OSG-GOC"
+  ["description"]=>
+  string(94) "Rebus Team,
+
+How can I add Vanderbilt to http&#58;//gstat-wlcg.cern.ch/apps/topology ?
+
+Soichi"
+  ["CLLI"]=>
+  string(0) ""
+  ["SD__bNext__bAction__bDate__fTime__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Inventory__bUpdated__Q"]=>
+  string(0) ""
+  ["status"]=>
+  string(11) "Engineering"
+  ["solutionType"]=>
+  string(0) ""
+  ["Vendor__b3"]=>
+  string(0) ""
+  ["__Gi__gScheduled__bEnd__bTime__b__PUTC__p__G__fi__g"]=>
+  string(0) ""
+  ["First__bName"]=>
+  string(6) "Soichi"
+  ["Shipping__bAddress__b__Pif__bdifferent__p"]=>
+  string(0) ""
+  ["Activity__bDate__b__PUTC__p"]=>
+  string(0) ""
+  ["Latest__bRequested__bDate__b__PUTC__p"]=>
+  string(0) ""
+  ["Monitoring__bTools__bUpdated__Q"]=>
+  string(0) ""
+  ["Is__bthis__bNetwork__bImpacting__Q"]=>
+  string(0) ""
+  ["Facility__bOwner"]=>
+  string(0) ""
+  ["Manned__bPOP__b__P1__CYes__p"]=>
+  string(0) ""
+  ["Job__bTitle"]=>
+  string(0) ""
+  ["editors"]=>
+  array(7) {
+    [0]=>
+    string(17) "OSG-GOC_~_WEBSVCS"
+    [1]=>
+    string(9) "Escalated"
+    [2]=>
+    string(18) "hayashis_~_WEBSVCS"
+    [3]=>
+    string(24) "klb@accre.vanderbilt.edu"
+    [4]=>
+    string(16) "echism_~_WEBSVCS"
+    [5]=>
+    string(16) "steige_~_WEBSVCS"
+    [6]=>
+    string(13) "goc_~_WEBSVCS"
+  }
+  ["Maintenance__bType"]=>
+  string(0) ""
+  ["RFO"]=>
+  string(0) ""
+  ["Hands__band__bEyes__bProvider"]=>
+  string(0) ""
+  ["mr"]=>
+  int(12452)
+  ["assignees"]=>
+  string(66) "TX_FP71_GGUS2 echism CC:klb@accre.vanderbilt.edu CC:aguru2@unl.edu"
+  ["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"]=>
+  string(19) "2012-08-07 00:00:00"
+  ["SD__bNext__bAction__bItem"]=>
+  string(0) ""
+  ["Requested__bTime__bFrame"]=>
+  string(0) ""
+  ["RMA__b__3"]=>
+  string(0) ""
+  ["When__bwas__bPart__bReceived__Q__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Acceptance__bDate__b__PUTC__p"]=>
+  string(0) ""
+  ["Office__bPhone"]=>
+  string(14) "(812) 518-0727"
+  ["Part__bDescription"]=>
+  string(0) ""
+  ["SD__bNext__bAction__bDate__fTime__b__PUTC__p"]=>
+  string(0) ""
+  ["Zip"]=>
+  string(0) ""
+  ["Destination__bVO__bSupport__bCenter"]=>
+  string(5) "other"
+  ["emailRecipients"]=>
+  array(6) {
+    [0]=>
+    string(15) "hayashis@iu.edu"
+    [1]=>
+    string(9) "(USCMST2)"
+    [2]=>
+    string(8) "(echism)"
+    [3]=>
+    string(24) "klb@accre.vanderbilt.edu"
+    [4]=>
+    string(14) "aguru2@unl.edu"
+    [5]=>
+    string(15) "(TX_FP71_GGUS2)"
+  }
+  ["__Gi__gScheduled__bStart__bTime__b__PUTC__p__G__fi__g__bLink"]=>
+  string(0) ""
+  ["Production__bDate__b__PUTC__p"]=>
+  string(0) ""
+  ["Emergency__bMaintenance"]=>
+  string(0) ""
+  ["description_stamp"]=>
+  string(67) "Entered on 08/15/2012 at 15:03:01 UTC (GMT+0000) by Soichi Hayashi:"
+  ["Vendor__bInvolvement"]=>
+  string(0) ""
+  ["Shipper__bFROM__bSite"]=>
+  string(0) ""
+  ["Network__bImpact"]=>
+  string(0) ""
+  ["title"]=>
+  string(62) "Should vanderbilt sent interop accounting information to WLCG?"
+  ["When__bwas__bRMA__bGenerated__Q__b__PUTC__p__bLink"]=>
+  string(0) ""
+  ["Destination__bTicket__bNumber"]=>
+  string(0) ""
+  ["Tracking__b__3__bFROM__bSite"]=>
+  string(0) ""
+  ["entrydate"]=>
+  string(10) "2012-07-31"
+  ["__Gi__gAffected__G__fi__g"]=>
+  string(0) ""
+  ["State"]=>
+  string(0) ""
+  ["Scheduled__bFSR__bEnd__bTime__b__PUTC__p"]=>
+  string(0) ""
+  ["alldescs"]=>
+  string(3804) "Entered on 08/15/2012 at 15:03:01 UTC (GMT+0000) by Soichi Hayashi:
+Rebus Team,
+
+How can I add Vanderbilt to http&#58;//gstat-wlcg.cern.ch/apps/topology ?
+
+Soichi
+
+Entered on 08/15/2012 at 14:30:01 UTC (GMT+0000) by goc:
+Hi Soichi,
+There is no mapping for T2_US_Vanderbilt at ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json i.e. (﻿oim[wlcgName] = oimName)
+
+Where as there is an entry for Vanderbilt at http&#58;//myosg.grid.iu.edu/rgsummary/xml?datasource=summary&summary_attrs_showhierarchy=on&summary_attrs_showwlcg=on&summary_attrs_showvoownership=on&gip_status_attrs_showtestresults=on&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=01%2F19%2F2010&end_type=now&end_date=01%2F19%2F2010&sc=on&sc_19=on&sc_29=on&sc_30=on&sc_65=on&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1
+
+To resolve this either T2_US_Vanderbilt needs to be added to ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json or taken out from url in bullet point 2.
+I am not sure who maintains those lists.
+
+Ashu
+
+-- by Ashu Guru
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Ashu Guru 897726
+Entered on 08/15/2012 at 05:36:19 UTC (GMT+0000) by OSG-GOC:
+-- by Wilhelm Buehler at Wed Aug 15 05&#58;35&#58;58 UTC 2012
+
+GOCTX Source&#58; https&#58;//ggus.eu/ws/ticket_info.php?ticket=85197
+Entered on 08/14/2012 at 21:05:32 UTC (GMT+0000) by Soichi Hayashi:
+(Re-opening this ticket)
+
+The records Scott mentioned is for RSV&#62;SAM metrics - not WLCG topology. 
+
+Ashu,
+
+Do you know how Rebus topology is defined? I don&#39;t see Vanderbilt listed in the Rebus capacity pages
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/capacities/federations/
+
+What does Vanderbilt need to do in order for it to show up on the Rebus?
+
+Soichi
+Entered on 08/07/2012 at 18:43:27 UTC (GMT+0000) by goc:
+-- by Elizabeth Prout
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Elizabeth Chism 100912
+Entered on 08/02/2012 at 20:29:07 UTC (GMT+0000) by Kevin Buterbaugh:
+
+Hi Scott,
+
+I believe that is what Soichi asked me to do.  Thanks...
+
+Kevin
+
+On Aug 2, 2012, at 2&#58;54 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]
+Entered on 08/02/2012 at 19:54:28 UTC (GMT+0000) by Scott Teige:
+I&#39;m seeing records associated with se1.accre.vanderbilt.edu, se3..., ce1...,ce2 being uploaded to WLCG. Kevin, if this is your intent the ticket can close.
+
+Scott
+Entered on 08/01/2012 at 21:39:13 UTC (GMT+0000) by Elizabeth Chism:
+May I close this ticket?
+
+Thank you,
+Elizabeth
+Entered on 08/01/2012 at 17:20:07 UTC (GMT+0000) by Kevin Buterbaugh:
+
+Hi Soichi,
+
+I&#39;ve reconfigured us...
+
+Kevin
+
+On Jul 31, 2012, at 4&#58;59 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]
+Entered on 07/31/2012 at 21:59:49 UTC (GMT+0000) by Soichi Hayashi:
+CC-ing Ashu
+
+Entered on 07/31/2012 at 21:58:59 UTC (GMT+0000) by OSG-GOC:
+[by Soichi Hayashi]
+
+Ashu Guru and I were working to update the installed capacity report to include USCMS_Tier2 SC supported sites in the report.
+
+Ashu noticed that Vanderbilt isn&#39;t included in WLCG topology
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json
+
+I believe this is due to Vanderbilt resource not configured to send interop accounting information to WLCG
+&#62; https&#58;//oim.grid.iu.edu/oim/resource?id=137
+
+Should Vanderbilt resource reconfigured to forward interop accounting information?
+
+Soichi
+
+[META Information]
+Resource on which user is having this issue&#58; Vanderbilt(137)
+Primary Admin for Vanderbilt is Kevin Buterbaugh and has been CC&#39;d."
+  ["__Gi__gActual__bStart__bTime__b__PUTC__p__G__fi__g__bLink"]=>
+  string(0) ""
+  ["Part__bSerial__b__3__b__Pold__p"]=>
+  string(0) ""
+  ["mostrecentedit"]=>
+  array(3) {
+    [0]=>
+    string(22) "Appended a Description"
+    [1]=>
+    string(53) "Changed ENG__bNext__bAction__bDate__fTime__b__PUTC__p"
+    [2]=>
+    string(133) "Notification mail sent: Customer: hayashis@iu.edu; Cc: klb@accre.vanderbilt.edu aguru2@unl.edu; Assignee: GGUS (Prod) Elizabeth Chism"
+  }
+  ["Network__bAdministration__bNotified__bof__bApplicable__bDates__Q"]=>
+  string(0) ""
+  ["lasttime"]=>
+  string(8) "15:03:01"
+  ["ENG__bNext__bAction__bItem"]=>
+  string(10) "ENG Action"
+  ["Source__bof__bImpact"]=>
+  string(0) ""
+}
+array(8) {
+  ["id"]=>
+  string(5) "12452"
+  ["title"]=>
+  string(62) "Should vanderbilt sent interop accounting information to WLCG?"
+  ["status"]=>
+  string(11) "Engineering"
+  ["priority"]=>
+  string(1) "4"
+  ["nextaction"]=>
+  string(1) "4"
+  ["assignees"]=>
+  array(2) {
+    [0]=>
+    string(13) "TX_FP71_GGUS2"
+    [1]=>
+    string(6) "echism"
+  }
+  ["ccs"]=>
+  array(2) {
+    [0]=>
+    string(24) "klb@accre.vanderbilt.edu"
+    [1]=>
+    string(14) "aguru2@unl.edu"
+  }
+  ["descriptions"]=>
+  array(11) {
+    ["Entered on 08/15/2012 at 15:03:01 UTC (GMT+0000) by Soichi Hayashi:"]=>
+    string(94) "Rebus Team,
+
+How can I add Vanderbilt to http&#58;//gstat-wlcg.cern.ch/apps/topology ?
+
+Soichi"
+    ["Entered on 08/15/2012 at 14:30:01 UTC (GMT+0000) by goc:"]=>
+    string(1040) "Hi Soichi,
+There is no mapping for T2_US_Vanderbilt at ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json i.e. (﻿oim[wlcgName] = oimName)
+
+Where as there is an entry for Vanderbilt at http&#58;//myosg.grid.iu.edu/rgsummary/xml?datasource=summary&summary_attrs_showhierarchy=on&summary_attrs_showwlcg=on&summary_attrs_showvoownership=on&gip_status_attrs_showtestresults=on&downtime_attrs_showpast=&account_type=cumulative_hours&ce_account_type=gip_vo&se_account_type=vo_transfer_volume&bdiitree_type=total_jobs&bdii_object=service&bdii_server=is-osg&start_type=7daysago&start_date=01%2F19%2F2010&end_type=now&end_date=01%2F19%2F2010&sc=on&sc_19=on&sc_29=on&sc_30=on&sc_65=on&gridtype=on&gridtype_1=on&active=on&active_value=1&disable_value=1
+
+To resolve this either T2_US_Vanderbilt needs to be added to ﻿http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json or taken out from url in bullet point 2.
+I am not sure who maintains those lists.
+
+Ashu
+
+-- by Ashu Guru
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Ashu Guru 897726"
+    ["Entered on 08/15/2012 at 05:36:19 UTC (GMT+0000) by OSG-GOC:"]=>
+    string(132) "-- by Wilhelm Buehler at Wed Aug 15 05&#58;35&#58;58 UTC 2012
+
+GOCTX Source&#58; https&#58;//ggus.eu/ws/ticket_info.php?ticket=85197"
+    ["Entered on 08/14/2012 at 21:05:32 UTC (GMT+0000) by Soichi Hayashi:"]=>
+    string(362) "(Re-opening this ticket)
+
+The records Scott mentioned is for RSV&#62;SAM metrics - not WLCG topology. 
+
+Ashu,
+
+Do you know how Rebus topology is defined? I don&#39;t see Vanderbilt listed in the Rebus capacity pages
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/capacities/federations/
+
+What does Vanderbilt need to do in order for it to show up on the Rebus?
+
+Soichi"
+    ["Entered on 08/07/2012 at 18:43:27 UTC (GMT+0000) by goc:"]=>
+    string(97) "-- by Elizabeth Prout
+
+[META Information]
+/DC=org/DC=doegrids/OU=People/CN=Elizabeth Chism 100912"
+    ["Entered on 08/02/2012 at 20:29:07 UTC (GMT+0000) by Kevin Buterbaugh:"]=>
+    string(218) "Hi Scott,
+
+I believe that is what Soichi asked me to do.  Thanks...
+
+Kevin
+
+On Aug 2, 2012, at 2&#58;54 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]"
+    ["Entered on 08/02/2012 at 19:54:28 UTC (GMT+0000) by Scott Teige:"]=>
+    string(166) "I&#39;m seeing records associated with se1.accre.vanderbilt.edu, se3..., ce1...,ce2 being uploaded to WLCG. Kevin, if this is your intent the ticket can close.
+
+Scott"
+    ["Entered on 08/01/2012 at 21:39:13 UTC (GMT+0000) by Elizabeth Chism:"]=>
+    string(46) "May I close this ticket?
+
+Thank you,
+Elizabeth"
+    ["Entered on 08/01/2012 at 17:20:07 UTC (GMT+0000) by Kevin Buterbaugh:"]=>
+    string(191) "Hi Soichi,
+
+I&#39;ve reconfigured us...
+
+Kevin
+
+On Jul 31, 2012, at 4&#58;59 PM, Open Science Grid FootPrints &#60;osg@tick.globalnoc.iu.edu&#62; wrote&#58;
+
+&#62; [Duplicate message snipped]"
+    ["Entered on 07/31/2012 at 21:59:49 UTC (GMT+0000) by Soichi Hayashi:"]=>
+    string(11) "CC-ing Ashu"
+    ["Entered on 07/31/2012 at 21:58:59 UTC (GMT+0000) by OSG-GOC:"]=>
+    string(682) "[by Soichi Hayashi]
+
+Ashu Guru and I were working to update the installed capacity report to include USCMS_Tier2 SC supported sites in the report.
+
+Ashu noticed that Vanderbilt isn&#39;t included in WLCG topology
+&#62; http&#58;//gstat-wlcg.cern.ch/apps/topology/all/json
+
+I believe this is due to Vanderbilt resource not configured to send interop accounting information to WLCG
+&#62; https&#58;//oim.grid.iu.edu/oim/resource?id=137
+
+Should Vanderbilt resource reconfigured to forward interop accounting information?
+
+Soichi
+
+[META Information]
+Resource on which user is having this issue&#58; Vanderbilt(137)
+Primary Admin for Vanderbilt is Kevin Buterbaugh and has been CC&#39;d."
+  }
+}

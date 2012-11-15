@@ -1,0 +1,99 @@
+<add><doc>
+<field name="id">12975</field>
+<field name="url">https://ticket.opensciencegrid.org/goc/12975</field>
+<field name="title">Tomcat crashing, GIP no longer reporting metrics</field>
+<field name="status">Engineering</field>
+<field name="priority">4</field>
+<field name="nextaction">ENG Action</field>
+<field name="assignees">TX_FP71_FERMI</field>
+<field name="assignees">osg-software-support-stream</field>
+<field name="assignees">cat</field>
+<field name="assignees">echism</field>
+<field name="ccs">b@pnnl.gov</field>
+<field name="descriptions">I&amp;#39;ll watch this until monday to see if you report any crashes.
+
+Thank you,
+Elizabeth</field>
+<field name="descriptions">Okay, thank you!  I have made the change.  Hopefully I won&amp;#39;t see tomcat crash any more.
+
+by /DC=org/DC=doegrids/OU=People/CN=Brock Erwin 6249</field>
+<field name="descriptions">reply from&amp;#58; timm@fnal.gov
+
+Brockyou should look at the options in the tomcat5 service startup file.  Add an option like
+-Xmx512M to increase the Java heap size.  The tomcat5 process is known to frequently run out of memory like that, particularly if you have a lot of queues or VOs.
+
+Steve Timm
+
+From&amp;#58; Fermilab Service Desk [mailto&amp;#58;fermi@service-now.com]
+Sent&amp;#58; Monday, November 12, 2012 12&amp;#58;57 PM
+To&amp;#58; Mark S Fischler; Lynn A Garren; Steven C Timm
+Subject&amp;#58; Incident INC000000337144 has been assigned to group International Linear Collider VO
+
+International Linear Collider VO Team,
+
+Incident INC000000337144&amp;#60;https&amp;#58;//fermi.service-now.com/nav_to.do?uri=incident.do%3Fsys_id=5115c75f8dad30c06054e64a38c6196e%26sysparm_stack=incident_list.do%3Fsysparm_query=active=true&amp;#62; created at 2012-11-12 12&amp;#58;51&amp;#58;09 CST has been assigned to your group.
+
+Short Description&amp;#58; Tomcat crashing, GIP no longer reporting metrics
+Caller&amp;#58; cd-srv-goc-ops
+Categorization&amp;#58;
+Priority&amp;#58; 3 - Medium
+
+Summary&amp;#58; [by Brock Erwin]
+
+I have found some errors it the tomcat - catalina.out log file similar to this&amp;#58;
+
+SEVERE&amp;#58; BAD packet signature 18245
+
+and
+
+java.lang.IndexOutOfBoundsException.
+
+This has happened many times now, so I thought that it must be time to submit a ticket. I think tomcat is responsible for submitting GIP information to the BDII server, and if tomcat stops working, that would explain why the OSG CEMon-BDII Server Status (http&amp;#58;//is.grid.iu.edu/cgi-bin/status.cgi) shows PNNL as not having reported in a long time. I will attach catalina log files as well.
+
+I am restarting the tomcat server, so I expect things will start working again until the next time it crashes....
+Thank you,
+Brock
+
+[META Information]
+Resource on which user is having this issue&amp;#58; PNNL_OSG(475)
+Primary Admin for PNNL_OSG is Brock Erwin and has been CC&amp;#39;d.
+Application issue with type&amp;#58; vdt
+
+[Ticket Origin]
+https&amp;#58;//ticket.grid.iu.edu/goc/viewer?id=12975#1352746227
+
+________________________________
+Additional Comments&amp;#58;
+
+________________________________
+
+Ref&amp;#58;MSG0696953
+ -- by timm at Mon Nov 12 19&amp;#58;02&amp;#58;32 UTC 2012
+
+GOCTX Source&amp;#58; https&amp;#58;//fermi.service-now.com/nav_to.do?uri=incident.do?sys_id=INC000000337144</field>
+<field name="descriptions">[by Brock Erwin]
+
+I have found some errors it the tomcat - catalina.out log file similar to this&amp;#58;
+
+SEVERE&amp;#58; BAD packet signature 18245
+
+and
+
+java.lang.IndexOutOfBoundsException.
+
+This has happened many times now, so I thought that it must be time to submit a ticket.  I think tomcat is responsible for submitting GIP information to the BDII server, and if tomcat stops working, that would explain why the OSG CEMon-BDII Server Status (http&amp;#58;//is.grid.iu.edu/cgi-bin/status.cgi) shows PNNL as not having reported in a long time.  I will attach catalina log files as well.
+
+I am restarting the tomcat server, so I expect things will start working again until the next time it crashes....
+Thank you,
+Brock
+
+[META Information]
+Resource on which user is having this issue&amp;#58; PNNL_OSG(475)
+Primary Admin for PNNL_OSG is Brock Erwin and has been CC&amp;#39;d.
+Application issue with type&amp;#58; vdt</field>
+<field name="ASSOCIATED_R_ID">475</field>
+<field name="ASSOCIATED_RG_ID">349</field>
+<field name="ASSOCIATED_VO_ID">20</field>
+<field name="SUBMITTER_NAME">0</field>
+<field name="SUPPORTING_SC_ID">61</field>
+</doc></add>

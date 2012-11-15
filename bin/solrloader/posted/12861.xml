@@ -1,0 +1,55 @@
+<add><doc>
+<field name="id">12861</field>
+<field name="url">https://ticket.opensciencegrid.org/goc/12861</field>
+<field name="title">RA Request for Douglas Johnson</field>
+<field name="status">Engineering</field>
+<field name="priority">4</field>
+<field name="nextaction">Check for reply back from Ian</field>
+<field name="assignees">adeximo</field>
+<field name="ccs">ifisk@fnal.gov</field>
+<field name="ccs">osg-ra@opensciencegrid.org</field>
+<field name="descriptions">Ian,
+
+Your DN was not captured in this ticket.  Please log into OIM as instructed earlier in order to properly confirm
+Doug&amp;#39;s request.
+
+Thanks,
+-Alain</field>
+<field name="descriptions">I confirm
+
+-Ian
+
+On Nov 7, 2012, at 9&amp;#58;24 PM, Open Science Grid FootPrints wrote&amp;#58;
+
+&amp;#62; [Duplicate message snipped]</field>
+<field name="descriptions">Greetings Ian,
+
+Douglas Johnson has requested to become an Agent of the Registration Authority for OSG under the CMS VO.  
+Can you please confirm that he is authorized to make such a request to represent the CMS VO by sending 
+me a confirmation email signed with your DOEGrid cert to confirm Douglas&amp;#39;s request?  Your assistance is greatly appreciated.
+
+Thanks,
+
+-Alain Deximo
+OSG RA</field>
+<field name="descriptions">Dear OSG PKI Operations,
+
+I Douglas Johnson will be acting as an Agent of the Registration Authority for CMS. I have been authorized by CMS to represent them for the purposes of approving/revoking OSGPKI certificates in our community. I have read and agree to the following clauses&amp;#58;
+
+1. In acting as the Agent of the RA forCMS I have read, understood and accept the responsibilities and tasks assigned to an Agent as laid out in the Trusted Agent Agreement&amp;#58; https&amp;#58;//twiki.grid.iu.edu/twiki/pub/Operations/OSGPKIAgreements/DigiCert-OSG_Agent_Agreement.pdf
+
+2. I understand that OSG will notify me by e-mail of changes to CP/CPS, and I will immediately notify the OSG if I am no longer willing to act as an Agent for my RA under any new CP/CPS.
+
+3. I understand that failure to fulfill my responsibilities and tasks under this agreement may result in the termination of my appointment as an Agent for CMS.
+
+4. I agree only to act on enrollment requests associated with the CMS.
+
+5. I understand that I am responsible for the revocation of certificates that are suspected of being compromised or issued in violation of the OSGPKI CP/CPS policies.
+
+6. I understand that I am responsible for customer support for our CMS related to OSGPKI certificate issuance, revocation, and information.
+
+Thank you.</field>
+<field name="ASSOCIATED_VO_ID">3</field>
+<field name="SUBMITTER_NAME">0</field>
+<field name="SUPPORTING_SC_ID">30</field>
+</doc></add>

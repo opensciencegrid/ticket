@@ -1,0 +1,34 @@
+<add><doc>
+<field name="id">12981</field>
+<field name="url">https://ticket.opensciencegrid.org/goc/12981</field>
+<field name="title">GridAdmin Request for Viplav Khadke</field>
+<field name="status">Engineering</field>
+<field name="priority">4</field>
+<field name="nextaction">Check for a response back from Viplav</field>
+<field name="assignees">adeximo</field>
+<field name="ccs">osg-ra@opensciencegrid.org</field>
+<field name="descriptions">Viplav,
+
+I will not be able to complete your request until you register you contact info into OIM-ITB
+https&amp;#58;//oim-itb.grid.iu.edu/oim/contact
+
+Thanks,
+-Alain</field>
+<field name="descriptions">Dear OSG PKI operations,
+
+I Viplav Khadke would like to be a Grid administrator for  pkitest.opensciencegrid.org  in oim-itb.
+
+I would like to be authorized to request and approve OSG certificates for the following name space(s)&amp;#58;
+a. FQDN 1 or range of addresses for a particular domain (e.g., *.vo.opensciencegrid.org - please be as specific as possible)
+b. FQDN 2
+c. Others.
+
+1. As the Grid Administrator, I have read and understand the responsibilities and tasks assigned to a Grid Administrator as laid out in the Trusted Agent Agreement&amp;#58; https&amp;#58;//twiki.grid.iu.edu/twiki/pub/Operations/OSGPKIAgreements/DigiCert-OSG_Agent_Agreement.pdf
+
+2. I agree that as Grid Administrator I will only submit and approve Service certificates for the FQDNs listed above.
+
+3. I understand that I am responsible for the revocation of certificates that are suspected of being compromised or issued in violation of the OSG policies.
+
+Thank you.</field>
+<field name="SUBMITTER_NAME">0</field>
+</doc></add>

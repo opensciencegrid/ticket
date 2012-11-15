@@ -1,0 +1,53 @@
+<add><doc>
+<field name="id">12897</field>
+<field name="url">https://ticket.opensciencegrid.org/goc/12897</field>
+<field name="title">GridAdmin Request for Fengping Hu</field>
+<field name="status">Engineering</field>
+<field name="priority">4</field>
+<field name="nextaction">Check for a reply back from Ian</field>
+<field name="assignees">adeximo</field>
+<field name="ccs">osg-ra@opensciencegrid.org</field>
+<field name="ccs">ifisk@fnal.gov</field>
+<field name="descriptions">Ian,
+
+Your DN was not captured in this ticket.  Please log into OIM as instructed earlier in order to properly confirm 
+Fengping&amp;#39;s request.
+
+Thanks,
+-Alain</field>
+<field name="descriptions">I confirm
+
+-Ian
+
+On Nov 7, 2012, at 9&amp;#58;11 PM, Open Science Grid FootPrints wrote&amp;#58;
+
+&amp;#62; [Duplicate message snipped]</field>
+<field name="descriptions">Greetings Ian,
+
+Fengping Hu has requested to become a Grid Admin for the following domain(s)&amp;#58; purdue.edu
+Can you please confirm that he is authorized to make such a request?  This can be done by either informing
+me (adeximo@iu.edu) directly with a confirmation email signed with your DOEGrid cert regarding Fengping&amp;#39;s
+request.  Another way is to log into OIM and accessing the ticket through the ticket link.  Then place an
+update response into the ticket and your entry will automatically append your DN.  Your assistance is greatly
+appreciated.
+
+Thanks,
+
+-Alain Deximo
+OSG RA</field>
+<field name="descriptions">Dear OSG PKI operations,
+
+I ##Fengping Hu## would like to be a Grid administrator for ##Purdue##. 
+
+I would like to be authorized to request and approve OSG certificates for the following name space(s)&amp;#58;
+*.rcac.purdue.edu
+
+1. As the Grid Administrator, I have read and understand the responsibilities and tasks assigned to a Grid Administrator as laid out in the Trusted Agent Agreement&amp;#58; https&amp;#58;//twiki.grid.iu.edu/twiki/pub/Operations/OSGPKIAgreements/DigiCert-OSG_Agent_Agreement.pdf
+
+2. I agree that as Grid Administrator I will only submit and approve Service certificates for the FQDNs listed above.
+
+3. I understand that I am responsible for the revocation of certificates that are suspected of being compromised or issued in violation of the OSG policies.
+
+Thank you.</field>
+<field name="SUBMITTER_NAME">0</field>
+</doc></add>

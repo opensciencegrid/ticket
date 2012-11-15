@@ -165,7 +165,12 @@ function connect_metadb() {
 
 $db = connect_metadb();
 
-$lastrun_timestamp = (int)file_get_contents("lastrun.txt");
+$lastrun_file = "lastrun.txt";
+if(file_exists($lastrun_file)) {
+    $lastrun_timestamp = (int)file_get_contents($lastrun_file);
+} else {
+    $lastrun_timestamp = time() - 3600*24*365;//1 year?
+}
 
 $ids = list_updated($lastrun_timestamp);
 //$ids = array(11912, 11913, 11915, 11926, 11971, 11976, 11977, 11987, 11995, 11997, 12003, 12015, 12026, 12031, 8817, 8889);
@@ -199,7 +204,7 @@ foreach($ids as $id) {
     //sleep(1);
 }
 
-file_put_contents("lastrun.txt", time());
+file_put_contents($lastrun_file, time());
 
 exit(count($ids));
 

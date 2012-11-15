@@ -5,7 +5,7 @@ date_default_timezone_set("UTC");
 
 function config() {
     return array(
-        "fp_project"=>"71",//114 for dev
+        "fp_project"=>"114",//114 for dev //71 for prod
         "fp_user"=>"goc",
         "fp_pass"=>"5be1499a577add53307142asdaq2WSagsASDGa",
         "data_host"=>"data-itb.goc",

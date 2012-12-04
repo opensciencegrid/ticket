@@ -92,8 +92,9 @@ if(isset($this->result)) {
         
         //find first description that has first token
         $found_id = 0; 
+        $tokenz = strtolower($tokens[0]);
         foreach($descs as $id=>$desc) {
-            if(strstr($desc, $tokens[0]) !== FALSE) {
+            if(strstr(strtolower($desc), $tokenz) !== FALSE) {
                 $found_id = $id;
                 break;
             }

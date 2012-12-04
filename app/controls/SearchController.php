@@ -168,16 +168,20 @@ class SearchController extends Zend_Controller_Action
         $ret = json_decode($ret_json);
 
         //process result
-        $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
-        slog(print_r($ret->spellcheck->suggestions, true));
-        $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
-        $found = $sugs->numFound;
-        $start = $sugs->startOffset;
-        $base = substr($q, 0, $start);
-        foreach($sugs->suggestion as $id=>$sug) {
-            $suggests[] = $base.$sug;
+        if(!is_null($ret)) {
+            $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
+            //slog(print_r($ret->spellcheck->suggestions, true));
+            $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
+            $found = $sugs->numFound;
+            $start = $sugs->startOffset;
+            $base = substr($q, 0, $start);
+            foreach($sugs->suggestion as $id=>$sug) {
+                $suggests[] = $base.$sug;
+            }
+            $this->view->suggests = $suggests;
+        } else {
+            elog("no reply from $url");
         }
-        $this->view->suggests = $suggests;
 
         /*
         foreach($recs as $rec) {

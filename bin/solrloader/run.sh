@@ -18,7 +18,7 @@ if [ $count -gt 0 ] ; then
     #send the commit command to make sure all the changes are flushed and visible
     #curl $URL --data-binary '<commit softCommit=true/>' -H 'Content-type:application/xml'
     echo "comminting everything now"
-    curl "$URL?softCommit=true"
+    curl -s "$URL?softCommit=true"
     echo
 else
     echo "no ticket updated since last run"

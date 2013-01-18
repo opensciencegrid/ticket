@@ -230,6 +230,71 @@ class ViewerController extends BaseController
         $status = $_REQUEST["status"]; //TODO - validate?
         $type = $_REQUEST["ticket_type"]; //TODO - validate
 
+        //load current metadata
+        $metadata = array();
+        $data = new Data();
+        foreach($data->getAllMetadata($ticket_id) as $item) {
+            $metadata[$item->key] = $item->value;
+        }
+
+        //update metadata
+        if($_REQUEST["metadata_r"] == null) {
+            if(isset($metadata["ASSOCIATED_R_ID"])) {
+                //reset existing values to null
+                //TODO - not sure GOC-TX can handle metadata set to NULL..
+                $metadata["ASSOCIATED_R_ID"] = null;
+                $metadata["ASSOCIATED_R_NAME"] = null;
+                $metadata["ASSOCIATED_RG_ID"] = null;
+                $metadata["ASSOCIATED_RG_NAME"] = null;
+            } else {
+                //if it's not currently set, then just leave it not set
+            }
+        } else {
+            $resource_id = (int)$_REQUEST["metadata_r"];
+            $resource_model = new Resource();
+            $resource_group_model = new ResourceGroup();
+            $resource = $resource_model->fetchByID($resource_id);
+            $resource_group = $resource_group_model->fetchByID($resource->resource_group_id);
+            $metadata["ASSOCIATED_R_ID"] = $resource_id;
+            $metadata["ASSOCIATED_R_NAME"] = $resource->name;
+            $metadata["ASSOCIATED_RG_ID"] = $resource->resource_group_id;
+            $metadata["ASSOCIATED_RG_NAME"] = $resource_group->name;
+        }
+
+        if($_REQUEST["metadata_vo"] == null) {
+            if(isset($metadata["ASSOCIATED_VO_ID"])) {
+                //reset existing values to null
+                //TODO - not sure GOC-TX can handle metadata set to NULL..
+                $metadata["ASSOCIATED_VO_ID"] = null;
+                $metadata["ASSOCIATED_VO_NAME"] = null;
+            } else {
+                //if it's not currently set, then just leave it not set
+            }
+        } else {
+            $vo_id = (int)$_REQUEST["metadata_vo"];
+            $vo_model = new VO();
+            $vo = $vo_model->get($vo_id);
+            $metadata["ASSOCIATED_VO_ID"] = $vo_id;
+            $metadata["ASSOCIATED_VO_NAME"] = $vo->name;
+        }
+
+        if($_REQUEST["metadata_sc"] == null) {
+            if(isset($metadata["SUPPORTING_SC_ID"])) {
+                //reset existing values to null
+                //TODO - not sure GOC-TX can handle metadata set to NULL..
+                $metadata["SUPPORTING_SC_ID"] = null;
+                $metadata["SUPPORTING_SC_NAME"] = null;
+            } else {
+                //if it's not currently set, then just leave it not set
+            }
+        } else {
+            $sc_id = (int)$_REQUEST["metadata_sc"];
+            $sc_model = new SC();
+            $sc = $sc_model->get($sc_id);
+            $metadata["SUPPORTING_SC_ID"] = $sc_id;
+            $metadata["SUPPORTING_SC_NAME"] = $sc->name;
+        }
+
         if(!$good) {
             //TODO - implement mechanism to allow re-editing
             echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
@@ -285,6 +350,11 @@ class ViewerController extends BaseController
             }
             if(!isset($_REQUEST["notify_ccs"])) {
                 $footprint->suppress_ccs();
+            }
+
+            //copy metadata
+            foreach($metadata as $key=>$value) {
+                $footprint->setMetadata($key, $value);
             }
         
             $footprint->submit();

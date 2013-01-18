@@ -2,6 +2,8 @@
 <style>
 .form-horizontal .control-label {
 padding-top: inherit;
+font-size:90%;
+color:#666;
 }
 label {
 margin-bottom: 0px;
@@ -55,10 +57,20 @@ line-height: 18px;
     <?php
        if(count($this->metadata) != 0) {
             foreach($this->metadata as $item) {
-                echo "<div class=\"control-group\">";
-                echo "<label class=\"control-label\">".$item->key."</label>";
-                echo "<div class=\"controls\">".$item->value."</div>";
-                echo "</div>";
+                //suppress metadata ID field (just show textual)
+                switch($item->key) {
+                //case "SERVICE_ID":
+                case "SUPPORTING_SC_ID":
+                case "ASSOCIATED_R_ID":
+                case "ASSOCIATED_RG_ID":
+                case "ASSOCIATED_VO_ID":
+                    break;
+                default:
+                    echo "<div class=\"control-group\">";
+                    echo "<label class=\"control-label\">".$item->key."</label>";
+                    echo "<div class=\"controls\">".$item->value."</div>";
+                    echo "</div>";
+                }
             }
         }
     ?>

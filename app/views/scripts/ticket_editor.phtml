@@ -74,16 +74,56 @@ if(!isset($form_action)) {
 
         <legend>Details</legend>
         <?php
-           if(count($this->metadata) != 0) {
-                foreach($this->metadata as $item) {
+        $sc_id = $r_id = $vo_id = null;
+        if(count($this->metadata) != 0) {
+            foreach($this->metadata as $item) {
+                switch($item->key) {
+                case "SUPPORTING_SC_NAME": break;
+                case "SUPPORTING_SC_ID": 
+                    $sc_id = $item->value;
+                    break;
+                case "ASSOCIATED_R_NAME": break;
+                case "ASSOCIATED_R_ID": 
+                    $r_id = $item->value;
+                    break;
+                case "ASSOCIATED_RG_NAME": break;
+                case "ASSOCIATED_RG_ID": break;
+                case "ASSOCIATED_VO_NAME": break;
+                case "ASSOCIATED_VO_ID": 
+                    $vo_id = $item->value;
+                    break;
+                default: 
+                    //just display key/value
                     echo "<div class=\"control-group\">";
                     echo "<label class=\"control-label\">$item->key</label>";
                     echo "<div class=\"controls\">";
                     echo "<input type=\"text\" disabled class=\"span12\" value=\"$item->value\" name=\"metadata[$item->key]\"/>";
-                    echo "</div>";
-                    echo "</div>";
+                    echo "</div>";//controls
+                    echo "</div>";//control-group
                 }
             }
+        }
+
+        echo "<div class=\"control-group\">";
+        echo "<label class=\"control-label\">Associated Resource</label>";
+        echo "<div class=\"controls\">";
+        echo $this->rselector($r_id);
+        echo "</div>";//controls
+        echo "</div>";//control-group
+
+        echo "<div class=\"control-group\">";
+        echo "<label class=\"control-label\">Support Center</label>";
+        echo "<div class=\"controls\">";
+        echo $this->scselector($sc_id);
+        echo "</div>";//controls
+        echo "</div>";//control-group
+
+        echo "<div class=\"control-group\">";
+        echo "<label class=\"control-label\">Associated VO</label>";
+        echo "<div class=\"controls\">";
+        echo $this->voselector($vo_id);
+        echo "</div>";//controls
+        echo "</div>";//control-group
         ?>
 
         <div class="control-group">

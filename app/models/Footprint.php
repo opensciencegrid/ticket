@@ -20,7 +20,6 @@ class Footprint
         $this->description = "";
         $this->title = "no title";
         $this->meta = "";
-        $this->metadata = array();
         $this->resetCC();
         $this->resetAssignee();
         $this->ab_fields = array();
@@ -32,7 +31,7 @@ class Footprint
         $this->suppress_ccs = false;
 
         //process update flags
-        if($id === null) {
+        if(is_null($id)) {
             //insert
             $f = true; //insert everything by default
             if($auto_assign) {
@@ -49,6 +48,12 @@ class Footprint
         } else {
             //update
             $f = false; //don't update anything by default
+
+            //load current metadat
+            $data = new Data();
+            foreach($data->getAllMetadata($id) as $item) {
+                $this->metadata[$item->key] = $item->value;
+            }
         }
 
         //update flag - we will only send fields to FP that are true.
@@ -61,6 +66,70 @@ class Footprint
         $this->b_desc = $f;
         $this->b_contact = $f;
         $this->b_proj = $f;
+    }
+
+    public function setMetadataResourceID($resource_id) {
+        if(is_null($resource_id)) {
+            if(isset($this->metadata["ASSOCIATED_R_ID"])) {
+                //need to reset to null
+                $this->metadata["ASSOCIATED_R_ID"] = null;
+                $this->metadata["ASSOCIATED_R_NAME"] = null;
+                $this->metadata["ASSOCIATED_RG_ID"] = null;
+                $this->metadata["ASSOCIATED_RG_NAME"] = null;
+            } else {
+                //if not set yet, leave it not set
+            }
+        } else {
+            //set to new resource
+            $resource_model = new Resource();
+            $resource = $resource_model->fetchByID((int)$resource_id);
+            $resource_group_id = $resource->resource_group_id;
+            $resource_group_model = new ResourceGroup();
+            $resource_group = $resource_group_model->fetchByID($resource_group_id);
+
+            //set description destination vo, assignee
+            //$footprint->addMeta("Resource on which user is having this issue: ".$resource_name."($resource_id)\n");
+            $this->metadata["ASSOCIATED_R_ID"] = $resource_id;
+            $this->metadata["ASSOCIATED_R_NAME"] = $resource->name;
+            $this->metadata["ASSOCIATED_RG_ID"] = $resource_group_id;
+            $this->metadata["ASSOCIATED_RG_NAME"] = $resource_group->name;
+        }
+    }
+
+    public function setMetadataVOID($vo_id) {
+        if(is_null($vo_id)) {
+            if(isset($this->metadata["ASSOCIATED_VO_ID"])) {
+                //reset existing values to null
+                //TODO - not sure GOC-TX can handle metadata set to NULL..
+                $this->metadata["ASSOCIATED_VO_ID"] = null;
+                $this->metadata["ASSOCIATED_VO_NAME"] = null;
+            } else {
+                //if it's not currently set, then just leave it not set
+            }
+        } else {
+            $vo_model = new VO();
+            $vo = $vo_model->get((int)$vo_id);
+            $this->metadata["ASSOCIATED_VO_ID"] = $vo_id;
+            $this->metadata["ASSOCIATED_VO_NAME"] = $vo->name;
+        }
+    }
+
+    public function setMetadataSCID($sc_id) {
+        if(is_null($sc_id)) {
+            if(isset($this->metadata["SUPPORTING_SC_ID"])) {
+                //reset existing values to null
+                //TODO - not sure GOC-TX can handle metadata set to NULL..
+                $this->metadata["SUPPORTING_SC_ID"] = null;
+                $this->metadata["SUPPORTING_SC_NAME"] = null;
+            } else {
+                //if it's not currently set, then just leave it not set
+            }
+        } else {
+            $sc_model = new SC();
+            $sc = $sc_model->get((int)$sc_id);
+            $this->metadata["SUPPORTING_SC_ID"] = $sc_id;
+            $this->metadata["SUPPORTING_SC_NAME"] = $sc->name;
+        }
     }
 
     public function suppress_assignees() { $this->suppress_assignees = true; } //set to not send assignee emails
@@ -448,6 +517,7 @@ class Footprint
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));
+        slog(print_r($metadata, true));
 
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)
@@ -457,6 +527,7 @@ class Footprint
             foreach($this->metadata as $key=>$value) {
                 $this->id.="$key: $value\n";
             }
+            //slog($this->id);
         } else {
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
@@ -478,11 +549,16 @@ class Footprint
 
                 //reset ticket ID with new ID that we just got
                 $this->id = $newid;
-
                 $event->publish($msg, $this->id.".create");
+                //message("success", "Successfully opened a ticket ".$this->id);
+                message("success", 
+                    "<p>Thank you for submitting your ticket:".$this->id."</p>".
+                    "<p>If your issues needs action in less than <b>24 hours</b> as stated in the <a target=\"_blank\" href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by updating this ticket.</p>",
+                    true);
             } else {
                 //ticket updated
                 $event->publish($msg, $this->id.".update");
+                message("success", "Successfully updated ticket ".$this->id);
             }
 
             //if assignee notification was suppressed, then send GOC-TX trigger email ourselves
@@ -497,6 +573,7 @@ class Footprint
                 $data->setMetadata($this->id, $key, $value);
                 slog("Setmetadata : $this->id $key = $value");
             }
+
         }
 
         return $this->id;

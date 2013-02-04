@@ -202,14 +202,13 @@ class ViewerController extends BaseController
 
         //pull & validate the request 
         $good = true;
-
         $ticket_id = (int)$_REQUEST["id"];
-        $title = $_REQUEST["title"]; //TODO - validate?
+        $footprint = new Footprint($ticket_id);
 
-        //contact
-        $submit_name = $_REQUEST["submitter_name"];
-        $submit_email = $_REQUEST["submitter_email"];
-        $submit_phone = $_REQUEST["submitter_phone"];
+        $footprint->setTitle($_REQUEST["title"]); //TODO Validate
+        $footprint->setName($_REQUEST["submitter_name"]);//TODO validate
+        $footprint->setEmail($_REQUEST["submitter_email"]);//TODO email
+        $footprint->setOfficePhone($_REQUEST["submitter_phone"]);//TODO phone
 
         //consolidate assignee list
         $assignees = array();
@@ -230,13 +229,27 @@ class ViewerController extends BaseController
         $status = $_REQUEST["status"]; //TODO - validate?
         $type = $_REQUEST["ticket_type"]; //TODO - validate
 
-        //load current metadata
-        $metadata = array();
-        $data = new Data();
-        foreach($data->getAllMetadata($ticket_id) as $item) {
-            $metadata[$item->key] = $item->value;
+        if($_REQUEST["metadata_r"] != "") {
+            $footprint->setMetadataResourceID($_REQUEST["metadata_r"]);
+        } else {
+            //need to reset
+            $footprint->setMetadataResourceID(null);
         }
 
+        if($_REQUEST["metadata_vo"] != "") {
+            $footprint->setMetadataVOID($_REQUEST["metadata_vo"]);
+        } else {
+            //need to reset
+            $footprint->setMetadataVOID(null);
+        }
+
+        if($_REQUEST["metadata_sc"] != "") {
+            $footprint->setMetadataSCID($_REQUEST["metadata_sc"]);
+        } else {
+            //need to reset
+            $footprint->setMetadataSCID(null);
+        }
+/*
         //update metadata
         if($_REQUEST["metadata_r"] == null) {
             if(isset($metadata["ASSOCIATED_R_ID"])) {
@@ -260,7 +273,9 @@ class ViewerController extends BaseController
             $metadata["ASSOCIATED_RG_ID"] = $resource->resource_group_id;
             $metadata["ASSOCIATED_RG_NAME"] = $resource_group->name;
         }
+*/
 
+/*
         if($_REQUEST["metadata_vo"] == null) {
             if(isset($metadata["ASSOCIATED_VO_ID"])) {
                 //reset existing values to null
@@ -277,7 +292,9 @@ class ViewerController extends BaseController
             $metadata["ASSOCIATED_VO_ID"] = $vo_id;
             $metadata["ASSOCIATED_VO_NAME"] = $vo->name;
         }
+*/
 
+/*
         if($_REQUEST["metadata_sc"] == null) {
             if(isset($metadata["SUPPORTING_SC_ID"])) {
                 //reset existing values to null
@@ -294,77 +311,71 @@ class ViewerController extends BaseController
             $metadata["SUPPORTING_SC_ID"] = $sc_id;
             $metadata["SUPPORTING_SC_NAME"] = $sc->name;
         }
+*/
 
+        //set description & submitter
+        $agent = $this->getFPAgent(user()->getPersonName());
+        if($description != "") {
+            $footprint->addDescription($description);
+            if($agent === null) {
+                $footprint->addDescription("\n\nby ".user()->getDN());
+            }
+        }
+        if($agent !== null) {
+            $footprint->setSubmitter($agent);
+        }
+
+        //detail
+        $footprint->resetAssignee();
+        foreach($assignees as $assignee) {
+            $footprint->addAssignee($assignee);
+        }
+        $footprint->resetCC();
+        if(isset($ccs)) {
+            foreach($ccs as $cc) {
+                $cc = trim($cc);
+                if($cc != "") {
+                    $footprint->addCC($cc);
+                }
+            }
+        }
+        $footprint->setNextAction($next_action);
+        $footprint->setNextActionTime($nad);
+        $footprint->setPriority($priority);
+        $footprint->setStatus($status);
+        $footprint->setTicketType($type);
+
+        //set suppression
+        if(!isset($_REQUEST["notify_assignees"])) {
+            $footprint->suppress_assignees();
+        }
+        if(!isset($_REQUEST["notify_submitter"])) {
+            $footprint->suppress_submitter();
+        }
+        if(!isset($_REQUEST["notify_ccs"])) {
+            $footprint->suppress_ccs();
+        }
+
+        //finally..
         if(!$good) {
             //TODO - implement mechanism to allow re-editing
             echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
         } else {
-            //prepare and submit ticket update
-            $footprint = new Footprint($ticket_id);
-            $footprint->setTitle($title); 
-
-            $agent = $this->getFPAgent(user()->getPersonName());
-            if($description != "") {
-                $footprint->addDescription($description);
-                if($agent === null) {
-                    $footprint->addDescription("\n\nby ".user()->getDN());
+            try {
+                $mrid = $footprint->submit();
+                if(!config()->simulate && isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
+                    //do close
+                    $close = "?close=true";
+                    header("Location: ".fullbase()."/".$ticket_id.$close);
+                    exit;
+                } else {
+                    $this->view->mrid = $mrid;
+                    $this->render("success", null, true);
                 }
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
+                $this->render("failed", null, true);
             }
-            if($agent !== null) {
-                $footprint->setSubmitter($agent);
-            }
-
-            //contact
-            $footprint->setName($submit_name);
-            $footprint->setOfficePhone($submit_phone);
-            $footprint->setEmail($submit_email);
-            //$footprint->setOriginatingVO($submit_vo);
-
-            //detail
-            $footprint->resetAssignee();
-            foreach($assignees as $assignee) {
-                $footprint->addAssignee($assignee);
-            }
-            $footprint->resetCC();
-            if(isset($ccs)) {
-                foreach($ccs as $cc) {
-                    $cc = trim($cc);
-                    if($cc != "") {
-                        $footprint->addCC($cc);
-                    }
-                }
-            }
-            //$footprint->setDestinationVO($dest_vo);
-            $footprint->setNextAction($next_action);
-            $footprint->setNextActionTime($nad);
-            $footprint->setPriority($priority);
-            $footprint->setStatus($status);
-            $footprint->setTicketType($type);
-
-            //set suppression
-            if(!isset($_REQUEST["notify_assignees"])) {
-                $footprint->suppress_assignees();
-            }
-            if(!isset($_REQUEST["notify_submitter"])) {
-                $footprint->suppress_submitter();
-            }
-            if(!isset($_REQUEST["notify_ccs"])) {
-                $footprint->suppress_ccs();
-            }
-
-            //copy metadata
-            foreach($metadata as $key=>$value) {
-                $footprint->setMetadata($key, $value);
-            }
-        
-            $footprint->submit();
-            message("success", "Successfully updated ticket $ticket_id!");
-            $close = "";
-            if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
-                $close = "?close=true";
-            }
-            header("Location: ".fullbase()."/".$ticket_id.$close);
-            exit;
         }
         $this->render("none", null, true);
     }
@@ -413,7 +424,6 @@ class ViewerController extends BaseController
         }
 
         $footprint->submit();
-        message("success", "Successfully updated this ticket!");
         header("Location: ".fullbase()."/".$ticket_id);
         exit;//needed?
     }

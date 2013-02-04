@@ -77,10 +77,23 @@ class CustomController extends Zend_Controller_Action
         $status = $_REQUEST["status"]; //TODO - validate?
         $type = $_REQUEST["ticket_type"]; //TODO - validate
 
+        $footprint = new Footprint(null, false);
+        $footprint->setTitle($title); 
+
+        if($_REQUEST["metadata_r"] != "") {
+            $resource_id = (int)$_REQUEST["metadata_r"];
+            $footprint->setMetadataResourceID($resource_id);
+        }
+        if($_REQUEST["metadata_vo"] != "") {
+            $vo_id = (int)$_REQUEST["metadata_vo"];
+            $footprint->setMetadataVOID($vo_id);
+        }
+        if($_REQUEST["metadata_sc"] != "") {
+            $sc_id = (int)$_REQUEST["metadata_sc"];
+            $footprint->setMetadataSCID($sc_id);
+        }
+
         if($good) {
-            //prepare and submit ticket update
-            $footprint = new Footprint(null, false);
-            $footprint->setTitle($title); 
 
             if($description != "") {
                 $footprint->addDescription($description);
@@ -97,7 +110,6 @@ class CustomController extends Zend_Controller_Action
                 $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
             }
             $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
-
 
             //detail
             foreach($assignees as $assignee) {
@@ -120,11 +132,14 @@ class CustomController extends Zend_Controller_Action
             $footprint->setTicketType($type);
             //$footprint->setOriginatingTicketNumber($orig_ticket_id);
             //$footprint->setDestinationTicketNumber($dest_ticket_id);
-
-            $mrid = $footprint->submit();
-            message("success", "Successfully opened a ticket");
-            header("Location: ".fullbase()."/".$mrid);
-            exit;
+            try {
+                $mrid = $footprint->submit();
+                $this->view->mrid = $mrid;
+                $this->render("success", null, true);
+            } catch(exception $e) {
+                $this->sendErrorEmail($e);
+                $this->render("failed", null, true);
+            }
         } else {
             //send data back to form
             $this->view->title = $_REQUEST["title"];

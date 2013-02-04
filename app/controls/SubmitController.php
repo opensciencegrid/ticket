@@ -101,12 +101,15 @@ class SubmitController extends BaseController
             $footprints->addAssignee($sc->footprints_id);
         }
 
-        $footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
+        //$footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
         $footprints->addPrimaryAdminContact($resource_id);
+        $footprints->setMetadataResourceID($resource_id);
+        /*
         $footprints->setMetadata("ASSOCIATED_R_ID", $resource_id);
         $footprints->setMetadata("ASSOCIATED_R_NAME", $resource->name);
         $footprints->setMetadata("ASSOCIATED_RG_ID", $resource->resource_group_id);
         $footprints->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
+        */
     }
 
     private function processVO($footprints, $dirty_void)
@@ -117,8 +120,11 @@ class SubmitController extends BaseController
         $vo = $model->get($void);
         //$footprint->setDestinationVO($vo->footprints_id);
         $footprints->addMeta("VO on which user is having this issue: ".$vo->name."($vo->id)\n");
+        $footprints->setMetadataVOID($void);
+        /*
         $footprints->setMetadata("ASSOCIATED_VO_ID", $vo->id);
         $footprints->setMetadata("ASSOCIATED_VO_NAME", $vo->name);
+        */
         $footprints->addPrimaryVOAdminContact($vo->id);
 
         //lookup SC name
@@ -127,8 +133,11 @@ class SubmitController extends BaseController
         if(!$sc) {
             $footprints->addMeta("Failed to find active support center with id ".$vo->sc_id);
         } else {
+            $footprints->setMetadataSCID($sc->id);
+            /*
             $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
+            */
             $fpid = $sc->footprints_id;
             $footprints->addAssignee($fpid);
         }

@@ -46,40 +46,17 @@ class ResourceController extends BaseController
 
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
-            //$footprint->addDescription($form->getValue('detail'));//initsubmit
 
-            //lookup service center
-            $resource_id = $issue_element->getValue();
-            $rs_model = new ResourceSite();
-            $resource_model = new Resource();
-            $resource = $resource_model->fetchByID($resource_id);
-            $resource_name = $resource->name;
-            $resource_group_id = $resource->resource_group_id;
-            $resource_group_model = new ResourceGroup();
-            $resource_group = $resource_group_model->fetchByID($resource_group_id);
-
-            //set description destination vo, assignee
-            $footprint->addMeta("Resource on which user is having this issue: ".$resource_name."($resource_id)\n");
-            $footprint->setMetadata("ASSOCIATED_RG_ID", $resource_group_id);
-            $footprint->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
-            $footprint->setMetadata("ASSOCIATED_R_ID", $resource_id);
-            $footprint->setMetadata("ASSOCIATED_R_NAME", $resource_name);
+            $resource_id = (int)$issue_element->getValue();
+            $footprint->setMetadataResourceID($resource_id);
             $footprint->setTitle($form->getValue('title'));
 
             //set destination VO, primary admin, SC, etc..
             $admin = $_REQUEST["admin"];
             if($admin) {
                 //this is their own resource - maybe installation issue..
-                //$footprint->addMeta("User is the administator for this resource.\n");
-                //$footprint->setDestinationVO("MIS");
             } else {
-                /*
-                $void = $footprint->setDestinationVOFromResourceID($resource_id);
-                if($void) {
-                    $footprint->setMetadata("ASSOCIATED_VO_ID", $void);
-                }
-                */
-
+                $rs_model = new ResourceSite();
                 $sc_id = $rs_model->fetchSCID($resource_id);
                 if(!$sc_id) {
                     $scname = "OSG-GOC";
@@ -91,17 +68,7 @@ class ResourceController extends BaseController
                     $scname = $sc->footprints_id;
                     $footprint->setMetadata("SUPPORTING_SC_ID", $sc_id);
                 }
-
                 $footprint->addAssignee($scname);
-                /*
-                if($footprint->isValidFPSC($scname)) {
-                    $footprint->addAssignee($scname);
-                    $footprint->addMeta("Assigned support center: $scname which supports this resource\n");
-                } else {
-                    $footprint->addMeta("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
-                    elog("Couldn't add assignee $scname since it doesn't exist on FP yet.. (Please sync!)\n");
-                }
-                */
                 $footprint->addPrimaryAdminContact($resource_id);
             }
 
@@ -120,8 +87,7 @@ class ResourceController extends BaseController
                 }
             }
 
-            try
-            {
+            try {
                 $mrid = $footprint->submit();
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);

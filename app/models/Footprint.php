@@ -517,7 +517,7 @@ class Footprint
 
         slog("[submit] Footprint Ticket Web API invoked with following parameters -------------------");
         slog(print_r($params, true));
-        slog(print_r($metadata, true));
+        slog(print_r($this->metadata, true));
 
         if(config()->simulate) {
             //simulation doesn't submit the ticket - just dump the content out.. (and no id..)

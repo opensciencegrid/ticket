@@ -267,6 +267,20 @@ class RestController extends Zend_Controller_Action
             }
         }
 
+        //only update if assignee if provided
+        if(isset($_POST["assignee"])) {
+            $footprint->resetAssignee();
+            $omodel = new Override();
+            foreach(@$_POST["assignee"] as $assignee) {
+                $over = $omodel->apply($assignee);
+                if($over != $assignee) {
+                    $footprint->addMeta("Assignee $assignee was overriden by $over");
+                    $assignee = $over;
+                }
+                $footprint->addAssignee($assignee);
+            }
+        }
+
         $footprint->submit();
         //TODO - need to deal with error condition
         echo "<Result><Status>success</Status></Result>";

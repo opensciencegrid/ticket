@@ -363,15 +363,17 @@ class ViewerController extends BaseController
         } else {
             try {
                 $mrid = $footprint->submit();
-                if(!config()->simulate && isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
-                    //do close
-                    $close = "?close=true";
-                    header("Location: ".fullbase()."/".$ticket_id.$close);
-                    exit;
-                } else {
-                    $this->view->mrid = $mrid;
-                    $this->render("success", null, true);
-                }
+                if(!config()->simulate) {
+                    message("success", "Successfully updated ticket ".$mrid);
+                    if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
+                        //do close
+                        $close = "?close=true";
+                        header("Location: ".fullbase()."/".$ticket_id.$close);
+                        exit;
+                    }
+                } 
+                $this->view->mrid = $mrid;
+                $this->render("success", null, true);
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
                 $this->render("failed", null, true);
@@ -423,9 +425,14 @@ class ViewerController extends BaseController
             $footprint->suppress_ccs();
         }
 
-        $footprint->submit();
-        header("Location: ".fullbase()."/".$ticket_id);
-        exit;//needed?
+        $mrid = $footprint->submit();
+        if(!config()->simulate) {
+            message("success", "Successfully updated ticket ".$mrid);
+            //header("Location: ".fullbase()."/".$ticket_id);
+            //exit;//needed?
+        } 
+        $this->view->mrid = $mrid;
+        $this->render("success", null, true);
     }
  
 /*

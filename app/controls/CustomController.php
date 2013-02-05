@@ -134,6 +134,9 @@ class CustomController extends Zend_Controller_Action
             //$footprint->setDestinationTicketNumber($dest_ticket_id);
             try {
                 $mrid = $footprint->submit();
+                if(!config()->simulate) {
+                    message("success", "Successfully updated ticket ".$mrid);
+                }
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);
             } catch(exception $e) {

@@ -58,6 +58,12 @@ class SubmitController extends BaseController
             {
                 $mrid = $footprints->submit();
                 $this->view->mrid = $mrid;
+                if(!config()->simulate) {
+                    message("success", 
+                        "<p>Thank you for submitting your ticket:".$mrid."</p>".
+                        "<p>If your issues needs action in less than <b>24 hours</b> as stated in the <a target=\"_blank\" href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by updating this ticket.</p>",
+                        true);
+                }
                 $this->render("success", null, true);
             } catch(exception $e) {
                 $this->sendErrorEmail($e);

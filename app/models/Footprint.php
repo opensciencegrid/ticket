@@ -551,14 +551,9 @@ class Footprint
                 $this->id = $newid;
                 $event->publish($msg, $this->id.".create");
                 //message("success", "Successfully opened a ticket ".$this->id);
-                message("success", 
-                    "<p>Thank you for submitting your ticket:".$this->id."</p>".
-                    "<p>If your issues needs action in less than <b>24 hours</b> as stated in the <a target=\"_blank\" href=\"https://twiki.grid.iu.edu/bin/view/Operations/TicketExpectations\">Ticket Expectations</a>, please contact the GOC at +1-317-278-9699 or by updating this ticket.</p>",
-                    true);
             } else {
                 //ticket updated
                 $event->publish($msg, $this->id.".update");
-                message("success", "Successfully updated ticket ".$this->id);
             }
 
             //if assignee notification was suppressed, then send GOC-TX trigger email ourselves

@@ -218,8 +218,10 @@ class RestController extends Zend_Controller_Action
 
         //set ccs
         $footprint->resetCC();
-        foreach(@$_POST["cc"] as $cc) {
-            $footprint->addCC($cc);
+        if(isset($_POST["cc"])) {
+            foreach($_POST["cc"] as $cc) {
+                $footprint->addCC($cc);
+            }
         }
 
         //set assignee

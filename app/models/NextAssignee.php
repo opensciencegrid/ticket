@@ -17,7 +17,6 @@ class NextAssignee
 
         //construct list of possible assignee based on each hours
 
-/*
         if ($hour >= 8 and $hour < 13) {
             $members = array("echism", "kagross");
         } else if ($hour >= 13 and $hour < 17) {
@@ -27,7 +26,7 @@ class NextAssignee
         } else {
             $members = array("echism", "kagross");
         }
-*/
+/*
         if ($hour >= 8 and $hour < 13) {
             $members = array("kagross");
         } else if ($hour >= 13 and $hour < 17) {
@@ -37,6 +36,7 @@ class NextAssignee
         } else {
             $members = array("kagross");
         }
+*/
 
         //report the pool of possible staff
         $this->reason .= "possible assignees at this hour ($hour):";

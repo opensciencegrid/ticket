@@ -3,17 +3,7 @@
 
 date_default_timezone_set("UTC");
 
-function config() {
-    return array(
-        "fp_project"=>"114",//114 for dev //71 for prod
-        "fp_user"=>"goc",
-        "fp_pass"=>"5be1499a577add53307142asdaq2WSagsASDGa",
-        "data_host"=>"data-itb.goc",
-        "data_db"=>"gocticket",
-        "data_user"=>"ticket",
-        "data_pass"=>"qweasdzxc"
-    );
-}
+$config = require("config.php");
 
 function parse_fpstr($str)
 {
@@ -26,7 +16,7 @@ function parse_fpstr($str)
 }
 
 function load_fp($id, &$details) {
-    $config = config();
+    global $config;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //load detail from footprints
@@ -75,7 +65,7 @@ function load_fp($id, &$details) {
 }
 
 function load_meta($id, $db, &$details) {
-    $config = config();
+    global $config;
     $projid = $config["fp_project"];
 
     $result = mysql_query("SELECT * FROM metadata WHERE ticket_id = $id AND project_id = $projid");
@@ -132,7 +122,7 @@ function xmlentities($s)
 //get list of ticket ids that are recently updated
 //TODO - add ability specify "updated since" 
 function list_updated($lastrun_timestamp) {
-    $config = config();
+    global $config;
     $ids = array();
     try {
         $recent_date = date("Y-m-d G:i:s", $lastrun_timestamp); //24 hours
@@ -155,7 +145,7 @@ function list_updated($lastrun_timestamp) {
 }
 
 function connect_metadb() {
-    $config = config();
+    global $config;
     $db = mysql_connect($config["data_host"], $config["data_user"], $config["data_pass"]);
     mysql_select_db($config["data_db"], $db);
     return $db;

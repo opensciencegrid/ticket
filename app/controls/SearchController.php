@@ -168,7 +168,7 @@ class SearchController extends Zend_Controller_Action
         $ret = json_decode($ret_json);
 
         //process result
-        if(!is_null($ret)) {
+        if(isset($ret->spellcheck)) {
             $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
             //slog(print_r($ret->spellcheck->suggestions, true));
             $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
@@ -180,7 +180,8 @@ class SearchController extends Zend_Controller_Action
             }
             $this->view->suggests = $suggests;
         } else {
-            elog("no reply from $url");
+            elog("bad reply from $url");
+            elog($ret_json);
         }
 
         /*

@@ -10,16 +10,14 @@ width: 420px;
 </style>
 
 <div id="fileupload" style="width: 100%;">
-    <div class="well" style="padding: 10px;">
-        <table class="files"></table>
-        <label class="fileinput-button" style="position: relative; top: 6px;">
-            <a class="btn btn-small"><i class="icon-plus"></i>  Add Attachments</a>
-            <input style="display: none;" type="file" name="files[]" multiple>
-        </label>
-        <!--[if !IE]><!-->
-        <div style="float: right; color: gray; position: relative; top: -22px;">Drag &amp; Drop Attachments Here</div>
-        <!--<![endif]-->
-    </div>
+    <table class="files table table-condensed"></table>
+    <label class="fileinput-button" style="position: relative; top: 6px;">
+        <a class="btn btn-small"><i class="icon-plus"></i>  Add Attachments</a>
+        <input style="display: none;" type="file" name="files[]" multiple>
+    </label>
+    <!--[if !IE]><!-->
+    <div style="float: right; color: gray; position: relative; top: -22px;">Drag &amp; Drop Attachments Here</div>
+    <!--<![endif]-->
 </div>
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">

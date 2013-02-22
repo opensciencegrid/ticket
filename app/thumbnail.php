@@ -36,7 +36,7 @@ class thumbnailGenerator {
      */
     public function generate($sourceFilename, $maxWidth, $maxHeight) {
 
-        $size = getimagesize($sourceFilename); // 0 = width, 1 = height, 2 = type
+        $size = @getimagesize($sourceFilename); // 0 = width, 1 = height, 2 = type
 
         // check to make sure source image is in allowable format
         if(!in_array($size[2], $this->allowableTypes)) {

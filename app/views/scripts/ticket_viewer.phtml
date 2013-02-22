@@ -137,11 +137,10 @@ line-height: 18px;
     ?>
     <br>
 
-    <legend>Attachment</legend>
     <?php if(!user()->isGuest()) { 
         include("app/views/scripts/ticket_attachment.phtml");
     } else {
-        echo "<i class=\"icon-lock\"></i>";
+        include("app/views/scripts/ticket_attachment_ro.phtml");
     } ?>
 
 </div><!--span-->

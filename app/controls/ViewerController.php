@@ -559,12 +559,10 @@ class ViewerController extends BaseController
     }
 
     public function uploadattachmentAction() {
-        if(user()->isGuest()) {
-            if(!user()->isGOCMachine()) {
-                elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
-                $this->render("error/access", null, true); 
-                return;
-            }
+        if(user()->isGuest() && !user()->isGOCMachine()) {
+            elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
+            $this->render("error/access", null, true); 
+            return;
         }
         
         $id = (int)$_REQUEST["id"];

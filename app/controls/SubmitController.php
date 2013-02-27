@@ -17,7 +17,20 @@ class SubmitController extends BaseController
     public function submitAction()
     {
         $form = $this->getForm();
+
         if($form->isValid($_POST)) {
+
+            //don't allow guest to submit spam
+            if(user()->isguest()) {
+                $dirty_detail = $form->getValue("detail");
+                if($this->isspam($dirty_detail)) {
+                    message("error", "Sorry, please try different captcha.");
+                    $this->view->form = $form;
+                    $this->render("index");
+                    return;
+                }
+            }
+
             $footprints = $this->initSubmit($form);
             if(isset($_POST["resource_issue_check"]) && isset($_POST["resource"])) {
                 //grab first key
@@ -40,19 +53,7 @@ class SubmitController extends BaseController
             if(isset($_POST["campusvorequest_issue_check"])) {
                 $this->processCampusVO($footprints);
             }
-            //$footprints->addDescription($form->getValue('detail'));//done by init
             $footprints->setTitle($form->getValue('title'));
-
-/* done by init
-            //settting submitter
-            $agent = $this->getFPAgent(user()->getPersonName());
-            if($agent === null) {
-                $footprints->addDescription("\n\nby ".user()->getDN());
-            }
-            if($agent !== null) {
-                $footprints->setSubmitter($agent);
-            }
-*/
 
             try
             {
@@ -70,10 +71,27 @@ class SubmitController extends BaseController
                 $this->render("failed", null, true);
             }
         } else {
-            $this->view->errors = "Please correct following issues.";
+            message("error", "Please correct following issues.");
             $this->view->form = $form;
             $this->render("index");
         }
+    }
+
+    //very basic spam checker --- just look for blacklisted words, and if found, rejects it
+    private function isspam($text) {
+        $words = str_word_count($text, 1);
+        $spam_words = config()->spam_keywords;
+        foreach($words as $word) {
+            $word = strtolower($word);
+            slog("checking $word");
+            if(in_array($word, $spam_words)) {
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $host  = gethostbyaddr($ip);
+                elog("found spam word: $word -- submitted by $ip($host)");
+                return true;
+            }
+        }
+        return false;
     }
 
     private function processResource($footprints, $dirty_rid)
@@ -179,7 +197,6 @@ class SubmitController extends BaseController
         if($down == "true" && $bdiiserver == "is-osg") {
             $footprints->addMeta("Opening ticket with CRITICAL priority\n");
             $footprints->setPriority(1); //set it to critical;
-            //$footprints->setTicketType("Unscheduled__bOutage");
         }
 
         $footprints->addAssignee("steige", true); //clear list

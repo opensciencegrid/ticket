@@ -536,6 +536,7 @@ class Footprint
             $event = new EventPublisher();
             $msg = "<ticket>";
             $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
+            $msg .= "<title>".htmlspecialchars($this->title)."</title>";
             $msg .= "<description>".htmlspecialchars($this->description)."</description>";
             $msg .= "<status>".htmlspecialchars($this->status)."</status>";
             $msg .= "</ticket>";

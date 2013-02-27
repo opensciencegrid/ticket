@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once("lib/MyFormDecoratorCaptcha.php");
 
@@ -91,7 +91,6 @@ class BaseController extends Zend_Controller_Action
             $phone->setLabel("Phone Number");
             $phone->addValidator('regex', false, validator::$phone);
             $phone->setRequired(true);
-            //$phone->setDescription("(Format: 123-123-1234)");
             $phone->setValue(user()->getPersonPhone());
             $form->addElement($phone);
 
@@ -130,22 +129,6 @@ class BaseController extends Zend_Controller_Action
 
         if(user()->isguest()) {
             //guest must answer captcha
-            /*
-            $validatorNotEmpty = new Zend_Validate_NotEmpty();
-            $validatorNotEmpty->setMessage('This field is required, you cannot leave it empty');
-            $captcha_identical = new Zend_Validate_Identical($this->getCaptchaCode());
-            $captcha_identical->setMessage("Captcha code is incorrect.");
-            $captcha = new Zend_Form_Element_Text('captcha');
-            $captcha->setLabel('Type the characters you see in the picture above')
-                ->addValidator($captcha_identical)
-                ->addValidator($validatorNotEmpty, true)->setRequired(true);
-            $captchaDecorator = new My_Form_Decorator_Captcha();
-            $captchaDecorator->setTag('div');
-            $captcha->addDecorator($captchaDecorator);
-            $form->addElement($captcha);
-            */
-
-            // create captcha
             $adapter = new Zend_Captcha_ReCaptcha(); 
             $params = array();
             if(isset($_SERVER["HTTPS"])) {
@@ -188,10 +171,8 @@ class BaseController extends Zend_Controller_Action
             $footprint->setMetadata("SUBMITTER_NAME", $name);
             if(user()->getDN() !== null) {
                 $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
-
             }
             $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
-
             $footprint->addDescription($form->getValue("detail"));
             if(!user()->isguest()) {
                 //set submitter to the ticket submitter's name ONLY IF the user is registered at FP - otherwise FP throws up
@@ -220,21 +201,6 @@ class BaseController extends Zend_Controller_Action
                     }
                 }
             }
-
-            /*
-            $void = $form->getValue('vo_id');
-            if($void == -1) {
-                $footprint->addMeta("Submitter doesn't know the VO he/she belongs.\n");
-            } else {
-                $vo_model = new VO();
-                $info = $vo_model->get($void);
-                if($info->footprints_id === null) {
-                    $footprint->addMeta("Submitter's VO is ".$info->name. " but its footprints_id is not set in OIM. Please set it.");
-                } else {
-                    $footprint->setOriginatingVO($info->footprints_id);
-                }
-            }
-            */
         }
 
         return $footprint;
@@ -243,12 +209,10 @@ class BaseController extends Zend_Controller_Action
     protected function dumprecord($rec)
     {
         $out = "";
-
         $vars = get_object_vars($rec);
         foreach($vars as $key=>$value) {
             $out .= "[$key]\n\t$value\n";
         }
-
         return $out;
     }
 }

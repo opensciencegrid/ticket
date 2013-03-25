@@ -87,19 +87,31 @@ class SearchController extends Zend_Controller_Action
                     case "SUPPORTING_SC_ID":
                         foreach($frecs as $id=>&$frec) {
                             $sc = $scmodel->get($id);
-                            $frec["label"] = $sc->name;
+                            if(is_null($sc)) {
+                                $frec["label"] = "(unknown sc:$id)";
+                            } else {
+                                $frec["label"] = $sc->name;
+                            }
                         }
                         break;
                     case "ASSOCIATED_VO_ID":
                         foreach($frecs as $id=>&$frec) {
                             $vo = $vomodel->get($id);
-                            $frec["label"] = $vo->name;
+                            if(is_null($vo)) {
+                                $frec["label"] = "(unknown vo:$id)";
+                            } else {
+                                $frec["label"] = $vo->name;
+                            }
                         }
                         break;
                     case "ASSOCIATED_RG_ID":
                         foreach($frecs as $id=>&$frec) {
                             $rg = $rgmodel->fetchByID($id);
-                            $frec["label"] = $rg->name;
+                            if(is_null($rg)) {
+                                $frec["label"] = "(unknown rg:$id)";
+                            } else {
+                                $frec["label"] = $rg->name;
+                            }
                         }
                         break;
                     }

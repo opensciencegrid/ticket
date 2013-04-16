@@ -43,6 +43,7 @@ try {
     cert_authenticate();
     if(!date_default_timezone_set(user()->getTimeZone())) {
         message("WARNING", "Your timezone '".user()->getTimeZone()."' is not valid. Please try updating to location based timezone such as 'America/Chicago' via OIM profile. Reverting to UTC.");
+        elog(user()->dn. " who is using ".user()->getTimeZone()." was asked to update to location based timezone");
     }
     error_reporting(E_ALL | E_STRICT);
 

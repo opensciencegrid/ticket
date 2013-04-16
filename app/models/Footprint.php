@@ -24,6 +24,7 @@ class Footprint
         $this->resetAssignee();
         $this->ab_fields = array();
         $this->project_fields = array();
+        $this->metadata = array();
 
         //notification suppression
         $this->suppress_assignees = false;

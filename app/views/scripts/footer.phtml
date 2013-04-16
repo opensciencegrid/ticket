@@ -14,10 +14,12 @@ if(user()->isGuest()) {
 echo "</b></p>";
 
 echo "<p>".config()->app_name." Version ".config()->version;
+/* -- produces annoying svn: warning
 if(config()->debug) {
     exec("svn info | grep \"Revision:\" |  awk '{print $2}'", $out);
     echo " (Rev. ".$out[0].")";
 }
+*/
 ?>
  | <a href="<?php echo $ticket_url?>/submit?app_issue_check=on&app_issue_type=goc&app_goc_url=<?=urlencode(fullurl())?>">Report Bugs</a>
  | <a href="https://twiki.grid.iu.edu/bin/view/Operations/IUPrivacyPolicy">Privacy Policy</a>

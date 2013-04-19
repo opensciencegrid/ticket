@@ -13,7 +13,8 @@ class ViewerController extends BaseController
     {
         $dirty_id = trim($this->getRequest()->getParam("id"));
         if(empty($dirty_id)) {
-            $this->render("noid");
+            //$this->render("noid");
+            $this->_redirect("/search?q=");//show all opened
             return;
         }
 

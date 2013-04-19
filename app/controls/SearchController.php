@@ -22,19 +22,37 @@ class SearchController extends Zend_Controller_Action
         );
         $this->view->facet_fields = $facet_fields;
 
-        if(isset($_REQUEST["q"]) && $_REQUEST["q"] != "") {
-            $q = $this->clean($_REQUEST["q"]);
+        if(isset($_REQUEST["q"])) {
+            $url = $this->host."/select?wt=json";
+            if($_REQUEST["q"] != "") {
+                $q = $this->clean($_REQUEST["q"]);
+                $url .= "&q=".urlencode("{!lucene q.op=AND}".$q);
+            } else {
+                //all tickets
+                $this->view->menu_selected = "view";
+                $this->view->submenu_selected = "alltickets";
+                $url .= "&q=*";
+                //message("info", "Displaying all tickets");
+            }
+
+            //if not specified solr will sort result by score 
+            if(isset($_REQUEST["sort"])) {
+                switch($_REQUEST["sort"]) {
+                case "id": $url .= "&sort=_docid_%20desc";break;
+                }
+            }
 
             //apply facet query
             $fq = "";
             foreach($facet_fields as $key=>$prop) {
-                if(isset($_REQUEST[$key])) {
+                if(isset($_REQUEST[$key]) && $_REQUEST[$key] != "") {
                     if(@$prop["type"] == "string") {
                         $fq .= " +$key:\"".$_REQUEST[$key]."\"";
                     } else {
                         //int by default
                         $fq .= " +$key:".$_REQUEST[$key];
                     }
+                    $url .= "&fq=".urlencode($fq);
                 }
                 /*
                 if(isset($_REQUEST["priority"])) {
@@ -50,15 +68,18 @@ class SearchController extends Zend_Controller_Action
             $start = 0;
             if(isset($_REQUEST["s"])) {
                 $start = (int)$_REQUEST["s"];
+                $url .= "&start=$start";
             }
-            $url = $this->host."/select?q=".urlencode("{!lucene q.op=AND}".$q)."&wt=json&fq=".urlencode($fq)."&start=$start";
-            slog($url);
+            //$url = $this->host."/select?q=$q&wt=json&fq=$fq&start=$start";
+            if(config()->debug) {
+                message("debug", $url);
+            }
             $ret_json = file_get_contents($url);
             $this->view->result = json_decode($ret_json);
             $this->view->query = $q;//pass back to form
 
             //paging
-            $this->view->page_items = 10;
+            $this->view->page_items = 25; //TODO - move to config?
             $this->view->page_current = (int)($start/$this->view->page_items);
             $this->view->page_num = ceil($this->view->result->response->numFound / $this->view->page_items);
             slog($this->view->page_current);
@@ -173,7 +194,6 @@ class SearchController extends Zend_Controller_Action
         $limit = (int)$_REQUEST["limit"];
         $timestamp = $_REQUEST["timestamp"];//what for?
 
-        //$url = "$host/select?rows=0&q=*:*&facet=true&facet.field=text_auto&facet.mincount=1&wt=json&facet.prefix=$q"; //do facet search on solr
         $url = $this->host."/suggest?q=".urlencode($q)."&wt=json"; //use /suggest
 
         $ret_json = file_get_contents($url);

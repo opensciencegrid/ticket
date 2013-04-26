@@ -89,15 +89,17 @@ if(isset($this->result)) {
         echo "<span class=\"pull-right muted\">Status: $status</span>";
         echo "<br>";
 
-        $tokens = explode(" ", $this->query);
         
         //find first description that has first token
         $found_id = 0; 
-        $tokenz = strtolower($tokens[0]);
-        foreach($descs as $id=>$desc) {
-            if(strstr(strtolower($desc), $tokenz) !== FALSE) {
-                $found_id = $id;
-                break;
+        if($this->query != "") {
+            $tokens = explode(" ", $this->query);
+            $tokenz = strtolower($tokens[0]);
+            foreach($descs as $id=>$desc) {
+                if(strstr(strtolower($desc), $tokenz) !== FALSE) {
+                    $found_id = $id;
+                    break;
+                }
             }
         }
         echo "<pre>";

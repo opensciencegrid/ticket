@@ -8,7 +8,6 @@ function parseValue(value) {
     return obj;
 }
 
-
 $(function() {
     //bootstrap-2.0.4 stuff
     $(".alert-message").alert();
@@ -19,16 +18,6 @@ $(function() {
     //activate menu that user is currently on
     $("#menu_<?php echo $this->menu_selected?>").addClass("active"); 
     $("#submenu_<?php echo $this->submenu_selected?>").addClass("active"); 
-
-    /*
-    <?php
-    $front = Zend_Controller_Front::getInstance();
-    $controllerName = $front->getRequest()->getControllerName();
-    ?>
-    $("#menu_<?php echo $controllerName?>").addClass("active"); 
-    */
-
-    
 
     //translate zend validation error message to bootstrap
     $(".errors").addClass("alert").addClass("alert-error");
@@ -59,6 +48,15 @@ $(function() {
 });
 </script>
 
-  </body>
-</html>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("<?=config()->urchin_account?>");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
 
+</body>

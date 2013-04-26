@@ -254,13 +254,13 @@ class SubmitController extends BaseController
             $sc_model = new SC;
             $sc = $sc_model->get($info->sc_id);
             $fpid = $sc->footprints_id;
+            $footprints->addAssignee($fpid);
 
             $footprints->setMetadata("ASSOCIATED_VO_ID", $void);
             $footprints->setMetadata("ASSOCIATED_VO_NAME", $info->name);
             $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
             $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
             $footprints->addMeta("Submitter is requesting membership to VO:$info->name which is supported by SC:$sc->name\n");
-            $footprints->addAssignee($fpid);
         }
     }
 
@@ -269,9 +269,15 @@ class SubmitController extends BaseController
             $footprints->addMeta("Submitter didn't specify the name of new campus grid VO");
         } else {
             $footprints->addMeta("Requested VO NAME: ".$_POST["campusvorequest_name"]);
-            $footprints->addCC("dweitzel@cse.unl.edu");
-            $footprints->addCC("fraser@anl.gov");
         }
+
+        $footprints->addCC("dweitzel@cse.unl.edu");
+        $footprints->addCC("fraser@anl.gov");
+
+        $sc_model = new SC;
+        $sc = $sc_model->get(config()->campusgrid_sc_id);
+        $fpid = $sc->footprints_id;
+        $footprints->addAssignee($fpid);
     }
 
     private function getForm() {

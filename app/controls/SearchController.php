@@ -70,7 +70,9 @@ class SearchController extends Zend_Controller_Action
                 $start = (int)$_REQUEST["s"];
                 $url .= "&start=$start";
             }
-            //$url = $this->host."/select?q=$q&wt=json&fq=$fq&start=$start";
+            $this->view->page_items = 25; //TODO - move to config?
+            $url .= "&rows=".$this->view->page_items;
+
             if(config()->debug) {
                 message("debug", $url);
             }
@@ -79,10 +81,8 @@ class SearchController extends Zend_Controller_Action
             $this->view->query = $q;//pass back to form
 
             //paging
-            $this->view->page_items = 25; //TODO - move to config?
             $this->view->page_current = (int)($start/$this->view->page_items);
             $this->view->page_num = ceil($this->view->result->response->numFound / $this->view->page_items);
-            slog($this->view->page_current);
 
             //load oim stuff
             $scmodel = new SC();

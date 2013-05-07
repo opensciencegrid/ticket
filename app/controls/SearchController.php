@@ -64,25 +64,29 @@ class SearchController extends Zend_Controller_Action
                 */
             }
 
+            $this->view->page_items = 25; //TODO - move to config?
+
             //do search
             $start = 0;
             if(isset($_REQUEST["s"])) {
                 $start = (int)$_REQUEST["s"];
                 $url .= "&start=$start";
             }
+	    $url .= "&rows=".$this->view->page_items;
+
             //$url = $this->host."/select?q=$q&wt=json&fq=$fq&start=$start";
             if(config()->debug) {
                 message("debug", $url);
             }
+
             $ret_json = file_get_contents($url);
             $this->view->result = json_decode($ret_json);
             $this->view->query = $q;//pass back to form
 
             //paging
-            $this->view->page_items = 25; //TODO - move to config?
             $this->view->page_current = (int)($start/$this->view->page_items);
             $this->view->page_num = ceil($this->view->result->response->numFound / $this->view->page_items);
-            slog($this->view->page_current);
+
 
             //load oim stuff
             $scmodel = new SC();

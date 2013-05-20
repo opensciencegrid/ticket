@@ -5,7 +5,7 @@ class SearchController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "search";
-        $this->host="http://localhost:8983/solr/collection1";//TODO - make it configurable
+        //$this->host="http://localhost:8983/solr/collection1";//TODO - make it configurable
     }    
 
     public function indexAction()
@@ -23,7 +23,7 @@ class SearchController extends Zend_Controller_Action
         $this->view->facet_fields = $facet_fields;
 
         if(isset($_REQUEST["q"])) {
-            $url = $this->host."/select?wt=json";
+            $url = config()->solr_host."/select?wt=json";
             if($_REQUEST["q"] != "") {
                 $q = $this->clean($_REQUEST["q"]);
                 $url .= "&q=".urlencode("{!lucene q.op=AND}".$q);
@@ -54,14 +54,6 @@ class SearchController extends Zend_Controller_Action
                     }
                     $url .= "&fq=".urlencode($fq);
                 }
-                /*
-                if(isset($_REQUEST["priority"])) {
-                    $fq .= " +priority:".$_REQUEST["priority"];
-                }
-                if(isset($_REQUEST["assignees"])) {
-                    $fq .= " +assignees:".$_REQUEST["assignees"];
-                }
-                */
             }
 
             //do search
@@ -78,7 +70,7 @@ class SearchController extends Zend_Controller_Action
             }
             $ret_json = file_get_contents($url);
             $this->view->result = json_decode($ret_json);
-            $this->view->query = $q;//pass back to form
+            $this->view->query = $q; //pass back to form
 
             //paging
             $this->view->page_current = (int)($start/$this->view->page_items);
@@ -194,7 +186,7 @@ class SearchController extends Zend_Controller_Action
         $limit = (int)$_REQUEST["limit"];
         $timestamp = $_REQUEST["timestamp"];//what for?
 
-        $url = $this->host."/suggest?q=".urlencode($q)."&wt=json"; //use /suggest
+        $url = config()->solr_host."/suggest?q=".urlencode($q)."&wt=json"; //use /suggest
 
         $ret_json = file_get_contents($url);
         $ret = json_decode($ret_json);

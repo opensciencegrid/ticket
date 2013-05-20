@@ -48,6 +48,7 @@ class Data
         if($value === null) {
             $value = "NULL";
         } else {
+	    $value = mysql_real_escape_string($value);
             $value = "'$value'";
         }
 
@@ -62,7 +63,7 @@ class Data
 
     //return list of matching key/value grouped by ticket id
     public function searchMetadataByValue($value) {
-        $value = addslashes($value);
+	$value = mysql_real_escape_string($value);
         $tokens = explode(" ", $value);
         $where = "";
         $first = true;

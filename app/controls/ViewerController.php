@@ -386,7 +386,7 @@ class ViewerController extends BaseController
     public function updatebasicAction()
     {
         if(user()->isGuest()) {
-            throw new AuthException();
+            throw new AuthException("guest can't update ticket");
         } 
         $ticket_id = (int)$_REQUEST["id"];
         $footprint = new Footprint($ticket_id);

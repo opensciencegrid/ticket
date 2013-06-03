@@ -5,7 +5,6 @@ class SearchController extends Zend_Controller_Action
     public function init()
     {
         $this->view->submenu_selected = "search";
-        //$this->host="http://localhost:8983/solr/collection1";//TODO - make it configurable
     }    
 
     public function indexAction()
@@ -17,15 +16,14 @@ class SearchController extends Zend_Controller_Action
             "SUPPORTING_SC_ID"=>array("name"=>"Support Center"),
             "ASSOCIATED_VO_ID"=>array("name"=>"Virtual Organization"),
             "ASSOCIATED_RG_ID"=>array("name"=>"Resource Group"),
-            //"ASSOCIATED_R_ID"=>array("name"=>"Resource"),
             "SUBMITTER_NAME"=>array("name"=>"Submitter", "type"=>"string")
         );
         $this->view->facet_fields = $facet_fields;
 
         if(isset($_REQUEST["q"])) {
             $url = config()->solr_host."/select?wt=json";
+            $q = $this->clean($_REQUEST["q"]);
             if($_REQUEST["q"] != "") {
-                $q = $this->clean($_REQUEST["q"]);
                 $url .= "&q=".urlencode("{!lucene q.op=AND}".$q);
             } else {
                 //all tickets

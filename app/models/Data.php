@@ -64,7 +64,7 @@ class Data
 
     //return list of matching key/value grouped by ticket id
     public function searchMetadataByValue($value) {
-        $value = mysql_real_escape_string($value); //this required active mysql connection
+        //$value = mysql_real_escape_string($value); //this required active mysql connection
         $value = addslashes($value);
         $tokens = explode(" ", $value);
         $where = "";

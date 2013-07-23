@@ -159,7 +159,13 @@ echo "</div>";
         ?>
         <a class="btn btn-small" href="<?=$flip_url?>"><i class="<?=$flip_button?>"></i> Sort</a>
 
-        <?
+        <?php
+        if($this->editable) {
+            echo "<button class=\"btn btn-small\" onclick=\"submitspam(".$this->ticket_id.");\"><i class=\"\"></i> Submit Spam</button>";
+        }
+        ?>
+
+        <?php
         $expand_all = false; 
         if(isset($_REQUEST["expandall"])) {
             if($_REQUEST["expandall"] == "true") {
@@ -181,7 +187,7 @@ echo "</div>";
     </div><!--btn-toolbar-->
     </legend>
 
-    <?
+    <?php
     foreach($this->descs as $time=>$desc)
     {
         $by = $desc["by"];
@@ -316,6 +322,14 @@ function reset_anchor() {
         $("a[name='"+anchor+"']").parents(".update_description").addClass("selected");
     }
 }
+function submitspam(ticket_id) {
+    myret = confirm("Would you like to close this ticket as a security ticket, and submit the ticket content to akismet?");
+    if(myret == true) {
+        $.ajax("viewer/processspam?id="+ticket_id).done(function() {
+            window.location.reload();
+        });
+    }
+}
 $(function() {
     reset_anchor();
     var ADDITIONAL_COOKIE_NAME = 'gocticket';
@@ -356,6 +370,8 @@ $(function() {
         }
     });
 });
+
+
 
 </script>
 <?php echo $this->render("pagefooter.phtml", true);?>

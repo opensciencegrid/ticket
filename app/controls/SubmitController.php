@@ -23,12 +23,35 @@ class SubmitController extends BaseController
             //don't allow guest to submit spam
             if(user()->isguest()) {
                 $dirty_detail = $form->getValue("detail");
+                $akismet = new Zend_Service_Akismet(config()->akismet_key, fullbase());
+                if ($akismet->verifyKey()) {
+                    $data = array(
+                        'user_ip'              => $_SERVER["REMOTE_ADDR"],
+                        'user_agent'           => $_SERVER['HTTP_USER_AGENT'],
+                        'comment_type'         => 'comment',
+                        'comment_author'       => $form->getValue("name"),
+                        'comment_author_email' => $form->getValue('email'),
+                        'comment_content'      => $form->getValue("detail")
+                    );
+                    if ($akismet->isSpam($data)) {
+                        elog("spam detected");
+                        elog(print_r($data, true));
+                        message("error", "Sorry, please try different captcha.");
+                        $this->view->form = $form;
+                        $this->render("index");
+                        return;
+                    }
+                } else {
+                    elog("invalid akismet key... not performing spam check");
+                }
+                /*
                 if($this->isspam($dirty_detail)) {
                     message("error", "Sorry, please try different captcha.");
                     $this->view->form = $form;
                     $this->render("index");
                     return;
                 }
+                */
             }
 
             $footprints = $this->initSubmit($form);
@@ -55,8 +78,7 @@ class SubmitController extends BaseController
             }
             $footprints->setTitle($form->getValue('title'));
 
-            try
-            {
+            try {
                 $mrid = $footprints->submit();
                 $this->view->mrid = $mrid;
                 if(!config()->simulate) {
@@ -77,6 +99,7 @@ class SubmitController extends BaseController
         }
     }
 
+    /* replaced by akismet
     //very basic spam checker --- just look for blacklisted words, and if found, rejects it
     private function isspam($text) {
         $words = str_word_count($text, 1);
@@ -93,6 +116,7 @@ class SubmitController extends BaseController
         }
         return false;
     }
+    */
 
     private function processResource($footprints, $dirty_rid)
     {

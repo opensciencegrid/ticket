@@ -3,6 +3,7 @@
 //this class handles various ajax request for ticket update
 class UpdateController extends Zend_Controller_Action 
 { 
+    //TODO - is this really used still - instead of ticke/update?
     public function statusAction()
     {
         //only goc users are allowed
@@ -31,9 +32,9 @@ class UpdateController extends Zend_Controller_Action
         } else {
             $mrid = $footprint->submit();
             if($mrid == $ticket_id) {
-                echo "Status Updated successfully to $status";
+                slog("Status Updated successfully to $status");
             } else {
-                echo "Update Failed";
+                slog("Update Failed");
             }
         }
         $this->render("none", null, true);

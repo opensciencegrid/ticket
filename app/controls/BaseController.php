@@ -169,6 +169,8 @@ class BaseController extends Zend_Controller_Action
             $name = $form->getValue('name');
             $footprint->setName($name);
             $footprint->setMetadata("SUBMITTER_NAME", $name);
+            $footprint->setMetadata("SUBMITTER_IP", $_SERVER["REMOTE_ADDR"]);
+            $footprint->setMetadata("SUBMITTER_AGENT", $_SERVER["HTTP_USER_AGENT"]);
             if(user()->getDN() !== null) {
                 $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
             }

@@ -193,7 +193,7 @@ class ViewerController extends BaseController
 
         $model = new Schema();
         $descs = $model->getquickdesc();
-        echo $descs[$dirty_id];
+        echo $descs[$dirty_id]; 
         $this->render("none", null, true);
     }
 
@@ -250,69 +250,6 @@ class ViewerController extends BaseController
             //need to reset
             $footprint->setMetadataSCID(null);
         }
-/*
-        //update metadata
-        if($_REQUEST["metadata_r"] == null) {
-            if(isset($metadata["ASSOCIATED_R_ID"])) {
-                //reset existing values to null
-                //TODO - not sure GOC-TX can handle metadata set to NULL..
-                $metadata["ASSOCIATED_R_ID"] = null;
-                $metadata["ASSOCIATED_R_NAME"] = null;
-                $metadata["ASSOCIATED_RG_ID"] = null;
-                $metadata["ASSOCIATED_RG_NAME"] = null;
-            } else {
-                //if it's not currently set, then just leave it not set
-            }
-        } else {
-            $resource_id = (int)$_REQUEST["metadata_r"];
-            $resource_model = new Resource();
-            $resource_group_model = new ResourceGroup();
-            $resource = $resource_model->fetchByID($resource_id);
-            $resource_group = $resource_group_model->fetchByID($resource->resource_group_id);
-            $metadata["ASSOCIATED_R_ID"] = $resource_id;
-            $metadata["ASSOCIATED_R_NAME"] = $resource->name;
-            $metadata["ASSOCIATED_RG_ID"] = $resource->resource_group_id;
-            $metadata["ASSOCIATED_RG_NAME"] = $resource_group->name;
-        }
-*/
-
-/*
-        if($_REQUEST["metadata_vo"] == null) {
-            if(isset($metadata["ASSOCIATED_VO_ID"])) {
-                //reset existing values to null
-                //TODO - not sure GOC-TX can handle metadata set to NULL..
-                $metadata["ASSOCIATED_VO_ID"] = null;
-                $metadata["ASSOCIATED_VO_NAME"] = null;
-            } else {
-                //if it's not currently set, then just leave it not set
-            }
-        } else {
-            $vo_id = (int)$_REQUEST["metadata_vo"];
-            $vo_model = new VO();
-            $vo = $vo_model->get($vo_id);
-            $metadata["ASSOCIATED_VO_ID"] = $vo_id;
-            $metadata["ASSOCIATED_VO_NAME"] = $vo->name;
-        }
-*/
-
-/*
-        if($_REQUEST["metadata_sc"] == null) {
-            if(isset($metadata["SUPPORTING_SC_ID"])) {
-                //reset existing values to null
-                //TODO - not sure GOC-TX can handle metadata set to NULL..
-                $metadata["SUPPORTING_SC_ID"] = null;
-                $metadata["SUPPORTING_SC_NAME"] = null;
-            } else {
-                //if it's not currently set, then just leave it not set
-            }
-        } else {
-            $sc_id = (int)$_REQUEST["metadata_sc"];
-            $sc_model = new SC();
-            $sc = $sc_model->get($sc_id);
-            $metadata["SUPPORTING_SC_ID"] = $sc_id;
-            $metadata["SUPPORTING_SC_NAME"] = $sc->name;
-        }
-*/
 
         //set description & submitter
         $agent = $this->getFPAgent(user()->getPersonName());
@@ -383,6 +320,65 @@ class ViewerController extends BaseController
         $this->render("none", null, true);
     }
 
+    public function processspamAction() {
+        user()->check("update");
+
+        $ticket_id = (int)$_REQUEST["id"];
+
+        //submit to akismet
+        $model = new Tickets();
+        $detail = $model->getDetail($ticket_id);
+        $descs = $this->parse_descs($detail);
+        $first = end($descs);
+
+        //strip last line (like.. by Soichi Hayashi (guest)) - assuming we don't spam filter ticket submitte by user
+        $content_lines = explode("\n", $first["content"]);
+        array_pop($content_lines);
+        $content = implode("\n", $content_lines);
+
+        $model = new Data();
+        $metadata = $model->getAllMetadata($ticket_id);
+        $sip = null;
+        $sagent  = null;
+        foreach($metadata as $entry) {
+            if($entry->key == "SUBMITTER_IP") $sip = $entry->value;
+            if($entry->key == "SUBMITTER_AGENT") $sagent = $entry->value;
+        }
+        
+        $data = array(
+            'user_ip'              => $sip,
+            'user_agent'           => $sagent,
+            'comment_type'         => 'comment',
+            'comment_author'       => $detail->First__bName." ".$detail->Last__bName, 
+            'comment_author_email' => $detail->Email__baddress,
+            'comment_content'      => trim($content)
+        );
+        elog(print_r($data, true));
+        if(is_null($sip)) {
+            elog("can't spam submit to akismet without ip/agent");
+        } else { 
+            $akismet = new Zend_Service_Akismet(config()->akismet_key, fullbase());
+            if ($akismet->verifyKey()) {
+                $akismet->submitSpam($data);
+            } else {
+                elog("can't submit spam to akismet: bad key");
+            }
+        }
+
+        //update ticket
+        $footprint = new Footprint($ticket_id);
+        $agent = $this->getFPAgent(user()->getPersonName());
+        //$footprint->addDescription("Marking as spam");
+        if($agent !== null) {
+            $footprint->setSubmitter($agent);
+        }
+        $footprint->setStatus("Closed");
+        $footprint->setTicketType("Security_Notification");
+        $mrid = $footprint->submit();
+
+        $this->render("success", null, true);
+    }
+
     public function updatebasicAction()
     {
         if(user()->isGuest()) {
@@ -436,20 +432,6 @@ class ViewerController extends BaseController
         $this->render("success", null, true);
     }
  
-/*
-    private function getFPAgent($name)
-    {
-        $model = new Schema();
-        $users = $model->getusers();
-        foreach($users as $id=>$fpname) {
-            if($fpname == $name) {
-                return $id;
-            }
-        }
-        return null;
-    }
-*/
-
     public function indexAction() 
     { 
         try {
@@ -492,47 +474,7 @@ class ViewerController extends BaseController
             $this->view->editable = true;
         }
 
-/*
-        if(config()->debug) {
-            slog("setting non-editable for debuging purpose");
-            $this->view->editable = false;
-        }
-*/
-
-        //notes
-        $alldesc = $detail->alldescs;
-        $alldescs = explode("Entered on", $alldesc);
-        $descs = array();
-
-        foreach($alldescs as $desc) {
-            if($desc == "") continue;
-            $desc_lines = explode("\n", $desc);
-            $info = trim($desc_lines[0]);
-            $desc = strstr($desc, "\n");
-
-            //parse out time and by..
-            $info_a = explode(" by ", $info);
-            $date_str = str_replace(" at ", " ", $info_a[0]);
-
-
-            //FP9 add some time zone description - remove it since php can't parse it out
-            $date_str = explode("(GMT", $date_str);
-            $date_str = $date_str[0];
-
-            $time = strtotime($date_str);// + 3600;
-            if(sizeof($info_a) == 1) {
-                elog("FP information [$info] is malformed..(no 'by' information)");
-                $by = "unknown";
-            } else {
-                $by = str_replace(":", "", $info_a[1]);
-            }
-
-            if(isset($descs[$time])) {
-                $descs[$time]["content"].= "\n".$desc;
-            } else {
-                $descs[$time] = array("type"=>"description", "by"=>$by, "content"=>$desc); 
-            }
-        }
+        $descs = $this->parse_descs($detail);
 
         //only show internal activity for non-guest users (since it contains email address)
         if(user()->getPersonID() !== null) {
@@ -557,6 +499,42 @@ class ViewerController extends BaseController
 
         krsort($descs);
         $this->view->descs = $descs;
+    }
+
+    private function parse_descs($detail) {
+        $alldesc = $detail->alldescs;
+        $alldescs = explode("Entered on", $alldesc);
+        $descs = array();
+
+        foreach($alldescs as $desc) {
+            if($desc == "") continue;
+            $desc_lines = explode("\n", $desc);
+            $info = trim($desc_lines[0]);
+            $desc = strstr($desc, "\n");
+
+            //parse out time and by..
+            $info_a = explode(" by ", $info);
+            $date_str = str_replace(" at ", " ", $info_a[0]);
+
+            //FP9 add some time zone description - remove it since php can't parse it out
+            $date_str = explode("(GMT", $date_str);
+            $date_str = $date_str[0];
+
+            $time = strtotime($date_str);// + 3600;
+            if(sizeof($info_a) == 1) {
+                elog("FP information [$info] is malformed..(no 'by' information)");
+                $by = "unknown";
+            } else {
+                $by = str_replace(":", "", $info_a[1]);
+            }
+
+            if(isset($descs[$time])) {
+                $descs[$time]["content"].= "\n".$desc;
+            } else {
+                $descs[$time] = array("type"=>"description", "by"=>$by, "content"=>$desc); 
+            }
+        }
+        return $descs;
     }
 
     public function uploadattachmentAction() {

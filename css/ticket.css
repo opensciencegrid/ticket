@@ -1,19 +1,50 @@
 /**************************************************************************************************
 boostrap fixer for 2.0.4
 */
+body {
+font-size: 13px;
+}
+p {
+margin: 0 0 9px;
+}
+h2 {
+line-height: 36px;
+font-size: 24px;
+}
+h3 {
+margin: 0px;
+line-height: 27px;
+}
+input[type="radio"], input[type="checkbox"] {
+margin: 0 0 3px 0px;
+}
+.navbar .nav>li>a {
+padding: 9px 10px 11px; 
+}
+/*boostrap-responsive.css sets this.. which breaks jquery's show/hide*/
 .hidden {
-visibility: inherit; /*boostrap-responsive.css sets this.. which breaks jquery's show/hide*/
+visibility: inherit; 
 }
 .page-header {
-padding-bottom: 5px;
+padding-bottom: 0px;
 margin: 10px 0px 5px 0px;
+}
+legend {
+margin-bottom: 6px;
+}
+.well {
+margin-bottom: 6px;
+}
+/*
+pre {
+word-break: inherit;
+}
+.form-horizontal .control-label {
+text-align: inherit;
 }
 img {
 max-width: inherit;
 vertical-align: top;
-}
-input[type="radio"], input[type="checkbox"] {
-margin: 0 0 3px 0px;
 }
 .navbar input {
 margin-bottom: 0px;
@@ -21,7 +52,7 @@ margin-bottom: 0px;
 .navbar .nav > li > a {
 padding: 9px 8px 11px;
 }
-/*fix issues with bootstrap-responsive.min.css*/
+//fix issues with bootstrap-responsive.min.css
 .navbar-fixed-top {
 margin-bottom: 0px !important;
 }
@@ -31,28 +62,8 @@ color: #D98719;
 .alert {
 margin-bottom: 9px;
 }
-textarea,
-input[type=text] {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-}
-input[type=text] {
-height: 28px;
-}
-legend {
-margin-bottom: 6px;
-}
-.well {
-margin-bottom: 6px;
-}
-pre {
-word-break: inherit;
-}
-.form-horizontal .control-label {
-text-align: inherit;
-}
 
+*/
 /**************************************************************************************************
 fix for zend
 */
@@ -265,6 +276,9 @@ font-size: 17px;
 line-height: 25px;
 font-weight: bold;
 color: #888;
+}
+label[for='careof'] {
+color: #999;
 }
 
 /**************************************************************************************************

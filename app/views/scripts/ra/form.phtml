@@ -1,6 +1,8 @@
 <style>
-input[type=text],
-select {
+input[type=text], select {
+box-sizing: border-box;
+-moz-box-sizing: border-box;
+height: 30px;
 width: 100%;
 }
 .ccarea {
@@ -59,7 +61,7 @@ width: 48%;
 <a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a>
 
 <div class="form-actions">
-<button type="submit" name="submit_button" class="btn btn-primary btn-large btn-block" id="submit_button">Submit</button>
+<button type="submit" name="submit_button" class="btn btn-primary btn-large" id="submit_button">Submit</button>
 </div>
 
 </form>

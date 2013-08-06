@@ -49,9 +49,15 @@
      }
 
     </style>
+
     
+<!--
     <link href="lib/bootstrap-2.0.4/css/bootstrap.css" rel="stylesheet">
     <link href="lib/bootstrap-2.0.4/css/bootstrap-responsive.css" rel="stylesheet">
+-->
+    <link href="lib/bootstrap-2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-2.3.2/css/bootstrap-responsive.min.css" rel="stylesheet">
+
     <link href="lib/jquery-ui-1.8.21/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet">
     <link href="lib/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
     <link href="css/ticket.css" rel="stylesheet">
@@ -61,12 +67,17 @@
     <script src="lib/jquery-ui-1.8.21/js/jquery-ui-1.8.21.custom.min.js"></script>
     <script src="lib/jquery.autocomplete.min.js"></script>
     <script src="lib/jquery.cookie.js"></script>
+
+
+<!---
     <script src="lib/bootstrap-2.0.4/js/bootstrap.js"></script>
     <script src="lib/bootstrap-2.0.4/plugin/bootstrap-alert.js"></script>
     <script src="lib/bootstrap-2.0.4/plugin/bootstrap-dropdown.js"></script>
     <script src="lib/bootstrap-2.0.4/plugin/bootstrap-collapse.js"></script>
     <script src="lib/bootstrap-2.0.4/plugin/bootstrap-tooltip.js"></script>
     <script src="lib/bootstrap-2.0.4/plugin/bootstrap-popover.js"></script>
+-->
+    <script src="lib/bootstrap-2.3.2/js/bootstrap.min.js"></script>
 
     <?if(isset($this->load_comet)) {?>
         <script type="text/javascript" src="lib/json2.js"></script>
@@ -95,7 +106,6 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-
         
             <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"></a>
             <ul class="nav">
@@ -119,9 +129,10 @@
             <ul class="nav pull-right">
                 <?php
                 if(!user()->isGuest()) {
-                    echo "<div class=\"btn-group\">";
-                    echo "<a id=\"menu_user\" href=\"#\" class=\"btn dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"icon-user\"></i> ";
+                    echo "<li class=\"dropdown\">";
+                    echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
                     echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
                     echo "<ul class=\"dropdown-menu\">";
                     if(user()->allows("admin") || user()->allows("notify")) {
                         echo "<li class=\"nav-header\">Notification</li>";
@@ -156,7 +167,7 @@
 
                     echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
                     echo "</ul>";
-                    echo "</div>";
+                    echo "</li>";
                 } else if(@$_SERVER['HTTPS'] == "on") {
                     if(Zend_Registry::isRegistered("unregistered_dn")) {
                         echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";

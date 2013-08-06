@@ -69,6 +69,9 @@ table.display thead th {
         float: right;
         text-align: right;
 }
+.dataTables_filter input {
+margin-bottom: 0px;
+}
 
 .dataTables_info {
         float: left;

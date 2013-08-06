@@ -35,7 +35,9 @@ margin-bottom: 6px;
 .well {
 margin-bottom: 6px;
 }
-/*
+.alert {
+margin-bottom: 9px;
+}/*
 pre {
 word-break: inherit;
 }
@@ -59,9 +61,7 @@ margin-bottom: 0px !important;
 a {
 color: #D98719;
 }
-.alert {
-margin-bottom: 9px;
-}
+
 
 */
 /**************************************************************************************************

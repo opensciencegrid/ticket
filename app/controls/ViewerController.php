@@ -128,7 +128,13 @@ class ViewerController extends BaseController
         $this->view->txlinks = array();
         try {
             foreach($model->getLinks($id) as $txid=>$tid) {
-                list($fpid, $url) = config()->lookupFPID($txid, $tid);
+                $info = config()->lookupFPID($txid, $tid);
+                $fpid = $info[0];
+                $url = $info[1];
+                //ticket id override
+                if(isset($info[2])) {
+                    $tid = $info[2];
+                }
                 if($fpid !== null) {
                     $this->view->txlinks[$fpid] = array($tid, $url);
                 }

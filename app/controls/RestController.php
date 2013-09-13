@@ -242,6 +242,16 @@ class RestController extends Zend_Controller_Action
             $footprint->setMetadata($kv[0], $kv[1]);
         }
 
+        if(isset($_POST["mail_suppression_assignees"])) {
+            $footprints->suppress_assignees();
+        }
+        if(isset($_POST["mail_suppression_submitter"])) {
+            $footprints->suppress_submitter();
+        }
+        if(isset($_POST["mail_suppression_ccs"])) {
+            $footprints->suppress_ccs();
+        }
+
         $mrid = $footprint->submit();
         //TODO - need to deal with error condition
         //TODO - if running in simulation mode, submit() returns the entire ticket object to be submitted
@@ -281,6 +291,16 @@ class RestController extends Zend_Controller_Action
                 }
                 $footprint->addAssignee($assignee);
             }
+        }
+
+        if(isset($_POST["mail_suppression_assignees"])) {
+            $footprints->suppress_assignees();
+        }
+        if(isset($_POST["mail_suppression_submitter"])) {
+            $footprints->suppress_submitter();
+        }
+        if(isset($_POST["mail_suppression_ccs"])) {
+            $footprints->suppress_ccs();
         }
 
         $footprint->submit();

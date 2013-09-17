@@ -243,13 +243,13 @@ class RestController extends Zend_Controller_Action
         }
 
         if(isset($_POST["mail_suppression_assignees"])) {
-            $footprints->suppress_assignees();
+            $footprint->suppress_assignees();
         }
         if(isset($_POST["mail_suppression_submitter"])) {
-            $footprints->suppress_submitter();
+            $footprint->suppress_submitter();
         }
         if(isset($_POST["mail_suppression_ccs"])) {
-            $footprints->suppress_ccs();
+            $footprint->suppress_ccs();
         }
 
         $mrid = $footprint->submit();

@@ -17,11 +17,13 @@ function setup_logs()
     $logger->addWriter($writer);
     Zend_Registry::set("logger", $logger);
 
+    /*
     //setup firebug log
     $writer = new Zend_Log_Writer_Firebug();
     $logger = new Zend_Log();
     $logger->addWriter($writer);
     Zend_Registry::set("fb_logger", $logger);
+    */
 }
 
 
@@ -42,7 +44,8 @@ function dlog($obj)
         if(is_string($obj)) {
             $obj = log_format($obj);
         } 
-        Zend_Registry::get("fb_logger")->log($obj, Zend_Log::DEBUG);
+        //Zend_Registry::get("fb_logger")->log($obj, Zend_Log::DEBUG);
+        Zend_Registry::get("logger")->log($obj, Zend_Log::DEBUG);
     }
 }
 

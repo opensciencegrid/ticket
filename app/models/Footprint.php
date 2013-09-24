@@ -70,6 +70,10 @@ class Footprint
     }
 
     public function setMetadataResourceID($resource_id) {
+        //TODO - this has a bug where.. if someone opens a ticket with some resource selected,
+        //then while the ticket is open, someone disabled the resource selected, then click
+        //click update, $resource_id will be set to some disabled ID, but in reality it should be
+        //set to null
         if(is_null($resource_id)) {
             if(isset($this->metadata["ASSOCIATED_R_ID"])) {
                 //need to reset to null

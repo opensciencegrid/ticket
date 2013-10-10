@@ -210,7 +210,7 @@ foreach($tickets as $ticket) {
         <?if(!user()->isguest()) {
                 echo "<td>".implode("<br>", $ccs)."</td>";
         } else {
-            echo "<td>(Only Visible for OIM users)</td>";
+            echo "<td>(Hidden)</td>";
         }?>
         <td><?=$resource?></td>
         <td><?=$resource_group?></td>

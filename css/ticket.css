@@ -37,33 +37,7 @@ margin-bottom: 6px;
 }
 .alert {
 margin-bottom: 9px;
-}/*
-pre {
-word-break: inherit;
 }
-.form-horizontal .control-label {
-text-align: inherit;
-}
-img {
-max-width: inherit;
-vertical-align: top;
-}
-.navbar input {
-margin-bottom: 0px;
-}
-.navbar .nav > li > a {
-padding: 9px 8px 11px;
-}
-//fix issues with bootstrap-responsive.min.css
-.navbar-fixed-top {
-margin-bottom: 0px !important;
-}
-a {
-color: #D98719;
-}
-
-
-*/
 /**************************************************************************************************
 fix for zend
 */
@@ -297,15 +271,10 @@ color: #9da0a4;
 }
 
 /*http://www.longren.org/wrapping-text-inside-pre-tags/*/
-pre
+.update_description pre
 {
 overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
-white-space: pre-wrap; /* css-3 */
-white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
-white-space: -pre-wrap; /* Opera 4-6 */
-white-space: -o-pre-wrap; /* Opera 7 */
-/* width: 99%; */
-word-wrap: break-word; /* Internet Explorer 5.5+ */
+word-break: normal;
 border: none;
 }
 .update_history .header {

@@ -1,6 +1,6 @@
 <?php echo $this->render("bootheader.phtml", true);?>
 <script type='text/javascript' src='lib/jquery.timeago.js'></script>
-
+<script src="<?php echo config()->chatjs_url?>/socket.io/socket.io.js"></script>
 <style>
 #updates .toolbar {
 position: relative;
@@ -76,55 +76,98 @@ background-color: #f4f4f4;
 margin-bottom: 0;
 height: 30px;
 }
+#peers {
+position: fixed;
+bottom: 0px;
+right: 0px;
+z-index: 100;
+list-style: none;
+padding: 5px 0px 0px 5px;
+margin: 0px;
+background-color: white;
+box-shadow: 0px 0px 10px white;
+}
+#peers li {
+background-color: #ccc;
+color: #000;
+display: inline-block;
+padding: 5px 10px;
+margin-right: 5px;
+position: relative;
+}
+/*
+#peers li:hover {
+background-color: #999;
+cursor: pointer;
+}
+*/
+#peers span.ip {
+padding-left: 5px;
+color: #666;
+}
+#peers .new {
+bottom: -30px;
+}
+/*
+#peers .me {
+background-color: red;
+}
+*/
 </style>
 
 <div class="container-fluid">
+<ul id="peers"></ul>
+<script>
+var chat = io.connect('<?php echo config()->chatjs_url?>');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'<?php echo $this->nodekey?>', ticketid: <?php echo $this->ticket_id?>});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    //console.dir(peers);
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
 
-<?php if(isset($this->load_comet)) {?>
-    <script type="text/javascript">
-        var config = {
-            ticket_id: <?=$this->ticket_id?>,
-            contact_id: <?=$this->contact_id?>,
-            contact_name: "<?=$this->contact_name?>"
-        };
-        function _update_ticket(data) {
-            if(data.request) {
-                if(data.request == "reload") {
-                    var submitter = data.submitter;
-                    if(confirm(data.submitter + " has submited an update to this ticket. Do you want to reload?")) {
-                        history.go(0);
-                    }
-                }
-            }
-        }
-        function _update_presence(presence) {
-            var html = "";
-            html += "<ul class=\"editors\">";
-            var count = 0;
-            for(var id in presence) {
-                var contact_name = presence[id];
-                if(contact_name !=  config.contact_name) {
-                    html += "<li>" + contact_name + "</li>";
-                    count++;
-                }
-            }
-            html += "</ul>";
-            if(count != 0) {
-                html = "Viewers " + html;
-            }
-            $("#presence").html(html);
-        }
-        function _handshakeFailed() {
-            $("#presence").html("<p class=\"warning\">Peer status unknown</p>");
-        }
-        $(function() {
-            $("#ticket_form").submit(function() {
-                $.cometd.publish("/ticket/<?=$this->ticket_id?>", { request: "reload", submitter: "<?=$this->contact_name?>" });
-                return true;
-            });
-        });
-    </script>
-<?php } 
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip.address+"</span>";
+    }
+    if(chat.socket.sessionid == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
+<?php 
 
 echo $this->alerts();
 echo "<div id=\"presence\" class=\"pull-right\"></div>";
@@ -363,16 +406,13 @@ $(function() {
         if(!expanded) {
             expanded = true;
             //expand to minheight
-            var min = 200;
+            var min = 250;
             if($(this).height() < min) {
-                $(this).animate({height: min}, 500);
+                $(this).animate({height: min}, 200);
             }
         }
     });
 });
-
-
-
 </script>
 <?php echo $this->render("pagefooter.phtml", true);?>
 </div><!--container-fluid-->

@@ -37,9 +37,19 @@ class ViewerController extends BaseController
         $this->view->title = $detail->title;
         $this->view->page_title = "[$id] ".$detail->title;
         if(!user()->isGuest()) {
-            $this->view->load_comet = true;
+            //$this->view->load_comet = true;
             $this->view->contact_id = user()->contact_id;
             $this->view->contact_name = user()->contact_name;
+
+            //register cid/cname for node to allow access
+            $nodekey = sha1(rand());
+            $url = config()->local_chatjs_url."/ac?key=$nodekey&cid=".user()->contact_id."&name=".urlencode(user()->contact_name);
+            $status = file_get_contents($url);
+            if($status == "registered") {
+                $this->view->nodekey = $nodekey;
+            } else {
+                error_log("failed to registere nodejs access with url [$url]");
+            }
         }
 
         //limit access to security announcement
@@ -505,6 +515,12 @@ class ViewerController extends BaseController
 
         krsort($descs);
         $this->view->descs = $descs;
+
+        if(!user()->isGuest()) {
+            $this->view->contact_id = user()->contact_id;
+            $this->view->contact_name = user()->contact_name;
+        }
+
     }
 
     private function parse_descs($detail) {

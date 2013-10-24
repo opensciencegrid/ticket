@@ -6,6 +6,13 @@ height: 200px;
 select, input[type=text] {
 width: 100%;
 }
+#sig {
+height: 100px;
+}
+select.sig_loader {
+width: 200px;
+margin-bottom: 3px;
+}
 </style>
 <?php
 function checked($e)
@@ -127,6 +134,12 @@ function checked($e)
 <?=$this->element->subject?>
 <?=$this->element->ticket?>
 <?=$this->element->body?>
+<div class="pull-right">
+    Template: <select class="sig_loader" onchange="load_sig(this);">
+    <option value="goc">OSG Operations</option>
+    <option value="software">OSG Software</option>
+    </select>
+</div>
 <?=$this->element->sig?>
 <?=$this->element->rss?>
 <?=$this->element->sign?>
@@ -137,3 +150,14 @@ function checked($e)
 
 </form>
 
+<script>
+function load_sig(elem) {
+    $("#sig").load("<?php echo fullbase()?>/notify/sig?type="+elem.value);
+}
+$(function() {
+    if($("#sig").html() == "") {
+        //load goc signature by default
+        $("#sig").load("<?php echo fullbase()?>/notify/sig?type=goc");
+    }
+});
+</script>

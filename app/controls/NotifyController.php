@@ -94,7 +94,7 @@ class NotifyController extends BaseController
             if($ticket_id != "") { 
                 $body .= "\n\nPlease see ticket $ticket_id at:\n".fullbase()."/$ticket_id\n";
             }
-            $e->setBody($body."\n".$sig);
+            $e->setBody($body."\n\n".$sig);
 
             try
             {
@@ -199,7 +199,7 @@ class NotifyController extends BaseController
 
         $e = new Zend_Form_Element_Textarea('sig');
         $e->setLabel("Email Signature");
-        $e->setValue($this->getGOCSigTemplate());
+        //$e->setValue($this->getGOCSigTemplate());
         $form->addElement($e);
 
         $e = new Zend_Form_Element_Checkbox('rss');
@@ -219,18 +219,36 @@ class NotifyController extends BaseController
         return $form;
     }
 
-    private function getGOCSigTemplate()
+    public function sigAction()
     {
-        return "
+/*
 Please submit problems, requests, and questions at:
 https://ticket.grid.iu.edu/goc
 
 Thank You,
-OSG Grid Operations Center (GOC)
+*/
+        switch($_REQUEST["type"]) {
+        case "goc":
+            $sig = "OSG Grid Operations Center (GOC)
 Email/Phone: goc@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
 RSS Feed: http://osggoc.blogspot.com
 ";
+            break;
+        case "software":
+            $sig = "OSG Grid Operations Center (GOC) and OSG Software Team
+https://www.opensciencegrid.org/
+For support: goc@opensciencegrid.org or 317-278-9699
+";
+            break;
+        default:
+            $sig = "?";
+        }
+
+        //$this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(); 
+        $this->_response->setHeader('Content-Type', 'text/plain');        
+        echo $sig;
     }
 } 
 

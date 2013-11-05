@@ -14,11 +14,10 @@ class EventPublisher {
             $cnn->connect();
             $ch = new AMQPChannel($cnn);
 
-            // Declare a new exchange
             $ex = new AMQPExchange($ch);
             $ex->setName(config()->event_exchange);
             $ex->setType(AMQP_EX_TYPE_TOPIC);
-            $ex->declare();
+            $ex->declareExchange();
             $ex->publish($msg, $key);
 
             $cnn->disconnect();

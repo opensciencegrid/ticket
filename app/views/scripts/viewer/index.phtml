@@ -1,6 +1,5 @@
 <?php echo $this->render("bootheader.phtml", true);?>
 <script type='text/javascript' src='lib/jquery.timeago.js'></script>
-<script src="<?php echo config()->chatjs_url?>/socket.io/socket.io.js"></script>
 <style>
 #updates .toolbar {
 position: relative;
@@ -117,56 +116,7 @@ background-color: red;
 
 <div class="container-fluid">
 <ul id="peers"></ul>
-<script>
-var chat = io.connect('<?php echo config()->chatjs_url?>');
-chat.on('connect', function() {
-    chat.emit('authenticate', {nodekey:'<?php echo $this->nodekey?>', ticketid: <?php echo $this->ticket_id?>});
-});
-chat.on('peers', function(peers) {
-    $("#peers").html("");
-    //console.dir(peers);
-    for(var pid in peers) {
-        var peer = peers[pid];
-        addPeer(pid, peer);
-    }
-});
-chat.on('peer_disconnect', function(pid) {
-    $("#peer_"+pid).hide("slow");
-});
-chat.on('peer_connected', function(peers) {
-    //expect only 1 peer connecting, but..
-    for(var pid in peers) {
-        var peer = peers[pid];
-        addPeer(pid, peer);
-    }
-});
-chat.on('submit', function() {
-    if(confirm("This ticket was updated. Do you want to refresh?")) {
-        history.go(0);
-    }
-});
 
-function addPeer(pid, peer) {
-    var ipinfo = "";
-    if(peer.ip != undefined) {
-        ipinfo = "<span class=\"ip\">"+peer.ip.address+"</span>";
-    }
-    if(chat.socket.sessionid == pid) {
-        //don't display myself
-        return;
-    }
-    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
-    $("#peers").prepend(html);
-    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
-}
-
-$(function() {
-    $("#ticket_form").submit(function() {
-        chat.emit('submit');
-        return true;
-    });
-});
-</script>
 <?php 
 
 echo $this->alerts();
@@ -416,4 +366,55 @@ $(function() {
 </script>
 <?php echo $this->render("pagefooter.phtml", true);?>
 </div><!--container-fluid-->
+<script src="<?php echo config()->chatjs_url?>/socket.io/socket.io.js"></script>
+<script>
+var chat = io.connect('<?php echo config()->chatjs_url?>');
+chat.on('connect', function() {
+    chat.emit('authenticate', {nodekey:'<?php echo $this->nodekey?>', ticketid: <?php echo $this->ticket_id?>});
+});
+chat.on('peers', function(peers) {
+    $("#peers").html("");
+    //console.dir(peers);
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('peer_disconnect', function(pid) {
+    $("#peer_"+pid).hide("slow");
+});
+chat.on('peer_connected', function(peers) {
+    //expect only 1 peer connecting, but..
+    for(var pid in peers) {
+        var peer = peers[pid];
+        addPeer(pid, peer);
+    }
+});
+chat.on('submit', function() {
+    if(confirm("This ticket was updated. Do you want to refresh?")) {
+        history.go(0);
+    }
+});
+
+function addPeer(pid, peer) {
+    var ipinfo = "";
+    if(peer.ip != undefined) {
+        ipinfo = "<span class=\"ip\">"+peer.ip.address+"</span>";
+    }
+    if(chat.socket.sessionid == pid) {
+        //don't display myself
+        return;
+    }
+    var html = "<li class=\"new\" id=\"peer_"+pid+"\" class=\"peer\">"+peer.name+ipinfo+"</li>";
+    $("#peers").prepend(html);
+    $("#peers .new").animate({bottom: 0}, 1000, function() {$(this).removeClass("new")});
+}
+
+$(function() {
+    $("#ticket_form").submit(function() {
+        chat.emit('submit');
+        return true;
+    });
+});
+</script>
 <?php echo $this->render("bootfooter.phtml", true);?>

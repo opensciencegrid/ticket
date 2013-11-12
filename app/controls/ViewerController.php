@@ -369,13 +369,14 @@ class ViewerController extends BaseController
             'comment_author_email' => $detail->Email__baddress,
             'comment_content'      => trim($content)
         );
-        elog(print_r($data, true));
         if(is_null($sip)) {
             elog("can't spam submit to akismet without ip/agent");
         } else { 
             $akismet = new Zend_Service_Akismet(config()->akismet_key, fullbase());
             if ($akismet->verifyKey()) {
                 $akismet->submitSpam($data);
+                slog("reported following spam to akismet");
+                slog(print_r($data, true));
             } else {
                 elog("can't submit spam to akismet: bad key");
             }

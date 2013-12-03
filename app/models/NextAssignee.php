@@ -17,18 +17,6 @@ class NextAssignee
 
         //construct list of possible assignee based on each hours
 /*
-        if($hour >= 5 and $hour < 8) {
-            $members = array("adeximo");
-        } else if ($hour >= 8 and $hour < 13) {
-            $members = array("adeximo", "echism", "kagross");
-        } else if ($hour >= 13 and $hour < 17) {
-            $members = array("adeximo", "echism", "kagross", "cpipes");
-        } else if ($hour >= 17 and $hour < 21) {
-            $members = array("cpipes");
-        } else {
-            $members = array("adeximo", "echism", "kagross");
-        }
-*/
         if ($hour >= 8 and $hour < 13) {
             $members = array("echism", "kagross");
         } else if ($hour >= 13 and $hour < 17) {
@@ -38,6 +26,9 @@ class NextAssignee
         } else {
             $members = array("echism", "kagross");
         }
+*/
+
+        $members = array("echism", "kagross", "cpipes");
 
         //report the pool of possible staff
         $this->reason .= "possible assignees at this hour ($hour):";
@@ -58,12 +49,10 @@ class NextAssignee
                 }
                 $count = $counts[$member];
 
-                /*
-                if($member == "cpipes") {
+                if($member == "kagross") {
                     $count = $count*2;
-                    $this->reason .= "doubling the ticket count for chris - since he works half time. ";
+                    $this->reason .= "doubling the ticket count for kyle";
                 }
-                */
 
                 if($id === null || $min > $count) {
                     $id = $member;

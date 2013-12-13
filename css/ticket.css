@@ -290,3 +290,10 @@ padding-left: 0px;
 padding-bottom: 2px;
 margin-bottom: 0px;
 }
+.loading {
+background-repeat:no-repeat;
+background-position: 5px;
+background-image:url(../images/loading.gif);
+padding-left: 30px;
+
+}

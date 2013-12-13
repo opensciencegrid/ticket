@@ -1,22 +1,24 @@
 <style>
-tr.attachment:hover {
-background-color: #bbb;
-cursor: pointer;
+legend.noborder {
+border-bottom: none;
 }
 </style>
 
-<div id="attachment-list">
-</div>
+<div id="attachment-list"/>
 <script>
 $(function () {
-    // Initialize the jQuery File Upload widget:
-    $.getJSON("<?=fullbase()?>/viewer/loadattachments?id=<?php echo $this->ticket_id?>", function (files) {
+    var first = true;
+    $.getJSON("<?=fullbase()?>/attachment/list?id=<?php echo $this->ticket_id?>", function (files) {
         //console.dir(files);
         var html = "<table class=\"table table-condensed\">";
         $(files).each(function() {
-            html += "<tr class=\"attachment\" onclick=\"download('"+this.url+"');\">";
+            if(first) {
+                first = false;
+                html += "<legend class=\"noborder\">Attachmenets</legend>";
+            }
+            html += "<tr class=\"attachment\">";
             html += "<td><img src=\""+this.thumbnail_url+"\"/></td>";
-            html += "<td>"+this.name+"</td>";
+            html += "<td><a href=\""+this.url+"\" target=\"_blank\">"+this.name+"</a></td>";
             html += "<td>"+bytesToSize(this.size, 1)+"</td>";
             html += "</tr>";
         });
@@ -27,28 +29,6 @@ $(function () {
 
 function download(url) {
     window.open(url, "_blank");
-}
-
-//http://codeaid.net/javascript/convert-size-in-bytes-to-human-readable-format-(javascript)
-function bytesToSize(bytes, precision)
-{  
-    var kilobyte = 1024;
-    var megabyte = kilobyte * 1024;
-    var gigabyte = megabyte * 1024;
-    var terabyte = gigabyte * 1024;
-    if ((bytes >= 0) && (bytes < kilobyte)) {
-        return bytes + ' B';
-    } else if ((bytes >= kilobyte) && (bytes < megabyte)) {
-        return (bytes / kilobyte).toFixed(precision) + ' KB';
-    } else if ((bytes >= megabyte) && (bytes < gigabyte)) {
-        return (bytes / megabyte).toFixed(precision) + ' MB';
-    } else if ((bytes >= gigabyte) && (bytes < terabyte)) {
-        return (bytes / gigabyte).toFixed(precision) + ' GB';
-    } else if (bytes >= terabyte) {
-        return (bytes / terabyte).toFixed(precision) + ' TB';
-    } else {
-        return bytes + ' B';
-    }
 }
 </script>
 

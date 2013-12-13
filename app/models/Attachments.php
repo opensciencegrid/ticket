@@ -1,8 +1,10 @@
 <?php
 
+//obsoleted by AttachmentController
 class Attachments {
     //input - ticket id to load the attachments to
     //output - array containing information about the files uploaded
+    /*
     public function upload($ticket_id) {
         $adapter = new Zend_File_Transfer_Adapter_Http();
         $ticket_dir = config()->attachment_dir."/ticket_$ticket_id";
@@ -38,10 +40,10 @@ class Attachments {
             $fileclass->name = $name;
             $fileclass->size = (int)$info["size"];
             $fileclass->type = $info["type"];
-            $fileclass->thumbnail_url = fullbase()."/viewer/thumbnail?id=$ticket_id&attachment=".urlencode($clean_name);
-            $fileclass->delete_url = fullbase()."/viewer/deleteattachment?id=$ticket_id&attachment=".urlencode($clean_name);
+            $fileclass->thumbnail_url = fullbase()."/attachment/thumb?id=$ticket_id&file=".urlencode($clean_name);
+            $fileclass->delete_url = fullbase()."/attachment/handler?id=$ticket_id&file=".urlencode($clean_name);
             //$fileclass->url = fullbase()."/attachments/project_".config()->project_id."/ticket_$ticket_id/$clean_name";
-            $fileclass->url = fullbase()."/attachment?id=$ticket_id&filename=$clean_name";
+            $fileclass->url = fullbase()."/attachment/view?id=$ticket_id&file=$clean_name";
             $fileclass->delete_type = 'DELETE';
             $fileclass->error = $info["error"];
 
@@ -63,7 +65,9 @@ class Attachments {
         $success = unlink($path);
         return $success;
     }
+    */
 
+    //still used by viewer/loadattachments which is then used by goc-tx
     public function listattachments($ticket_id) {
         $datas = array();
         $path = config()->attachment_dir."/ticket_$ticket_id";

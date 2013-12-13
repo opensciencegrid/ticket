@@ -560,6 +560,7 @@ class ViewerController extends BaseController
         return $descs;
     }
 
+    //used by GOX-TX to upload attachments
     public function uploadattachmentAction() {
         if(user()->isGuest() && !user()->isGOCMachine()) {
             elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
@@ -585,25 +586,7 @@ class ViewerController extends BaseController
         $this->render("none", null, true);
     }
 
-    //generate thumbnail from attachment - THIS IS A PUBLIC FUNCTION (better be rock solid..)
-    public function thumbnailAction() {
-        $id = (int)$_REQUEST["id"];
-        $dirty_attachment_name = $_REQUEST["attachment"];
-        $attachment_id = basename($dirty_attachment_name);
-
-        $model = new Attachments();
-        $path = $model->getpath($id, $attachment_id);
-
-        require_once("app/thumbnail.php");
-        $tg = new thumbnailGenerator;
-        if(!$tg->generate($path, 100, 100)) {
-            header("Content-Type: image/png");
-            echo file_get_contents("images/unknown.png");
-            slog("output default icon");
-        }
-        $this->render("none", null, true);
-    }
-
+    /*
     public function deleteattachmentAction() {
         if(user()->isGuest()) {
             $this->render("error/access", null, true); 
@@ -623,7 +606,9 @@ class ViewerController extends BaseController
         echo json_encode($ret);
         $this->render("none", null, true);
     }
+    */
 
+    //accessed by goc-tx (should use attachment controller instead)
     public function loadattachmentsAction() {
         header('Pragma: no-cache');
         header('Cache-Control: private, no-cache');

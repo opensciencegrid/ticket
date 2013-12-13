@@ -1,108 +1,187 @@
-<link rel="stylesheet" type="text/css" href="<?=base()?>/lib/Upload/jquery.fileupload-ui.css" />
-<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.tmpl.min.js"></script>
-<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.iframe-transport.js"></script>
-<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.fileupload.js"></script>
-<script type="text/javascript" src="<?=base()?>/lib/Upload/jquery.fileupload-ui.js"></script>
 <style>
-td.attachments {
-width: 420px;
+.file {
+border-top: 1px solid #ddd;
+background-color: #fff;
+padding-left: 5px;
+padding-top: 2px;
 }
 </style>
+<link rel="stylesheet" type="text/css" href="lib/jQuery-File-Upload/css/jquery.fileupload.css" />
+<!--
+<link rel="stylesheet" type="text/css" href="lib/jQuery-File-Upload/css/jquery.fileupload-ui.css" />
+-->
+<!--
+<script type="text/javascript" src="lib/JavaScript-Templates/js/tmpl.min.js"></script>
+-->
+<script type="text/javascript" src="lib/JavaScript-Load-Image/js/load-image.min.js"></script>
 
-<div id="fileupload" style="width: 100%;">
-    <table class="files table table-condensed"></table>
-    <label class="fileinput-button" style="position: relative; top: 6px;">
-        <a class="btn btn-small"><i class="icon-plus"></i>  Add Attachments</a>
-        <input style="display: none;" type="file" name="files[]" multiple>
-    </label>
-    <!--[if !IE]><!-->
-    <div style="float: right; color: gray; position: relative; top: -22px;">Drag &amp; Drop Attachments Here</div>
-    <!--<![endif]-->
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-image.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-audio.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-video.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+<script type="text/javascript" src="lib/jQuery-File-Upload/js/jquery.fileupload-ui.js"></script>
+
+<div id="fileupload" class="well well-small" style="box-sizing: border-box;width: 100%;">
+    <!-- The fileinput-button span is used to style the file input field as button -->
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Attach files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+    <br>
+    <br>
+    <!-- The global progress bar 
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    -->
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
 </div>
-<script id="template-upload" type="text/x-jquery-tmpl">
-    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-        <td class="preview"></td>
-        <td class="name">
-            ${name}<br>
-            {{if error}}
-                <div class="error">Error:
-                    {{if error === 'maxFileSize'}}File is too big
-                    {{else error === 'minFileSize'}}File is too small
-                    {{else error === 'acceptFileTypes'}}Filetype not allowed
-                    {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
-                    {{else}}${error}
-                    {{/if}}
-                </div>
-            {{else}}
-                <div class="progress"><div></div></div>
-            {{/if}}
-        </td>
-        <td class="size">${sizef}</td>
-        <td class="cancel"><button>Cancel</button></td>
-    </tr>
-</script>
-<script id="template-download" type="text/x-jquery-tmpl">
-    <tr class="template-download{{if error}} ui-state-error{{/if}}">
-        {{if error}}
-            <td colspan="3" class="name">${name} ${sizef}<br>
-                <div class="error">Error:
-                    {{if error === 1}}File exceeds upload_max_filesize (php.ini directive)
-                    {{else error === 2}}File exceeds MAX_FILE_SIZE (HTML form directive)
-                    {{else error === 3}}File was only partially uploaded
-                    {{else error === 4}}No File was uploaded
-                    {{else error === 5}}Missing a temporary folder
-                    {{else error === 6}}Failed to write file to disk
-                    {{else error === 7}}File upload stopped by extension
-                    {{else error === 'maxFileSize'}}File is too big
-                    {{else error === 'minFileSize'}}File is too small
-                    {{else error === 'acceptFileTypes'}}Filetype not allowed
-                    {{else error === 'maxNumberOfFiles'}}Max number of files exceeded
-                    {{else error === 'uploadedBytes'}}Uploaded bytes exceed file size
-                    {{else error === 'emptyResult'}}Empty file upload result
-                    {{else}}${error}
-                    {{/if}}
-                </div>
-            </td>
-        {{else}}
-            <td class="preview">
-                {{if thumbnail_url}}
-                    <a href="${url}" target="_blank"><img src="${thumbnail_url}"></a>
-                {{/if}}
-            </td>
-            <td class="name">
-                <a href="${url}"{{if thumbnail_url}} target="_blank"{{/if}}>${name}</a>
-            </td>
-            <td class="size">${sizef}</td>
-        {{/if}}
-        <td class="delete">
-            <button data-type="${delete_type}" data-url="${delete_url}" class="btn"><i class="icon-remove"/></button>
-        </td>
-    </tr>
-</script>
+
 <script>
+/*jslint unparam: true, regexp: true */
+/*global window, $ */
 $(function () {
-    // Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload({
-        autoUpload: true,
-        url: '<?=fullbase()?>/viewer/uploadattachment?id=<?php echo $this->ticket_id?>'
-    });
-    $.getJSON("<?=fullbase()?>/viewer/loadattachments?id=<?php echo $this->ticket_id?>", function (files) {
-        var fu = $('#fileupload').data('fileupload');
-        fu._adjustMaxNumberOfFiles(-files.length);
-        fu._renderDownload(files)
-            .appendTo($('#fileupload .files'))
-            .fadeIn(function () {
-                // Fix for IE7 and lower:
-                $(this).show();
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    var url = 'attachment/handler?id=<?php echo $this->ticket_id?>',
+        uploadButton = $('<button/>')
+            .addClass('btn btn-primary')
+            .prop('disabled', true)
+            .text('Uploading...')
+            .on('click', function () {
+                var $this = $(this),
+                    data = $this.data();
+                $this
+                    .off('click')
+                    .text('Abort')
+                    .on('click', function () {
+                        $this.remove();
+                        data.abort();
+                    });
+                data.submit().always(function () {
+                    $this.remove();
+                });
             });
-    });
-    // Open download dialogs via iframes, to prevent aborting current uploads:
-    $('#fileupload .files a:not([target^=_blank])').live('click', function (e) {
-        e.preventDefault();
-        $('<iframe style="display:none;"></iframe>')
-            .prop('src', this.href)
-            .appendTo('body');
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        autoUpload: true,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|gif|txt|log|pdf|sh|py|js)$/i,
+        maxFileSize: 2000000, // 2 MB (GGUS limit)
+        // Enable image resizing, except for Android and Opera,
+        // which actually support image resizing, but fail to
+        // send Blob objects via XHR requests:
+        disableImageResize: /Android(?!.*Chrome)|Opera/
+            .test(window.navigator.userAgent),
+        previewMaxWidth: 100,
+        previewMaxHeight: 100,
+        previewCrop: true
+    }).on('fileuploadadd', function (e, data) {
+        //console.log('fileuploadadd');
+        data.file_context = $('<div/>').appendTo('#files');
+        $.each(data.files, function (index, file) {
+            var node = newfile(file);
+            node.find(".file-name").addClass("loading");
+            /*
+            if (!index) {
+                node.append(uploadButton.clone(true).data(data));
+            }
+            */
+            node.appendTo(data.file_context);
+        });
+    }).on('fileuploadprocessalways', function (e, data) {
+        //console.log('fileuploadprocessalways');
+        var index = data.index,
+            file = data.files[index],
+            node = $(data.file_context.children()[index]);
+        if (file.preview) {
+            node.find('.file-preview').append(file.preview);
+        }
+        if (file.error) {
+            //node.find('.file-name').removeClass("loading").append("<br><span class=\"alert\">"+file.error+"</span>");
+            node.remove();
+            alert(file.error);
+        }
+        /*
+        if (index + 1 === data.files.length) {
+            data.file_context.find('button')
+                .text('Upload')
+                .prop('disabled', !!data.files.error);
+        }
+        */
+    }).on('fileuploadprogressall', function (e, data) {
+        /* progress bar not working - maybe I need bootstrap v3?
+        console.log('fileuploadprocessall');
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('#progress .progress-bar').css(
+            'width',
+            progress + '%'
+        );
+        */
+    }).on('fileuploaddone', function (e, data) {
+        $.each(data.result.files, function (index, file) {
+            if (file.url) {
+                var link = $('<a>')
+                    .attr('target', '_blank')
+                    .prop('href', file.url);
+                var node = $(data.file_context.children()[index]);
+                node.find('.file-name').removeClass("loading").wrap(link);
+            } else if (file.error) {
+                var node = $(data.file_context.children()[index]);
+                //node.find('.file-name').removeClass("loading").html("<span class=\"alert\">"+file.error+"</span>");
+                node.remove();
+                alert(file.error);
+            }
+        });
+    }).on('fileuploadfail', function (e, data) {
+        $.each(data.files, function (index, file) {
+            var node = $(data.file_context.children()[index]);
+            //node.find('.file-name').removeClass("loading").html("<span class=\"alert\">"+file.error+"</span>");
+            node.remove();
+            alert(file.error);
+        });
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+    $.getJSON("<?=fullbase()?>/attachment/list?id=<?php echo $this->ticket_id?>", function (files) {
+        $(files).each(function() {
+            var node = newfile(this);
+            $("#files").append(node);
+        });
     });
 });
-</script>
 
+function newfile(file) {
+    var node = $("<div class=\"row-fluid\"/>").addClass("file");
+    node.append(
+        "<div class=\"span6 file-name\">"+file.name+"</div>"+
+        "<div class=\"span2 file-size\">"+bytesToSize(file.size)+"</div>"+
+        "<div class=\"span3 file-preview\"/>"+
+        "<div class=\"span1 file-delete\"><button class=\"button\" onclick=\"deletefile(this); return false;\">&times;</button></div>");
+    if(file.thumbnail_url != undefined) {
+        node.find(".file-preview").append("<img src=\""+file.thumbnail_url+"\"/>");
+    }
+    if(file.url != undefined) {
+        var link = $('<a>').attr('target', '_blank').prop('href', file.url);
+        node.find(".file-name").wrap(link);
+    }
+    return node;
+}
+function deletefile(button) {
+    var filename = $(button).parents(".file").find(".file-name").text();
+    $.ajax({
+        url: 'attachment/handler?id=<?php echo $this->ticket_id?>&file='+filename,
+        type: 'DELETE',
+    }).done(function(result) {
+        $(button).parents(".file").remove();
+    }).fail(function() {
+        alert('Faile to remove attachment. Please contact GOC for more information.');
+    });
+}
+</script>

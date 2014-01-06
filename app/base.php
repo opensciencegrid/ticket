@@ -138,7 +138,7 @@ function fpCall($function, $param)
                 throw new exception("Underlying system that this application depends on is having an issue : ".$msg);
             } 
             */
-            wlog("fpcall: SoapFault (will try again) -- ".$e);
+            slog("fpcall: SoapFault (will try again) -- ".$e);
 
             if(strpos($msg, "Wide character in subroutine entry at /usr/local/footprints//cgi/SUBS/send_mail.pl") !== false) {
                 elog("ignoring this error - this is a known FP issue - fpcall itself was ok");

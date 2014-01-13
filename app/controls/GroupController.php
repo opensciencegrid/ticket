@@ -1,5 +1,7 @@
-<?
+<?php
 
+/*
+Deprecated
 function ticketcmp($a, $b) {
     return (round($a->score, 2) > round($b->score, 2)) ? -1 : 1;
 }
@@ -38,3 +40,4 @@ class GroupController extends Zend_Controller_Action
         }
     }
 }
+*/

@@ -1,10 +1,11 @@
 <?php
 
-//obsoleted by AttachmentController
+//obsoleted by AttachmentController (but still used..)
 class Attachments {
+
+    //still used by viewer/uploadattachments which is then used by goc-tx (should be updated to use /attachment controller)
     //input - ticket id to load the attachments to
     //output - array containing information about the files uploaded
-    /*
     public function upload($ticket_id) {
         $adapter = new Zend_File_Transfer_Adapter_Http();
         $ticket_dir = config()->attachment_dir."/ticket_$ticket_id";
@@ -51,6 +52,7 @@ class Attachments {
         }
         return $datas;
     }
+    /*
 
     //returns physical path to the attachment storage
     public function getpath($ticket_id, $attachment_id) {

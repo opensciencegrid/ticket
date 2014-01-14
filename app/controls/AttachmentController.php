@@ -50,7 +50,9 @@ class AttachmentController extends BaseController
 
     public function handlerAction() {
         $id = (int)$_REQUEST["id"];
-        $path = $this->getpath($id, "");
+        //$path = $this->getpath($id, "");
+	//don't use getpath since it checks for directory existance
+        $path = config()->attachment_dir."/ticket_$id/";
 
         require_once("lib/UploadHandler.php");
         //thumbnail generation is disabled in UploadHandler

@@ -74,7 +74,11 @@ margin-bottom: 0px;
 }
 
 .dataTables_info {
-        float: left;
+/*
+background-color: #ccc;
+padding: 10px;*/
+margin: 10px;
+color: #666;
 }
 
 .dataTables_paginate {
@@ -441,5 +445,4 @@ tr.even.gradeU td.sorting_2 {
 tr.even.gradeU td.sorting_3 {
         background-color: #e2e2e2;
 }
-
 

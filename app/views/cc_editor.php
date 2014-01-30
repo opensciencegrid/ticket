@@ -13,10 +13,10 @@ foreach($persons as $person)
 {
     $name = trim($person->name);
     $email = trim($person->primary_email);
-    $phone = trim($person->primary_phone);
+    $phone = trim($person->primary_phone); //needed by yourinfo
     if($name == "") $name = $email;
     if($persons_json != "") $persons_json .= ",\n";
-    $persons_json .= "{ name: \"$name\", email: \"$email\", phone: \"$phone\"}";
+    $persons_json .= "{ label: \"$name <$email>\", value: \"$email\", email: \"$email\", name: \"$name\", phone: \"$phone\"}";
 }
 ?>
 var persons = [
@@ -24,20 +24,11 @@ var persons = [
 ];
 function setup_cc()
 {
-    $(".cc input").autocomplete(persons, {
-        mustMatch: false,
-        matchContains: true,
-        width: 500,
-        formatItem: function(row, i, max) {
-            return row.name + "<br/>Email: " + row.email;
-        },
-        formatMatch: function(row, i, max) {
-            return row.name + " " + row.email;
-        },
-        formatResult: function(row) {
-            return row.email;
-        }
-    });
+    $(".cc input").autocomplete({
+        source: persons
+    });/*.data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>").append("<a>"+item.name + " <span class='email'>&lt;"+item.email+"&gt;</span></a>").appendTo(ul);
+    };*/
 }
 $(function() {
     setup_cc();

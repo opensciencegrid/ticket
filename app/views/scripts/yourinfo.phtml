@@ -21,8 +21,10 @@ $rl = "<span class=\"muted\">* Required</span>";
 
 <?if(user()->allows("admin")) {?>
 <script type="text/javascript">
-$(document).ready(function() {
-    $("#careof").autocomplete(persons, {
+$(function() {
+    $("#careof").autocomplete({
+        source: persons,
+        /*
         mustMatch: true,
         matchContains: true,
         width: 500,
@@ -35,12 +37,17 @@ $(document).ready(function() {
         formatResult: function(row) {
             return row.name;
         }
-    });
-    $("#careof").result(function(event, data, formatted) {
-        $("#name").val(data.name);
-        $("#email").val(data.email);
-        $("#phone").val(data.phone);
-        $("#vo_id").val(-1); //reset vo to i-don-know
+        */
+        select: function(event, ui) {
+            $("#name").val(ui.item.name);
+            $("#email").val(ui.item.email);
+            $("#phone").val(ui.item.phone);
+
+            $("#vo_id").val(-1); //reset vo to i-don-know
+
+            //$("#careof").val(ui.item.name);
+            //return false;
+        }
     });
 });
 </script>

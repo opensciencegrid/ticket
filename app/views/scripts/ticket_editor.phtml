@@ -25,7 +25,9 @@ if(!isset($form_action)) {
             <div class="controls"><input type='text' id="careof" class="span12"/></div>
             <script type="text/javascript">
             $(function() {
-                $("#careof").autocomplete(persons, {
+                $("#careof").autocomplete({
+                    source: persons,
+                /*
                     mustMatch: true,
                     matchContains: true,
                     width: 500,
@@ -38,11 +40,12 @@ if(!isset($form_action)) {
                     formatResult: function(row) {
                         return row.name;
                     }
-                });
-                $("#careof").result(function(event, data, formatted) {
-                    $("input[name=submitter_name]").val(data.name);
-                    $("input[name=submitter_email]").val(data.email);
-                    $("input[name=submitter_phone]").val(data.phone);
+                */
+                    select: function(event, ui) {
+                        $("input[name=submitter_name]").val(ui.item.name);
+                        $("input[name=submitter_email]").val(ui.item.email);
+                        $("input[name=submitter_phone]").val(ui.item.phone);
+                    }
                 });
             });
             </script>

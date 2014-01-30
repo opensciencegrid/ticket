@@ -98,7 +98,16 @@ width: 95%;
 border: none;
 box-shadow: none;
 margin-bottom: 0px;
+max-height: 300px;
 }
+
+
+.ui-autocomplete {
+z-index: 1031;
+max-height: 300px;
+overflow-y: auto;
+}
+
 .fblist div
 {
 padding: 2px;
@@ -295,5 +304,8 @@ background-repeat:no-repeat;
 background-position: 5px;
 background-image:url(../images/loading.gif);
 padding-left: 30px;
+}
 
+span.email {
+color: gray;
 }

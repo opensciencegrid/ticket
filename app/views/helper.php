@@ -121,56 +121,51 @@ function checklist($id, $kv, $selected, $extrainfo)
 }
 
 
-function fblist($id, $kv, $selected, $max_select=1000, $width=400)//1000 is just some arbitrary number..
+function fblist($id, $kv, $selected, $max_select=1000)//1000 is just some arbitrary number..
 {
     $out = "";
 
     //output list editor
     $out .= "<div class=\"fblist_container\" id=\"${id}__list\">";
-    $out .= "<div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\">";
+    $out .= "<div class=\"fblist\" style=\"position: relative;\" onclick=\"$(this).find('.autocomplete').focus(); return false;\" ondblclick=\"$(this).find('.autocomplete').autocomplete('search',''); return false;\">";
 
     //output script
-    $script = "<script type='text/javascript'>$(document).ready(function() {";
+    $script = "<script type='text/javascript'>$(function() {";
     $script .= "var ${id}__listdata = [";
     $first = true;
     $pre_selected ="";
     foreach($kv as $key=>$value) {
         $name = "$id"."[$key]";
         if(isset($selected[$key])) {
-            $pre_selected .= "<div><i onclick=\"$(this).parent().siblings('.autocomplete').show(); $(this).parent().remove();\" class=\"icon-remove\"></i> ".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
+            $pre_selected .= "<div><i onclick=\"$(this).parent().siblings('.autocomplete').val('').show(); $(this).parent().remove();\" class=\"icon-remove\"></i> ".$value."<input type=\"hidden\" name=\"$name\"/ value=\"on\"></div>";
         }
         if(!$first) {
             $script .= ",\n";
         }
         $first = false;
-        $script .= "{ id: \"$key\", name: \"$value\", desc: \"\" }";
+        $script .= "{ id: \"$key\", label: \"$value\"}";
     }
     $script .= "];";
     if(count($selected) >= $max_select) {
         $script .= "$(\"#${id}__list input.autocomplete\").hide();";
     }
     $script .= <<<BLOCK
-    $("#${id}__list input.autocomplete").autocomplete(${id}__listdata, {
-        max: 9999999,
-        minChars: 0,
-        mustMatch: true,
-        matchContains: true,
-        width: $width,
-        formatItem: function(item) {
-            if(item.desc == "") return item.name; 
-            return item.name + " (" + item.desc + ")";
-        }
-    }).result(function(event, item) {
-        if(item != null) {
+    $("#${id}__list input.autocomplete").autocomplete(${id}__listdata, 
+    {
+        source: ${id}__listdata,
+        minLength: 0,
+        select: function(event, ui) {
             $("#${id}__acnote").hide();
-            $(this).val("");
-            $(this).before("<div><i class=\"icon-remove\" onclick=\"$(this).parent().siblings('.autocomplete').show();$(this).parent().remove();\"></i> "+item.name+"<input type=\"hidden\" name=\"${id}["+item.id+"]\" value=\"on\"/></div>");
+            $(this).before("<div><i class=\"icon-remove\" onclick=\"$(this).parent().siblings('.autocomplete').val('').show();$(this).parent().remove();\"></i> "+ui.item.label+"<input type=\"hidden\" name=\"${id}["+ui.item.id+"]\" value=\"on\"/></div>");
             if($(this).siblings("div").length >= $max_select) {
                 $(this).hide();
             }
+            $(this).val("");
+            return false;
         }
     });
-});</script>
+});
+</script>
 BLOCK;
 
     $out .= $pre_selected;

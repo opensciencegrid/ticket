@@ -9,7 +9,6 @@ require_once "Zend/Loader/Autoloader.php";
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
-
 //check to make sure our site installation is done
 if(!file_exists("config.php")) {
     echo "please create site specific config.php";

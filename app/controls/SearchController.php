@@ -141,7 +141,12 @@ class SearchController extends Zend_Controller_Action
                         break;
                     case "ASSOCIATED_RG_ID":
                         $rg = $rgmodel->fetchByID($label);
-                        $label = $rg->name;
+                        if(is_null($rg)) {
+                            slog("ASSOCIATED_RG_ID set to invalid label:$label");
+                            $label = "RGID:$label";
+                        } else {
+                            $label = $rg->name;
+                        }
                         break;
                     }
                     $this->view->faceted[$key] = array("value"=>$_REQUEST[$key], "label"=>$label);

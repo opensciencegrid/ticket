@@ -296,7 +296,7 @@ class SubmitController extends BaseController
         }
 
         $footprints->addCC("dweitzel@cse.unl.edu");
-        $footprints->addCC("fraser@anl.gov");
+        //$footprints->addCC("fraser@anl.gov"); //no longer works for OSG
 
         $sc_model = new SC;
         $sc = $sc_model->get(config()->campusgrid_sc_id);

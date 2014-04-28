@@ -15,6 +15,8 @@ function parse_fpstr($str)
     return $str;
 }
 
+//return false if ticket shouldn't be revealed
+//could throw soap exception
 function load_fp($id, &$details) {
     global $config;
 
@@ -27,7 +29,11 @@ function load_fp($id, &$details) {
         );
         
         $fp_details = $client->MRWebServices__getIssueDetails_goc($config["fp_user"],$config["fp_pass"],'',$config["fp_project"],$id);
-        //var_dump($fp_details);
+        $ticket_type = $fp_details->Ticket__uType;
+        if($ticket_type == "Security" || $ticket_type == "Security_Notification") {
+            echo "Skipping $id which is a $ticket_type ticket\n";
+            return false;
+        }
 
         $details["title"] = $fp_details->title;
         $details["status"] = parse_fpstr($fp_details->status);
@@ -57,6 +63,7 @@ function load_fp($id, &$details) {
             $descs[$time] = $desc->data;
         }
         $details["descriptions"] = $descs;
+        return true;
 
     } catch (SoapFault $exception) {
         print "ERROR! - Got a SOAP exception:<br>";
@@ -171,7 +178,10 @@ foreach($ids as $id) {
     $url = "https://ticket.opensciencegrid.org/goc/$id";
     $details = array("id"=>$id, "url"=>$url);
     echo "loading $id ($c of $total)\n";
-    load_fp($id, $details);
+    if(!load_fp($id, $details)) {
+        //must be a security ticket or such.. skip
+        continue;
+    }
     load_meta($id, $db, $details);
     
     //conver to solar post xml

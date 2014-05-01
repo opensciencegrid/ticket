@@ -133,11 +133,21 @@ class SearchController extends Zend_Controller_Action
                     switch($key) {
                     case "SUPPORTING_SC_ID":
                         $sc = $scmodel->get($label);
-                        $label = $sc->name;
+                        if(is_null($sc)) {
+                            slog("ASSOCIATED_SC_ID set to invalid label:$label");
+                            $label = "SCID:$label";
+                        } else {
+                            $label = $sc->name;
+                        }
                         break;
                     case "ASSOCIATED_VO_ID":
                         $vo = $vomodel->get($label);
-                        $label = $vo->name;
+                        if(is_null($vo)) {
+                            slog("ASSOCIATED_VO_ID set to invalid label:$label");
+                            $label = "VOID:$label";
+                        } else {
+                            $label = $vo->name;
+                        }
                         break;
                     case "ASSOCIATED_RG_ID":
                         $rg = $rgmodel->fetchByID($label);

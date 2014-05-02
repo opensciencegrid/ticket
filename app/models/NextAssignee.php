@@ -16,7 +16,8 @@ class NextAssignee
         $weekday = $time["tm_wday"];
 
         //construct list of possible assignee based on each hours
-        $members = array("echism", "kagross", "cpipes", "vjneal");
+        //$members = array("echism", "kagross", "cpipes", "vjneal");
+        $members = array("kagross", "cpipes", "vjneal");
 
         //report the pool of possible staff
         $this->reason .= "possible assignees at this hour ($hour):";

@@ -6,7 +6,6 @@ var ssl_options = {
     //requestCert: true,
   key: fs.readFileSync('/etc/grid-security/http/key.pem'),
   cert: fs.readFileSync('/etc/grid-security/http/cert.pem')
-    
 };
 var app = https.createServer(ssl_options, handler).listen(12346);
 var io = require('socket.io').listen(app);

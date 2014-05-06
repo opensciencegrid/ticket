@@ -1,7 +1,6 @@
 <?php
 
 //Used to let user download attachment.
-//* there are few functions still left in ViewerController for GOC-TX compatibility
 class AttachmentController extends BaseController
 { 
     public function init() {

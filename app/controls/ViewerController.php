@@ -560,7 +560,8 @@ class ViewerController extends BaseController
         return $descs;
     }
 
-    //used by GOX-TX to upload attachments
+    /*
+    //accessed by goc-tx (should use attachment controller instead)
     public function uploadattachmentAction() {
         if(user()->isGuest() && !user()->isGOCMachine()) {
             elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
@@ -585,6 +586,7 @@ class ViewerController extends BaseController
         echo json_encode($datas);
         $this->render("none", null, true);
     }
+    */
 
     /*
     public function deleteattachmentAction() {
@@ -608,6 +610,7 @@ class ViewerController extends BaseController
     }
     */
 
+    /*
     //accessed by goc-tx (should use attachment controller instead)
     public function loadattachmentsAction() {
         header('Pragma: no-cache');
@@ -626,6 +629,7 @@ class ViewerController extends BaseController
         echo json_encode($datas);
         $this->render("none", null, true);
     }
+    */
 }
 
 function ticketcmp($a, $b) {

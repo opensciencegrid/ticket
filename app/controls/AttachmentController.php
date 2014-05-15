@@ -110,10 +110,8 @@ class AttachmentController extends BaseController
                 $datas[] = $fileclass;
             }
             closedir($dh);
-
-            $datas;
-            echo json_encode($datas);
         }
+        echo json_encode($datas);
         $this->render("none", null, true);
     }
 

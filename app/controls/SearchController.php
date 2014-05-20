@@ -133,7 +133,7 @@ class SearchController extends Zend_Controller_Action
                     switch($key) {
                     case "SUPPORTING_SC_ID":
                         $sc = $scmodel->get($label);
-                        if(is_null($sc)) {
+                        if(is_null($sc) || !isset($sc->name)) {
                             slog("ASSOCIATED_SC_ID set to invalid label:$label");
                             $label = "SCID:$label";
                         } else {
@@ -142,7 +142,7 @@ class SearchController extends Zend_Controller_Action
                         break;
                     case "ASSOCIATED_VO_ID":
                         $vo = $vomodel->get($label);
-                        if(is_null($vo)) {
+                        if(is_null($vo) || !isset($vo->name)) {
                             slog("ASSOCIATED_VO_ID set to invalid label:$label");
                             $label = "VOID:$label";
                         } else {
@@ -151,7 +151,7 @@ class SearchController extends Zend_Controller_Action
                         break;
                     case "ASSOCIATED_RG_ID":
                         $rg = $rgmodel->fetchByID($label);
-                        if(is_null($rg)) {
+                        if(is_null($rg) || !isset($rg->name)) {
                             slog("ASSOCIATED_RG_ID set to invalid label:$label");
                             $label = "RGID:$label";
                         } else {
@@ -196,8 +196,8 @@ class SearchController extends Zend_Controller_Action
 
     public function autocompleteAction() {
         $q = $this->clean($_REQUEST["q"]);
-        $limit = (int)$_REQUEST["limit"];
-        $timestamp = $_REQUEST["timestamp"];//what for?
+        //$limit = (int)$_REQUEST["limit"];
+        //$timestamp = $_REQUEST["timestamp"];//what for?
 
         $url = config()->solr_host."/suggest?q=".urlencode($q)."&wt=json"; //use /suggest
 
@@ -206,16 +206,20 @@ class SearchController extends Zend_Controller_Action
 
         //process result
         if(isset($ret->spellcheck)) {
-            $suggests = array($ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)]);//last is collation
-            //slog(print_r($ret->spellcheck->suggestions, true));
-            $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
-            $found = $sugs->numFound;
-            $start = $sugs->startOffset;
-            $base = substr($q, 0, $start);
-            foreach($sugs->suggestion as $id=>$sug) {
-                $suggests[] = $base.$sug;
+            $c = count($ret->spellcheck->suggestions);
+            if($c == 4) {
+                //$suggests = array($ret->spellcheck->suggestions[$len-1]);//last is collation
+                $suggests = array_slice($ret->spellcheck->suggestions, -1); //pull last
+                $sugs = $ret->spellcheck->suggestions[count($ret->spellcheck->suggestions)-3];//use last
+                //error_log(print_r($sugs, true));
+                $found = $sugs->numFound;
+                $start = $sugs->startOffset;
+                $base = substr($q, 0, $start);
+                foreach($sugs->suggestion as $id=>$sug) {
+                    $suggests[] = $base.$sug;
+                }
+                $this->view->suggests = $suggests;
             }
-            $this->view->suggests = $suggests;
         } else {
             elog("bad reply from $url");
             elog($ret_json);

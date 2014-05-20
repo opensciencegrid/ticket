@@ -41,10 +41,12 @@ class NextAssignee
                     $count = $count*2;
                     $this->reason .= "doubling the ticket count for kyle";
                 }
+                /*
                 if($member == "vjneal") {
                     $count = $count*2;
                     $this->reason .= "doubling the ticket count for vjneal";
                 }
+                */
 
                 if($id === null || $min > $count) {
                     $id = $member;

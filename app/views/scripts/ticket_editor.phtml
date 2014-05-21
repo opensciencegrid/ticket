@@ -241,17 +241,21 @@ if(!isset($form_action)) {
     </div><!-- row-->
 
     <legend>New Update
-    <select class="quickdesc" name="quickdesc" onchange="
-        if($(this).val()) {
-            $('.description').val('Loading...');
+    <script>
+    function quickdesc_change(it) {
+        if($(it).val()) {
+            expand_description();
+            $(".description").focus();
             $.ajax({
-                url: 'viewer/quickdesc?id='+escape($(this).val()),
+                url: 'viewer/quickdesc?id='+escape($(it).val()),
                 success: function(data) {
                     $('.description').val(data);
                 }
             });
         }
-        ">
+    }
+    </script>
+    <select class="quickdesc" name="quickdesc" onchange="quickdesc_change(this);">
     <?php
     $model = new Schema();
     $descs = $model->getquickdesc();

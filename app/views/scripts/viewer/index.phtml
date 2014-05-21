@@ -325,6 +325,20 @@ function submitspam(ticket_id) {
         });
     }
 }
+
+var expanded = false;
+function expand_description() {
+    var desc = $(".description");
+    if(!expanded) {
+        expanded = true;
+        //expand to minheight
+        var min = 250;
+        if(desc.height() < min) {
+            desc.animate({height: min}, 200);
+        }
+    }
+}
+
 $(function() {
     reset_anchor();
     var ADDITIONAL_COOKIE_NAME = 'gocticket';
@@ -339,31 +353,19 @@ $(function() {
                 $("#closewindow").attr("checked", "checked");
             }
         }
-
         $("#closewindow").click(function() {
             $.cookie("closewindow", $(this).attr('checked'), options);
         });
     } else {
         $("#closewindow_area").hide();
     }
-
     function updateTimeago() {
         $("time").timeago();
         setTimeout(updateTimeago, 30*1000);
     }
     updateTimeago();
 
-    var expanded = false;
-    $(".description").focus(function() {
-        if(!expanded) {
-            expanded = true;
-            //expand to minheight
-            var min = 250;
-            if($(this).height() < min) {
-                $(this).animate({height: min}, 200);
-            }
-        }
-    });
+    $(".description").focus(expand_description);
 });
 </script>
 <?php echo $this->render("pagefooter.phtml", true);?>

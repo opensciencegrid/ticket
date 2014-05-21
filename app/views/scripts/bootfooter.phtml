@@ -36,10 +36,8 @@ $(function() {
                     q: request.term
                 },
                 success: function( data ) {
-                    console.dir(data);
                     response( $.map( data.split("\n"), function( item ) {
                         if(item == "") return null;
-                        console.log(item);
                         return {
                             value: item
                         }
@@ -51,30 +49,6 @@ $(function() {
             document.location = "search?q="+ui.item.value;
         }
     });
-    /*
-    $("#search").autocomplete("search/autocomplete", {
-        width: 320,
-        minChars: 3,
-        scrollHeight: 400,
-        delay: 100,
-        selectFirst: false,
-        //autoFill: true,
-        max: 300,
-        formatItem: function(data, i, n, value) {
-            var obj = parseValue(value);
-            //return obj.str + "<code>"+obj.count+"</code>";
-            return obj.str;
-        },
-        formatResult: function(data, value) {
-            var obj = parseValue(value);
-            return obj.str;
-        },
-    }).result(function(input, value) {
-        value = value[0];
-        var obj = parseValue(value);
-        document.location = "search?q="+escape(obj.str);
-    });
-    */
     
 });
 </script>

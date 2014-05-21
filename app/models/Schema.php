@@ -41,7 +41,10 @@ class Schema
             }
             $count++;
         }
-        ksort($descs);
+        function descsort($a, $b) {
+            return strcasecmp($a, $b);
+        }
+        uksort($descs, "descsort");
         return $descs;
     }
 

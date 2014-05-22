@@ -86,7 +86,12 @@ class ViewerController extends BaseController
         //ticket info
         $this->view->status = Footprint::parse($detail->status);
         $plist = Footprint::GetPriorityList();
-        $this->view->priority = $plist[$detail->priority];
+        if(isset($plist[$detail->priority])) {
+            $this->view->priority = $plist[$detail->priority];
+        } else {
+            error_log("failed to lookup priority: ".$detail->priority);
+            $this->view->priority = "unknown_prioriry:".$detail->priority;
+        }
         $this->view->assignees = "";
         $this->view->cc = "";
 

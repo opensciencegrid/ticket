@@ -7,7 +7,7 @@ if(config()->simulate) {
     $content .= "<h3>Simulation Dump</h3>";
     $content .= "<p>Running in simulation mode. The ticket was not actually created. Following is what would've been sent to FP in real mode.</p>";
     $content .= "<pre style=\"background-color: #ccc;\">";
-    $content .= htmlspecialchars($this->mrid);
+    $content .= $this->escape($this->mrid); //mrid contains the error message..
     $content .= "</pre>";
     echo $content;
 

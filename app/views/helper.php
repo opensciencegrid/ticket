@@ -192,8 +192,9 @@ function nadstyle($nad)
     return "";
 }
 
+/*
 function htmlsafe($str)
 {
     return htmlspecialchars($str, ENT_NOQUOTES, "UTF-8");
 }
-
+*/

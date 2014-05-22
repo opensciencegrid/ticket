@@ -88,6 +88,7 @@ class User
 
     public function isGOCMachine() {
         $remote_ip = $_SERVER["REMOTE_ADDR"];
+        //slog("isGOCMachine testing $remote_ip");
         foreach(config()->gocip as $prefix) {
             if(strpos($remote_ip, $prefix) === 0) {
                 slog("Accessed from GOC machine: $remote_ip");

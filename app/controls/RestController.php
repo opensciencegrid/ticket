@@ -41,7 +41,7 @@ class RestController extends Zend_Controller_Action
         echo "<OpenCounts>";
         foreach($counts as $id=>$count) {
             echo "<Assignee>";
-            echo "<FootprintsID>".htmlspecialchars($id)."</FootprintsID><Count>$count</Count>";
+            echo "<FootprintsID>".$this->view->escape($id)."</FootprintsID><Count>$count</Count>";
             echo "<Tickets>";
             foreach($recs_grouped[$id] as $rec) {
                 $nad = strtotime($rec->nad);
@@ -60,8 +60,8 @@ class RestController extends Zend_Controller_Action
         $reason = $model->getReason();
 
         echo "<NextAssignee>";
-        echo "<FootprintsID>".htmlspecialchars($assignee)."</FootprintsID>";
-        echo "<Reason>".htmlspecialchars($reason)."</Reason>";
+        echo "<FootprintsID>".$this->view->escape($assignee)."</FootprintsID>";
+        echo "<Reason>".$this->view->escape($reason)."</Reason>";
         echo "</NextAssignee>";
     }
 
@@ -83,17 +83,17 @@ class RestController extends Zend_Controller_Action
 
             echo "<Ticket>";
             echo "<ID>".$ticket->mrid."</ID>";
-            echo "<Title>".htmlsafe($ticket->mrtitle)."</Title>";
-            echo "<Priority>".htmlsafe(Footprint::getPriority($ticket->mrpriority))."</Priority>";
-            echo "<Type>".htmlsafe(Footprint::parse($ticket->tickettype))."</Type>";
-            echo "<NextAction>".htmlsafe($ticket->nextaction)."</NextAction>";
-            echo "<NAD>".htmlsafe($ticket->nad)."</NAD>";
+            echo "<Title>".$this->view->escape($ticket->mrtitle)."</Title>";
+            echo "<Priority>".$this->view->escape(Footprint::getPriority($ticket->mrpriority))."</Priority>";
+            echo "<Type>".$this->view->escape(Footprint::parse($ticket->tickettype))."</Type>";
+            echo "<NextAction>".$this->view->escape($ticket->nextaction)."</NextAction>";
+            echo "<NAD>".$this->view->escape($ticket->nad)."</NAD>";
             echo "<URL>".fullbase()."/".$ticket->mrid."</URL>";
             echo "<Assignees>";
             foreach(explode(" ", $ticket->mrassignees) as $assignee) {
                 if(substr($assignee, 0, 3) == "CC:") continue;
                 if(trim($assignee) != "") {
-                    echo "<Assignee>".htmlsafe($assignee)."</Assignee>";
+                    echo "<Assignee>".$this->view->escape($assignee)."</Assignee>";
                 }
             }
             echo "</Assignees>";
@@ -103,7 +103,7 @@ class RestController extends Zend_Controller_Action
             echo "<Metadata>";
             foreach($recs as $rec) {
                 echo "<".$rec->key.">";
-                echo htmlsafe($rec->value);
+                echo $this->view->escape($rec->value);
                 echo "</".$rec->key.">";
             }
             echo "</Metadata>";
@@ -116,7 +116,7 @@ class RestController extends Zend_Controller_Action
     function searchAction() {
         $q = $_REQUEST["q"];
         echo "<SearchResult>";
-        echo "<Query>".htmlsafe($q)."</Query>";
+        echo "<Query>".$this->view->escape($q)."</Query>";
 
         echo "<Tickets>"; 
 
@@ -157,7 +157,7 @@ class RestController extends Zend_Controller_Action
 
         //finally.. display tickets
         foreach($final_list as $ticket_id=>$ticket) {
-            $title = htmlsafe($ticket->mrtitle);
+            $title = $this->view->escape($ticket->mrtitle);
             echo "<Ticket>";
             echo "<ID>$ticket_id</ID>";
             echo "<Title>$title</Title>";
@@ -165,8 +165,8 @@ class RestController extends Zend_Controller_Action
                 echo "<Metadatas>";
                 foreach($groups[$ticket_id] as $value) {
                     echo "<Metadata>";
-                    echo "<Key>".htmlsafe($value->key)."</Key>";
-                    echo "<Value>".htmlsafe($value->value)."</Value>";
+                    echo "<Key>".$this->view->escape($value->key)."</Key>";
+                    echo "<Value>".$this->view->escape($value->value)."</Value>";
                     echo "</Metadata>";
                 }
                 echo "</Metadatas>";

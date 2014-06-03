@@ -62,6 +62,11 @@ class RssController extends Zend_Controller_Action
             //apply filtering requested by the user (right now.. just assignee)
             //conditions will be "AND"-ed, but I think we want "OR" instead?
             if(isset($_REQUEST["assignee"])) {
+		if(!isset($item["assignees"])) {
+			error_log("ticket doesn't seem to have any assignees..");
+			error_log($ticket_xml);
+			continue;
+		}
                 if(!in_array($_REQUEST["assignee"],$item["assignees"])) {
                     continue;
                 }

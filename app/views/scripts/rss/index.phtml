@@ -3,11 +3,11 @@ function outputItem($view, $item) {
 ?>
     <item>
       <guid><?php echo fullbase()."/".$item["id"]."#".$item["time"]?></guid>
-      <title><?php echo $item["id"]." : ".$view->escape($item["title"])?></title>
+      <title>(<?php echo $item["id"].") ".$view->escape(@$item["title"])?></title>
       <link><?php echo fullbase()."/".$item["id"]?></link>
       <pubDate><?php echo date("D, j M Y G:i:s", $item["time"])?> GMT</pubDate>
       <description><?php 
-        $desc = $item["description"];
+        $desc = @$item["description"];
         $desc = str_replace("\n", "<br>\n", $desc);
         echo $view->escape($desc);
         /*

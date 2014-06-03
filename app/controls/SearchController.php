@@ -219,6 +219,9 @@ class SearchController extends Zend_Controller_Action
                     $suggests[] = $base.$sug;
                 }
                 $this->view->suggests = $suggests;
+            } else {
+                elog("empty sugestion for query:$q");
+                $this->view->suggests = array();
             }
         } else {
             elog("bad reply from $url");

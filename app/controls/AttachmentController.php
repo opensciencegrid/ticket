@@ -79,7 +79,7 @@ class AttachmentController extends BaseController
         if(!$tg->generate($path, 100, 100)) {
             header("Content-Type: image/png");
             echo file_get_contents("images/unknown.png");
-            slog("output default icon");
+            //slog("output default icon");
         }
         $this->render("none", null, true);
     }

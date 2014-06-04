@@ -1071,7 +1071,7 @@ class UploadHandler
             }
             $this->set_additional_file_properties($file);
         }
-        error_log(print_r($file, true));
+        //error_log(print_r($file, true));
         return $file;
     }
 

@@ -205,20 +205,11 @@ color: #ccc;
 </form>
 
 <script>
-
-<?php if(isset($_REQUEST["detail"])) {?>
-    var detail_touched = true;
-<?php } else { ?>
-    var detail_touched = false;
-<?php } ?>
-$("#detail").keyup(function() {
-    detail_touched = true;
-});
-
 function change_app(name) {
     $(".app_detail").hide();
     $("#app_"+name).show();
 }
+
 $(function() {
     //repopulate optional details
     <?php if(isset($_REQUEST["resource_issue_check"])) {?>
@@ -281,8 +272,7 @@ $(function() {
 });
 
 function processtemplate(check) {
-    //TODO - I need to prevent adding same template twice..
-    if(check.checked && !detail_touched) {
+    if(check.checked && $("#detail").val() == "") {
         $.ajax({
           url: "<?php echo fullbase()?>/submit/template?id="+check.id
         }).success(function(content) {

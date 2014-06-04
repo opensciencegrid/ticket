@@ -124,14 +124,11 @@ class CustomController extends Zend_Controller_Action
                     }
                 }
             }
-            //$footprint->setDestinationVO($dest_vo);
             $footprint->setNextAction($next_action);
             $footprint->setNextActionTime($nad);
             $footprint->setPriority($priority);
             $footprint->setStatus($status);
             $footprint->setTicketType($type);
-            //$footprint->setOriginatingTicketNumber($orig_ticket_id);
-            //$footprint->setDestinationTicketNumber($dest_ticket_id);
             try {
                 $mrid = $footprint->submit();
                 if(!config()->simulate) {
@@ -159,10 +156,10 @@ class CustomController extends Zend_Controller_Action
             $this->view->next_action = $_REQUEST["next_action"];
             $this->view->cc = @$_REQUEST["cc"];
 
-            $this->view->submitter_vo = $_REQUEST["submitter_vo"];
-            $this->view->originating_ticket_id = $_REQUEST["originating_ticket_id"];
-            $this->view->destination_vo = $_REQUEST["destination_vo"];
-            $this->view->destination_ticket_id = $_REQUEST["destination_ticket_id"];
+            $this->view->submitter_vo = @$_REQUEST["submitter_vo"];
+            $this->view->originating_ticket_id = @$_REQUEST["originating_ticket_id"];
+            $this->view->destination_vo = @$_REQUEST["destination_vo"];
+            $this->view->destination_ticket_id = @$_REQUEST["destination_ticket_id"];
 
             //agg..I have to reconstruct the assignee list..
             $this->view->assignees = array();
@@ -203,8 +200,8 @@ class CustomController extends Zend_Controller_Action
         return null;
     }
 
-    public function indexAction() 
-    { 
+    public function indexAction()
+    {
         //TODO - add more efaults here
         $plist = Footprint::GetPriorityList();
         $this->view->priority = $plist[4];

@@ -9,6 +9,7 @@ class Email
         $this->address_model = new Address();
         $this->paddress_model = new PrimaryAddress();
         $this->sign = false;
+        $this->from = config()->email_from; //default
     }
 
     public function setFrom($val) { $this->from = $val; }

@@ -1,6 +1,4 @@
-<?
-
-//require_once("app/httpspost.php");
+<?php
 
 class Footprint
 {
@@ -40,8 +38,6 @@ class Footprint
             }
             $this->project_fields["Originating__bVO__bSupport__bCenter"] = "other";
             $this->project_fields["Destination__bVO__bSupport__bCenter"] = "other";
-            //$this->setOriginatingVO("other"); 
-            //$this->setDestinationVO("other"); 
             $this->setNextAction("ENG Action");
             $this->setNextActionTime(time());
             $this->setTicketType("Problem__fRequest");
@@ -173,7 +169,6 @@ class Footprint
     public function setOfficePhone($v) { $this->ab_fields["Office__bPhone"] = $v; $this->b_contact = true; }
     public function setEmail($v) { $this->ab_fields["Email__baddress"] = $v; $this->b_contact = true; }
 
-
     static public function GetStatusList()
     {
         return array(
@@ -224,7 +219,6 @@ class Footprint
             }
         }
         return false;
-
     }
     public function addAssignee($v, $bClear = false) { 
         if($this->isValidAssignee($v)) {
@@ -263,8 +257,8 @@ class Footprint
     public function setTicketType($type) {
         $this->project_fields["Ticket__uType"] = $type;
         $this->b_proj = true;
-    }
 
+    }
 
     //"Yes" or "No"
     public function setReadyToClose($close) {
@@ -281,62 +275,6 @@ class Footprint
         $this->project_fields["ENG__bNext__bAction__bDate__fTime__b__PUTC__p"] = date("Y-m-d H:i:s", $time);
         $this->b_proj = true;
     }
-
-    /*
-    //this is now internal use only
-    private function setOriginatingTicketNumber($id)
-    {
-        $this->project_fields["Originating__bTicket__bNumber"] = $id;
-        $this->b_proj = true;
-    }
-
-    //this is now internal use only
-    private function setDestinationTicketNumber($id)
-    {
-        $this->project_fields["Destination__bTicket__bNumber"] = $id;
-        $this->b_proj = true;
-    }
-
-    //this is now internal use only
-    private function setOriginatingVO($voname) { 
-        if(!$this->isValidFPOriginatingVO($voname)) {
-            $this->addMeta("Couldn't set Originating VO to $voname - No such VO in FP (please sync!)\n");
-            elog("Couldn't set Originating VO to $voname - no such vo in fp");
-            $voname = "other";
-        }
-        $this->project_fields["Originating__bVO__bSupport__bCenter"] = Footprint::unparse($voname);
-        $this->b_proj = true;
-    }
-
-    //this is now internal use only
-    private function setDestinationVO($voname) { 
-        if(!$this->isValidFPDestinationVO($voname)) {
-            $this->addMeta("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
-            elog("Couldn't set DestinationVO to $voname - No such VO in FP (please sync!)\n");
-            $voname = "other";
-        }
-        $this->project_fields["Destination__bVO__bSupport__bCenter"]= Footprint::unparse($voname);
-        $this->b_proj = true;
-    }
-    */
-
-    /*
-    //returns void selected
-    public function setDestinationVOFromResourceID($resource_id)
-    {
-        $model = new Resource();
-        $vo = $model->getPrimaryOwnerVO($resource_id);
-        if(!$vo || $vo->footprints_id === null) {
-            $this->addMeta("No VOs are associated with Resource ID $resource_id. Setting destination VO to other\n");
-            $this->setDestinationVO("other");
-            return null;
-        } else {
-            $this->addMeta("Selecting $vo->vo_name(FP name: $vo->footprints_id) for Destination VO since it has the highest resource ownership.\n");
-            $this->setDestinationVO($vo->footprints_id);
-            return $vo->vo_id;
-        }
-    }
-    */
 
     //this is for resource
     public function addPrimaryAdminContact($resource_id)
@@ -401,30 +339,6 @@ class Footprint
         return "(unknown vo_id $id)";
     }
 
-/*
-    private function isValidFPOriginatingVO($name)
-    {
-        $schema_model = new Schema();
-        $vos = $schema_model->getoriginatingvos();
-        foreach($vos as $vo) {
-            $vo2 = Footprint::parse($vo);    
-            if($name == $vo2) return true;
-        } 
-        return false;
-    }
-
-    private function isValidFPDestinationVO($name)
-    {
-        $schema_model = new Schema();
-        $vos = $schema_model->getdestinationvos();
-        foreach($vos as $vo) {
-            $vo2 = Footprint::parse($vo);    
-            if($name == $vo2) return true;
-        } 
-        return false;
-    }
-*/
-
     //deprecated
     public function isValidFPSC($name)
     {
@@ -444,8 +358,7 @@ class Footprint
         return false;
     }
 
-    public function prepareParams() 
-    {
+    public function prepareParams() {
         $desc = $this->description;
         if($this->meta != "") {
             $desc .= "\n\n".config()->metatag."\n";
@@ -499,6 +412,15 @@ class Footprint
             $params["mail"]["permanentCCs"]=0;
         }
 
+        //override to always suppress submitter / cc for security tickets (TICKET-84)
+        $type = $params["projfields"]["Ticket__uType"];
+        if($type == "Security" || $type == "Security_Notification") {
+            slog("This is security/_notificatio nticket. Suppressing notification email for submitter / ccs");
+            //why don't we suppress for assignee? because I don't know how to lookup email addresses to send to for each assignee
+            $params["mail"]["contact"]=0;
+            $params["mail"]["permanentCCs"]=0;
+        }
+
         //don't pass empty mail array - FP API will throw up
         // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
         if(count($params["mail"]) == 0) {
@@ -508,9 +430,7 @@ class Footprint
         return $params;
     }
 
-    public function submit()
-    {
-
+    public function submit() {
         //determine if we are doing create or update
         if($this->id === null) {
             $call = "MRWebServices__createIssue_goc";
@@ -536,30 +456,17 @@ class Footprint
         } else {
             //submit the ticket!
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+            if(is_null($this->id)) {
+                $this->id = $newid; //reset ticket ID with new ID that we just got
 
-            //prepare message to publish on event server
-            $event = new EventPublisher();
-            $msg = "<ticket>";
-            $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
-            $msg .= "<title>".htmlspecialchars($this->title)."</title>";
-            $msg .= "<description>".htmlspecialchars($this->description)."</description>";
-            $msg .= "<status>".htmlspecialchars($this->status)."</status>";
-            $msg .= "</ticket>";
-
-            if($this->id === null) {
-                //For new ticket -- Send SMS -- if the ticket didn't come from other ticketing system.
-                //(We don't want GGUS to send us critical ticket which send us alarm in the middle of the night)
+                //For new ticket, send SMS - if the ticket didn't come from other ticketing system.
                 if(trim(@$this->project_fields["Originating__bTicket__bNumber"]) == "") {
-                    $this->send_notification($params["assignees"], $newid);
+                    $this->send_notification($params["assignees"], $this->id);
                 }
 
-                //reset ticket ID with new ID that we just got
-                $this->id = $newid;
-                $event->publish($msg, $this->id.".create");
-                //message("success", "Successfully opened a ticket ".$this->id);
+                $this->sendEventNotification(true);
             } else {
-                //ticket updated
-                $event->publish($msg, $this->id.".update");
+                $this->sendEventNotification(false);
             }
 
             //if assignee notification was suppressed, then send GOC-TX trigger email ourselves
@@ -574,10 +481,47 @@ class Footprint
                 $data->setMetadata($this->id, $key, $value);
                 slog("Setmetadata : $this->id $key = $value");
             }
-
         }
-
         return $this->id;
+    }
+
+    private function sendEventNotification($newticket) {
+        $type = $this->project_fields["Ticket__uType"];
+        if($type == "Security" || $type == "Security_Notification") {
+            slog("This is security/_notification ticket. Sending signed email notification - instead of publishing to EventPublisher");
+            $e = new Email();
+            $e->setSubject($this->title);
+            $e->setTo($this->ab_fields["Email__baddress"]);  //customer
+            foreach($this->permanent_cc as $cc) {
+                $e->addAddress($cc);
+            }
+            $date = date("D M j G:i:s T Y");
+            if($newticket) {
+                $msg = "New $type ticket was opened on $date.";
+            } else {
+                $msg = "$type ticket has been updated on $date.";
+            }
+            $e->setBody("$msg\n\nPlease visit ".fullbase()."/".$this->id);
+            $e->addAddress("hayashis+test@iu.edu");
+            $e->setSign();
+            $e->send();
+        } else {
+            //prepare message to publish on event server
+            $event = new EventPublisher();
+            $msg = "<ticket>";
+            $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
+            $msg .= "<title>".htmlspecialchars($this->title)."</title>";
+            $msg .= "<description>".htmlspecialchars($this->description)."</description>";
+            $msg .= "<status>".htmlspecialchars($this->status)."</status>";
+            $msg .= "</ticket>";
+
+            if($newticket) {
+                $event->publish($msg, $this->id.".create");
+            } else {
+                //ticket updated
+                $event->publish($msg, $this->id.".update");
+            }
+        }
     }
 
     private function sendGOCTXTrigger($assignees, $id) {
@@ -610,18 +554,6 @@ class Footprint
             dlog("sending SMS notification to ".print_r($sms_to, true));
             $subject = "";
             $body = "";
-/*
-            switch($this->priority_number) {
-            case 1: $subject .= "CRITICAL ";
-                    break;
-            case 2: $subject .= "HIGH Priority ";
-                    break;
-            case 3: $subject .= "ELEVATED ";
-                    break;
-            case 4: $subject .= "";
-                    break;
-            }
-*/
             $subject = Footprint::getPriority($this->priority_number);
             $subject .= " Ticket ID:$id has been submitted";
             $body .= $this->title."\n".$this->description;

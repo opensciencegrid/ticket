@@ -6,12 +6,19 @@
 <script type="text/javascript" src="//datatables.net/download/build/jquery.dataTables.min.js"></script>
 
 <div class="container-fluid ticket-list">
-<?php
-echo $this->alerts();
-echo "<ul class=\"nav nav-tabs\">";
+<?php echo $this->alerts(); ?>
 
+<span class="pull-right">
+    <a type="application/rss+xml" href="<?php echo fullbase()?>/rss">
+    <i class="fa fa-rss-square fa-2x"></i></a>
+</span>
+
+<?php
+echo "<ul class=\"nav nav-tabs\">";
 $active = "";
-if($this->submenu_selected == "listopen") { $active = "active"; }
+if($this->submenu_selected == "listopen") { 
+    $active = "active"; 
+}
 echo "<li class=\"$active\">";
 echo "<a href=\"list/open\">Open Tickets</a>";
 echo "</li>";

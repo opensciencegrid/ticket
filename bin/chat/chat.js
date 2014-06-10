@@ -4,6 +4,7 @@ var url = require('url');
 
 var ssl_options = {
     //requestCert: true,
+  hostname: 'ticket.grid.iu.edu',
   key: fs.readFileSync('/etc/grid-security/http/key.pem'),
   cert: fs.readFileSync('/etc/grid-security/http/cert.pem')
 };

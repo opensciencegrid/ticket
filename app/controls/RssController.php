@@ -71,7 +71,7 @@ class RssController extends Zend_Controller_Action
                     continue;
                 }
             }
-            if(isset($_REQUEST["cc"])) {
+            if(isset($_REQUEST["cc"]) && isset($item["ccs"])) {
                 if(!in_array($_REQUEST["cc"],$item["ccs"])) {
                     continue;
                 }

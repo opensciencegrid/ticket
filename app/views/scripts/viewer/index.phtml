@@ -209,27 +209,13 @@ echo "</div>";
             }
         }
 
-        /*
-        if($time > time() - 60*60*24) {
-            //show in "ago" format
-            $detail = date(config()->date_format_full, $time);
-            $ago = agoCalculation($time). " ago";
-            $human_time = "<span onmouseover=\"$(this).text('$detail');\" onmouseout=\"$(this).text('$ago');\">$ago</span>";
-        } else {
-            $human_time = date(config()->date_format_full, $time);
-        }
-        */
-
         $iso = date("c", $time);
         $timestr = date(config()->date_format_full, $time);
         $human_time = "<time datetime=\"$iso\">$timestr</time>";
 
-        //history == internal activities
         if($type == "history") {
             echo "<div class='update_history'>";
-            //$out = "<div class=\"header\">$human_time</div>";
             echo "<pre>".Footprint::parse($content)."</pre>";
-            //echo outputToggle("<span class=\"header clickable\">Show Footprints Activities ($human_time)</span>", "", $out);
             echo "</div>";
         }
         
@@ -287,7 +273,6 @@ echo "</div>";
         if(!empty($meta_information)) {
             echo "<div class=\"meta_information\">";
             $out = "<pre>$meta_information</pre>";
-            //echo outputToggle("<button class=\"btn btn-warning btn-small\">Show Ticket Creation Information</button>", "", $out);
             echo $out;
             echo "</div>";
         }
@@ -310,7 +295,6 @@ echo "</div>";
 <script type="text/javascript">
 function reset_anchor() {
     $("#updates .selected").removeClass("selected");
-
     var urls = document.location.toString().split('#'); 
     var anchor = urls[1];
     if(anchor) {
@@ -323,19 +307,6 @@ function submitspam(ticket_id) {
         $.ajax("viewer/processspam?id="+ticket_id).done(function() {
             window.location.reload();
         });
-    }
-}
-
-var expanded = false;
-function expand_description() {
-    var desc = $(".description");
-    if(!expanded) {
-        expanded = true;
-        //expand to minheight
-        var min = 250;
-        if(desc.height() < min) {
-            desc.animate({height: min}, 200);
-        }
     }
 }
 
@@ -364,7 +335,6 @@ $(function() {
         setTimeout(updateTimeago, 30*1000);
     }
     updateTimeago();
-
     $(".description").focus(expand_description);
 });
 </script>

@@ -27,20 +27,6 @@ if(!isset($form_action)) {
             $(function() {
                 $("#careof").autocomplete({
                     source: persons,
-                /*
-                    mustMatch: true,
-                    matchContains: true,
-                    width: 500,
-                    formatItem: function(row, i, max) {
-                        return row.name + "<br/>" + row.email;
-                    },
-                    formatMatch: function(row, i, max) {
-                        return row.name + " " + row.email;
-                    },
-                    formatResult: function(row) {
-                        return row.name;
-                    }
-                */
                     select: function(event, ui) {
                         $("input[name=submitter_name]").val(ui.item.name);
                         $("input[name=submitter_email]").val(ui.item.email);
@@ -66,7 +52,7 @@ if(!isset($form_action)) {
             <label class="control-label" for="cc">CC</label>
             <div class="controls">
                 <div class="ccarea">
-                    <?
+                    <?php
                     include_once("app/views/cc_editor.php");
                     cceditor($this->cc);
                     ?>
@@ -133,7 +119,7 @@ if(!isset($form_action)) {
             <label class="control-label" for="ticket_type">Ticket Type</label>
             <div class="controls">
             <select name="ticket_type" class="span12">
-            <?
+            <?php
             $ttype = Footprint::GetTicketTypes();
             foreach($ttype as $type) {
                 $selected = "";
@@ -149,7 +135,7 @@ if(!isset($form_action)) {
             <label class="control-label" for="priority">Priority</label>
             <div class="controls">
             <select name="priority" class="span12">
-            <?
+            <?php
             $plist = Footprint::GetPriorityList();
             foreach($plist as $id=>$p) {
                 $selected = "";
@@ -165,7 +151,7 @@ if(!isset($form_action)) {
             <label class="control-label" for="status">Status</label>
             <div class="controls">
             <select name="status" class="span12">
-            <?
+            <?php
             $style = status2style($this->status);
             foreach(Footprint::GetStatusList() as $status) {
                 $selected = "";
@@ -268,12 +254,14 @@ if(!isset($form_action)) {
     </legend>
     <textarea class="description" name="description" onkeypress="checkTab(event);"><?=$this->description?></textarea>
     <div class="form-actions">
-        <?if(!isset($submit_label)) {
+        <?php
+        if(!isset($submit_label)) {
             $submit_label = "Update";
         }?>
         <div class="controls">
         <button type="submit" class="btn btn-primary"><?php echo $submit_label?></button>
-        <?if(isset($suppression_control)) {?>
+        <?php
+        if(isset($suppression_control)) {?>
             &nbsp;&nbsp;<input id="notify1" type="checkbox" name="notify_assignees" value="on" checked=checked"/> <label for="notify1">Notify Assignees</label>
             &nbsp;&nbsp;<input id="notify2" type="checkbox" name="notify_submitter" value="on" checked=checked"/> <label for="notify2">Notify Submitter</label>
             &nbsp;&nbsp;<input id="notify3" type="checkbox" name="notify_ccs" value="on" checked=checked"/> <label for="notify3">Notify CCs</label>

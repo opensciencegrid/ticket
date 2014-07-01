@@ -1,7 +1,7 @@
 <?php echo $this->render("bootheader.phtml", true);?>
 <div class="container-fluid">
 
-<?
+<?php
 $form_action = "custom/submit";
 $submit_label = "Submit";
 
@@ -14,17 +14,7 @@ echo "</div>";
 ?>
 <script>
 $(function() {
-    var expanded = false;
-    $(".description").focus(function() {
-        if(!expanded) {
-            expanded = true;
-            //expand to minheight
-            var min = 200;
-            if($(this).height() < min) {
-                $(this).animate({height: min}, 500);
-            }
-        }
-    });
+    $(".description").focus(expand_description);
 });
 </script>
 

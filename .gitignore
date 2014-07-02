@@ -1,0 +1,4 @@
+config.php
+.htaccess
+bin/solrloader/run.log
+bin/solrloader/post/*

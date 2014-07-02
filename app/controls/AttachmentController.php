@@ -10,6 +10,7 @@ class AttachmentController extends BaseController
     //proxy attachment download
     //GOC-TX still uses direct apache download as of 2013 (access controlled by Apache IP)
     public function viewAction() { 
+        if(!isset($_REQUEST["id"]) || !isset($_REQUEST["file"])) return;
         $id = (int)$_REQUEST["id"];
 
         $dirty_filename = $_REQUEST["file"];

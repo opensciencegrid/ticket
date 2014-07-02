@@ -536,6 +536,12 @@ class ViewerController extends BaseController
 
         foreach($alldescs as $desc) {
             if($desc == "") continue;
+
+            //footprints(?) somehow stores text that is html escaped too much..
+            //let's decode, the re-encode so that it won't escape characters like : which breaks text2url replacement later on
+            $desc = html_entity_decode($desc, ENT_QUOTES);
+            $desc = htmlentities($desc);
+
             $desc_lines = explode("\n", $desc);
             $info = trim($desc_lines[0]);
             $desc = strstr($desc, "\n");

@@ -121,6 +121,18 @@ background-color: red;
 
 <?php 
 
+//wrap link content with <a href>
+function replace($text){
+      $text = preg_replace("#www\.#", "http://www.", $text);
+      $text = preg_replace("#http://http://www\.#", "http://www.", $text);
+      $text = preg_replace("#https://http://www\.#", "https://www.", $text);
+      $exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+      preg_match_all($exUrl, $text, $url);
+      foreach($url[0] as $k=>$v) $text = str_replace($url[0][$k], '<a href="'.$url[0][$k].'" target="_blank" rel="nofollow">'.$url[0][$k].'</a>', $text);
+      return $text;
+}
+
+
 echo $this->alerts();
 echo "<div id=\"presence\" class=\"pull-right\"></div>";
 echo "<div class=\"ticketgui\">";
@@ -238,6 +250,10 @@ echo "</div>";
             }
             echo "<a class=\"anchor\" name=\"$anchor\">&nbsp;</a>";
             echo "</div>";
+
+            //$content = "Now, you can add URL http://www.google.co.uk/ and other URL will be replaced too https://www.google.sk/imghp";
+            $content = replace($content);
+
             $lines_raw = explode("\n", $content);
             $lines = array();
             foreach($lines_raw as $line) {

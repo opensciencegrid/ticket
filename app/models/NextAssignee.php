@@ -1,4 +1,4 @@
-<?
+<?php
 
 class NextAssignee
 {
@@ -77,6 +77,5 @@ class NextAssignee
 
         slog("choose ".$this->next_assignee. " due to - ". $this->reason);
     }
-
 }
 

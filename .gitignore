@@ -2,3 +2,5 @@ config.php
 .htaccess
 bin/solrloader/run.log
 bin/solrloader/post/*
+bin/solrloader/lastrun.txt
+app/logs/*

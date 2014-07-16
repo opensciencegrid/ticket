@@ -4,24 +4,20 @@ class NextAssignee
 {
     public $next_assignee = null;
     public $reason = "";
-    public function getNextAssignee() { return $this->next_assignee; }
-    public function getReason() { return $this->reason; }
 
-    public function __construct() 
-    {
+    public function getNextAssignee() { 
         $time = localtime(time()+(3600*config()->timezone_offset), true);
         $hour = $time["tm_hour"];
         $month = $time["tm_mon"];
         $day = $time["tm_mday"];
         $weekday = $time["tm_wday"];
 
-        //construct list of possible assignee based on each hours
-        $members = array("echism", "kagross", "cpipes", "vjneal");
+        $members = $this->getConfig();
 
         //report the pool of possible staff
         $this->reason .= "possible assignees at this hour ($hour):";
         foreach($members as $member) {
-            $this->reason .= " ".$member;
+            $this->reason .= " ".$member->uid;
         }
         $this->reason .= ". ";
 
@@ -32,16 +28,15 @@ class NextAssignee
             $id = null;
             $min = null;
             foreach($members as $member) {
-                if(!isset($counts[$member])) {
+                if(!isset($counts[$member->uid])) {
                     $counts[$member] = 0;
                 }
-                $count = $counts[$member];
-
+                $count = $counts[$member->uid] * $member->weight;
+                /*
                 if($member == "kagross") {
                     $count = $count*2;
                     $this->reason .= "doubling the ticket count for kyle";
                 }
-                /*
                 if($member == "vjneal") {
                     $count = $count*2;
                     $this->reason .= "doubling the ticket count for vjneal";
@@ -49,7 +44,7 @@ class NextAssignee
                 */
 
                 if($id === null || $min > $count) {
-                    $id = $member;
+                    $id = $member->uid;
                     $min = $count;
                 }
             }
@@ -64,7 +59,7 @@ class NextAssignee
         //add some current ticket stattistics..
         $this->reason .= "\n";
         foreach($members as $member) {
-            $this->reason .= $member." has ".$counts[$member]." tickets. ";
+            $this->reason .= $member->uid."(weight: ".$member->weight.") has ".$counts[$member->uid]." tickets. ";
         }
 
         //apply override
@@ -76,6 +71,45 @@ class NextAssignee
         }
 
         slog("choose ".$this->next_assignee. " due to - ". $this->reason);
+
+        return $this->next_assignee; 
+    }
+    public function getReason() { 
+        if(is_null($this->next_assignee)) {
+            $this->getNextAssignee();
+        }
+        return $this->reason; 
+    }
+
+    public function getConfig() {
+        $sql = "select * from gocticket.assignment where disable = 0";
+        return db("data")->fetchAll($sql);
+    }
+
+    public function setConfig($members)
+    {
+        //clear all records
+        $sql = "truncate table gocticket.assignment";
+        db("data")->exec($sql);
+        
+        //insert all
+        if(count($members) > 0) {
+            $sql = "INSERT INTO `gocticket`.`assignment` (uid,weight,disable) VALUES ";
+            $first = true;
+            foreach($members as $member) {
+                if(!$first) {
+                    $sql .= ",";
+                } else {
+                    $first = false;
+                }
+                $uid = $member["uid"];
+                $weight = $member["weight"];
+                $disable = $member["disable"];
+                $sql .= " ('$uid',$weight,$disable)";
+            }
+            $sql .= ";";
+            db("data")->exec($sql);
+        }
     }
 }
 

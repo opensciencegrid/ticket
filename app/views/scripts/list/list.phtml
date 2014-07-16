@@ -1,10 +1,8 @@
 <?php echo $this->render("bootheader.phtml", true);?>
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.1/css/jquery.dataTables.css" />
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/colvis/1.1.1/css/dataTables.colVis.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/2.1.2/css/dataTables.fixedHeader.css" />
 <script type="text/javascript" src="//cdn.datatables.net/1.10.1/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="//cdn.datatables.net/colvis/1.1.1/js/dataTables.colVis.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/fixedheader/2.1.2/js/dataTables.fixedHeader.min.js"></script>
 
 <style>
@@ -50,8 +48,8 @@ $columns = array(
     array("name"=>"Next Action", "type"=>"string", "visible"=>true), 
     array("name"=>"NAD", "type"=>"html", "visible"=>true), 
     array("name"=>"Priority", "type"=>"html", "visible"=>true), 
-    array("name"=>"Assignees", "type"=>"string", "visible"=>true), 
-    array("name"=>"CCs", "type"=>"string", "visible"=>true), 
+    array("name"=>"Assignees", "type"=>"html", "visible"=>true), 
+    array("name"=>"CCs", "type"=>"html", "visible"=>true), 
 
     array("name"=>"Resource", "type"=>"string", "meta"=>true, "visible"=>false),
     array("name"=>"Resource Group", "type"=>"string", "meta"=>true, "visible"=>false),
@@ -154,47 +152,47 @@ foreach($tickets as $ticket) {
         $title = "<span class='red tag'>Security</span>$title";
     }
 
-    $submitter = "";
+    $submitter = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUBMITTER_NAME"])) {
         $submitter = $metadata[$ticket->mrid]["SUBMITTER_NAME"];
     }
 
-    $submitted_via = "";
+    $submitted_via = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUBMITTED_VIA"])) {
         $submitted_via = $metadata[$ticket->mrid]["SUBMITTED_VIA"];
     }
 
-    $resource_group = "";
+    $resource_group = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"])) {
         $resource_group = $metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"];
     }
 
-    $ggus_ticket_id = "";
+    $ggus_ticket_id = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["GGUS_TICKET_ID"])) {
         $ggus_ticket_id = $metadata[$ticket->mrid]["GGUS_TICKET_ID"];
     }
 
-    $ggus_ticket_type = "";
+    $ggus_ticket_type = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["GGUS_TICKET_TYPE"])) {
         $ggus_ticket_type = $metadata[$ticket->mrid]["GGUS_TICKET_TYPE"];
     }
 
-    $resource = "";
+    $resource = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_R_NAME"])) {
         $resource = $metadata[$ticket->mrid]["ASSOCIATED_R_NAME"];
     }
 
-    $sc = "";
+    $sc = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUPPORTING_SC_NAME"])) {
         $sc = $metadata[$ticket->mrid]["SUPPORTING_SC_NAME"];
     }
 
-    $vo = "";
+    $vo = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"])) {
         $vo = $metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"];
     }
 
-    $snow_ticket_id = "";
+    $snow_ticket_id = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"])) {
         $snow_ticket_id = $metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"];
     }
@@ -209,9 +207,9 @@ foreach($tickets as $ticket) {
         <td><?=$ticket->nextaction?></td>
         <td><?=$nad?></td>
         <td><?=$priority?></td>
-        <td><?=implode("<br>", $assignees)?></td>
+        <td><?=implode("<br>", $assignees)?><br></td>
         <?if(!user()->isguest()) {
-                echo "<td>".implode("<br>", $ccs)."</td>";
+                echo "<td>".implode(" | ", $ccs)."<br></td>";
         } else {
             echo "<td>(Hidden)</td>";
         }?>
@@ -262,13 +260,10 @@ var dtable = $('#tickets').dataTable({
 
 function fnShowHide(button, iCol )
 {
-    if($(button).hasClass("active")) {
-        $(button).removeClass("active");
-    } else {
-        $(button).addClass("active");
-    }
+    $(button).toggleClass("active");
     var bVis = dtable.fnSettings().aoColumns[iCol].bVisible;
     dtable.fnSetColumnVis( iCol, bVis ? false : true );
+    init_colsearch(); //reinit
 }
 
 //need to injext toolbar into data table..
@@ -317,8 +312,7 @@ $(".toolbar").html('<?
     echo "</div>";//navbar
 ?>');
 
-$(function() {
-    //setup colsearch field
+function init_colsearch() {
     $(".search").each(function(idx, it) {
         var cid = $(it).data('pos');
         if(colsearch[cid] != undefined) {
@@ -336,11 +330,14 @@ $(function() {
         */
 
         //remember colsearch
-        $(it).keyup(function() {
-            dtable.fnFilter(jQuery.trim(it.value), cid);
-            colsearch[cid] = it.value;
+        function update() {
+            var tvalue = jQuery.trim(it.value);
+            dtable.fnFilter(tvalue, cid);
+            colsearch[cid] = tvalue;
             $.cookie('colsearch', colsearch, {expires: 30, path: window.location.pathname});
-        });
+        }
+        $(it).keyup(update);
+        $(it).bind("input", update);//for IE's X button in text input
 
         //prevent sorting to fire when user clicks on the search box
         $(it).click(function(e) {
@@ -349,6 +346,10 @@ $(function() {
             return false;
         });
     });
+}
+
+$(function() {
+    init_colsearch();
 
     //activate visiable column
     $(".coltog").each(function(i, it) {

@@ -6,3 +6,4 @@ bin/solrloader/lastrun.txt
 app/logs/*
 bin/solrloader/posted
 robots.txt
+node_modules

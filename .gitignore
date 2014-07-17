@@ -5,3 +5,4 @@ bin/solrloader/post/*
 bin/solrloader/lastrun.txt
 app/logs/*
 bin/solrloader/posted
+robots.txt

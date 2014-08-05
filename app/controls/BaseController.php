@@ -89,7 +89,7 @@ class BaseController extends Zend_Controller_Action
 
             $phone = new Zend_Form_Element_Text('phone');
             $phone->setLabel("Phone Number");
-            $phone->addValidator('regex', false, validator::$phone);
+            //$phone->addValidator('regex', false, validator::$phone);
             $phone->setRequired(true);
             $phone->setValue(user()->getPersonPhone());
             $form->addElement($phone);

@@ -215,7 +215,7 @@ RSS Feed: http://osggoc.blogspot.com");
             $footprint->setSubmitter($agent);
         } else {
             $footprint->addDescription("\n\n-- by $name");
-            $footprint->addMeta("Submitter DN: ".user()->getDN());
+            //$footprint->addMeta("Submitter DN: ".user()->getDN());
             //$footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
         }
 
@@ -233,6 +233,14 @@ RSS Feed: http://osggoc.blogspot.com");
         $footprint->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
         $footprint->setMetadata("ASSOCIATED_R_ID", $resource_id);
         $footprint->setMetadata("ASSOCIATED_R_NAME", $resource_name);
+
+        $footprint->setMetadata("SUBMITTER_NAME", $name);
+        $footprint->setMetadata("SUBMITTER_IP", $_SERVER["REMOTE_ADDR"]);
+        $footprint->setMetadata("SUBMITTER_AGENT", $_SERVER["HTTP_USER_AGENT"]);
+        if(user()->getDN() !== null) {
+            $footprint->setMetadata("SUBMITTER_DN", user()->getDN());
+        }
+        $footprint->setMetadata("SUBMITTED_VIA", "GOC Ticket/".$this->getRequest()->getControllerName());
 
         //$void = $footprint->setDestinationVOFromResourceID($resource_id);
         $model = new Resource();

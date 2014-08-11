@@ -132,7 +132,7 @@ class CustomController extends Zend_Controller_Action
             try {
                 $mrid = $footprint->submit();
                 if(!config()->simulate) {
-                    message("success", "Successfully updated ticket ".$mrid);
+                    message("success", "Successfully updated ticket <a href=\"".fullbase()."/$mrid\">$mrid</a>", true);
                 }
                 $this->view->mrid = $mrid;
                 $this->render("success", null, true);

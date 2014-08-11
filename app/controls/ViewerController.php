@@ -323,7 +323,7 @@ class ViewerController extends BaseController
             try {
                 $mrid = $footprint->submit();
                 if(!config()->simulate) {
-                    message("success", "Successfully updated ticket ".$mrid);
+                    message("success", "Successfully updated ticket <a href=\"".fullbase()."/$mrid\">$mrid</a>", true);
                     if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
                         //do close
                         $close = "?close=true";
@@ -446,7 +446,7 @@ class ViewerController extends BaseController
 
         $mrid = $footprint->submit();
         if(!config()->simulate) {
-            message("success", "Successfully updated ticket ".$mrid);
+            message("success", "Successfully updated ticket <a href=\"".fullbase()."/$mrid\">$mrid</a>", true);
             //header("Location: ".fullbase()."/".$ticket_id);
             //exit;//needed?
         } 

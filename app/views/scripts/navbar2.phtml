@@ -1,0 +1,155 @@
+<style>
+body {
+padding-top: 60px;
+}
+.navbar-brand {
+padding-top: 10px;
+}
+.navbar-form {
+}
+</style>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"></a>
+        <!--
+        <a class="navbar-brand" href="<?php echo fullbase()?>"><?php echo config()->app_name?></a>
+        -->
+    </div><!--navbar-header--> 
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="https://myosg.grid.iu.edu">MyOSG</a></li>
+                    <li><a href="https://oim.grid.iu.edu">OIM</a></li>
+                    <li class="active"><a href="index">Ticket</a></li>
+                    <li><a href="https://twiki.grid.iu.edu">TWiki</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://repo.grid.iu.edu">Repo</a></li>
+                    <!--<li><a href="http://software.grid.iu.edu">Software Cache</a></li> -->
+                    <li><a href="http://is.grid.iu.edu">OSG BDII</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+                    <li><a href="http://display.grid.iu.edu">Display</a></li>
+                    <li><a href="http://osggoc.blogspot.com/">News</a></li>
+                </ul>
+            </li>
+            <li id="menu_submit"><a href="submit">Submit</a></li>
+            <li id="menu_view" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                <li id="submenu_listopen"><a href="list/open">Open Tickets</a></li>
+                <li id="submenu_listrecentclose"><a href="list/recentclose">Recently Closed Tickets</a></li>
+                <li class="divider"></li>
+                <li id="submenu_alltickets"><a href="search?q=&sort=id">All Tickets</a></li>
+                </ul>
+            </li>  
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <?php
+            if(!user()->isGuest()) {
+                echo "<li class=\"dropdown\">";
+                echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
+                echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+                echo "<ul class=\"dropdown-menu\">";
+                if(user()->allows("admin") || user()->allows("notify")) {
+                    echo "<li class=\"dropdown-header\">Notification</li>";
+                    if(user()->allows("admin")) {
+                        echo "<li id=\"submenu_notify\"><a href=\"notify\">GOC Notification</a></li>";
+                    }
+                    if(user()->allows("notify")) {
+                        echo "<li id=\"submenu_simplenotify\"><a href=\"simplenotify\">Security Notification</a></li>";
+                    }
+                    echo "<li class=\"divider\"></li>";
+                }
+
+                echo "<li class=\"dropdown-header\">Ticket Submitter</li>";
+                if(user()->allows("notify")) {
+                    echo "<li id=\"submenu_securityannounceticket\"><a href=\"securityannounceticket\">Security Ticket</a></li>";
+                }
+                if(user()->allows("admin")) {
+                    echo "<li id=\"submenu_bulkresource\"><a href=\"bulkresource\">Bulk Resource Tickets</a></li>";
+                    echo "<li id=\"submenu_custom\"><a href=\"custom\">Custom Ticket</a></li>";
+                    echo "<li id=\"submenu_ra\"><a href=\"ra\">Certificate Request</a></li>";
+                }
+                echo "<li id=\"submenu_campus\"><a href=\"campus\">CRC Request Form</a></li>";
+                echo "<li class=\"divider\"></li>";
+
+                if(user()->allows("admin")) {
+                    echo "<li class=\"dropdown-header\">Administration</li>";
+                    echo "<li id=\"submenu_finderror\"><a href=\"finderror\">Footprints Errors</a></li>";
+                    //echo "<li id=\"submenu_group\"><a href=\"group\">Ticket Clustering</a></li>";
+                    echo "<li id=\"submenu_assignment\"><a href=\"assignment\">Assignment</a></li>";
+                    echo "<li class=\"divider\"></li>";
+                }
+
+                echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+                echo "</ul>";
+                echo "</li>";
+            } else if(@$_SERVER['HTTPS'] == "on") {
+                if(Zend_Registry::isRegistered("unregistered_dn")) {
+                    echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                } else if(Zend_Registry::isRegistered("disabled_dn")) {
+                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
+                } else {
+                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
+                }
+            } else {
+                //probably via http
+                echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+            }
+
+            ?>
+        </ul>
+        <form class="navbar-form navbar-right" role="form" action="<?php echo fullbase()?>/viewer">
+            <div class="form-group">
+                <input id="search" type="text" name="id" class="form-control" placeholder="Search Ticket" value="<?php echo @$this->query?>">
+                <!--
+                <button type="submit" class="btn btn-default">Search</button>
+                -->
+            </div>
+        </form>
+    </div><!--collapse-->
+
+</div><!--container-->
+</div><!--navbar-->
+
+<script>
+$(function() {
+    //activate menu that user is currently on
+    $("#menu_<?php echo $this->menu_selected?>").addClass("active"); 
+    $("#submenu_<?php echo $this->submenu_selected?>").addClass("active"); 
+
+    //enable autocomplete for search box
+    $("#search").autocomplete({
+        source: function( request, response ) {
+            $.ajax({
+                url: "<?php echo fullbase()?>/search/autocomplete",
+                dataType: "text",
+                data: {
+                    q: request.term
+                },
+                success: function( data ) {
+                    response( $.map( data.split("\n"), function( item ) {
+                        if(item == "") return null;
+                        return {
+                            value: item
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            document.location = "<?php echo fullbase()?>/search?q="+ui.item.value;
+        }
+    });
+});
+</script>

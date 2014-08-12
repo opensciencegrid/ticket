@@ -69,12 +69,12 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-        
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
             <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"></a>
             <ul class="nav">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
@@ -85,7 +85,6 @@
                     <li><a href="https://twiki.grid.iu.edu">TWiki</a></li>
                     <li class="divider"></li>
                     <li><a href="http://repo.grid.iu.edu">Repo</a></li>
-                    <!--<li><a href="http://software.grid.iu.edu">Software Cache</a></li> -->
                     <li><a href="http://is.grid.iu.edu">OSG BDII</a></li>
                     <li class="divider"></li>
                     <li><a href="http://blogs.grid.iu.edu">Blog</a></li>
@@ -94,64 +93,6 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav pull-right">
-                <?php
-                if(!user()->isGuest()) {
-                    echo "<li class=\"dropdown\">";
-                    echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
-                    echo user()->getPersonName()." <span class=\"caret\"></span></a>";
-
-                    echo "<ul class=\"dropdown-menu\">";
-                    if(user()->allows("admin") || user()->allows("notify")) {
-                        echo "<li class=\"nav-header\">Notification</li>";
-                        if(user()->allows("admin")) {
-                            echo "<li id=\"submenu_notify\"><a href=\"notify\">GOC Notification</a></li>";
-                        }
-                        if(user()->allows("notify")) {
-                            echo "<li id=\"submenu_simplenotify\"><a href=\"simplenotify\">Security Notification</a></li>";
-                        }
-                        echo "<li class=\"divider\"></li>";
-                    }
-
-                    echo "<li class=\"nav-header\">Ticket Submitter</li>";
-                    if(user()->allows("notify")) {
-                        echo "<li id=\"submenu_securityannounceticket\"><a href=\"securityannounceticket\">Security Ticket</a></li>";
-                    }
-                    if(user()->allows("admin")) {
-                        echo "<li id=\"submenu_bulkresource\"><a href=\"bulkresource\">Bulk Resource Tickets</a></li>";
-                        echo "<li id=\"submenu_custom\"><a href=\"custom\">Custom Ticket</a></li>";
-                        echo "<li id=\"submenu_ra\"><a href=\"ra\">Certificate Request</a></li>";
-                    }
-                    echo "<li id=\"submenu_campus\"><a href=\"campus\">CRC Request Form</a></li>";
-                    echo "<li class=\"divider\"></li>";
-
-                    if(user()->allows("admin")) {
-                        echo "<li class=\"nav-header\">Administration</li>";
-                        echo "<li id=\"submenu_finderror\"><a href=\"finderror\">Footprints Errors</a></li>";
-                        //echo "<li id=\"submenu_group\"><a href=\"group\">Ticket Clustering</a></li>";
-                        echo "<li id=\"submenu_assignment\"><a href=\"assignment\">Assignment</a></li>";
-                        echo "<li class=\"divider\"></li>";
-                    }
-
-                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
-                    echo "</ul>";
-                    echo "</li>";
-                } else if(@$_SERVER['HTTPS'] == "on") {
-                    if(Zend_Registry::isRegistered("unregistered_dn")) {
-                        echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
-                    } else if(Zend_Registry::isRegistered("disabled_dn")) {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
-                    } else {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
-                    }
-                } else {
-                    //probably via http
-                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
-                }
-
-                ?>
-            </ul>
-
             <div class="nav-collapse">
                 <ul class="nav">
                     <li id="menu_submit"><a href="submit">Submit</a></li>
@@ -164,6 +105,64 @@
                         </ul>
                     </li>                
                 </ul>
+                <ul class="nav pull-right">
+                    <?php
+                    if(!user()->isGuest()) {
+                        echo "<li class=\"dropdown\">";
+                        echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
+                        echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+                        echo "<ul class=\"dropdown-menu\">";
+                        if(user()->allows("admin") || user()->allows("notify")) {
+                            echo "<li class=\"nav-header\">Notification</li>";
+                            if(user()->allows("admin")) {
+                                echo "<li id=\"submenu_notify\"><a href=\"notify\">GOC Notification</a></li>";
+                            }
+                            if(user()->allows("notify")) {
+                                echo "<li id=\"submenu_simplenotify\"><a href=\"simplenotify\">Security Notification</a></li>";
+                            }
+                            echo "<li class=\"divider\"></li>";
+                        }
+
+                        echo "<li class=\"nav-header\">Ticket Submitter</li>";
+                        if(user()->allows("notify")) {
+                            echo "<li id=\"submenu_securityannounceticket\"><a href=\"securityannounceticket\">Security Ticket</a></li>";
+                        }
+                        if(user()->allows("admin")) {
+                            echo "<li id=\"submenu_bulkresource\"><a href=\"bulkresource\">Bulk Resource Tickets</a></li>";
+                            echo "<li id=\"submenu_custom\"><a href=\"custom\">Custom Ticket</a></li>";
+                            echo "<li id=\"submenu_ra\"><a href=\"ra\">Certificate Request</a></li>";
+                        }
+                        echo "<li id=\"submenu_campus\"><a href=\"campus\">CRC Request Form</a></li>";
+                        echo "<li class=\"divider\"></li>";
+
+                        if(user()->allows("admin")) {
+                            echo "<li class=\"nav-header\">Administration</li>";
+                            echo "<li id=\"submenu_finderror\"><a href=\"finderror\">Footprints Errors</a></li>";
+                            //echo "<li id=\"submenu_group\"><a href=\"group\">Ticket Clustering</a></li>";
+                            echo "<li id=\"submenu_assignment\"><a href=\"assignment\">Assignment</a></li>";
+                            echo "<li class=\"divider\"></li>";
+                        }
+
+                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+                        echo "</ul>";
+                        echo "</li>";
+                    } else if(@$_SERVER['HTTPS'] == "on") {
+                        if(Zend_Registry::isRegistered("unregistered_dn")) {
+                            echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                        } else if(Zend_Registry::isRegistered("disabled_dn")) {
+                            echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
+                        } else {
+                            echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
+                        }
+                    } else {
+                        //probably via http
+                        echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+                    }
+
+                    ?>
+                </ul>
+
                 <form class="navbar-search pull-right" action="viewer">
                     <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value="<?php echo @$this->query?>">
                 </form>

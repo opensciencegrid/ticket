@@ -12,10 +12,10 @@ class NextAssignee
         $day = $time["tm_mday"];
         $weekday = $time["tm_wday"];
 
-        $members = $this->getConfig();
+        $members = $this->getConfig(true); //pull non-disabled
 
         //report the pool of possible staff
-        $this->reason .= "possible assignees at this hour ($hour):";
+        $this->reason .= "Possible assignees:";
         foreach($members as $member) {
             $this->reason .= " ".$member->uid;
         }
@@ -81,8 +81,11 @@ class NextAssignee
         return $this->reason; 
     }
 
-    public function getConfig() {
-        $sql = "select * from gocticket.assignment where disable = 0";
+    public function getConfig($nondisabled) {
+        $sql = "select * from gocticket.assignment";
+        if($nondisabled) {
+            $sql .= " WHERE disable = 0";
+        }
         return db("data")->fetchAll($sql);
     }
 
@@ -102,12 +105,13 @@ class NextAssignee
                 } else {
                     $first = false;
                 }
-                $uid = $member["uid"];
-                $weight = $member["weight"];
-                $disable = $member["disable"];
+                $uid = $member->uid;
+                $weight = $member->weight;
+                $disable = ($member->disable? 1 : 0);
                 $sql .= " ('$uid',$weight,$disable)";
             }
             $sql .= ";";
+            slog($sql);
             db("data")->exec($sql);
         }
     }

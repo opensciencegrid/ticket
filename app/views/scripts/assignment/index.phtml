@@ -1,0 +1,88 @@
+<?php echo $this->render("bootheader2.phtml", true);?>
+<?php echo $this->render("navbar2.phtml", true);?>
+<style>
+#table td {
+padding-right: 5px;
+}
+.delete {
+cursor: pointer;
+}
+</style>
+
+<script>
+'use strict';
+app.controller('AssignmentCtrl', function($scope, $http, $window) {
+    $scope.users = <?php echo json_encode($this->users);?>;
+    $scope.assignees = <?php echo json_encode($this->config);?>;
+    $scope.remove = function(id) {
+        for(var i = 0;i < $scope.assignees.length;i++) {
+            var a = $scope.assignees[i];
+            if(a.uid == id) {
+                $scope.assignees.splice(i, 1); //remove
+                return;
+            }
+        };
+    }
+
+    //convert 0/1 to true/false
+    $scope.assignees.forEach(function(a) {
+        a.disable = (a.disable == "1" ? true : false);
+    
+    });
+    $scope.add = function(id) {
+        $scope.assignees.push({uid: null, weight: 1, disable: false});
+    }
+    $scope.submit = function() {
+        $http({method: 'POST', url: 'assignment/post', data: $scope.assignees}).
+        success(function(data, status) {
+            $window.location.reload(); //reload to diplay success message
+        }).
+        error(function(data, status) {
+            alert('Oops.. failed to update assignment logic!');
+            console.dir(data);
+        });
+    }
+});
+</script>
+
+<div class="container">
+    <div class="page-header"><h2><?php echo $this->page_title?></h2></div>
+    <?php echo $this->alerts();?>
+
+    <div class="well">
+        <p>Based on current configuration, next assignee will be <b><?php echo $this->next_a;?></b></p>
+        <h4>Reason</h4>
+        <p><?php echo $this->next_reason;?></p>
+    </div>
+    <p class="help-block">Following assingment logic will be used during next assignee calculation.</p>
+
+    <form ng-controller="AssignmentCtrl" ng-submit="submit();">
+        <table id="table" class="table">
+        <thead>
+        <tr><th>Assignee</th><th>Weight</th><th>Diabled</th><th></th></tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="assignee in assignees">
+            <td><select class="form-control" ng-model="assignee.uid" ng-options="k as v for (k,v) in users | orderBy : v" required/></td>
+            <td>
+                <input type="text" class="form-control" ng-model="assignee.weight" required/>
+            </td>
+            <td>
+                <input type="checkbox" ng-model="assignee.disable"/>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm" ng-click="remove(assignee.uid)">Remove</input>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4"> <button type="button" class="btn" ng-click="add()">Add New Assignee</button> </td>
+        </tr>
+        </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div><!--container-->
+
+<?php echo $this->render("bootfooter2.phtml", true);?>
+

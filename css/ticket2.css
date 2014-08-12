@@ -1,0 +1,267 @@
+/**************************************************************************************************
+boostrap fixer
+*/
+.page-header {
+margin: 0px;
+}
+
+
+/**************************************************************************************************
+fix for zend
+*/
+
+/**************************************************************************************************
+fix for jquery-ui
+*/
+
+/**************************************************************************************************
+GOC Ticket style
+*/
+.contact_populator input
+{
+background-color: #eee;
+}
+.page-header h2 {
+color: #5a5a5a;
+}
+img[onclick] {
+cursor: pointer;
+}
+
+/**************************************************************************************************
+fblist
+*/
+.fblist_container {
+background-color: white;
+}
+.fblist
+{
+border: 1px solid #ccc;
+padding: 2px;
+margin-bottom: 5px;
+z-index: 1;
+}
+.fblist input.autocomplete
+{
+border: 0;
+width: 95%;
+border: none;
+box-shadow: none;
+margin-bottom: 0px;
+max-height: 300px;
+}
+
+
+.ui-autocomplete {
+z-index: 1031;
+max-height: 300px;
+overflow-y: auto;
+}
+
+.fblist div
+{
+padding: 2px;
+background-color:#DDDDDD;
+border:1px solid #AAAAAA;
+margin:1px;
+}
+.fblist div img
+{
+vertical-align: text-top;
+cursor: pointer;
+padding-right: 2px;
+}
+i[onclick] {
+cursor: pointer;
+}
+
+/**************************************************************************************************
+cc editor
+*/
+.ccarea {
+width: 100%;
+}
+.ccarea .cc {
+position: relative;
+}
+.ccarea .cc .icon-remove {
+background-color: white;
+position: absolute;
+top: 7px;
+right: 3px;
+z-index: 2;
+}
+
+/**************************************************************************************************
+presence
+*/
+#presence {
+float: right;
+color: #999;
+height: 20px;
+position: relative;
+font-size: 90%;
+}
+
+#presence ul.editors {
+display: inline-block;
+list-style-image: none;
+list-style-position: outside;
+list-style-type: none;
+margin: 0px;
+}
+
+#presence ul.editors li {
+display: inline-block;
+padding: 3px;
+margin: 3px 0px 3px 3px;
+color: white;
+background-color: #999;
+}
+
+/**************************************************************************************************
+ticket list
+*/
+
+.ticket-list {
+display: none;
+}
+.ticket-list .toolbar {
+display: inline-block;
+}
+.ticket-list .toolbar .navbar {
+margin-bottom: 2px;
+}
+.ticket-list input.search {
+margin: 0px;
+}
+.ticket-list th {
+padding: 3px;
+}
+.ticket-list .dataTables_filter input {
+width: 150px;
+}
+.ticket-list tr[onclick] {
+cursor: pointer;
+}
+.ticket-list .DataTables_sort_wrapper {
+position: relative;
+}
+.ticket-list .DataTables_sort_icon {
+position: absolute;
+top: 0px;
+right: 0px;
+}
+
+/**************************************************************************************************
+ticket gui
+*/
+.ticketgui .form-actions label {
+display: inline-block;
+cursor: pointer;
+}
+.ticketgui .form-actions {
+padding: 5px;
+margin: 5px 0px 0px 0px;
+}
+.ticketgui .quickdesc {
+position: relative;
+float: right;
+top: -6px;
+}
+.ticketgui .description {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+width: 100%;
+height: 70px;
+}
+.ticketgui b.teamname {
+color: #555;
+}
+.ticketgui .form-horizontal .control-group {
+margin: 5px 0px;
+}
+.ticketgui .list div {
+padding: 1px;
+margin:1px;
+padding-left: 3px;
+border: 1px solid white;
+}
+.ticketgui .list .item label {
+display: inline-block;
+margin-bottom: 0px;
+cursor: pointer;
+}
+.ticketgui .list .item:hover {
+background-color: #eee;
+}
+.ticketgui .list div.checked  {
+padding: 1px;
+background-color:#ddd !important;
+border: 1px solid #aaa;
+margin:1px;
+padding-left: 3px;
+}
+legend {
+margin-bottom: 4px;
+font-size: 17px;
+line-height: 25px;
+font-weight: bold;
+color: #888;
+}
+label[for='careof'] {
+color: #999;
+}
+
+/**************************************************************************************************
+misc..
+*/
+
+/* Echo out a label for the example */
+.well .well-title {
+position: relative;
+top: -8px;
+text-transform: uppercase;
+font-size: 12px;
+font-weight: bold;
+background-color: #f5f5f5;
+color: #9da0a4;
+}
+
+/*http://www.longren.org/wrapping-text-inside-pre-tags/*/
+.update_description pre
+{
+overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+word-break: normal;
+border: none;
+}
+.update_history .header {
+float: right;
+}
+.update_description .header {
+border-bottom: 1px solid #ddd;
+padding-bottom: 2px;
+}
+.update_description pre {
+padding-top: 2px;
+padding-left: 0px;
+padding-bottom: 2px;
+margin-bottom: 0px;
+}
+.loading {
+background-repeat:no-repeat;
+background-position: 5px;
+background-image:url(../images/loading.gif);
+padding-left: 30px;
+}
+
+span.email {
+color: gray;
+}
+
+footer {
+margin-top: 40px;
+padding: 20px 0px 20px 0px;
+border-top: 1px solid #ccc;
+}

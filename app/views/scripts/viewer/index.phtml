@@ -378,7 +378,6 @@ chat.on('connect', function() {
 });
 chat.on('peers', function(peers) {
     $("#peers").html("");
-    //console.dir(peers);
     for(var pid in peers) {
         var peer = peers[pid];
         addPeer(pid, peer);
@@ -405,7 +404,7 @@ function addPeer(pid, peer) {
     if(peer.ip != undefined) {
         ipinfo = "<span class=\"ip\">"+peer.ip.address+"</span>";
     }
-    if(chat.socket.sessionid == pid) {
+    if(chat.io.engine.id == pid) {
         //don't display myself
         return;
     }

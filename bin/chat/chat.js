@@ -9,7 +9,7 @@ var ssl_options = {
 };
 var app = https.createServer(ssl_options, handler).listen(12346);
 var io = require('socket.io').listen(app);
-io.set('log level', 2); //info
+//io.set('log level', 2); //info
 var lan_ip_prefix = "192.168.";
 
 var acl = {}; //key:id, value:{cid,name}

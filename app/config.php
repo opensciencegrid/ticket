@@ -179,7 +179,11 @@ class common_config
         $this->local_chatjs_url = "https://ticket1.goc:12346"; //used to make localhost request from php server
 
         $this->attachment_dir = "/usr/local/attachments/project_".$this->project_id;
-        $this->gocip = array("129.79.53.");//GOC VLAN
+        $this->gocip = array(
+            "129.79.53.", //GOC eth0 IPV4 VLAN
+            "2001:18e8:2:6:", //GOC eth0 IPV6 VLAN
+            "fd2f:6feb:37:" //GOC eth1 IPV6 VLAN
+        );//GOC VLAN
 
         //event server
         $this->event_host = "event.grid.iu.edu";

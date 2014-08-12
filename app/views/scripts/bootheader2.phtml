@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Open Science Grid - Public ticket submission form">
+    <meta name="author" content="Indiana University / UITS">
+    <link rel="shortcut icon" href="/images/tag_orange.png">
+    <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
+    <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
+    <link href="<?php echo fullbase()?>/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+
+    <!--DEPRECATED!! replace with bootstrap component-->
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+    <title><?php echo (isset($this->page_title) ? $this->page_title : config()->app_name)?></title>
+
+    <link href="<?php echo fullbase()?>/css/ticket2.css" rel="stylesheet">
+    <script src="<?php echo fullbase()?>/lib/ticket.js"></script>
+    <script src="<?php echo fullbase()?>/lib/jquery.cookie.js"></script>
+
+</head>
+<body ng-app="app"> <!-- see ticket.js-->
+

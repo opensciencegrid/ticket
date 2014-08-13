@@ -413,12 +413,14 @@ class Footprint
         }
 
         //override to always suppress submitter / cc for security tickets (TICKET-84)
-        $type = @$this->project_fields["Ticket__uType"];
-        if($type == "Security" || $type == "Security_Notification") {
-            slog("This is security/_notificatio nticket. Suppressing notification email for submitter / ccs");
-            //why don't we suppress for assignee? because I don't know how to lookup email addresses to send to for each assignee
-            $params["mail"]["contact"]=0;
-            $params["mail"]["permanentCCs"]=0;
+        if(isset($this->project_fields["Ticket__uType"])) {
+            $type = $this->project_fields["Ticket__uType"];
+            if($type == "Security" || $type == "Security_Notification") {
+                slog("This is security/_notificatio nticket. Suppressing notification email for submitter / ccs");
+                //why don't we suppress for assignee? because I don't know how to lookup email addresses to send to for each assignee
+                $params["mail"]["contact"]=0;
+                $params["mail"]["permanentCCs"]=0;
+            }
         }
 
         //don't pass empty mail array - FP API will throw up
@@ -486,7 +488,10 @@ class Footprint
     }
 
     private function sendEventNotification($newticket) {
-        $type = @$this->project_fields["Ticket__uType"];
+        $type = "n/a";
+        if(isset($this->project_fields["Ticket__uType"])) {
+            $type = $this->project_fields["Ticket__uType"];
+        }
         if($type == "Security" || $type == "Security_Notification") {
             slog("This is security/_notification ticket. Sending signed email notification - instead of publishing to EventPublisher");
             $e = new Email();

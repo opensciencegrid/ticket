@@ -126,7 +126,7 @@ function replaceurl($text){
     //$text = preg_replace("#www\.#", "http://www.", $text);
     //$text = preg_replace("#http://http://www\.#", "http://www.", $text);
     //$text = preg_replace("#https://http://www\.#", "https://www.", $text);
-    $ex = "/(http|https|ftp|ftps|gsiftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+    $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
     preg_match_all($ex, $text, $url);
     foreach($url[0] as $k=>$v) $text = str_replace($url[0][$k], '<a href="'.$url[0][$k].'" target="_blank" rel="nofollow">'.$url[0][$k].'</a>', $text);
     return $text;

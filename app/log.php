@@ -37,6 +37,7 @@ function log_format($str)
     return $str;
 }
 
+/*
 //debug log
 function dlog($obj)
 {
@@ -46,6 +47,14 @@ function dlog($obj)
         } 
         //Zend_Registry::get("fb_logger")->log($obj, Zend_Log::DEBUG);
         Zend_Registry::get("logger")->log($obj, Zend_Log::DEBUG);
+    }
+}
+*/
+function dlog($obj, $key="default")
+{
+    if(config()->debug) {
+        $txt = print_r($obj, true);
+        file_put_contents(config()->logdir."/dlog.$key", $txt);
     }
 }
 

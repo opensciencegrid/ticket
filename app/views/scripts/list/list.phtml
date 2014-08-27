@@ -103,7 +103,7 @@ foreach($tickets as $ticket) {
     //assignee, cc
     $assignees = array();
     $ccs = array();
-    foreach(explode(" ", $ticket->mrassignees) as $a) {
+    foreach(explode(" ", trim($ticket->mrassignees)) as $a) {
         //FP somehow put CCs on assginee field...-
         if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
             $ccs[] = substr($a, 3);
@@ -123,6 +123,7 @@ foreach($tickets as $ticket) {
         $aka = $aka_model->lookupName($a);
         $assignees[$a] = str_replace(" ", "&nbsp;", $aka);
     }
+    //dlog(explode(" ", trim($ticket->mrassignees)), "assignees");
 
     //priority
     $priority = Footprint::getPriority($ticket->mrpriority);

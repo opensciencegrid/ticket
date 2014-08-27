@@ -87,6 +87,7 @@ class common_config
 
         //executes debuging code
         $this->debug = false;
+        $this->logdir = "app/logs";
         $this->simulate = false;
         $this->logfile = "app/logs/log.txt";
         $this->error_logfile = "app/logs/error.txt";

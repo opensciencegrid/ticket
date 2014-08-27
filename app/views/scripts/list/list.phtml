@@ -150,7 +150,7 @@ foreach($tickets as $ticket) {
     //ticket type
     $title = $ticket->mrtitle;
     if($ticket->tickettype == "Security") {
-        $title = "<span class='label label-warning'>Security</span> $title";
+        $title = "<span class='label label-important'>Security</span> $title";
     }
 
     $submitter = "N/A"; //if empty, datatables col filter will mulfunction

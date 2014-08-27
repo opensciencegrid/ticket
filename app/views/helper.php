@@ -103,11 +103,11 @@ function checklist($id, $kv, $selected, $extrainfo)
             
             $out .= "<span class=\"pull-right\" style=\"line-height: 180%;\">";
             if($url !== null) {
-                $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>&nbsp;";
+                $out .= "<a target=\"${key}_${extra}\" href=\"$url\">$extra</a>";
             } else {
                 $out .= $extra;
             }
-            $out .= "</span>";
+            $out .= "&nbsp;</span>";
         }
         $out .= "<div class=\"item $label_class\" onclick=\"\$(this).toggleClass('checked'); var i = \$(this).find('input'); if(!i.hasClass('flip')) { if(!i.is(':checked')) i.attr('checked', 'checked'); else i.removeAttr('checked'); } else {i.removeClass('flip');}\">";
 

@@ -123,21 +123,23 @@ background-color: red;
 
 //wrap link content with <a href>
 function replaceurl($text){
-    //$text = preg_replace("#www\.#", "http://www.", $text);
-    //$text = preg_replace("#http://http://www\.#", "http://www.", $text);
-    //$text = preg_replace("#https://http://www\.#", "https://www.", $text);
     $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-    preg_match_all($ex, $text, $url);
-    foreach($url[0] as $k=>$v) $text = str_replace($url[0][$k], '<a href="'.$url[0][$k].'" target="_blank" rel="nofollow">'.$url[0][$k].'</a>', $text);
+    preg_match_all($ex, $text, $matches);
+    $matches = array_unique($matches[0]);
+    dlog($matches, "url");
+    foreach($matches as $m) {
+        $text = str_replace($m, "<a href='$m' target='_blank' rel='nofollow'>$m</a>", $text);
+    }
     return $text;
 }
 
 function replaceemail($text) { 
     $ex = "/([a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/";
-    preg_match_all($ex, $text, $url);
-    foreach($url[0] as $k=>$v) $text = str_replace($url[0][$k], '<a href="mailto:'.$url[0][$k].'" target="_blank" rel="nofollow">'.$url[0][$k].'</a>', $text);
-    //$replace = array('<hr />', '<a href="mailto:$1">$1</a>');
-    //$processed_string = preg_replace($search, $replace, $text);
+    preg_match_all($ex, $text, $matches);
+    $matches = array_unique($matches[0]);
+    foreach($matches as $m) {
+        $text = str_replace($m, "<a href='mailto:$m' target='_blank' rel='nofollow'>$m</a>", $text);
+    }
     return $text;
 }
 

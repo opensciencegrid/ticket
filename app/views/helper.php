@@ -109,11 +109,9 @@ function checklist($id, $kv, $selected, $extrainfo)
             }
             $out .= "&nbsp;</span>";
         }
-        $out .= "<div class=\"item $label_class\" onclick=\"\$(this).toggleClass('checked'); var i = \$(this).find('input'); if(!i.hasClass('flip')) { if(!i.is(':checked')) i.attr('checked', 'checked'); else i.removeAttr('checked'); } else {i.removeClass('flip');}\">";
-
-        $out .= "<input id=\"cl_$name\" type=\"checkbox\" name=\"$name\" value=\"on\" $checked onclick=\"$(this).addClass('flip'); return true;\"/>&nbsp;";
+        $out .= "<div class=\"item $label_class\" onclick=\"$(this).toggleClass('checked'); var i = document.getElementById('cl_$name'); i.checked = !i.checked;\">";
+        $out .= "<input id=\"cl_$name\" type=\"checkbox\" name=\"$name\" value=\"on\" onclick=\"$(this).parent('.item').toggleClass('checked'); event.stopPropagation();\" $checked/>&nbsp;";
         $out .= "<label>$value</label>";
-
         $out .= "</div>";
     }
     $out .= "</div>";

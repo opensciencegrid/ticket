@@ -126,7 +126,7 @@ function replaceurl($text){
     $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
     preg_match_all($ex, $text, $matches);
     $matches = array_unique($matches[0]);
-    dlog($matches, "url");
+    //dlog($matches, "url");
     foreach($matches as $m) {
         $text = str_replace($m, "<a href='$m' target='_blank' rel='nofollow'>$m</a>", $text);
     }

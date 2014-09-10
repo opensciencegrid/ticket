@@ -182,6 +182,7 @@ RSS: http://www.grid.iu.edu/news";
         return $desc;
     }
 
+    /*
     public function ggussubmitformAction()
     {
         $this->ttxcheck();
@@ -233,5 +234,6 @@ RSS: http://www.grid.iu.edu/news";
         }
         $this->render("none", null, true);
     }
+    */
 
 }

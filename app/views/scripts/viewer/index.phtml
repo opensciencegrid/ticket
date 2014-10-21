@@ -399,7 +399,7 @@ chat.on('submit', function() {
 function addPeer(pid, peer) {
     var ipinfo = "";
     if(peer.ip != undefined) {
-        ipinfo = "<span class=\"ip\">"+peer.ip.address+"</span>";
+        ipinfo = "<span class=\"ip\">"+peer.ip+"</span>";
     }
     if(chat.io.engine.id == pid) {
         //don't display myself

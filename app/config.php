@@ -171,10 +171,9 @@ abstract class common_config
         $this->google_search_api_key = "xxxxxxxxxxxxxx";
         $this->google_custom_search_cx = "xxxxxxxxxxxxxxxxxxx";
 
-        #this should be updated back to ticket1 once we installed incommon cert with tickte1 as SAN
-        #until then, we will be channelling traffic through LVS to reach ticket1
-        $this->chatjs_url = "https://ticket.grid.iu.edu:12346"; //url used by client's browser
-        $this->local_chatjs_url = "https://ticket1.goc:12346"; //used to make localhost request from php server
+        //we will install chatjs on a new "common components" server eventually
+        $this->chatjs_url = "https://ticket1.grid.iu.edu:8443"; //url used by client's browser
+        $this->local_chatjs_url = "http://ticket1.goc:8080"; //used to make localhost request from php server
 
         $this->attachment_dir = "/usr/local/attachments/project_".$this->project_id;
         $this->gocip = array();

@@ -1,6 +1,0 @@
-{ "dependencies": {
-	"amqp": "*",
-	"xml2js": "*",
-	"socket.io": "*"
-	}
-}

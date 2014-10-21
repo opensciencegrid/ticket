@@ -8,3 +8,4 @@ bin/solrloader/posted
 robots.txt
 node_modules
 barn
+secrets.js

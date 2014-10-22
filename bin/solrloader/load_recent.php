@@ -84,7 +84,7 @@ function load_meta($id, $db, &$details) {
         case "GGUS_TICKET_ID": $details["GGUS_TICKET_ID"] = (int)$row["value"]; break;
         case "ASSOCIATED_RG_ID": $details["ASSOCIATED_RG_ID"] = (int)$row["value"]; break;
         case "ASSOCIATED_R_ID": $details["ASSOCIATED_R_ID"] = (int)$row["value"]; break;
-        case "SUBMITTER_NAME": $details["SUBMITTER_NAME"] = (int)$row["value"]; break;
+        case "SUBMITTER_NAME": $details["SUBMITTER_NAME"] = $row["value"]; break;
         }
         /*
 mysql> select distinct(`key`) from metadata;

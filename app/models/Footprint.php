@@ -412,6 +412,7 @@ class Footprint
             $params["mail"]["permanentCCs"]=0;
         }
 
+        /*
         //override to always suppress submitter / cc for security tickets (TICKET-84)
         if(isset($this->project_fields["Ticket__uType"])) {
             $type = $this->project_fields["Ticket__uType"];
@@ -422,6 +423,7 @@ class Footprint
                 $params["mail"]["permanentCCs"]=0;
             }
         }
+        */
 
         //don't pass empty mail array - FP API will throw up
         // -- Can't coerce array into hash at /usr/local/footprints//cgi/SUBS/MRWebServices/createIssue_goc.pl
@@ -492,6 +494,7 @@ class Footprint
         if(isset($this->project_fields["Ticket__uType"])) {
             $type = $this->project_fields["Ticket__uType"];
         }
+        /* TICKET-84 is now undone
         if($type == "Security" || $type == "Security_Notification") {
             slog("This is security/_notification ticket. Sending signed email notification - instead of publishing to EventPublisher");
             $e = new Email();
@@ -511,22 +514,24 @@ class Footprint
             $e->setSign();
             $e->send();
         } else {
-            //prepare message to publish on event server
-            $event = new EventPublisher();
-            $msg = "<ticket>";
-            $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
-            $msg .= "<title>".htmlspecialchars($this->title)."</title>";
-            $msg .= "<description>".htmlspecialchars($this->description)."</description>";
-            $msg .= "<status>".htmlspecialchars($this->status)."</status>";
-            $msg .= "</ticket>";
+        */
 
-            if($newticket) {
-                $event->publish($msg, $this->id.".create");
-            } else {
-                //ticket updated
-                $event->publish($msg, $this->id.".update");
-            }
+        //prepare message to publish on event server
+        $event = new EventPublisher();
+        $msg = "<ticket>";
+        $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
+        $msg .= "<title>".htmlspecialchars($this->title)."</title>";
+        $msg .= "<description>".htmlspecialchars($this->description)."</description>";
+        $msg .= "<status>".htmlspecialchars($this->status)."</status>";
+        $msg .= "</ticket>";
+
+        if($newticket) {
+            $event->publish($msg, $this->id.".create");
+        } else {
+            //ticket updated
+            $event->publish($msg, $this->id.".update");
         }
+        //}
     }
 
     private function sendGOCTXTrigger($assignees, $id) {

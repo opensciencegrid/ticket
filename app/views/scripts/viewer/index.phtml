@@ -123,7 +123,8 @@ background-color: red;
 
 //wrap link content with <a href>
 function replaceurl($text){
-    $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}([\/a-zA-Z0-9\-\._\?=]*)?/";
+    $text = html_entity_decode($text, ENT_QUOTES);
+    $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}([\/a-zA-Z0-9\-\._\?=#]*)?/";
     preg_match_all($ex, $text, $matches);
     $matches = array_unique($matches[0]);
     //dlog($matches, "url");
@@ -134,6 +135,7 @@ function replaceurl($text){
 }
 
 function replaceemail($text) { 
+    $text = html_entity_decode($text, ENT_QUOTES);
     $ex = "/([a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/";
     preg_match_all($ex, $text, $matches);
     $matches = array_unique($matches[0]);
@@ -261,7 +263,6 @@ echo "</div>";
             echo "<a class=\"anchor\" name=\"$anchor\">&nbsp;</a>";
             echo "</div>";
 
-            //$content = "Now, you can add URL http://www.google.co.uk/ and other URL will be replaced too https://www.google.sk/imghp";
             $content = replaceurl($content);
             $content = replaceemail($content);
 

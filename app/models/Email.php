@@ -79,11 +79,11 @@ class Email
     public function dump()
     {
         $out = "";
-        $out .= "<hr>To: ".$this->to."\n\n";
+        $out .= "<hr>To: ".htmlentities($this->to)."\n\n";
         $out .= "<hr>From: ".htmlentities($this->from)."\n\n";
-        $out .= "<hr>Subject: ".$this->subject."\n\n";
-        $out .= "<hr>BCC: ".$this->bcc."\n\n";
-        $out .= "<hr>Body:<pre>".$this->body."</pre>\n\n";
+        $out .= "<hr>Subject: ".htmlentities($this->subject)."\n\n";
+        $out .= "<hr>BCC: ".htmlentities($this->bcc)."\n\n";
+        $out .= "<hr>Body:<pre>".htmlentities($this->body)."</pre>\n\n";
         if($this->sign) {
             $out .= "<hr>Signed\n\n";
         } else {

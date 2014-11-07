@@ -124,7 +124,7 @@ background-color: red;
 //wrap link content with <a href>
 function replaceurl($text){
     $text = html_entity_decode($text, ENT_QUOTES);
-    $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}([\/a-zA-Z0-9\-\._\?=#]*)?/";
+    $ex = "/(http|https|ftp|ftps|gsiftp|srm)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[0-9]+)?([\/a-zA-Z0-9\-\._\?=#]*)?/";
     preg_match_all($ex, $text, $matches);
     $matches = array_unique($matches[0]);
     //dlog($matches, "url");

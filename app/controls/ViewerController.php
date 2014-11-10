@@ -447,8 +447,6 @@ class ViewerController extends BaseController
         $mrid = $footprint->submit();
         if(!config()->simulate) {
             message("success", "Successfully updated ticket <a href=\"".fullbase()."/$mrid\">$mrid</a>", true);
-            //header("Location: ".fullbase()."/".$ticket_id);
-            //exit;//needed?
         } 
         $this->view->mrid = $mrid;
         $this->render("success", null, true);
@@ -565,77 +563,6 @@ class ViewerController extends BaseController
         }
         return $descs;
     }
-
-    /*
-    //accessed by goc-tx (should use attachment controller instead)
-    public function uploadattachmentAction() {
-        if(user()->isGuest() && !user()->isGOCMachine()) {
-            elog($_SERVER["REMOTE_ADDR"]." is not goc machine. can't access uploadattachment action");
-            $this->render("error/access", null, true); 
-            return;
-        }
-        
-        $id = (int)$_REQUEST["id"];
-        //if($id > 20000) return; //small attempt to block some kind of random access attack
-
-        $model = new Attachments();
-        $datas = $model->upload($id);
-
-        header('Pragma: no-cache');
-        header('Cache-Control: private, no-cache');
-        header('Content-Disposition: inline; filename="files.json"');
-        header('X-Content-Type-Options: nosniff');
-        header('Vary: Accept');
-	if(!function_exists("json_encode")) {
-		require_once("app/json.php");
-	}
-        echo json_encode($datas);
-        $this->render("none", null, true);
-    }
-    */
-
-    /*
-    public function deleteattachmentAction() {
-        if(user()->isGuest()) {
-            $this->render("error/access", null, true); 
-            return;
-        }
-
-        $id = (int)$_REQUEST["id"];
-        $dirty_attachment_name = $_REQUEST["attachment"];
-        $attachment_id = basename($dirty_attachment_name);
-
-        $model = new Attachments();
-        $ret = $model->remove($id, $attachment_id);
-
-	if(!function_exists("json_encode")) {
-		require_once("app/json.php");
-	}
-        echo json_encode($ret);
-        $this->render("none", null, true);
-    }
-    */
-
-    /*
-    //accessed by goc-tx (should use attachment controller instead)
-    public function loadattachmentsAction() {
-        header('Pragma: no-cache');
-        header('Cache-Control: private, no-cache');
-        header('Content-Disposition: inline; filename="files.json"');
-        header('X-Content-Type-Options: nosniff');
-        header('Vary: Accept');
-
-        $id = (int)$_REQUEST["id"];
-
-        $model = new Attachments();
-        $datas = $model->listattachments($id);
-	if(!function_exists("json_encode")) {
-		require_once("app/json.php");
-	}
-        echo json_encode($datas);
-        $this->render("none", null, true);
-    }
-    */
 }
 
 function ticketcmp($a, $b) {

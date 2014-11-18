@@ -123,26 +123,20 @@ background-color: red;
 
 //wrap link content with <a href>
 function replaceurl($text){
-    //error_log($text);
-    //$text = html_entity_decode($text);
-    //error_log($text);
     $ex = "/(http|https|ftp|ftps|gsiftp|srm)(&#58;)\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(&#58;[0-9]+)?([\/a-zA-Z0-9\-\._\?=#&%]*)?/";
-    preg_match_all($ex, $text, $matches);
-    $matches = array_unique($matches[0]);
-    foreach($matches as $m) {
-        $text = str_replace($m, "<a href='$m' target='_blank' rel='nofollow'>$m</a>", $text);
-    }
+    $text = preg_replace_callback($ex, function($matches) {
+        $m = $matches[0];
+        return "<a href='$m' target='_blank' rel='nofollow'>$m</a>";
+    }, $text);
     return $text;
 }
 
 function replaceemail($text) { 
-    //$text_d = html_entity_decode($text);
     $ex = "/([a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/";
-    preg_match_all($ex, $text, $matches);
-    $matches = array_unique($matches[0]);
-    foreach($matches as $m) {
-        $text = str_replace($m, "<a href='mailto:$m' target='_blank' rel='nofollow'>$m</a>", $text);
-    }
+    $text = preg_replace_callback($ex, function($matches) {
+        $m = $matches[0];
+        return "<a href='mailto:$m' target='_blank' rel='nofollow'>$m</a>";
+    }, $text);
     return $text;
 }
 
@@ -263,13 +257,6 @@ echo "</div>";
             }
             echo "<a class=\"anchor\" name=\"$anchor\">&nbsp;</a>";
             echo "</div>";
-
-            //footprints encode all html entities by default.. convert back to normal string so that I can do our stuff
-            //$content = html_entity_decode($content, ENT_QUOTES);
-            //$content = htmlspecialchars_decode($content);
-
-            //escape < and >
-            //$content = htmlspecialchars($content);
 
             $content = replaceurl($content);
             $content = replaceemail($content);

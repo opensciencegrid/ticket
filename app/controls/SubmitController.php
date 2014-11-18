@@ -296,8 +296,7 @@ class SubmitController extends BaseController
             $footprints->addMeta("Requested VO NAME: ".$_POST["campusvorequest_name"]);
         }
 
-        $footprints->addCC("dweitzel@cse.unl.edu");
-        //$footprints->addCC("fraser@anl.gov"); //no longer works for OSG
+        $footprints->addCC("connect-support@opensciencegrid.org");
 
         $sc_model = new SC;
         $sc = $sc_model->get(config()->campusgrid_sc_id);

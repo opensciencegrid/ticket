@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Schema
 {
@@ -67,7 +67,6 @@ class Schema
         }
         return null;
     }
-
     public function getvos()
     {
         $ret = $this->cache("vos");
@@ -87,7 +86,6 @@ class Schema
         asort($list);
         return $list;
     }
-
     public function doget($what)
     {
         slog("Making fpcall to get schema:$what");

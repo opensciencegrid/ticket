@@ -44,6 +44,7 @@ $columns = array(
     array("name"=>"Submitter", "type"=>"string", "meta"=>true, "visible"=>false),
     array("name"=>"Submit Date", "type"=>"date", "visible"=>false),
     array("name"=>"Title", "type"=>"html", "visible"=>true), 
+    array("name"=>"Type", "type"=>"string", "visible"=>true), 
     array("name"=>"Update Date", "type"=>"date", "visible"=>false), 
     array("name"=>"Next Action", "type"=>"string", "visible"=>true), 
     array("name"=>"NAD", "type"=>"html", "visible"=>true), 
@@ -147,11 +148,13 @@ foreach($tickets as $ticket) {
     $submit_date = substr($ticket->mrsubmitdate, 0, 10);
     $update_date = substr($ticket->mrupdatedate, 0, 10);
 
-    //ticket type
     $title = $ticket->mrtitle;
+    /*
     if($ticket->tickettype == "Security") {
         $title = "<span class='label label-important'>Security</span> $title";
     }
+    */
+    $tickettype = Footprint::parse($ticket->tickettype);
 
     $submitter = "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUBMITTER_NAME"])) {
@@ -204,6 +207,7 @@ foreach($tickets as $ticket) {
         <td><?=$submitter?></td>
         <td><?=$submit_date?></td>
         <td><?=$title?></td>
+        <td><?=$tickettype?></td>
         <td><?=$update_date?></td>
         <td><?=$ticket->nextaction?></td>
         <td><?=$nad?></td>
@@ -297,7 +301,6 @@ $(".toolbar").html('<?
     echo "<div class=\"container\">";
 
     echo "<ul class=\"nav\">";
-    //echo "<a class=\"brand\">$title</a>";
     echo $normal_column;
     echo "<li class=\"divider-vertical\"></li>";
     echo "<li class=\"dropdown\"><a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Metadata <b class=\"caret\"></b></a>";
@@ -322,14 +325,6 @@ function init_colsearch() {
         } else {
             dtable.fnFilter("", cid); //reset (datatable sometimes remebers old value and try to filter it..)
         }
-        /*
-        dtable.column(cid).data().filter(function(value, index) {
-            if(colsearch[cid] == undefined) return true;
-            if(value.indexOf(colsearch[cid]) === -1) return false;
-            return true;
-        });
-        */
-
         //remember colsearch
         function update() {
             var tvalue = jQuery.trim(it.value);

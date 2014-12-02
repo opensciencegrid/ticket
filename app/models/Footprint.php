@@ -239,7 +239,7 @@ class Footprint
         $this->id = $id;
     }
 
-    //from the current db, I see following ticket types //TODO - pull this from field schema, but filter it with values that we really use
+    //from the current db, I see following ticket types 
     static public function getTicketTypes()
     {
         return array(
@@ -250,14 +250,15 @@ class Footprint
             //"Field Service Request",
             //"RMA",
             "Security",
-            "Security_Notification"
-            );
+            "Security_Notification",
+            "User Certificate Request",
+            "Host Certificate Request"
+        );
     }
 
     public function setTicketType($type) {
         $this->project_fields["Ticket__uType"] = $type;
         $this->b_proj = true;
-
     }
 
     //"Yes" or "No"

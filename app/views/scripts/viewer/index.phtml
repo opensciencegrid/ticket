@@ -135,9 +135,55 @@ function replaceemail($text) {
     $ex = "/([a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/";
     $text = preg_replace_callback($ex, function($matches) {
         $m = $matches[0];
-        return "<a href='mailto:$m' target='_blank' rel='nofollow'>$m</a>";
+        if(user()->isGuest()) {
+            /*
+            //TODO - I can't reproduce the same c parameter used by recaptcha api
+            //https://developers.google.com/recaptcha/old/docs/mailhideapi
+            //$pubkey = "01jmhKT_RmNfwBNiETD_A8lg==";
+            //$privatekey = "e578f9da586cbfbe63f909dffd8a2bf8";
+            $pubkey = "01KVQ47h9-Col-AaCq8oi-FQ==";
+            $privatekey = hextobin("deadbeefdeadbeefdeadbeefdeadbeef");
+            $iv = hextobin("00000000000000000000000000000000");
+            $ctext = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $privatekey, "x@example.com\x03\x03\x03", MCRYPT_MODE_CBC, $iv);
+            $ctext = base64url_encode($ctext);
+            $url = "http://www.google.com/recaptcha/mailhide/d?k=$pubkey&c=$ctext";
+            return "some<a href='$url' onclick='window.open(\"$url\"); return false;'>...</a>@email.com";
+            */
+            return maskemail($m);
+        } else {
+            return "<a href='mailto:$m' target='_blank' rel='nofollow'>$m</a>";
+        }
     }, $text);
     return $text;
+}
+
+/*
+function base64url_encode($data) { 
+  return strtr(base64_encode($data), '+/', '-_');
+} 
+
+function hextobin($hexstr) 
+{ 
+    $n = strlen($hexstr); 
+    $sbin="";   
+    $i=0; 
+    while($i<$n) 
+    {       
+        $a =substr($hexstr,$i,2);           
+        $c = pack("H*",$a); 
+        if ($i==0){$sbin=$c;} 
+        else {$sbin.=$c;} 
+        $i+=2; 
+    } 
+    return $sbin; 
+} 
+*/
+
+function maskemail($email) {
+    if(preg_match('/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/', $email)) {
+        $email = substr($email, 0, strpos($email, "@"))."@....";
+    }
+    return $email;
 }
 
 echo $this->alerts();
@@ -175,7 +221,7 @@ echo "</div>";
 
         <?php
         if($this->editable) {
-            echo "<button class=\"btn btn-small\" onclick=\"submitspam(".$this->ticket_id.");\"><i class=\"\"></i> Submit Spam</button>";
+            echo "<button class=\"btn btn-small\" onclick=\"submitspam(".$this->ticket_id.");\"><i class=\"\"></i> Mask as spam</button>";
         }
         ?>
 
@@ -240,10 +286,7 @@ echo "</div>";
         
         if($type == "description") {
             if(user()->isGuest()) {
-                //mask "by" email address
-                if(preg_match('/^[^@]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$/', $by)) {
-                    $by = substr($by, 0, strpos($by, "@"))."@....";
-                }
+                $by = maskemail($by);
             }
 
             $anchor = $time;

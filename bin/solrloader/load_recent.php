@@ -29,12 +29,17 @@ function load_fp($id, &$details) {
         );
         
         $fp_details = $client->MRWebServices__getIssueDetails_goc($config["fp_user"],$config["fp_pass"],'',$config["fp_project"],$id);
-        $ticket_type = $fp_details->Ticket__uType;
+        $ticket_type = parse_fpstr($fp_details->Ticket__uType);
+
+        //we now index all ticket including security ticket, and filter them out from the search result page (TICKET-112)
+        /*
         if($ticket_type == "Security" || $ticket_type == "Security_Notification") {
             echo "Skipping $id which is a $ticket_type ticket\n";
             return false;
         }
+        */
 
+        $details["ticket_type"] = $ticket_type;
         $details["title"] = $fp_details->title;
         $details["status"] = parse_fpstr($fp_details->status);
         $details["priority"] = $fp_details->priority;//TODO - conver this to string

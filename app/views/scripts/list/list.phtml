@@ -86,6 +86,19 @@ $metadata = $this->metadata;
 </thead>
 
 <?php
+
+function td($html = "", $escape = true) {
+    if(!$html) {
+        echo "<td><span class=\"muted\">N/A</span></td>";
+    } else {
+        if($escape) {
+            echo "<td>".htmlentities($html)."</td>";
+        } else {
+            echo "<td>$html</td>";
+        }
+    }
+}
+
 $model = new Schema();
 $teams = $model->getteams();
 $aka_model = new AKA();
@@ -149,85 +162,81 @@ foreach($tickets as $ticket) {
     $update_date = substr($ticket->mrupdatedate, 0, 10);
 
     $title = $ticket->mrtitle;
-    /*
-    if($ticket->tickettype == "Security") {
-        $title = "<span class='label label-important'>Security</span> $title";
-    }
-    */
-    $tickettype = Footprint::parse($ticket->tickettype);
 
-    $submitter = "N/A"; //if empty, datatables col filter will mulfunction
+    $tickettype = Footprint::parse($ticket->tickettype);
+    //if($tickettype == "") $tickettype = "&nbsp"; //if empty, datatables col filter will mulfunction
+
+    $submitter = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUBMITTER_NAME"])) {
         $submitter = $metadata[$ticket->mrid]["SUBMITTER_NAME"];
     }
 
-    $submitted_via = "N/A"; //if empty, datatables col filter will mulfunction
+    $submitted_via = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUBMITTED_VIA"])) {
         $submitted_via = $metadata[$ticket->mrid]["SUBMITTED_VIA"];
     }
 
-    $resource_group = "N/A"; //if empty, datatables col filter will mulfunction
+    $resource_group = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"])) {
         $resource_group = $metadata[$ticket->mrid]["ASSOCIATED_RG_NAME"];
     }
 
-    $ggus_ticket_id = "N/A"; //if empty, datatables col filter will mulfunction
+    $ggus_ticket_id = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["GGUS_TICKET_ID"])) {
         $ggus_ticket_id = $metadata[$ticket->mrid]["GGUS_TICKET_ID"];
     }
 
-    $ggus_ticket_type = "N/A"; //if empty, datatables col filter will mulfunction
+    $ggus_ticket_type = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["GGUS_TICKET_TYPE"])) {
         $ggus_ticket_type = $metadata[$ticket->mrid]["GGUS_TICKET_TYPE"];
     }
 
-    $resource = "N/A"; //if empty, datatables col filter will mulfunction
+    $resource = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_R_NAME"])) {
         $resource = $metadata[$ticket->mrid]["ASSOCIATED_R_NAME"];
     }
 
-    $sc = "N/A"; //if empty, datatables col filter will mulfunction
+    $sc = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SUPPORTING_SC_NAME"])) {
         $sc = $metadata[$ticket->mrid]["SUPPORTING_SC_NAME"];
     }
 
-    $vo = "N/A"; //if empty, datatables col filter will mulfunction
+    $vo = null; //"N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"])) {
         $vo = $metadata[$ticket->mrid]["ASSOCIATED_VO_NAME"];
     }
 
-    $snow_ticket_id = "N/A"; //if empty, datatables col filter will mulfunction
+    $snow_ticket_id = null; // "N/A"; //if empty, datatables col filter will mulfunction
     if(isset($metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"])) {
         $snow_ticket_id = $metadata[$ticket->mrid]["SERVICENOW_TICKET_ID"];
     }
-
     ?>
     <tr onclick="window.name = 'gocticket_list'; window.open('<?=$url?>','<?=$target?>');">
-        <td><?=$ticket->mrid?></td>
-        <td><?=$submitter?></td>
-        <td><?=$submit_date?></td>
-        <td><?=$title?></td>
-        <td><?=$tickettype?></td>
-        <td><?=$update_date?></td>
-        <td><?=$ticket->nextaction?></td>
-        <td><?=$nad?></td>
-        <td><?=$priority?></td>
-        <td><?=implode("<br>", $assignees)?><br></td>
-        <?if(!user()->isguest()) {
-                echo "<td>".implode(" | ", $ccs)."<br></td>";
-        } else {
-            echo "<td>(Hidden)</td>";
-        }?>
-        <td><?=$resource?></td>
-        <td><?=$resource_group?></td>
-        <td><?=$sc?></td>
-        <td><?=$vo?></td>
-        <td><?=$submitted_via?></td>
-        <td><?=$ggus_ticket_type?></td>
-        <td><?=$ggus_ticket_id?></td>
-        <td><?=$snow_ticket_id?></td>
-    </tr>
-    <?
+    <?php
+    td($ticket->mrid);
+    td($submitter);
+    td($submit_date);
+    td($title, false);
+    td($tickettype);
+    td($update_date);
+    td($ticket->nextaction);
+    td($nad, false);
+    td($priority, false);
+    td(implode("<br>", $assignees), false);
+    if(!user()->isguest()) {
+        echo "<td>".implode(" | ", $ccs)."<br></td>";
+    } else {
+        echo "<td>(Hidden)</td>";
+    }
+    td($resource);
+    td($resource_group);
+    td($sc);
+    td($vo);
+    td($submitted_via);
+    td($ggus_ticket_type);
+    td($ggus_ticket_id);
+    td($snow_ticket_id);
+    echo "</tr>";
 }
 ?>  
 </table>

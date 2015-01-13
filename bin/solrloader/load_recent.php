@@ -133,27 +133,25 @@ function xmlentities($s)
 
 //get list of ticket ids that are recently updated
 //TODO - add ability specify "updated since" 
-function list_updated($lastrun_timestamp) {
+function list_updated($lastrun) {
     global $config;
-    $ids = array();
+    $tickets = array();
     try {
-        $recent_date = date("Y-m-d G:i:s", $lastrun_timestamp); //24 hours
-        echo "loading tickets updated since $recent_date\n";
-        $query = "select mrID from MASTER".$config["fp_project"]." WHERE mrupdatedate >= '$recent_date'";
+        echo "loading tickets updated since $lastrun\n";
+        $query = "select mrID,mrupdatedate from MASTER".$config["fp_project"]." WHERE mrupdatedate >= '$lastrun' order by mrupdatedate limit 50";
         $client = new SoapClient(NULL, array(
             "location"=>"https://tick.globalnoc.iu.edu/MRcgi/MRWebServices.pl", "uri"=>"MRWebServices",
             "style"=>SOAP_RPC, "use" => SOAP_ENCODED)
         );
-        $tickets = $client->MRWebServices__search_goc($config["fp_user"],$config["fp_pass"],'',$query);
-        foreach($tickets as $ticket) {
-            $ids[] = $ticket->mrid;
+        $recs = $client->MRWebServices__search_goc($config["fp_user"],$config["fp_pass"],'',$query);
+        foreach($recs as $ticket) {
+            $tickets[$ticket->mrid] = $ticket;
         }
-        //print_r($ids);
     } catch (SoapFault $exception) {
         print "ERROR! - Got a SOAP exception:<br>";
         echo $exception;             
     }
-    return $ids;
+    return $tickets;
 }
 
 function connect_metadb() {
@@ -169,20 +167,18 @@ $db = connect_metadb();
 
 $lastrun_file = "lastrun.txt";
 if(file_exists($lastrun_file)) {
-    $lastrun_timestamp = (int)file_get_contents($lastrun_file);
-} else {
-    $lastrun_timestamp = time() - 3600*24*365;//1 year?
+    $lastrun = file_get_contents($lastrun_file);
 }
 
-$ids = list_updated($lastrun_timestamp);
-//$ids = array(11912, 11913, 11915, 11926, 11971, 11976, 11977, 11987, 11995, 11997, 12003, 12015, 12026, 12031, 8817, 8889);
-$total = count($ids);
+$tickets = list_updated($lastrun);
+$total = count($tickets);
 $c = 0;
-foreach($ids as $id) {
+foreach($tickets as $id=>$ticket) {
     $c++;
     $url = "https://ticket.opensciencegrid.org/goc/$id";
     $details = array("id"=>$id, "url"=>$url);
-    echo "loading $id ($c of $total)\n";
+    $lastrun = $ticket->mrupdatedate;
+    echo "loading $id [$lastrun] ($c of $total)\n";
     if(!load_fp($id, $details)) {
         //must be a security ticket or such.. skip
         continue;
@@ -206,11 +202,12 @@ foreach($ids as $id) {
     
     //write to post directory
     file_put_contents("post/$id.xml", $post);
-    //sleep(1);
+
+    //if($c == 10) break; //only process up to 100 tickets at a time
 }
 
-file_put_contents($lastrun_file, time());
+file_put_contents($lastrun_file, $lastrun);
 
-exit(count($ids));
+exit($c);
 
 ?>

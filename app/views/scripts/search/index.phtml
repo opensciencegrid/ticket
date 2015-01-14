@@ -78,17 +78,14 @@ if(isset($this->result)) {
     //results
     $start = $response->start;
     foreach($response->docs as $doc) {
-        $url = $doc->url;
         $id = $doc->id;
         $title = $doc->title;
         $descs = $doc->descriptions;
         $status = $doc->status;
-        $priority = $doc->priority;
         echo "<div>";
         echo "<a href=\"".fullbase()."/$id\">$id: $title</a> ";
         echo "<span class=\"pull-right muted\">Status: $status</span>";
         echo "<br>";
-
         
         //find first description that has first token
         $found_id = 0; 

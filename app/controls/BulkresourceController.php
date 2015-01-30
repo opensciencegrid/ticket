@@ -215,9 +215,8 @@ RSS Feed: http://osggoc.blogspot.com");
             $footprint->setSubmitter($agent);
         } else {
             $footprint->addDescription("\n\n-- by $name");
-            //$footprint->addMeta("Submitter DN: ".user()->getDN());
-            //$footprint->addMeta("Real Submitter: $name (not a registered Footprint Agent - using default submitter)\n");
         }
+        $footprint->setSubmitterName(user()->getPersonName());
 
         //lookup service center
         $resource_id = $resource->id;

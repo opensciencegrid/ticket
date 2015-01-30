@@ -184,8 +184,10 @@ class BaseController extends Zend_Controller_Action
                 } else {
                     $footprint->addDescription("\n\nby ".user()->getDN());
                 }
+                $footprint->setSubmitterName(user()->getPersonName()); //used for notification
             } else {
                 $footprint->addDescription("\n\nby $name (guest)");
+                $footprint->setSubmitterName("$name (guest)");
             }
 
             $footprint->setOfficePhone($form->getValue('phone'));

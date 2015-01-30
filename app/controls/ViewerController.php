@@ -28,6 +28,7 @@ class ViewerController extends BaseController
 
         $model = new Tickets();
         $detail = $model->getDetail($id);
+        $detail->id = $id;
         if($detail === "") {
             $this->render("nosuchticket");
             return;
@@ -48,7 +49,7 @@ class ViewerController extends BaseController
             if($status == "registered") {
                 $this->view->nodekey = $nodekey;
             } else {
-                error_log("failed to registere nodejs access with url [$url]");
+                elog("failed to registere nodejs access with url [$url]");
             }
         }
 
@@ -89,7 +90,7 @@ class ViewerController extends BaseController
         if(isset($plist[$detail->priority])) {
             $this->view->priority = $plist[$detail->priority];
         } else {
-            error_log("failed to lookup priority: ".$detail->priority);
+            elog("failed to lookup priority: ".$detail->priority);
             $this->view->priority = "unknown_prioriry:".$detail->priority;
         }
         $this->view->assignees = "";
@@ -188,9 +189,6 @@ class ViewerController extends BaseController
         } else {
             elog($xml_file." doesn't exist");
         }
-
-
-
         return $detail;
     }
 
@@ -283,6 +281,7 @@ class ViewerController extends BaseController
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         }
+        $footprint->setSubmitterName(user()->getPersonName()); //used for notification
 
         //detail
         $footprint->resetAssignee();
@@ -390,10 +389,12 @@ class ViewerController extends BaseController
         //update ticket
         $footprint = new Footprint($ticket_id);
         $agent = $this->getFPAgent(user()->getPersonName());
-        //$footprint->addDescription("Marking as spam");
+
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         }
+        $footprint->setSubmitterName(user()->getPersonName()); //used for notification
+
         $footprint->setStatus("Closed");
         $footprint->setTicketType("Security_Notification");
         $mrid = $footprint->submit();
@@ -432,6 +433,7 @@ class ViewerController extends BaseController
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         }
+        $footprint->setSubmitterName(user()->getPersonName()); //used for notification
 
         //set suppression
         if(!isset($_REQUEST["notify_assignees"])) {
@@ -443,6 +445,15 @@ class ViewerController extends BaseController
         if(!isset($_REQUEST["notify_ccs"])) {
             $footprint->suppress_ccs();
         }
+
+        //I need to setTitle so that notification object will contain valid ticket title.
+        $sess = new Zend_Session_Namespace("ticket_$ticket_id");
+        if(isset($sess->title)) {
+            $footprint->setTitle($sess->title);
+        } else {
+            elog("failed to lookup ticlet title from session.. notification will probably contain invalid title title");
+        }
+        
 
         $mrid = $footprint->submit();
         if(!config()->simulate) {
@@ -480,7 +491,7 @@ class ViewerController extends BaseController
                     document.location = "<?=$ticket_id?>";
                 }
             </script>
-        <?
+        <?php
             $this->render("none", null, true);
             return;
         }
@@ -490,8 +501,12 @@ class ViewerController extends BaseController
             $schema_model = new Schema();
             $this->view->originating_vos = $schema_model->getoriginatingvos();
             $this->view->destination_vos = $schema_model->getdestinationvos();
-
             $this->view->editable = true;
+        } else {
+            //if the ticket is not editable, store ticket detail in session 
+            //so we can use it when user submit - like ticket title in event notification
+            $sess = new Zend_Session_Namespace("ticket_".$detail->id);
+            $sess->title = $detail->title;
         }
 
         $descs = $this->parse_descs($detail);

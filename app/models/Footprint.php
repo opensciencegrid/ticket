@@ -8,11 +8,8 @@ class Footprint
     public function __construct($id = null, $auto_assign = true)
     {
         $this->id = $id; 
-
-        //$model = new Override();
-        //$this->assignee_override = $model->get();
-
         $this->submitter = "OSG-GOC";
+        $this->submitter_name = null;
         $this->status = "Engineering";
         $this->priority_number = "4";
         $this->description = "";
@@ -151,6 +148,10 @@ class Footprint
 
     public function setTitle($v) { $this->title = $v; $this->b_title = true; }
     public function setSubmitter($v) { $this->submitter = $v; $this->b_submitter = true; }
+
+    //used by event notifier to show the real name of the person
+    public function setSubmitterName($v) { $this->submitter_name = $v; }
+
     public function setName($v) { 
         //split first name and the last name
         $pos = strpos(trim($v), " ");
@@ -469,9 +470,9 @@ class Footprint
                     $this->send_notification($params["assignees"], $this->id);
                 }
 
-                $this->sendEventNotification(true);
+                $this->sendEventNotification(true); //true == new ticket notification
             } else {
-                $this->sendEventNotification(false);
+                $this->sendEventNotification(false); //false == ticket update notification
             }
 
             //if assignee notification was suppressed, then send GOC-TX trigger email ourselves
@@ -520,7 +521,7 @@ class Footprint
         //prepare message to publish on event server
         $event = new EventPublisher();
         $msg = "<ticket>";
-        $msg .= "<submitter>".htmlspecialchars($this->submitter)."</submitter>";
+        $msg .= "<submitter>".htmlspecialchars($this->submitter_name)."</submitter>";
         $msg .= "<title>".htmlspecialchars($this->title)."</title>";
         $msg .= "<description>".htmlspecialchars($this->description)."</description>";
         $msg .= "<status>".htmlspecialchars($this->status)."</status>";

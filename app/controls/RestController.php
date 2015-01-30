@@ -1,4 +1,4 @@
-<?
+<?php
 
 class RestController extends Zend_Controller_Action
 {
@@ -7,7 +7,8 @@ class RestController extends Zend_Controller_Action
         header('content-type: text/xml'); 
         $this->render("none", null, true);
         if(!user()->isGOCMachine()) {
-            echo "not goc machine -- ".$_SERVER["REMOTE_ADDR"];//let's not use AuthException - which leads to html page
+            error_log("/rest accessed from non goc machine: ".$_SERVER["REMOTE_ADDR"]);
+            echo "<error>not goc machine -- ".$_SERVER["REMOTE_ADDR"]."</error>";//let's not use AuthException - which leads to html page
             exit;
         }
     }

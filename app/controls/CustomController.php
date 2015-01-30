@@ -186,6 +186,7 @@ class CustomController extends Zend_Controller_Action
         } else {
             $footprint->addDescription("\n\nby ".user()->getDN());
         }
+        $footprint->setSubmitterName(user()->getPersonName()); //used for notification
     }
 
     private function getFPAgent($name)

@@ -24,6 +24,7 @@ class UpdateController extends Zend_Controller_Action
         //update status
         $footprint = new Footprint;
         $footprint->setSubmitter(user()->person_fullname);
+        $footprint->setSubmitterName(user()->getPersonName());
         $footprint->setID($ticket_id);
         $footprint->setStatus($status);
         $footprint->addDescription("Updating ticket status to $status");

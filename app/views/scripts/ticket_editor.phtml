@@ -214,8 +214,62 @@ if(!isset($form_action)) {
         echo "</div>";
         echo "</div>";//row
 
+        ?>
+        <legend>Ticket Links</legend>
+        <div class=\"control-group\">
+            <style>
+            input.select2-search__field {
+            box-shadow: none !important;
+            }
+            </style>
+            <select id="ticket_links" multiple="multiple" style="width: 100%;"></select>
+            <script>
+            function formatRepo (ticket) {
+                if (ticket.loading) return ticket.text;
+                var markup = '<div>' +
+                '<b>' + ticket.id + '</b> ' + ticket.title+
+                ' <span class="label">' + ticket.status+ '</span> ' +
+                '</div>';
+                return markup;
+            }
+
+            function formatRepoSelection (ticket) {
+                return "<span data-ticket-id='"+ticket.id+"'><b>"+ticket.id+"</b> "+ticket.title;
+            }
+
+            $('#ticket_links').select2({
+                ajax: {
+                    url: "<?php echo fullbase()?>/search",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                      return {
+                        q: params.term, 
+                        json: true,
+                        s: params.page*10, //start
+                      };
+                    },
+                    processResults: function (data, page) {
+                      // parse the results into the format expected by Select2.
+                      // since we are using custom formatting functions we do not need to
+                      // alter the remote JSON data
+                      return {
+                        results: data.response.docs
+                      };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+                minimumInputLength: 1,
+                templateResult: formatRepo, // omitted for brevity, see the source of this page
+                templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+            });
+            </script>
+        </div>
+        <?php
+
         if(isset($this->ticket_id)) {
-            echo "<div class=\"control-group\">";
+            echo "<br><div class=\"control-group\">";
             include("app/views/scripts/ticket_attachment.phtml");
             echo "</div>";
         } else { 

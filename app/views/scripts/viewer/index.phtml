@@ -274,7 +274,7 @@ echo "</div>";
             }
         }
 
-        $iso = date("c", $time);
+        $iso = date(DATE_W3C, $time);
         $timestr = date(config()->date_format_full, $time);
         $human_time = "<time datetime=\"$iso\">$timestr</time>";
 

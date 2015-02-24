@@ -20,7 +20,7 @@ class User
         $this->contact_name = "Guest";
         $this->contact_email = "";
         $this->contact_phone = "";
-        $this->timezone = "UTC";
+        //$this->timezone = "UTC";
         $this->disable = true;
 
         $this->guest = true;
@@ -116,5 +116,5 @@ class User
     public function getPersonPhone() { return $this->contact_phone; }
     public function getDN() { return $this->dn; }
     public function getDNID() { return $this->dn_id; }
-    public function getTimeZone() { return $this->timezone; }
+    //public function getTimeZone() { return $this->timezone; }
 }

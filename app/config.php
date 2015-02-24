@@ -100,8 +100,7 @@ abstract class common_config
         $this->force_https = true;
 
         //locale
-        //$this->date_format_full = "M j, Y h:i A e";
-        $this->date_format_full = "M j, Y h:i A";
+        $this->date_format_full = "M j, Y h:i A e";
         $this->date_format = "M j, Y";
 
         //tag to put before META information on the description

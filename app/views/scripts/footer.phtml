@@ -8,7 +8,8 @@ if(user()->isGuest()) {
     echo "Guest";
     $ticket_url = "http://ticket.grid.iu.edu/goc";
 } else {
-    echo user()->getDN()." (".user()->getTimeZone().")";
+    //echo user()->getDN()." (".user()->getTimeZone().")";
+    echo user()->getDN();
     $ticket_url = "https://ticket.grid.iu.edu/goc";
 }
 echo "</b></p>";

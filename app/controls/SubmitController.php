@@ -204,7 +204,7 @@ class SubmitController extends BaseController
         case "twiki": $this->processAppTWiki($footprints);break;
         case "gratiaweb": 
         case "goc":
-            $this->processAppInfra($footprints);
+            $this->processAppGoc($footprints);
             break;
 
         default: elog("unknown app_type given: ".$dirty_app_type);return;
@@ -237,9 +237,10 @@ class SubmitController extends BaseController
         $footprints->addAssignee($fpid);
     }
 
-    private function processAppInfra($footprints) {
-        $footprints->addAssignee("steige", true); //clear list
-        $footprints->addAssignee("hayashis");
+    private function processAppGoc($footprints) {
+        //let it go to support by default (as discussed in the chatroom)
+        //$footprints->addAssignee("steige", true); //clear list
+        //$footprints->addAssignee("hayashis");
         if(@$_POST["app_goc_url"] != "") {
             $footprints->addMeta("Affected URL: ".$_POST["app_goc_url"]);
         }

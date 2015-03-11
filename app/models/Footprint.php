@@ -206,6 +206,9 @@ class Footprint
     public function setMetadata($key, $value) {
         $this->metadata[$key] = $value;
     }
+    public function getMetadata($key) {
+        return $this->metadata[$key];
+    }
 
     public function isValidAssignee($assignee) {
         $schema_model = new Schema();

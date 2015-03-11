@@ -1,4 +1,4 @@
-<?
+<?php
 
 class SubmitController extends BaseController
 { 
@@ -44,14 +44,6 @@ class SubmitController extends BaseController
                 } else {
                     elog("invalid akismet key... not performing spam check");
                 }
-                /*
-                if($this->isspam($dirty_detail)) {
-                    message("error", "Sorry, please try different captcha.");
-                    $this->view->form = $form;
-                    $this->render("index");
-                    return;
-                }
-                */
             }
 
             $footprints = $this->initSubmit($form);
@@ -99,25 +91,6 @@ class SubmitController extends BaseController
         }
     }
 
-    /* replaced by akismet
-    //very basic spam checker --- just look for blacklisted words, and if found, rejects it
-    private function isspam($text) {
-        $words = str_word_count($text, 1);
-        $spam_words = config()->spam_keywords;
-        foreach($words as $word) {
-            $word = strtolower($word);
-            slog("checking $word");
-            if(in_array($word, $spam_words)) {
-                $ip = $_SERVER['REMOTE_ADDR'];
-                $host  = gethostbyaddr($ip);
-                elog("found spam word: $word -- submitted by $ip($host)");
-                return true;
-            }
-        }
-        return false;
-    }
-    */
-
     private function processResource($footprints, $dirty_rid)
     {
         $rs_model = new ResourceSite();
@@ -149,15 +122,8 @@ class SubmitController extends BaseController
             $footprints->addAssignee($sc->footprints_id);
         }
 
-        //$footprints->addMeta("Resource on which user is having this issue: ".$resource->name."($resource_id)\n");
         $footprints->addPrimaryAdminContact($resource_id);
         $footprints->setMetadataResourceID($resource_id);
-        /*
-        $footprints->setMetadata("ASSOCIATED_R_ID", $resource_id);
-        $footprints->setMetadata("ASSOCIATED_R_NAME", $resource->name);
-        $footprints->setMetadata("ASSOCIATED_RG_ID", $resource->resource_group_id);
-        $footprints->setMetadata("ASSOCIATED_RG_NAME", $resource_group->name);
-        */
     }
 
     private function processVO($footprints, $dirty_void)
@@ -166,13 +132,8 @@ class SubmitController extends BaseController
 
         $model = new VO();
         $vo = $model->get($void);
-        //$footprint->setDestinationVO($vo->footprints_id);
         $footprints->addMeta("VO on which user is having this issue: ".$vo->name."($vo->id)\n");
         $footprints->setMetadataVOID($void);
-        /*
-        $footprints->setMetadata("ASSOCIATED_VO_ID", $vo->id);
-        $footprints->setMetadata("ASSOCIATED_VO_NAME", $vo->name);
-        */
         $footprints->addPrimaryVOAdminContact($vo->id);
 
         //lookup SC name
@@ -182,22 +143,16 @@ class SubmitController extends BaseController
             $footprints->addMeta("Failed to find active support center with id ".$vo->sc_id);
         } else {
             $footprints->setMetadataSCID($sc->id);
-            /*
-            $footprints->setMetadata("SUPPORTING_SC_ID", $sc->id);
-            $footprints->setMetadata("SUPPORTING_SC_NAME", $sc->name);
-            */
             $fpid = $sc->footprints_id;
             $footprints->addAssignee($fpid);
         }
     }
 
     private function processApp($footprints, $dirty_app_type) {
-
         switch($dirty_app_type) {
         case "bdii": $this->processAppBDII($footprints);break;
         case "ress_dev": $this->processAppSC($footprints, 40);break;//Ress SC
         case "ress_ops": $this->processAppSC($footprints, 7);break;//Fermilab SC (see ticket 11798 - Steve's comment)
-        //case "gratia_dev": $this->processAppSC($footprints, 47);break;//GRATIA Dev SC
         case "gratia_dev": break; //don't do anything - just leave it assigned to support team
         case "gratia_ops": $this->processAppSC($footprints, 39);break;//GRATIA Ops SC
         case "vdt": $this->processAppVDT($footprints);break;
@@ -206,7 +161,6 @@ class SubmitController extends BaseController
         case "goc":
             $this->processAppGoc($footprints);
             break;
-
         default: elog("unknown app_type given: ".$dirty_app_type);return;
         }
         $footprints->addMeta("Application issue with type: $dirty_app_type");
@@ -239,8 +193,6 @@ class SubmitController extends BaseController
 
     private function processAppGoc($footprints) {
         //let it go to support by default (as discussed in the chatroom)
-        //$footprints->addAssignee("steige", true); //clear list
-        //$footprints->addAssignee("hayashis");
         if(@$_POST["app_goc_url"] != "") {
             $footprints->addMeta("Affected URL: ".$_POST["app_goc_url"]);
         }
@@ -310,7 +262,6 @@ class SubmitController extends BaseController
 
         $e = new Zend_Form_Element_Text('title');
         $e->setLabel("Ticket Title");
-        //$e->setValue("Other Issues");
         $e->setRequired(true);
         $form->addElement($e);
 
@@ -327,14 +278,12 @@ class SubmitController extends BaseController
     }
 
     public function templateAction() {
-        //header("content-type", "text/html");
         $id = $_GET["id"];
         switch($id) {
         case "campusvorequest_issue_check":
             $this->render("template_campusvorequest");
             break;
         default:
-            //error_log("invalid tepmlate id requested: $id");
             $this->render("template_na");
         }
     }

@@ -1,6 +1,5 @@
-<?
+<?php
 
-//class ViewerController extends Zend_Controller_Action 
 class ViewerController extends BaseController
 {
     public function init()
@@ -147,7 +146,6 @@ class ViewerController extends BaseController
                 $info = config()->lookupFPID($txid, $tid);
                 $fpid = $info[0];
                 $url = $info[1];
-                //ticket id override
                 if(isset($info[2])) {
                     $tid = $info[2];
                 }
@@ -160,7 +158,19 @@ class ViewerController extends BaseController
         }
 
         $model = new Data();
-        $this->view->metadata = $model->getAllMetadata($id);
+        $metadata = array();
+        foreach($model->getAllMetadata($id) as $rec) {
+            $metadata[$rec->key] = $rec->value;
+        }
+        $this->view->metadata = $metadata;
+
+        //error_log("############################");
+        //error_log("[".$metadata["ticket_links"]."]");
+        
+        //lookup ticket titles for each ticket links
+        if(isset($metadata["ticket_links"])) {
+            $this->loadTicketLinks($metadata["ticket_links"]);
+        }
 
         //load simmilar ticket info
         $xml_file = config()->group_xml_path;
@@ -229,6 +239,12 @@ class ViewerController extends BaseController
         $footprint->setName($_REQUEST["submitter_name"]);//TODO validate
         $footprint->setEmail($_REQUEST["submitter_email"]);//TODO email
         $footprint->setOfficePhone($_REQUEST["submitter_phone"]);//TODO phone
+
+        if(isset($_REQUEST["ticket_links"])) {
+            $links = $_REQUEST["ticket_links"];
+            //TODO validate?
+            $footprint->setMetadata("ticket_links", $links);
+        }
 
         //consolidate assignee list
         $assignees = array();
@@ -316,25 +332,31 @@ class ViewerController extends BaseController
 
         //finally..
         if(!$good) {
-            //TODO - implement mechanism to allow re-editing
-            echo "Sorry, I haven't implemented the re-edit mechanism yet.. I have lost your update information";
+            //TODO - pass error message via json return object
         } else {
             try {
+                //need to do link process before I update the ticket so that I know which tickets to unlink
+                $ticket_links = $footprint->getMetadata("ticket_links");
+                $this->processTicketLinks($ticket_id, $ticket_links);
+
                 $mrid = $footprint->submit();
                 if(!config()->simulate) {
                     message("success", "Successfully updated ticket <a href=\"".fullbase()."/$mrid\">$mrid</a>", true);
+                    /*
                     if(isset($_REQUEST["closewindow"]) && $_REQUEST["closewindow"] == "on") {
                         //do close
                         $close = "?close=true";
                         header("Location: ".fullbase()."/".$ticket_id.$close);
                         exit;
                     }
+                    */
                 } 
-                $this->view->mrid = $mrid;
-                $this->render("success", null, true);
+            
+                //$this->view->mrid = $mrid;
+                //$this->render("success", null, true);
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
-                $this->render("failed", null, true);
+                //$this->render("failed", null, true);
             }
         }
         $this->render("none", null, true);
@@ -484,7 +506,7 @@ class ViewerController extends BaseController
 
                 //try closing 
                 if (!window.close()) {
-                    <?
+                    <?php
                     //can't close, then reload the page we are trying to close
                     $ticket_id = (int)trim($this->getRequest()->getParam("id"));
                     ?>
@@ -577,6 +599,84 @@ class ViewerController extends BaseController
             }
         }
         return $descs;
+    }
+
+    //basically this loads the ticket title for each ticket ids linked
+    private function loadTicketLinks($ticket_links) {
+         if($ticket_links != "") {
+            $ids = explode(",", $ticket_links);
+
+            $url = config()->solr_host."/select?wt=json";
+            $ids = str_replace(",","%20",$ticket_links);
+            $url .= "&q=id:($ids)";
+            $url .= "&fl=id,title,status";
+            $ret_json = file_get_contents($url);
+            //error_log($url);
+            $ret = json_decode($ret_json);
+            $info = array();
+            foreach($ret->response->docs as $doc) {
+                $info[$doc->id] = $doc;
+            }
+            //error_log(print_r($ticket_titles, true));
+            $this->view->ticket_links_info = $info;
+        }
+    }
+
+    //ticket linking information needs to be updated on each destination
+    private function processTicketLinks($srcid, $new_links) {
+        $data = new Data();
+
+        if(!$new_links) {
+            $new_links = array();
+        } else {
+            $new_links = explode(",",$new_links);
+        }
+
+        //handle removal
+        $old_links = $data->getMetadata($srcid, "ticket_links");
+        if(!$old_links) {
+            $old_links = array();
+        } else {
+            $old_links = explode(",",$old_links);
+        }
+        /*
+        error_log("old_links");
+        error_log(print_r($old_links, true));
+        error_log("new_links");
+        error_log(print_r($new_links, true));
+        */
+
+        foreach($old_links as $destid) {
+            if(!$destid) continue; //kiss..
+            if(!in_array($destid, $new_links)) {
+                //error_log("need to remove linking on $destid");
+                $dest_links = $data->getMetadata($destid, "ticket_links");
+                $dest_links = explode(",",$dest_links);
+                $pos = array_search($srcid, $dest_links);
+                //error_log("before updated dest links");
+                //error_log(print_r($dest_links, true));
+                unset($dest_links[$pos]);
+                //error_log("updated dest links");
+                //error_log(print_r($dest_links, true));
+                $data->setMetadata($destid, "ticket_links", implode(",",$dest_links));
+                
+            }
+        }
+
+        //handle insert
+        foreach($new_links as $destid) {
+            $dest_links = $data->getMetadata($destid, "ticket_links");
+            if(!$dest_links) {
+                $dest_links = array();
+            } else {
+                $dest_links = explode(",",$dest_links);
+            }
+            //error_log("destination ".$destid. ":".$dest_links);
+            if(!in_array($srcid, $dest_links)) {
+                $dest_links[] = $srcid;
+            }
+            $data->setMetadata($destid, "ticket_links", implode(",",$dest_links));
+        }
     }
 }
 

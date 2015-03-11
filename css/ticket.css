@@ -309,3 +309,6 @@ padding-left: 30px;
 span.email {
 color: gray;
 }
+.select2-selection:focus {
+outline: none !important;
+}

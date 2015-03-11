@@ -5,7 +5,7 @@ if(!isset($form_action)) {
 }
 ?>
 
-<form id="ticket_form" class="form-horizontal" action="<?php echo $form_action?>" method="post">
+<form id="ticket_form" class="form-horizontal">
     <div class="control-group">
         <input type="hidden" name="id" value="<?=$this->ticket_id?>"/>
         <?php if(isset($this->ticket_id)) {?>
@@ -63,33 +63,34 @@ if(!isset($form_action)) {
 
         <legend>Details</legend>
         <?php
-        $sc_id = $r_id = $vo_id = null;
-        if(count($this->metadata) != 0) {
-            foreach($this->metadata as $item) {
-                switch($item->key) {
-                case "SUPPORTING_SC_NAME": break;
-                case "SUPPORTING_SC_ID": 
-                    $sc_id = $item->value;
-                    break;
-                case "ASSOCIATED_R_NAME": break;
-                case "ASSOCIATED_R_ID": 
-                    $r_id = $item->value;
-                    break;
-                case "ASSOCIATED_RG_NAME": break;
-                case "ASSOCIATED_RG_ID": break;
-                case "ASSOCIATED_VO_NAME": break;
-                case "ASSOCIATED_VO_ID": 
-                    $vo_id = $item->value;
-                    break;
-                default: 
-                    //just display key/value
-                    echo "<div class=\"control-group\">";
-                    echo "<label class=\"control-label\">$item->key</label>";
-                    echo "<div class=\"controls\">";
-                    echo "<input type=\"text\" disabled class=\"span12\" value=\"$item->value\" name=\"metadata[$item->key]\"/>";
-                    echo "</div>";//controls
-                    echo "</div>";//control-group
-                }
+        $sc_id = $r_id = $vo_id = $ticket_links = null;
+        foreach($this->metadata as $key=>$value) {
+            switch($key) {
+            case "SUPPORTING_SC_NAME": break;
+            case "SUPPORTING_SC_ID": 
+                $sc_id = $value;
+                break;
+            case "ASSOCIATED_R_NAME": break;
+            case "ASSOCIATED_R_ID": 
+                $r_id = $value;
+                break;
+            case "ASSOCIATED_RG_NAME": break;
+            case "ASSOCIATED_RG_ID": break;
+            case "ASSOCIATED_VO_NAME": break;
+            case "ASSOCIATED_VO_ID": 
+                $vo_id = $value;
+                break;
+            case "ticket_links":  
+                $ticket_links = $value; 
+                break;
+            default: 
+                //just display key/value
+                echo "<div class=\"control-group\">";
+                echo "<label class=\"control-label\">$key</label>";
+                echo "<div class=\"controls\">";
+                echo "<input type=\"text\" disabled class=\"span12\" value=\"$value\" name=\"metadata[$key]\"/>";
+                echo "</div>";//controls
+                echo "</div>";//control-group
             }
         }
 
@@ -222,22 +223,34 @@ if(!isset($form_action)) {
             box-shadow: none !important;
             }
             </style>
-            <select id="ticket_links" multiple="multiple" style="width: 100%;"></select>
+            <select id="ticket_links" multiple="multiple" style="width: 100%;">
+                <?php 
+                if($ticket_links) {
+                    foreach(explode(",", $ticket_links) as $id) {
+                        //I don't know how to make ticket title to appear..
+                        $info = $this->ticket_links_info[$id];
+                        $title = $this->escape($info->title);
+                        echo "<option value=\"$id\" selected=\"selected\" title=\"$title\"\">text attr is ignored.</option>";
+                    }
+                }
+                ?>
+            </select>
             <script>
-            function formatRepo (ticket) {
+            function formatResult(ticket) {
                 if (ticket.loading) return ticket.text;
                 var markup = '<div>' +
-                '<b>' + ticket.id + '</b> ' + ticket.title+
-                ' <span class="label">' + ticket.status+ '</span> ' +
+                '<b>' + ticket.id + '</b> ' + ticket.title+ ' <span class="label">' + ticket.status+ '</span> ' +
                 '</div>';
                 return markup;
             }
 
-            function formatRepoSelection (ticket) {
-                return "<span data-ticket-id='"+ticket.id+"'><b>"+ticket.id+"</b> "+ticket.title;
+            function formatSelection (ticket) {
+                return "<span data-ticket-id='"+ticket.id+"'><b>"+ticket.id+"</b> "+
+                '<a href="<?php echo fullbase()?>/'+ticket.id+'" target="_blank">' + ticket.title+ '</a></span>';
             }
 
             $('#ticket_links').select2({
+                placeholder: "Enter ticket ID to link", 
                 ajax: {
                     url: "<?php echo fullbase()?>/search",
                     dataType: 'json',
@@ -261,8 +274,8 @@ if(!isset($form_action)) {
                 },
                 escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
                 minimumInputLength: 1,
-                templateResult: formatRepo, // omitted for brevity, see the source of this page
-                templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+                templateResult: formatResult, // omitted for brevity, see the source of this page
+                templateSelection: formatSelection // omitted for brevity, see the source of this page
             });
             </script>
         </div>
@@ -325,5 +338,60 @@ if(!isset($form_action)) {
         <?}?>
         </div>
     </div>
-
 </form>
+
+<style>
+#loading_backdrop{ 
+position:fixed; 
+top:0; left:0; 
+background:rgba(0,0,0,0.6); 
+z-index:5; 
+width:100%; 
+height:100%; 
+display:none;
+}
+#loading_backdrop p {
+font-size: 200%;
+
+margin: 0px;
+position: absolute;
+top: 50%;
+left: 50%;
+margin-right: -50%;
+transform: translate(-50%, -50%);
+
+width: 50%;
+background-color: white;
+border-radius: 5px;
+border: 2px solid #333;
+box-shadow: 0px 0px 20px black;
+padding: 20px;
+}
+</style>
+<div id="loading_backdrop">
+    <p class=""><img src="<?php echo fullbase()?>/images/large-loading.gif"> Updating ...</p>
+</div>
+
+<script>
+$("#ticket_form").submit(function() {
+    $("#loading_backdrop").show();
+    var data = $("#ticket_form").serializeArray();
+    data.push({name: "ticket_links", value: $("#ticket_links").val()});
+    $.ajax({
+        url: "<?php echo $form_action?>",
+        type: "POST",
+        data: data
+    }).done(function(data) {
+            var close = $("#closewindow");
+            if(close) {
+                if(close.prop('checked')) window.close();
+                else location.reload();
+            } else {
+                document.location = '<?php echo fullbase()?>/list/open';
+            }
+    });
+    return false;
+});
+</script>
+
+

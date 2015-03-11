@@ -55,31 +55,37 @@ line-height: 18px;
 
     <legend>Details</legend>
     <?php
-       if(count($this->metadata) != 0) {
-            foreach($this->metadata as $item) {
-                if($item->value === null) continue;
-                //suppress metadata ID field (just show textual)
-                $label = "";
-                switch($item->key) {
-                case "SUPPORTING_SC_NAME":
-                    $label = "Support Center"; break;
-                case "ASSOCIATED_VO_NAME":
-                    $label = "Associated VO"; break;
-                case "ASSOCIATED_R_NAME":
-                    $label = "Resource Name"; break;
-                //case "ASSOCIATED_RG_NAME":
-                //    $label = "Resource Group"; break;
-                case "SUBMITTED_VIA":
-                    $label = "Submitted Via"; break;
-                case "SUBMITTER_NAME":
-                    $label = "Submitter"; break;
+        foreach($this->metadata as $key=>$value) {
+            if($value === null) continue;
+            //suppress metadata ID field (just show textual)
+            $label = "";
+            switch($key) {
+            case "SUPPORTING_SC_NAME":
+                $label = "Support Center"; break;
+            case "ASSOCIATED_VO_NAME":
+                $label = "Associated VO"; break;
+            case "ASSOCIATED_R_NAME":
+                $label = "Resource Name"; break;
+            case "SUBMITTED_VIA":
+                $label = "Submitted Via"; break;
+            case "SUBMITTER_NAME":
+                $label = "Submitter"; break;
+            case "ticket_links":
+                $label = "Ticket Links";
+                $html = "<ul>";
+                foreach(explode(",", $value) as $id) {
+                    $info = $this->ticket_links_info[$id];
+                    $title = $this->escape($info->title);
+                    $html .= "<li><a target='_blank' href='".fullbase()."/$id'><b>$id</b> $title</a></li>";
                 }
-                if($label != "") {
-                    echo "<div class=\"control-group\">";
-                    echo "<label class=\"control-label\">$label</label>";
-                    echo "<div class=\"controls\">".$item->value."</div>";
-                    echo "</div>";
-                }
+                $value = $html."</ul>";
+                break;
+            }
+            if($label != "") {
+                echo "<div class=\"control-group\">";
+                echo "<label class=\"control-label\">$label</label>";
+                echo "<div class=\"controls\">".$value."</div>";
+                echo "</div>";
             }
         }
     ?>

@@ -265,3 +265,6 @@ margin-top: 40px;
 padding: 20px 0px 20px 0px;
 border-top: 1px solid #ccc;
 }
+.select2-selection ul:focus {
+outline: none !important;
+}

@@ -80,7 +80,6 @@ class SearchController extends Zend_Controller_Action
         $this->view->result = json_decode($ret_json);
         $this->view->query = $q; //pass back to form
 
-
         //paging
         $this->view->page_current = (int)($start/$this->view->page_items);
         $this->view->page_num = ceil($this->view->result->response->numFound / $this->view->page_items);
@@ -173,6 +172,7 @@ class SearchController extends Zend_Controller_Action
                 $this->view->faceted[$key] = array("value"=>$_REQUEST[$key], "label"=>$label);
             }
         }
+
         /*
         if(!isset($_REQUEST["priority"])) {
             $f_url = $url."&rows=0&facet=true&facet.mincount=1&facet.field=priority";
@@ -209,11 +209,13 @@ class SearchController extends Zend_Controller_Action
         return trim(preg_replace('/[^a-zA-Z0-9_ +-\.]/', '', $dirty));
     }
 
+    /*
     //search for ticket title or id
     public function titleidAction() {
         $q = $_REQUEST["q"];
         $url = config()->solr_host."/select?wt=json";
     }
+    */
 
     public function autocompleteAction() {
         $q = $this->clean($_REQUEST["q"]);

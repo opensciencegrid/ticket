@@ -27,15 +27,15 @@ class ViewerController extends BaseController
 
         $model = new Tickets();
         $detail = $model->getDetail($id);
-        $detail->id = $id;
-        if($detail === "") {
+        if($detail === "") { //ugly..
             $this->render("nosuchticket");
             return;
         }
+        $detail->id = $id;
 
         $this->view->ticket_id = $id;
-        $this->view->title = $detail->title;
-        $this->view->page_title = "[$id] ".$detail->title;
+        $this->view->title = @$detail->title;
+        $this->view->page_title = "[$id] ".@$detail->title;
         if(!user()->isGuest()) {
             //$this->view->load_comet = true;
             $this->view->contact_id = user()->contact_id;
@@ -89,8 +89,8 @@ class ViewerController extends BaseController
         if(isset($plist[$detail->priority])) {
             $this->view->priority = $plist[$detail->priority];
         } else {
-            elog("failed to lookup priority: ".$detail->priority);
-            $this->view->priority = "unknown_prioriry:".$detail->priority;
+            elog("failed to lookup priority: ".@$detail->priority);
+            $this->view->priority = "unknown_prioriry:".@$detail->priority;
         }
         $this->view->assignees = "";
         $this->view->cc = "";
@@ -113,7 +113,7 @@ class ViewerController extends BaseController
         //assignee, cc
         $this->view->assignees = array();
         $this->view->cc = array();
-        foreach(explode(" ", $detail->assignees) as $a) {
+        foreach(explode(" ", @$detail->assignees) as $a) {
             //FP somehow put CCs on assginee field... 
             if(strlen($a) >= 3 and strpos($a, "CC:") === 0) {
                 $this->view->cc[] = substr($a, 3);
@@ -133,11 +133,11 @@ class ViewerController extends BaseController
             $this->view->assignees[$a] = $aka_model->lookupName($a);
         }
 
-        $this->view->destination_vo = Footprint::parse($detail->Destination__bVO__bSupport__bCenter);
-        $this->view->nad = date("Y-m-d", strtotime($detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p));
-        $this->view->next_action = $detail->ENG__bNext__bAction__bItem;
-        $this->view->ready_to_close = $detail->Ready__bto__bClose__Q;
-        $this->view->ticket_type = Footprint::parse($detail->Ticket__uType);
+        $this->view->destination_vo = Footprint::parse(@$detail->Destination__bVO__bSupport__bCenter);
+        $this->view->nad = date("Y-m-d", strtotime(@$detail->ENG__bNext__bAction__bDate__fTime__b__PUTC__p));
+        $this->view->next_action = @$detail->ENG__bNext__bAction__bItem;
+        $this->view->ready_to_close = @$detail->Ready__bto__bClose__Q;
+        $this->view->ticket_type = Footprint::parse(@$detail->Ticket__uType);
 
         $model = new TX();
         $this->view->txlinks = array();
@@ -528,7 +528,7 @@ class ViewerController extends BaseController
             //if the ticket is not editable, store ticket detail in session 
             //so we can use it when user submit - like ticket title in event notification
             $sess = new Zend_Session_Namespace("ticket_".$detail->id);
-            $sess->title = $detail->title;
+            $sess->title = @$detail->title;
         }
 
         $descs = $this->parse_descs($detail);
@@ -565,37 +565,40 @@ class ViewerController extends BaseController
     }
 
     private function parse_descs($detail) {
-        $alldesc = $detail->alldescs;
-        $alldescs = explode("Entered on", $alldesc);
         $descs = array();
+        //some ticket doesn't have any descs
+        if(isset($detail->alldescs)) {
+            $alldesc = $detail->alldescs;
+            $alldescs = explode("Entered on", $alldesc);
 
-        foreach($alldescs as $desc) {
-            if($desc == "") continue;
+            foreach($alldescs as $desc) {
+                if($desc == "") continue;
 
-            $desc_lines = explode("\n", $desc);
-            $info = trim($desc_lines[0]);
-            $desc = strstr($desc, "\n");
+                $desc_lines = explode("\n", $desc);
+                $info = trim($desc_lines[0]);
+                $desc = strstr($desc, "\n");
 
-            //parse out time and by..
-            $info_a = explode(" by ", $info);
-            $date_str = str_replace(" at ", " ", $info_a[0]);
+                //parse out time and by..
+                $info_a = explode(" by ", $info);
+                $date_str = str_replace(" at ", " ", $info_a[0]);
 
-            //FP9 add some time zone description - remove it since php can't parse it out
-            $date_str = explode("(GMT", $date_str);
-            $date_str = $date_str[0];
+                //FP9 add some time zone description - remove it since php can't parse it out
+                $date_str = explode("(GMT", $date_str);
+                $date_str = $date_str[0];
 
-            $time = strtotime($date_str);// + 3600;
-            if(sizeof($info_a) == 1) {
-                elog("FP information [$info] is malformed..(no 'by' information)");
-                $by = "unknown";
-            } else {
-                $by = str_replace(":", "", $info_a[1]);
-            }
+                $time = strtotime($date_str);// + 3600;
+                if(sizeof($info_a) == 1) {
+                    elog("FP information [$info] is malformed..(no 'by' information)");
+                    $by = "unknown";
+                } else {
+                    $by = str_replace(":", "", $info_a[1]);
+                }
 
-            if(isset($descs[$time])) {
-                $descs[$time]["content"].= "\n".$desc;
-            } else {
-                $descs[$time] = array("type"=>"description", "by"=>$by, "content"=>$desc); 
+                if(isset($descs[$time])) {
+                    $descs[$time]["content"].= "\n".$desc;
+                } else {
+                    $descs[$time] = array("type"=>"description", "by"=>$by, "content"=>$desc); 
+                }
             }
         }
         return $descs;

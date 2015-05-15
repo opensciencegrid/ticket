@@ -72,13 +72,16 @@ line-height: 18px;
                 $label = "Submitter"; break;
             case "ticket_links":
                 $label = "Ticket Links";
-                $html = "<ul>";
+                //$html = "<ul>";
+                $html = "";
                 foreach(explode(",", $value) as $id) {
                     $info = $this->ticket_links_info[$id];
-                    $title = $this->escape($info->title);
-                    $html .= "<li><a target='_blank' href='".fullbase()."/$id'><b>$id</b> $title</a></li>";
+                    if($info) {
+                        $title = $this->escape($info->title);
+                        $html .= "<p><a target='_blank' href='".fullbase()."/$id'><b>$id</b> $title</a></p>";
+                    }
                 }
-                $value = $html."</ul>";
+                $value = $html;//."</ul>";
                 break;
             }
             if($label != "") {

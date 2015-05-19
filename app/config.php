@@ -14,7 +14,7 @@ abstract class common_config
         //
 
         //application version to use for version specific data structures, etc.
-        $this->version = "1.90";
+        $this->version = "1.91";
         //application to display or used in email
         $this->app_name = "GOC Ticket";
         //application name used in places such as session name

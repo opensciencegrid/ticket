@@ -179,7 +179,6 @@ class SubmitController extends BaseController
         }
 
         $footprints->addAssignee("steige", true); //clear list
-        $footprints->addAssignee("hayashis");
     }
 
     private function processAppSC($footprints, $scid) {
@@ -206,7 +205,7 @@ class SubmitController extends BaseController
         if(@$_POST["twikitype"] == "bug") {
             //if it's bug, assign ticket to infrastructure
             $footprints->addAssignee("steige", true); //clear list
-            $footprints->addAssignee("hayashis");
+            //$footprints->addAssignee("hayashis");
         }
     }
 

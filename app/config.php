@@ -55,9 +55,9 @@ abstract class common_config
 
         //define who gets SMS notification based on different priority
         $this->sms_notification = array(
-            1=>/*critical*/     array("hayashis", "steige", "rquick", "kagross"),
-            2=>/*high*/         array("hayashis"),
-            3=>/*elevated*/     array("hayashis"),
+            1=>/*critical*/     array("steige", "rquick", "kagross"),
+            2=>/*high*/         array(),
+            3=>/*elevated*/     array(),
             4=>/*normal*/       array()
         );
 

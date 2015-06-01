@@ -59,11 +59,13 @@ class SimplenotifyController extends BaseController
 	        $e->setSign();
 	    }
 
+            /*
             //the last minutes debug override
             if(config()->debug) {
                 $e->setTo("hayashis@indiana.edu");
                 $e->addAddress("hayashis@indiana.edu");
             }
+            */
 
             try
             {

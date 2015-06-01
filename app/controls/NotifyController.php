@@ -75,12 +75,15 @@ class NotifyController extends BaseController
                 $e->setFrom($person->name." <".$person->primary_email.">");
             }
 
+            /*
             //override to address for testing
             if(config()->debug) {
                 $e->setTo("hayashis@indiana.edu");
             } else {
                 $e->setTo('goc@opensciencegrid.org');
             }
+            */
+            $e->setTo('goc@opensciencegrid.org');
 
             $subject = $form->getValue('subject');
             $ticket_id = $form->getValue('ticket');

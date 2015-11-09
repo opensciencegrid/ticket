@@ -5,6 +5,7 @@
 //set_include_path('/usr/local/ZendFramework-1.12.3/library' . PATH_SEPARATOR . get_include_path());
 set_include_path('app/models' . PATH_SEPARATOR . get_include_path());  
 set_include_path('app/controls' . PATH_SEPARATOR . get_include_path());  
+set_include_path('/usr/share/php/Google/src' . PATH_SEPARATOR . get_include_path());
 require_once "Zend/Loader/Autoloader.php";
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);

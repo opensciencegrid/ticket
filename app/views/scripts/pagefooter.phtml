@@ -1,11 +1,11 @@
-<hr>
+<hr/>
 <footer>
 <?php echo "<p>".config()->app_name." Version ".config()->version; ?>
- | <a href="https://ticket.grid.iu.edu/goc/submit?app_issue_check=on&app_issue_type=goc&app_goc_url=<?=urlencode(fullurl())?>">Report Bugs</a>
+ | <a href="https://ticket.grid.iu.edu/goc/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=<?=urlencode(fullurl())?>">Report Bugs</a>
  | <a href="https://twiki.grid.iu.edu/bin/view/Operations/IUPrivacyPolicy">Privacy Policy</a>
 </p>
 
-<p> <img align="top" src="<?=base()?>/images/tag_orange.png"/>&nbsp;<?=config()->copyright?></p>
+<p> <img align="top" src="<?=base()?>/images/tag_orange.png"/> <?=config()->copyright?></p>
 </footer>
 
 

@@ -13,6 +13,14 @@ class NotifyController extends BaseController
 
     public function indexAction() 
     { 
+	                        if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+                                        slog("oauth access token already set");
+                                }
+                                else {
+                                        slog("creating oauth access token in RSS Feed");
+                                        $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . '/oauth';
+                                        header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+                                }
         $this->view->form = $this->getForm();
         $this->render();
     }
@@ -78,7 +86,7 @@ class NotifyController extends BaseController
             /*
             //override to address for testing
             if(config()->debug) {
-                $e->setTo("hayashis@indiana.edu");
+                $e->setTo("schmiecs@indiana.edu");
             } else {
                 $e->setTo('goc@opensciencegrid.org');
             }
@@ -129,6 +137,7 @@ class NotifyController extends BaseController
                 }
             } catch(exception $e) {
                 $this->sendErrorEmail($e);
+		slog($e);
                 $this->render("failed", null, true);
             }
         } else {

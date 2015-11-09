@@ -1,7 +1,10 @@
 <?
 
+
 class RSSFeed
 {
+
+
     public function insert($subject, $ticket_id, $body)
     {
         $ticket_id = (int)$ticket_id;
@@ -20,21 +23,26 @@ class RSSFeed
         /////////////////////////////////////////////////////////////
         // Insert to osggoc.blogger.com
         $blogid = config()->blogger_blogid;
-        $service = "blogger";
-        $client = Zend_Gdata_ClientLogin::getHttpClient(config()->blogger_user, config()->blogger_pass, $service, null,
-                Zend_Gdata_ClientLogin::DEFAULT_SOURCE, null, null, 
-                Zend_Gdata_ClientLogin::CLIENTLOGIN_URI, 'GOOGLE');
-        $gdClient = new Zend_Gdata($client); 
 
-        $uri = "https://www.blogger.com/feeds/$blogid/posts/default";
-        $entry = $gdClient->newEntry();
-        $entry->title = $gdClient->newTitle(trim($subject));
-        $entry->content = $gdClient->newContent($body);
-        $entry->content->setType('text');
-        $createdPost = $gdClient->insertEntry($entry, $uri);
-        $idText = explode('-', $createdPost->id->text);
-        $newpostid = $idText[2];
+	$client = new Google_Client();
+  	$client->setAuthConfigFile('/usr/local/ticket/client_secrets.json');
+	$client->addScope('https://www.googleapis.com/auth/blogger');
+	$client->setApplicationName("OSG Blog");
+	$service = new Google_Service_Blogger($client);
+	if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+  		$client->setAccessToken($_SESSION['access_token']);
+		 slog("oauth access token already set");
+		 $mypost= new Google_Service_Blogger_Post();
+                $mypost->setTitle($subject);
+                $mypost->setContent($body);
+                $service->posts->insert($blogid, $mypost);
+                slog("Created new blogger post ");
+       } 
+	else {
+                slog("creating oauth access token in RSS Feed");
+                $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . '/oauth';
+                header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+	}
 
-        slog("Created new blogger post with post id of $newpostid");
     }
 }

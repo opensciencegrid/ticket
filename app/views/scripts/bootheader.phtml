@@ -1,27 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="<?php echo base()?>/">
-    <!--[if IE]>
-    <script type="text/javascript">
-        //fix ie's broken base href handling
-        function toAbsURL(s) {
-         var l = location, h, p, f, i;
-         if (/^\w+:/.test(s)) { return s; }
-         h = l.protocol + '//' + l.host + (l.port!=''?(':' + l.port):'');
-         if (s.indexOf('/') == 0) { return h + s; }
-         p = l.pathname.replace(/\/[^\/]*$/, '');
-         f = s.match(/\.\.\//g);
-         if (f) {
-           s = s.substring(f.length * 3);
-           for (i = f.length; i--;) { p = p.substring(0, p.lastIndexOf('/')); }
-         }
-         return h + p + '/' + s;
-       }
-    var base = document.getElementsByTagName('base')[0];
-    base.href = toAbsURL(base.href);
-    </script>
-    <![endif]-->
+    <base href="<?php echo base()?>"/>
 
     <?
     if(isset($this->page_title)) {
@@ -30,11 +10,11 @@
         echo "<title>".config()->app_name."</title>";
     }
     ?>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="verify-v1" content="na5IcAJsZVOfEkboRxuIiZ1zpZgnZiWra+nKcS7nA/o=" />
     <meta name="google-site-verification" content="DLrk3ft4s8b-S2TloLCL2LD_t6wcTjgSluf5pmiu2kA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
     <link href="<?php echo fullbase()?>/rss" rel="alternate" type="application/rss+xml" title="GOC Ticket Update feed" />
 
     <style type="text/css">
@@ -61,7 +41,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
 
-    <link href="css/ticket.css" rel="stylesheet">
+    <link href="css/ticket.css" rel="stylesheet" />
     <script src="lib/jquery.cookie.js"></script>
 
     <link href="images/tag_orange.png" rel="icon" type="image/png"/>
@@ -78,7 +58,7 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"></a>
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"/></a>
             <ul class="nav">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -107,31 +87,31 @@
                     if(user()->allows("admin") || user()->allows("notify")) {
                         echo "<li class=\"nav-header\">Notification</li>";
                         if(user()->allows("admin")) {
-                            echo "<li id=\"submenu_notify\"><a href=\"notify\">GOC Notification</a></li>";
+                            echo "<li id=\"submenu_notify\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/notify\">GOC Notification</a></li>";
                         }
                         if(user()->allows("notify")) {
-                            echo "<li id=\"submenu_simplenotify\"><a href=\"simplenotify\">Security Notification</a></li>";
+                            echo "<li id=\"submenu_simplenotify\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/simplenotify\">Security Notification</a></li>";
                         }
                         echo "<li class=\"divider\"></li>";
                     }
 
                     echo "<li class=\"nav-header\">Ticket Submitter</li>";
                     if(user()->allows("notify")) {
-                        echo "<li id=\"submenu_securityannounceticket\"><a href=\"securityannounceticket\">Security Ticket</a></li>";
+                        echo "<li id=\"submenu_securityannounceticket\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/securityannounceticket\">Security Ticket</a></li>";
                     }
                     if(user()->allows("admin")) {
-                        echo "<li id=\"submenu_bulkresource\"><a href=\"bulkresource\">Bulk Resource Tickets</a></li>";
-                        echo "<li id=\"submenu_custom\"><a href=\"custom\">Custom Ticket</a></li>";
-                        echo "<li id=\"submenu_ra\"><a href=\"ra\">Certificate Request</a></li>";
+                        echo "<li id=\"submenu_bulkresource\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/bulkresource\">Bulk Resource Tickets</a></li>";
+                        echo "<li id=\"submenu_custom\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/custom\">Custom Ticket</a></li>";
+                        echo "<li id=\"submenu_ra\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/ra\">Certificate Request</a></li>";
                     }
-                    echo "<li id=\"submenu_campus\"><a href=\"campus\">CRC Request Form</a></li>";
+                    echo "<li id=\"submenu_campus\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/campus\">CRC Request Form</a></li>";
                     echo "<li class=\"divider\"></li>";
 
                     if(user()->allows("admin")) {
                         echo "<li class=\"nav-header\">Administration</li>";
-                        echo "<li id=\"submenu_finderror\"><a href=\"finderror\">Footprints Errors</a></li>";
+                        echo "<li id=\"submenu_finderror\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/finderror\">Footprints Errors</a></li>";
                         //echo "<li id=\"submenu_group\"><a href=\"group\">Ticket Clustering</a></li>";
-                        echo "<li id=\"submenu_assignment\"><a href=\"assignment\">Assignment</a></li>";
+                        echo "<li id=\"submenu_assignment\"><a href=\"https://".$_SERVER["SERVER_NAME"]."/assignment\">Assignment</a></li>";
                         echo "<li class=\"divider\"></li>";
                     }
 
@@ -162,13 +142,13 @@
                         <li id="submenu_listopen"><a href="list/open">Open Tickets</a></li>
                         <li id="submenu_listrecentclose"><a href="list/recentclose">Recently Closed Tickets</a></li>
                         <li class="divider"></li>
-                        <li id="submenu_alltickets"><a href="search?q=&sort=id">All Tickets</a></li>
+                        <li id="submenu_alltickets"><a href="search?q=&amp;sort=id">All Tickets</a></li>
                         </ul>
                     </li>                
                 </ul>
 
                 <form class="navbar-search pull-right" action="viewer">
-                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value="<?php echo @$this->query?>">
+                    <input id="search" type="text" name="id" class="search-query span2" placeholder="Search Ticket" value="<?php echo @$this->query?>"/>
                 </form>
             </div>
         </div>

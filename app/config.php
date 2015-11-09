@@ -172,7 +172,7 @@ abstract class common_config
 
         //we will install chatjs on a new "common components" server eventually
         $this->chatjs_url = "https://ticket1.grid.iu.edu:8443"; //url used by client's browser
-        $this->local_chatjs_url = "http://ticket1.goc:8080"; //used to make localhost request from php server
+        $this->local_chatjs_url = "http://ticket1.goc:80"; //used to make localhost request from php server
 
         $this->attachment_dir = "/usr/local/attachments/project_".$this->project_id;
         $this->gocip = array();

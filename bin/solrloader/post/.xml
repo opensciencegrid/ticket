@@ -1,8 +1,0 @@
-<add><doc>
-<field name="id"></field>
-<field name="title"></field>
-<field name="status"></field>
-<field name="priority"></field>
-<field name="nextaction"></field>
-<field name="assignees"></field>
-</doc></add>

@@ -21,10 +21,18 @@ class RSSFeed
         // Insert to osggoc.blogger.com
         $blogid = config()->blogger_blogid;
         $service = "blogger";
-        $client = Zend_Gdata_ClientLogin::getHttpClient(config()->blogger_user, config()->blogger_pass, $service, null,
-                Zend_Gdata_ClientLogin::DEFAULT_SOURCE, null, null, 
-                Zend_Gdata_ClientLogin::CLIENTLOGIN_URI, 'GOOGLE');
-        $gdClient = new Zend_Gdata($client); 
+        //$client = Zend_Gdata_ClientLogin::getHttpClient(config()->blogger_user, config()->blogger_pass, $service, null,
+         //       Zend_Gdata_ClientLogin::DEFAULT_SOURCE, null, null, 
+          //      Zend_Gdata_ClientLogin::CLIENTLOGIN_URI, 'GOOGLE');
+        //$gdClient = new Zend_Gdata($client); 
+		$client_email = '1234567890-a1b2c3d4e5f6g7h8i@developer.gserviceaccount.com';
+		$private_key = file_get_contents('MyProject.p12');
+		$scopes = array('https://www.googleapis.com/auth/sqlservice.admin');
+		$credentials = new Google_Auth_AssertionCredentials(
+    		$client_email,
+    		$scopes,
+    		$private_key
+		);
 
         $uri = "https://www.blogger.com/feeds/$blogid/posts/default";
         $entry = $gdClient->newEntry();

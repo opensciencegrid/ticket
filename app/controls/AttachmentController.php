@@ -107,6 +107,7 @@ class AttachmentController extends BaseController
                 $fileclass->delete_url = fullbase()."/attachment/handler?id=$ticket_id&file=".urlencode($name);
                 $fileclass->url = fullbase()."/attachment/view?id=$ticket_id&file=".urlencode($name);
                 $fileclass->delete_type = 'DELETE';
+                $fileclass->date = filectime($path."/".$name);
 
                 $datas[] = $fileclass;
             }

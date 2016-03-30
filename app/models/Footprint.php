@@ -539,6 +539,7 @@ class Footprint
         if($newticket) {
         	slog("new ticket");
             $event->publish($msg, $this->id.".create");
+            slog("published");
         } else {
             //ticket updated
             slog("updating ticket");

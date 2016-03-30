@@ -464,15 +464,18 @@ class Footprint
             //slog($this->id);
         } else {
             //submit the ticket!
+            slog("making fp call");
             $newid = fpCall($call, array(config()->webapi_user, config()->webapi_password, "", $params));
+            slog("finished fp call");
             if(is_null($this->id)) {
                 $this->id = $newid; //reset ticket ID with new ID that we just got
-
+				slog("adding new id");
                 //For new ticket, send SMS - if the ticket didn't come from other ticketing system.
                 if(trim(@$this->project_fields["Originating__bTicket__bNumber"]) == "") {
+                	
                     $this->send_notification($params["assignees"], $this->id);
                 }
-
+				slog("sending notification");
                 $this->sendEventNotification(true); //true == new ticket notification
             } else {
                 $this->sendEventNotification(false); //false == ticket update notification
@@ -483,7 +486,7 @@ class Footprint
                 slog("sending trigger emails to GOC-TX");
                 $this->sendGOCTXTrigger($this->assignees, $this->id);
             }
-
+			slog("store metadata");
             //store metadata
             $data = new Data();
             foreach($this->metadata as $key=>$value) {

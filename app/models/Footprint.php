@@ -498,8 +498,10 @@ class Footprint
     }
 
     private function sendEventNotification($newticket) {
+    	slog("in sendEventNotification");
         $type = "n/a";
         if(isset($this->project_fields["Ticket__uType"])) {
+        	slog("ticket type");
             $type = $this->project_fields["Ticket__uType"];
         }
         /* TICKET-84 is now undone
@@ -525,6 +527,7 @@ class Footprint
         */
 
         //prepare message to publish on event server
+        slog("new event publisher");
         $event = new EventPublisher();
         $msg = "<ticket>";
         $msg .= "<submitter>".htmlspecialchars($this->submitter_name)."</submitter>";
@@ -534,9 +537,11 @@ class Footprint
         $msg .= "</ticket>";
 
         if($newticket) {
+        	slog("new ticket");
             $event->publish($msg, $this->id.".create");
         } else {
             //ticket updated
+            slog("updating ticket");
             $event->publish($msg, $this->id.".update");
         }
         //}

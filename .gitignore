@@ -9,3 +9,4 @@ robots.txt
 node_modules
 barn
 secrets.js
+client_secrets.json

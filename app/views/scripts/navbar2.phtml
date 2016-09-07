@@ -42,13 +42,13 @@ padding-top: 10px;
                     <li><a href="http://osggoc.blogspot.com/">News</a></li>
                 </ul>
             </li>
-            <li id="menu_submit"><a href="submit">Submit</a></li>
+            <li id="menu_submit"><a href=\"https://".$_SERVER["SERVER_NAME"]."/submit">Submit</a></li>
             <li id="menu_view" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                <li id="submenu_listopen"><a href="list/open">Open Tickets</a></li>
-                <li id="submenu_listrecentclose"><a href="list/recentclose">Recently Closed Tickets</a></li>
+                <li id="submenu_listopen"><a href=\"https://".$_SERVER["SERVER_NAME"]."/list/open">Open Tickets</a></li>
+                <li id="submenu_listrecentclose"><a href=\"https://".$_SERVER["SERVER_NAME"]."/list/recentclose">Recently Closed Tickets</a></li>
                 <li class="divider"></li>
-                <li id="submenu_alltickets"><a href="search?q=&sort=id">All Tickets</a></li>
+                <li id="submenu_alltickets"><a href=\"https://".$_SERVER["SERVER_NAME"]."/search?q=&sort=id">All Tickets</a></li>
                 </ul>
             </li>  
         </ul>

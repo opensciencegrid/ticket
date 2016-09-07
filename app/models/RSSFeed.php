@@ -34,7 +34,9 @@ class RSSFeed
 		 slog("oauth access token already set");
 		 $mypost= new Google_Service_Blogger_Post();
                 $mypost->setTitle($subject);
-                $mypost->setContent($body);
+                $htmlbody = nl2br(str_replace('  ', ' &nbsp;', htmlspecialchars($body)));
+                $mypost->setContent($htmlbody);
+                
                 $service->posts->insert($blogid, $mypost);
                 slog("Created new blogger post ");
        } 

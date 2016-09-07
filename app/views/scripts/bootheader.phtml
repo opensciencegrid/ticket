@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="<?php echo base()?>/">
+  <base href="<?php echo base()?>/">
 
     <?
     if(isset($this->page_title)) {
@@ -58,7 +58,7 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="images/osglogo.40x30.png"/></a>
+            <a class="brand" style="padding: 6px 0px 0px 6px;" href="http://opensciencegrid.org"><img src="https://ticket.opensciencegrid.org/images/osglogo.40x30.png"/></a>
             <ul class="nav">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -136,15 +136,17 @@
 
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li id="menu_submit"><a href="submit">Submit</a></li>
-                    <li id="menu_view" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">View <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                        <li id="submenu_listopen"><a href="list/open">Open Tickets</a></li>
-                        <li id="submenu_listrecentclose"><a href="list/recentclose">Recently Closed Tickets</a></li>
-                        <li class="divider"></li>
-                        <li id="submenu_alltickets"><a href="search?q=&amp;sort=id">All Tickets</a></li>
-                        </ul>
-                    </li>                
+			<?php
+                   echo " <li id=\"menu_submit\"><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/submit\">Submit</a></li>";
+                    echo "<li id=\"menu_view\" class=\"dropdown\"><a href=\"\#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">View <b class=\"caret\"></b></a>";
+                        echo "<ul class=\"dropdown-menu\">";
+                        echo "<li id=\"submenu_listopen\"><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/list/open\">Open Tickets</a></li>";
+                        echo "<li id=\"submenu_listrecentclose\"><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/list/recentclose\">Recently Closed Tickets</a></li>";
+                        echo "<li class=\"divider\"></li>";
+                        echo "<li id=\"submenu_alltickets\"><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/search?q=&amp;sort=id\">All Tickets</a></li>";
+                        echo "</ul>";
+                    echo "</li>"; 
+			?>
                 </ul>
 
                 <form class="navbar-search pull-right" action="viewer">

@@ -162,6 +162,7 @@ function newfile(file) {
     node.append(
         "<div class=\"span6 file-name\">"+file.name+"</div>"+
         "<div class=\"span2 file-size\">"+bytesToSize(file.size)+"</div>"+
+        "<div class=\"span6 file-date\">"+file.date+"</div>"+
         "<div class=\"span3 file-preview\"/>"+
         "<div class=\"span1 file-delete\"><button class=\"button\" onclick=\"deletefile(this); return false;\">&times;</button></div>");
     if(file.thumbnail_url != undefined) {

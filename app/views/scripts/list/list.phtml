@@ -28,13 +28,13 @@ if($this->submenu_selected == "listopen") {
     $active = "active"; 
 }
 echo "<li class=\"$active\">";
-echo "<a href=\"list/open\">Open Tickets</a>";
+echo "<a href=\"https://".$_SERVER["SERVER_NAME"]."/list/open\">Open Tickets</a>";
 echo "</li>";
 
 $active = "";
 if($this->submenu_selected == "listrecentclose") { $active = "active"; }
 echo "<li class=\"$active\">";
-echo "<a href=\"list/recentclose\">Recently Closed Tickets</a>";
+echo "<a href=\"https://".$_SERVER["SERVER_NAME"]."/list/recentclose\">Recently Closed Tickets</a>";
 echo "</li>";
 
 echo "</ul>";

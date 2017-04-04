@@ -46,9 +46,7 @@ class SimplenotifyController extends BaseController
             if($form->getValue('sites')) {
                 $e->addAddress("osg-sites@opensciencegrid.org");
             }
-            if($form->getValue('vulnerability')) {
-                $e->addAddress("OSG-SECURITY-SOFTW-VULNERABILITY@opensciencegrid.org");
-            }
+
 
             $e->setFrom(config()->email_from_security);
             $e->setSubject($form->getValue("subject"));
@@ -106,8 +104,6 @@ class SimplenotifyController extends BaseController
         $e = new Zend_Form_Element_Checkbox('general');
         $form->addElement($e);
         $e = new Zend_Form_Element_Checkbox('sites');
-        $form->addElement($e);
-        $e = new Zend_Form_Element_Checkbox('vulnerability');
         $form->addElement($e);
         $e = new Zend_Form_Element_Checkbox('operations');
         $form->addElement($e);

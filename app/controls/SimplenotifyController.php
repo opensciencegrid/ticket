@@ -125,6 +125,7 @@ class SimplenotifyController extends BaseController
 
 		$e = new Zend_Form_Element_Text('cc');
 		$e->setLabel("Comma-separated CCs");
+		      $e->setRequired(false);
 		$form->addElement($e);
 
         $submit = new Zend_Form_Element_Submit('submit_button');

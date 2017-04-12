@@ -147,6 +147,9 @@ function checked($e)
 Publish to RSS
 <br>
 
+<input type="hidden" name="sign" value="0">
+<input type="checkbox" name="sign" id="sign" value="1" <?=checked($this->element->sign)?>>
+Sign using GOC X509 Certificate
 
 
 <div class="form-actions">

@@ -10,6 +10,7 @@ class SubmitController extends BaseController
 
     public function indexAction() 
     { 
+  
         $this->view->form = $this->getForm();
         $this->render();
     }

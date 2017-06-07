@@ -42,6 +42,20 @@ try {
     setup_logs();
     greet();
 
+    
+    if($_REQUEST["action"]=="logout"){
+      //Zend_Session::destroy();
+      //  header("locationa: https://ticket-dev.grid.iu.edu");
+      //  $oidc->signOut();
+      unset($_SESSION['access_token']); 
+
+      $_SESSION["signout"]="1";   
+      //  $oidc->signOut($_SESSION["access_token"],"https://ticket-dev.grid.iu.edu"); \
+          
+      header("location: https://ticket-dev.grid.iu.edu"); 
+      exit();
+    }
+
     cert_authenticate();
     /*
     if(!date_default_timezone_set(user()->getTimeZone())) {

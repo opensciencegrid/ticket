@@ -2,7 +2,7 @@
 
 class EventPublisher {
     function publish($msg, $key) {
-        try {
+      /*        try {
             // Create a connection
             $cnn = new AMQPConnection();
             $cnn->setHost(config()->event_host);
@@ -25,5 +25,6 @@ class EventPublisher {
             elog("Failed to publish event");
             elog($e);
         }
+      */
     } 
 }

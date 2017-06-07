@@ -114,12 +114,16 @@
                         echo "<li class=\"divider\"></li>";
                     }
 
-                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+		    //                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."/?action=logout\">Logoff</a></li>";
+
                     echo "</ul>";//dropdown-menu
                     echo "</li>";//dropdown
                 } else if(@$_SERVER['HTTPS'] == "on") {
                     if(Zend_Registry::isRegistered("unregistered_dn")) {
-                        echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+		      //                       echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                      echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
+
                     } else if(Zend_Registry::isRegistered("disabled_dn")) {
                         echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
                     } else {
@@ -127,7 +131,9 @@
                     }
                 } else {
                     //probably via http
-                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+                  //  echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+		    echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
+
                 }
 
                 ?>

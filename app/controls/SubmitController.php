@@ -151,11 +151,10 @@ class SubmitController extends BaseController
 
     private function processApp($footprints, $dirty_app_type) {
         switch($dirty_app_type) {
-        case "bdii": $this->processAppBDII($footprints);break;
         case "ress_dev": $this->processAppSC($footprints, 40);break;//Ress SC
         case "ress_ops": $this->processAppSC($footprints, 7);break;//Fermilab SC (see ticket 11798 - Steve's comment)
         case "gratia_dev": break; //don't do anything - just leave it assigned to support team
-        case "gratia_ops": $this->processAppSC($footprints, 39);break;//GRATIA Ops SC
+        case "gracc_ops": $this->processAppSC($footprints, 94);break;//GRATIA Ops SC
         case "vdt": $this->processAppVDT($footprints);break;
         case "twiki": $this->processAppTWiki($footprints);break;
         case "gratiaweb": 

@@ -54,9 +54,6 @@ function checked($e)
     <input type="checkbox" name="sites" id="sites" value="1" <?=checked($this->element->sites)?>>
     OSG-Sites&nbsp;&nbsp;&nbsp;
 
-    <input type="hidden" name="vulnerability" value="0">
-    <input type="checkbox" name="vulnerability" id="vulnerability" value="1" <?=checked($this->element->vulnerability)?>>
-    OSG-SECURITY-SOFTW-VULNERABILITY&nbsp;&nbsp;&nbsp;
 </div>
 
 <legend>Message</legend>
@@ -64,9 +61,7 @@ function checked($e)
 <?=$this->element->subject?>
 <?=$this->element->body?>
 
-<input type="hidden" name="sign" value="0">
-<input type="checkbox" name="sign" id="sign" value="1" <?=checked($this->element->sign)?>>
-Sign Email using GOC/DOEGrid user certificate&nbsp;&nbsp;&nbsp;
+
 
 <div class="form-actions">
 <button type="submit" name="submit_button" class="btn btn-primary btn-large" id="submit_button">Submit</button>

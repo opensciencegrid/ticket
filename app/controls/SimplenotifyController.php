@@ -128,6 +128,16 @@ class SimplenotifyController extends BaseController
 
         $e = new Zend_Form_Element_Checkbox('sign');
         $form->addElement($e);
+        
+        if(Zend_Registry::isRegistered("passback_ccs")) {
+        	$ccs = Zend_Registry::get("passback_ccs");
+        }
+        include_once("app/views/cc_editor.php");
+        cceditor($ccs);
+        $cc = new Zend_Form_Element_Button;
+        $cc->setLabel("addCC");
+        $cc->setAttrib('onclick', 'addCC($ccs)');
+        $form->addElement($cc);
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

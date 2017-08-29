@@ -50,8 +50,8 @@ class SimplenotifyController extends BaseController
                 $e->addAddress("OSG-SECURITY-SOFTW-VULNERABILITY@opensciencegrid.org");
             }
             //process CC
-            if(isset($session->cc)) {
-            	$ccs = $session->cc;
+            if($form->getValue('cc')) {
+            	$ccs = $form->getValue('cc');
             	foreach($ccs as $cc) {
             		$cc = trim($cc);
             		if($cc != "") {

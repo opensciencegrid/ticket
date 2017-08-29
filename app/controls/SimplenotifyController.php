@@ -134,7 +134,7 @@ class SimplenotifyController extends BaseController
         }
         include_once("app/views/cc_editor.php");
         cceditor($ccs);
-        $cc = new Zend_Form_Element_Button;
+        $cc = new Zend_Form_Element_Button('cc_button');
         $cc->setLabel("addCC");
         $cc->setAttrib('onclick', 'addCC($ccs)');
         $form->addElement($cc);

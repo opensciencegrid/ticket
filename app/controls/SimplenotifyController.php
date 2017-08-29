@@ -49,9 +49,15 @@ class SimplenotifyController extends BaseController
             if($form->getValue('vulnerability')) {
                 $e->addAddress("OSG-SECURITY-SOFTW-VULNERABILITY@opensciencegrid.org");
             }
-            if(Zend_Registry::isRegistered("passback_ccs")) {
-            	$ccs = Zend_Registry::get("passback_ccs");
-            	$e->addAddresses($ccs);
+            //process CC
+            if(isset($session->cc)) {
+            	$ccs = $session->cc;
+            	foreach($ccs as $cc) {
+            		$cc = trim($cc);
+            		if($cc != "") {
+            			$e->addCC($cc);
+            		}
+            	}
             }
 
             $e->setFrom(config()->email_from_security);

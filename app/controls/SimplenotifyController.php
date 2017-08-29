@@ -50,8 +50,8 @@ class SimplenotifyController extends BaseController
                 $e->addAddress("OSG-SECURITY-SOFTW-VULNERABILITY@opensciencegrid.org");
             }
             //process CC
-            if($form->getValue('cc')) {
-            	$ccs = $form->getValue('cc');
+             if($_REQUEST["cc"]) {
+             	$ccs = $_REQUEST["cc"];
             	foreach($ccs as $cc) {
             		$cc = trim($cc);
             		if($cc != "") {
@@ -141,15 +141,7 @@ class SimplenotifyController extends BaseController
         $e = new Zend_Form_Element_Checkbox('sign');
         $form->addElement($e);
         
-        if(Zend_Registry::isRegistered("passback_ccs")) {
-        	$ccs = Zend_Registry::get("passback_ccs");
-        }
-        include_once("app/views/cc_editor.php");
-        cceditor($ccs);
-        $ccbutton = new Zend_Form_Element_Button('cc_button');
-        $ccbutton->setLabel("addCC");
-        $ccbutton->setAttrib('onclick', 'addCC($ccs)');
-        $form->addElement($ccbutton);
+
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

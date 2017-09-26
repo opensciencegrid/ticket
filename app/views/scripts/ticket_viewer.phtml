@@ -1,4 +1,24 @@
-<?include("app/views/scripts/ticket_scripts.phtml");?>
+<?
+include("app/views/scripts/ticket_scripts.phtml");?>
+
+<?
+$user_email =  user()->getPersonEmail();
+$model = new Schema();
+$emails = $model->getemail();
+
+foreach($this->teams as $team_id => $team) {
+  $teamname = Footprint::parse($team->team);
+  $set = false;
+  foreach($team->members as $userid=>$username) {
+    if(isset($this->assignees[$userid])) {
+      if(trim($user_email)==trim($emails[$userid])){
+	$in_assignees="yes";
+      }
+    }
+  }
+}
+
+?>
 <style>
 .form-horizontal .control-label {
 padding-top: inherit;
@@ -12,7 +32,6 @@ margin-bottom: 0px;
 line-height: 18px;
 }
 </style>
-
 <form class="form-horizontal" action="<?=fullbase()?>/viewer/updatebasic?id=<?=$this->ticket_id?>" method="post">
 <div class="page-header">
     <h3><span class="muted"><?php echo $this->ticket_id?></span> / <?=$this->title?></h3>
@@ -28,7 +47,10 @@ line-height: 18px;
     <div class="control-group">
         <label class="control-label">Email</label>
         <div class="controls">
-            <?php if(!user()->isGuest()) { echo "<a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a>"; } 
+            <?php if(!user()->isGuest()) { echo "<a href=\"mailto:".$this->submitter_email."\">".$this->submitter_email."</a>"; 
+					   if(trim($user_email)==trim($this->submitter_email)){$in_submitter="yes";}
+
+} 
             else { echo "<i class=\"icon-lock\"></i>"; } ?>
         </div>
     </div>
@@ -46,6 +68,13 @@ line-height: 18px;
                 <?
                 include_once("app/views/cc_editor.php");
                 cceditor($this->cc);
+
+				       foreach($this->cc as $cc) {
+					 if(trim($cc)==trim($user_email)){
+					   $in_cc="yes";
+					 }
+				       }
+
                 ?>
                 </div>
                 <a class="btn btn-mini" href="#" onclick="addcc($('.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a>
@@ -103,7 +132,38 @@ line-height: 18px;
     </div>
     <div class="control-group">
         <label class="control-label">Status</label>
-        <div class="controls"><?php echo $this->status?></div>
+        <div class="controls">
+<?php 
+  //print $in_cc."<----- in cc <br>";
+  //print $in_submitter."<----- in submitter <br>";
+  //print $in_assignees."<----- in assignees <br>";
+  //  print user()->allows("close")."<-- ticket close status";
+  if(user()->allows("close") && ($in_cc=="yes" || $in_submitter=="yes" || $in_assignees=="yes")) {
+    $style = status2style($this->status);
+    echo "            <select name=\"status\" class=\"span12\">";
+    foreach(Footprint::GetStatusList() as $status) {
+      $selected = "";
+      if($status == $this->status) {
+	$selected = "selected=selected";
+      }elseif($status=="Closed" || $status=="Resolved" ){
+	$selected ="";
+      }else{
+	$selected = "disabled";
+      }
+	$style = status2style($status);
+	echo "<option value=\"$status\" $selected class='ticketid $style'>$status</option>";
+      
+    }
+
+    echo "</select>";
+  }else{
+  
+    echo $this->status;
+    
+}
+
+
+?></div>
     </div>
     <div class="control-group">
         <label class="control-label">Next Action</label>
@@ -124,10 +184,11 @@ line-height: 18px;
         $teamname = Footprint::parse($team->team);
         $set = false;
         foreach($team->members as $userid=>$username) {
-            if(isset($this->assignees[$userid])) {
-                $out .= "<div class=\"assignee\" style=\"width: 60%\">".$username;
-
+	      if(isset($this->assignees[$userid])) {
+                $out .= "<div class=\"assignee\" style=\"width: 60%\">" .$username;
+		
                 if(isset($this->txlinks[$userid])) {
+		  
                     list($extra, $url) = $this->txlinks[$userid];
                     if($url !== null) {
                         $out .= "&nbsp;<a target=\"_blank\" href=\"$url\">$extra</a>";
@@ -137,7 +198,7 @@ line-height: 18px;
                 }
                 $out .= " <span class=\"muted\"> / $teamname</span></div>";
                 $set = true;
-            }
+		}
         }
         if($set) {
             echo $out;

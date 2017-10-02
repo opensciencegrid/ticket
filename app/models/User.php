@@ -14,36 +14,6 @@ class User
         //action that this user can perform
         $this->action = array();
 
-	////////////////////////// commnted out on 3/16/2017                                      
-	/*           
-        $ds= ldap_connect(config()->sso_ldap_host);
-
-        $baseDN= config()->sso_ldap_basedn;
-        if (config()->sso_ldap_host){
-                                                                                          
-          ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-          ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-          ldap_bind($ds,config()->sso_username ,config()->sso_pw) or die("Could not connect to LDAP server.");
-	 }
-
-
-        $filter = "(sAMAccountName=".$_SESSION['user'].")";
-                                                                                          
-        $sr = ldap_search($ds,$baseDN,$filter);
-        $addG = ldap_get_entries($ds,$sr);
-
-        $username = $addG[0]['cn'][0];
-        $phone = $addG[0]['telephonenumber'][0];
-        $distinguishedname= $addG[0]['displayname'][0];
-
-	$this->contact_name = $distinguishedname;
-        $this->contact_email = $username."@iu.edu";
-        $this->contact_phone = $phone;
-	$this->guest = false;
-	*/
-        //////////////////////////  end of the comment on 3/16/2017                         
-
-		
         $this->dn = $_SESSION["email"];//$dn;
         $this->dn_id = null;
         $this->contact_id = null;
@@ -55,7 +25,7 @@ class User
 
         $this->guest = true;
         if($_SESSION["email"] !== null) {
-	  //$_SESSION["email"]="bbockelm@cse.unl.edu";
+	
 	       $this->lookupDN($_SESSION["email"]);
             if($this->dn_id !== null) {
                 $this->guest = false;

@@ -1,0 +1,56 @@
+<?php
+  require "/usr/local/ticket/vendor/autoload.php";
+session_destroy();
+
+if($_REQUEST["action"]=="logout"){
+  session_destroy();
+  die();
+}
+
+$client_id = config()->cilogon_client_id;
+
+$redirect_url=config()->cilogon_client_redirect;
+$client_host=config()->cilogon_client_host;
+$client_secret=config()->cilogon_client_secret;
+
+$oidc = new OpenIDConnectClient($client_host,                                                                            
+				$client_id,                                 
+				$client_secret);       
+
+$oidc->setRedirectURL($redirect_url);
+$oidc->addScope("openid");                                                                                                                                        
+$oidc->addScope("email");                                                                                                                                         
+$oidc->addScope("profile");                                                                                                                                       
+$oidc->addScope("org.cilogon.userinfo");                                                                                                                          
+$oidc->authenticate();                                                                                                                                            
+$name = $oidc->requestUserInfo('email');                                                                                                                          
+
+if($_SESSION['access_token']==""){                                                                                                                             
+    
+if (isset($_REQUEST['code'])) {                                                                                                                                   
+  $_SESSION['access_token'] = $oidc->getAccessToken();                                                                                                            
+  $_SESSION['email'] = $oidc->requestUserInfo('email');                                                                                                           
+  $_SESSION['family_name'] = $oidc->requestUserInfo('family_name');                                                                                               
+  $_SESSION['given_name'] = $oidc->requestUserInfo('given_name');                                                                                                 
+  $_SESSION['idp'] = $oidc->requestUserInfo('idp');                                                                                                               
+  $_SESSION['idp_name'] = $oidc->requestUserInfo('idp_name');
+  print "heelo2 ";
+
+  header("location: http://ticket-dev.grid.iu.edu/");  
+                                                                                                   
+}                 
+print "heelo3 ";
+                                                                                                                                                
+}else{                                                                                                                                                         
+   if($_SESSION['email']!=""){                                                                                                                                     
+     //$_SESSION['email'] = $_SESSION['name'];                                                                                                                      
+     print "heelo4 ";
+
+     header("location: http://ticket-dev.grid.iu.edu/");
+
+   }                                                                                                                                                               
+   print "heelo5 ";
+
+ }                                                    
+
+?>

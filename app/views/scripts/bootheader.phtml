@@ -115,7 +115,7 @@
                     }
 
 		    //                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
-                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."/?action=logout\">Logoff</a></li>";
+                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/sso/?action=logout\">Log off</a></li>";
 
                     echo "</ul>";//dropdown-menu
                     echo "</li>";//dropdown
@@ -132,7 +132,7 @@
                 } else {
                     //probably via http
                   //  echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
-		    echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
+		    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/sso/\">Login</a></li>";
 
                 }
 

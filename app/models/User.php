@@ -24,6 +24,7 @@ class User
         $this->disable = true;
 
         $this->guest = true;
+
         if($_SESSION["email"] !== null) {
 	
 	       $this->lookupDN($_SESSION["email"]);
@@ -33,12 +34,12 @@ class User
 		}
         }
 	
-        /*
+        
         if(config()->debug) {
             slog("Debug Dump of User Object");
             slog(print_r($this, true));
         }
-        */
+        
     }
 
     private function lookupActions()
@@ -191,7 +192,7 @@ b, access_token, access_token_expires, remote_user,authorization_type_id, create
       return true;
     }
 
-    public function isGuest() { return $this->guest = false; }
+    public function isGuest() { return $this->guest; }
     public function isDisabled() { return $this->disable; }
     public function getPersonID() { return $this->contact_id; }
     public function getPersonName() { return $this->contact_name; }

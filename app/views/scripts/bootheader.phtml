@@ -67,8 +67,7 @@
                     <li><a href="https://twiki.grid.iu.edu">TWiki</a></li>
                     <li class="divider"></li>
                     <li><a href="http://repo.grid.iu.edu">Repo</a></li>
-                    <li><a href="http://is.grid.iu.edu">OSG BDII</a></li>
-                    <li class="divider"></li>
+                                        <li class="divider"></li>
                     <li><a href="http://blogs.grid.iu.edu">Blog</a></li>
                     <li><a href="http://display.grid.iu.edu">Display</a></li>
                     <li><a href="http://osggoc.blogspot.com/">News</a></li>
@@ -79,8 +78,15 @@
                 <?php
                 if(!user()->isGuest()) {
                     echo "<li class=\"dropdown\">";
+
                     echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
                     echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+
+		    //echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
+                    //echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+
 
                     echo "<ul class=\"dropdown-menu\">";
                     if(user()->allows("admin") || user()->allows("notify")) {
@@ -115,20 +121,22 @@
                     }
 
 		    //                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
-                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].base()."/sso/?action=logout\">Log off</a></li>";
+                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/logout/\">Logout</a></li>";
 
                     echo "</ul>";//dropdown-menu
                     echo "</li>";//dropdown
                 } else if(@$_SERVER['HTTPS'] == "on") {
                     if(Zend_Registry::isRegistered("unregistered_dn")) {
 		      //                       echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
-                      echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
+                      //echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
 
                     } else if(Zend_Registry::isRegistered("disabled_dn")) {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
+                       // echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
                     } else {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
+		      //echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
                     }
+                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/sso/\">Login</a></li>";
+
                 } else {
                     //probably via http
                   //  echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";

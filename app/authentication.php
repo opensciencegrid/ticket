@@ -30,7 +30,7 @@ function islocal()
 function cert_authenticate()
 {
   function _setguest() {
-    $guest = new User($_SESSION["user"]);
+    $guest = new User(null);
     Zend_Registry::set("user", $guest);
     slog("guest access from ".$_SERVER["REMOTE_ADDR"]);
     }
@@ -112,7 +112,7 @@ function cert_authenticate()
             _setguest();
         }
   
-   _setguest(); 
+    _setguest(); 
 }
 
 // shorthand

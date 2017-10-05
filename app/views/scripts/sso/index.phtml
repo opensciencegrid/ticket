@@ -1,11 +1,5 @@
 <?php
-  require "/usr/local/ticket/vendor/autoload.php";
-session_destroy();
-
-if($_REQUEST["action"]=="logout"){
-  session_destroy();
-  die();
-}
+require "/usr/local/ticket/vendor/autoload.php";
 
 $client_id = config()->cilogon_client_id;
 
@@ -36,20 +30,17 @@ if (isset($_REQUEST['code'])) {
   $_SESSION['idp_name'] = $oidc->requestUserInfo('idp_name');
   print "heelo2 ";
 
-  header("location: http://ticket-dev.grid.iu.edu/");  
+  header("location: https://".$_SERVER['SERVER_NAME']."/");
                                                                                                    
 }                 
-print "heelo3 ";
+
                                                                                                                                                 
 }else{                                                                                                                                                         
-   if($_SESSION['email']!=""){                                                                                                                                     
-     //$_SESSION['email'] = $_SESSION['name'];                                                                                                                      
-     print "heelo4 ";
+   if($_SESSION['email']!=""){                                                                                                                  
+     header("location: https://".$_SERVER['SERVER_NAME']."/");
 
-     header("location: http://ticket-dev.grid.iu.edu/");
 
-   }                                                                                                                                                               
-   print "heelo5 ";
+   }                                                                                                                                            
 
  }                                                    
 

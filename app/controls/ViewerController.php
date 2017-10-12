@@ -456,8 +456,9 @@ class ViewerController extends BaseController
             }
         }
 	//mvkrenz
-	$footprint->setStatus($status);
-
+	if($status!=""){
+	  $footprint->setStatus($status);
+	}
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         }

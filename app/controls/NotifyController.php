@@ -91,7 +91,7 @@ class NotifyController extends BaseController
                 $e->setTo('goc@opensciencegrid.org');
             }
             */
-            $e->setTo('goc@opensciencegrid.org');
+            $e->setTo('help@opensciencegrid.org');
 
             $subject = $form->getValue('subject');
             $ticket_id = $form->getValue('ticket');
@@ -242,7 +242,7 @@ Thank You,
         switch($_REQUEST["type"]) {
         case "goc":
             $sig = "OSG Grid Operations Center (GOC)
-Email/Phone: goc@opensciencegrid.org, 317-278-9699
+Email/Phone: help@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
 RSS Feed: http://osggoc.blogspot.com
 ";
@@ -250,7 +250,7 @@ RSS Feed: http://osggoc.blogspot.com
         case "software":
             $sig = "OSG Grid Operations Center (GOC) and OSG Software Team
 https://www.opensciencegrid.org/
-For support: goc@opensciencegrid.org or 317-278-9699
+For support: help@opensciencegrid.org or 317-278-9699
 ";
             break;
         default:

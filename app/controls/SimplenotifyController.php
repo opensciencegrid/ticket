@@ -64,7 +64,7 @@ class SimplenotifyController extends BaseController
             $e->setFrom(config()->email_from_security);
             $e->setSubject($form->getValue("subject"));
             $e->setBody($form->getValue('body'));
-            $e->setTo('goc@opensciencegrid.org');
+            $e->setTo('help@opensciencegrid.org');
 
             if($form->getValue('sign')) {
 	        $e->setSign();

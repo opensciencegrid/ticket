@@ -21,7 +21,7 @@ class RsvController extends BaseController
         if($form->isValid($_POST)) {
             $footprint = $this->initSubmit($form);
             $footprint->setName("OSG-GOC");
-            $footprint->setEmail("goc@opensciencegrid.org");
+            $footprint->setEmail("help@opensciencegrid.org");
             //$footprint->setOriginatingVO("MIS");
 
             //lookup service center

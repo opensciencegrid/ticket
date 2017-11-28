@@ -154,7 +154,7 @@ class AdminController extends BaseController
 
         //remove standard GOC signature
         $sig = "OSG Grid Operations Center
-goc@opensciencegrid.org, 317-278-9699
+help@opensciencegrid.org, 317-278-9699
 Visit the OSG Support Page:
 http://www.opensciencegrid.org/ops
 RSS: http://www.grid.iu.edu/news";

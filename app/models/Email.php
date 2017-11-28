@@ -6,6 +6,7 @@ class Email
     {
         $this->h_email = array();
         $this->bcc = "";
+        $this->cc = "";
         $this->address_model = new Address();
         $this->paddress_model = new PrimaryAddress();
         $this->sign = false;
@@ -32,6 +33,15 @@ class Email
             $this->addAddress($email);
         }
     }
+
+    public function addCC($email)
+    {
+  
+    		$this->cc .= $email . ", ";
+    	
+    }
+    
+
 
     public function addResourceSecurityAddresses()
     {
@@ -83,6 +93,7 @@ class Email
         $out .= "<hr>From: ".htmlentities($this->from)."\n\n";
         $out .= "<hr>Subject: ".htmlentities($this->subject)."\n\n";
         $out .= "<hr>BCC: ".htmlentities($this->bcc)."\n\n";
+        $out .= "<hr>CC: ".htmlentities($this->cc)."\n\n";
         $out .= "<hr>Body:<pre>".htmlentities($this->body)."</pre>\n\n";
         if($this->sign) {
             $out .= "<hr>Signed\n\n";
@@ -102,6 +113,7 @@ class Email
         } else {
             $header = "From: $this->from\r\n";
             $header .= "Bcc: $this->bcc\r\n";
+            $header .= "Cc: $this->cc\r\n";
             if(!mail($this->to, $this->subject, $this->body, $header)) {
                 elog("Failed to send email");
                 throw new exception("Failed to send unsigned email");

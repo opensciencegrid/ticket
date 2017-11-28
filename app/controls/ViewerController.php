@@ -446,12 +446,19 @@ class ViewerController extends BaseController
         //new update
         $agent = $this->getFPAgent(user()->getPersonName());
         $description = trim($_REQUEST["description"]); //TODO - should validate?
+        //mvkrenz
+	$status = trim($_REQUEST["status"]); //TODO - should validate?                                                                                                         
+  
         if($description != "") {
             $footprint->addDescription($description);
             if($agent === null) {
                 $footprint->addDescription("\n\nby ".user()->getDN());
             }
         }
+	//mvkrenz
+	if($status!=""){
+	  $footprint->setStatus($status);
+	}
         if($agent !== null) {
             $footprint->setSubmitter($agent);
         }

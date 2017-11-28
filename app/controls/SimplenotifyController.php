@@ -55,7 +55,8 @@ class SimplenotifyController extends BaseController
             	foreach($ccs as $cc) {
             		$cc = trim($cc);
             		if($cc != "") {
-            			$e->addCC($cc);
+            			$e->addBCC($cc);
+				
             		}
             	}
             }

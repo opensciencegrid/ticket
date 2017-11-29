@@ -84,10 +84,10 @@ function cert_authenticate()
     
   }
   */
-      
+  //$_SESSION["email"]="GARHAN.ATTEBURY@UNL.EDU";      
   if(isset($_SESSION["email"])){
             $dn = $_SESSION["email"];
-
+	    //print $_SESSION["email"];	    
             //apply dn override (for debugging)
             if(isset(config()->dn_override[$dn])) {
                 $override = config()->dn_override[$dn];

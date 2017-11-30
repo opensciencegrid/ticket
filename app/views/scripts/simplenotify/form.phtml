@@ -61,6 +61,19 @@ function checked($e)
 <?=$this->element->subject?>
 <?=$this->element->body?>
 
+<label>CC</label>
+<div class="ccarea">
+    <?php
+    $ccs = array();
+    if(Zend_Registry::isRegistered("passback_ccs")) {
+        $ccs = Zend_Registry::get("passback_ccs");
+    }
+    include_once("app/views/cc_editor.php");
+    cceditor($ccs);
+    ?>
+</div>
+<a class="btn btn-small" href="#" onclick="addcc($(this).siblings('div.ccarea'));return false;"><i class="icon-plus"></i> Add CC</a> 
+
 
 
 <div class="form-actions">

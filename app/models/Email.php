@@ -41,7 +41,12 @@ class Email
     	
     }
     
+    public function addBCC($email)
+    {
 
+      $this->bcc .= $email . ", ";
+
+    }
 
     public function addResourceSecurityAddresses()
     {

@@ -64,7 +64,7 @@ Please fix it.
 
 Thank You,
 OSG Grid Operations Center (GOC)
-Email/Phone: goc@opensciencegrid.org, 317-278-9699
+Email/Phone: help@opensciencegrid.org, 317-278-9699
 GOC Homepage: http://www.opensciencegrid.org/ops
 RSS Feed: http://osggoc.blogspot.com");
         $form->addElement($template);

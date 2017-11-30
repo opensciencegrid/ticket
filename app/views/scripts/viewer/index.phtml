@@ -118,7 +118,6 @@ background-color: red;
 
 <div class="container-fluid">
 <ul id="peers"></ul>
-
 <?php 
 
 //wrap link content with <a href>
@@ -189,12 +188,18 @@ function maskemail($email) {
 echo $this->alerts();
 echo "<div id=\"presence\" class=\"pull-right\"></div>";
 echo "<div class=\"ticketgui\">";
+
 if($this->editable) {
     $suppression_control = true;
+ 
     include("app/views/scripts/ticket_editor.phtml");
-} else {
+    
+   } else {
+
     include("app/views/scripts/ticket_viewer.phtml");
-}
+   
+    }
+
 echo "</div>";
 ?>
 

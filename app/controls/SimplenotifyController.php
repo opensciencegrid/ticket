@@ -49,14 +49,27 @@ class SimplenotifyController extends BaseController
             if($form->getValue('vulnerability')) {
                 $e->addAddress("OSG-SECURITY-SOFTW-VULNERABILITY@opensciencegrid.org");
             }
+            //process CC
+             if($_REQUEST["cc"]) {
+             	$ccs = $_REQUEST["cc"];
+            	foreach($ccs as $cc) {
+            		$cc = trim($cc);
+            		if($cc != "") {
+            			$e->addBCC($cc);
+				
+            		}
+            	}
+            }
 
             $e->setFrom(config()->email_from_security);
             $e->setSubject($form->getValue("subject"));
             $e->setBody($form->getValue('body'));
-            $e->setTo('goc@opensciencegrid.org');
+            $e->setTo('help@opensciencegrid.org');
 
             if($form->getValue('sign')) {
 	        $e->setSign();
+	        
+	       
 	    }
 
             /*
@@ -128,6 +141,8 @@ class SimplenotifyController extends BaseController
 
         $e = new Zend_Form_Element_Checkbox('sign');
         $form->addElement($e);
+        
+
 
         $submit = new Zend_Form_Element_Submit('submit_button');
         $submit->setLabel("   Submit   ");

@@ -41,12 +41,12 @@ abstract class common_config
         $this->elog_email = false;
         $this->elog_email_address = "overrideme";
         //email address to send form submittion error to.
-        $this->error_from = "GOC Ticket <goc@opensciencegrid.org>";
+        $this->error_from = "GOC Ticket <help@opensciencegrid.org>";
         $this->error_sms_to = array("goc-alert@googlegroups.com");
 
-        $this->email_from = "Grid Operations Center <goc@opensciencegrid.org>";
+        $this->email_from = "Grid Operations Center <help@opensciencegrid.org>";
         //we are now using GOC's user cert, so this has to come from goc@, otherwise signature verification will fail
-        $this->email_from_security = "Grid Operations Center <goc@opensciencegrid.org>";
+        $this->email_from_security = "Grid Operations Center <help@opensciencegrid.org>";
 
         $this->sms_notification = array();
 

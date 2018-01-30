@@ -106,7 +106,7 @@ class User
 	  $contact_id = $row_select_contact->id;
 	  $insert_sso = "insert into contact_authorization_type (given_name, family_name, email, idp, idp_name,aud, iat, name, iss, nonce, oidc, openid, sub, access_token, access_token_expires, remote_user,authorization_type_id, created, contact_id) values('".$_SESSION["given_name"]."', '".$_SESSION["family_name"]."','".$_SESSION["email"]."', '".$_SESSION["idp"]."', '".$_SESSION["idp_name"]."','".$_SESSION["aud"]."', '".$_SESSION["iat"]."', '".$_SESSION["name"]."', '".$_SESSION["iss"]."', '".$_SESSION["nonce"]."', '".$_SESSION["oidc"]."', '".$_SESSION["openid"]."', '".$_SESSION["sub"]."', '".$_SESSION["access_token"]."', '".$_SESSION["access_token_expires"]."', '".$_SESSION["remote_user"]."',1, now(),'".$contact_id."')";                                                                     slog("UserModule: there no SSO but there is Contact: $insert_sso");
 	  
-	  $insert_sso_contact = db("sso")->fetchRow($insert_sso);
+	  $insert_sso_contact = db("sso")->query($insert_sso);
 	  
           $this->dn_id = db("sso")->lastInsertId();
           $sso_id_last = db("sso")->lastInsertId();

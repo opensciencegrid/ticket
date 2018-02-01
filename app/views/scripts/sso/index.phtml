@@ -19,11 +19,11 @@ $oidc->addScope("org.cilogon.userinfo");
 $oidc->authenticate();                                                                                                                                            
 $name = $oidc->requestUserInfo('email');                                                                                                                          
 
-if($_SESSION['access_token']==""){                                                                                                                             
+if($_SESSION['access_token_sso']==""){                                                                                                                             
     
 if (isset($_REQUEST['code'])) {                                                                                                                                   
-  $_SESSION['access_token'] = $oidc->getAccessToken();                                                                                                            
-  $_SESSION['email'] = $oidc->requestUserInfo('email');                                                                                                           
+  $_SESSION['access_token_sso'] = $oidc->getAccessToken();                                                                                                            
+  $_SESSION['email'] = $oidc->requestUserInfo('email');                                                                                                     
   $_SESSION['family_name'] = $oidc->requestUserInfo('family_name');                                                                                               
   $_SESSION['given_name'] = $oidc->requestUserInfo('given_name');                                                                                                 
   $_SESSION['idp'] = $oidc->requestUserInfo('idp');                                                                                                               

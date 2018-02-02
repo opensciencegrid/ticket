@@ -1,8 +1,11 @@
 <?php echo $this->render("bootheader.phtml", true);?>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.1/css/jquery.dataTables.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/2.1.2/css/dataTables.fixedHeader.css" />
-<script type="text/javascript" src="//cdn.datatables.net/1.10.1/js/jquery.dataTables.min.js"></script>
+<!--<script type="text/javascript" src="//cdn.datatables.net/1.10.1/js/jquery.dataTables.min.js"></script>-->
 <script type="text/javascript" src="//cdn.datatables.net/fixedheader/2.1.2/js/dataTables.fixedHeader.min.js"></script>
 
 <style>
@@ -341,11 +344,11 @@ function init_colsearch() {
             colsearch[cid] = tvalue;
             $.cookie('colsearch', colsearch, {expires: 30, path: window.location.pathname});
         }
-        $(it).keyup(update);
-        $(it).bind("input", update);//for IE's X button in text input
+        $(it).on("keyup",update);
+        $(it).on("input", update);//for IE's X button in text input
 
         //prevent sorting to fire when user clicks on the search box
-        $(it).click(function(e) {
+        $(it).on("click",function(e) {
             e.cancelBubble = true;
             $(it).focus();
             return false;

@@ -19,9 +19,6 @@ $oidc->addScope("org.cilogon.userinfo");
 $oidc->authenticate();                                                                                                                                            
 $name = $oidc->requestUserInfo('email');                                                                                                                        
 
-if (!isset($_REQUEST['code']) || $_REQUEST['code']==null) {                                                                                                                              
-  $_SESSION["ref_loc"] = $_SERVER['HTTP_REFERER'];
-}
 
 if($_SESSION['access_token_sso']==""){                                                                                                                             
     
@@ -34,7 +31,7 @@ if (isset($_REQUEST['code'])) {
   $_SESSION['idp_name'] = $oidc->requestUserInfo('idp_name');
  
   if($_SESSION["ref_loc"]!=""){
-    header("location: https://".$_SESSION["ref_loc"]."/");
+    header("location: ".$_SESSION["ref_loc"]."/");
     
   }else{
     header("location: https://".$_SERVER['SERVER_NAME']."/");
@@ -48,7 +45,7 @@ if (isset($_REQUEST['code'])) {
    if($_SESSION['email']!=""){                                                                                                                  
      
      if($_SESSION["ref_loc"]!=""){
-       header("location: https://".$_SESSION["ref_loc"]."/");
+       header("location: ".$_SESSION["ref_loc"]."/");
        
      }else{
        header("location: https://".$_SERVER['SERVER_NAME']."/");

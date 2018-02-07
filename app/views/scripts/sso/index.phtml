@@ -6,10 +6,12 @@ elog("current host:". $_SERVER['HTTP_HOST']);
 
 if(preg_match("/\bopensciencegrid\b/i",$_SERVER['HTTP_HOST'])){
   $redirect_url=config()->cilogon_client_redirect;
+  elog("redirect: opensciencegrid");
 }else{
   $redirect_url=config()->cilogon_client_redirect_grid;
+  elog("redirect: grid.iu.edu");
 }
-
+elog("callback url:". $redirect_url);
 
 $redirect_url=config()->cilogon_client_redirect;                                                                                                                                        
 

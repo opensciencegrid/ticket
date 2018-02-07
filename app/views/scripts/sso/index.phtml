@@ -17,7 +17,11 @@ $oidc->addScope("email");
 $oidc->addScope("profile");                                                                                                                                       
 $oidc->addScope("org.cilogon.userinfo");                                                                                                                          
 $oidc->authenticate();                                                                                                                                            
-$name = $oidc->requestUserInfo('email');                                                                                                                          
+$name = $oidc->requestUserInfo('email');                                                                                                                        
+
+if (!isset($_REQUEST['code']) || $_REQUEST['code']==null) {                                                                                                                              
+  $_SESSION["ref_loc"] = $_SERVER['HTTP_REFERER'];
+}
 
 if($_SESSION['access_token_sso']==""){                                                                                                                             
     
@@ -28,18 +32,28 @@ if (isset($_REQUEST['code'])) {
   $_SESSION['given_name'] = $oidc->requestUserInfo('given_name');                                                                                                 
   $_SESSION['idp'] = $oidc->requestUserInfo('idp');                                                                                                               
   $_SESSION['idp_name'] = $oidc->requestUserInfo('idp_name');
-  print "heelo2 ";
+ 
+  if($_SESSION["ref_loc"]!=""){
+    header("location: https://".$_SESSION["ref_loc"]."/");
+    
+  }else{
+    header("location: https://".$_SERVER['SERVER_NAME']."/");
+    
+  }
 
-  header("location: https://".$_SERVER['SERVER_NAME']."/");
-                                                                                                   
 }                 
 
                                                                                                                                                 
 }else{                                                                                                                                                         
    if($_SESSION['email']!=""){                                                                                                                  
-     header("location: https://".$_SERVER['SERVER_NAME']."/");
-
-
+     
+     if($_SESSION["ref_loc"]!=""){
+       header("location: https://".$_SESSION["ref_loc"]."/");
+       
+     }else{
+       header("location: https://".$_SERVER['SERVER_NAME']."/");
+     }
+     
    }                                                                                                                                            
 
  }                                                    

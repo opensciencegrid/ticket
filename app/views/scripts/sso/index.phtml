@@ -3,8 +3,9 @@ require "/usr/local/ticket/vendor/autoload.php";
 
 $client_id = config()->cilogon_client_id;
 elog("current host:". $_SERVER['HTTP_HOST']);
+elog("current host refer:". $_SESSION['ref_loc');
 
-if(preg_match("/\bopensciencegrid\b/i",$_SERVER['HTTP_HOST'])){
+if(preg_match("opensciencegrid",$_SESSION['ref_loc'])){
   $redirect_url=config()->cilogon_client_redirect;
   elog("redirect: opensciencegrid");
 }else{

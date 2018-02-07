@@ -191,7 +191,7 @@ class OpenIDConnectClient
 
             // Do an OpenID Connect session check
             if ($_REQUEST['state'] != $_SESSION['openid_connect_state']) {
-	      //throw new OpenIDConnectClientException("Unable to determine state");
+	      throw new OpenIDConnectClientException("Unable to determine state");
             }
 
 	    if (!property_exists($token_json, 'id_token')) {

@@ -2,8 +2,17 @@
 require "/usr/local/ticket/vendor/autoload.php";
 
 $client_id = config()->cilogon_client_id;
+elog("current host:". $_SERVER['HTTP_HOST']);
 
-$redirect_url=config()->cilogon_client_redirect;
+if(preg_match("/\bopensciencegrid\b/i",$_SERVER['HTTP_HOST'])){
+  $redirect_url=config()->cilogon_client_redirect;
+}else{
+  $redirect_url=config()->cilogon_client_redirect_grid;
+}
+
+
+$redirect_url=config()->cilogon_client_redirect;                                                                                                                                        
+
 $client_host=config()->cilogon_client_host;
 $client_secret=config()->cilogon_client_secret;
 

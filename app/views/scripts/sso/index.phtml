@@ -1,4 +1,4 @@
-<?php
+1;95;0c<?php
 require "/usr/local/ticket/vendor/autoload.php";
 
 $client_id = config()->cilogon_client_id;
@@ -14,7 +14,7 @@ if(preg_match("opensciencegrid",$_SESSION['ref_loc'])){
 }
 elog("callback url:". $redirect_url);
 
-$redirect_url=config()->cilogon_client_redirect;                                                                                                                                        
+//$redirect_url=config()->cilogon_client_redirect;                                                                                                                                        
 
 $client_host=config()->cilogon_client_host;
 $client_secret=config()->cilogon_client_secret;

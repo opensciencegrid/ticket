@@ -1,9 +1,21 @@
-<?php
+1;95;0c<?php
 require "/usr/local/ticket/vendor/autoload.php";
 
 $client_id = config()->cilogon_client_id;
+elog("current host:". $_SERVER['HTTP_HOST']);
+elog("current host refer:". $_SESSION['ref_loc']);
 
-$redirect_url=config()->cilogon_client_redirect;
+if(preg_match("/opensciencegrid/",$_SESSION['ref_loc'])){
+  $redirect_url=config()->cilogon_client_redirect;
+  elog("redirect: opensciencegrid");
+}else{
+  $redirect_url=config()->cilogon_client_redirect_grid;
+  elog("redirect: grid.iu.edu");
+}
+elog("callback url:". $redirect_url);
+
+//$redirect_url=config()->cilogon_client_redirect;                                                                                                                                        
+
 $client_host=config()->cilogon_client_host;
 $client_secret=config()->cilogon_client_secret;
 
@@ -17,7 +29,8 @@ $oidc->addScope("email");
 $oidc->addScope("profile");                                                                                                                                       
 $oidc->addScope("org.cilogon.userinfo");                                                                                                                          
 $oidc->authenticate();                                                                                                                                            
-$name = $oidc->requestUserInfo('email');                                                                                                                          
+$name = $oidc->requestUserInfo('email');                                                                                                                        
+
 
 if($_SESSION['access_token_sso']==""){                                                                                                                             
     
@@ -28,18 +41,28 @@ if (isset($_REQUEST['code'])) {
   $_SESSION['given_name'] = $oidc->requestUserInfo('given_name');                                                                                                 
   $_SESSION['idp'] = $oidc->requestUserInfo('idp');                                                                                                               
   $_SESSION['idp_name'] = $oidc->requestUserInfo('idp_name');
-  print "heelo2 ";
+ 
+  if($_SESSION["ref_loc"]!=""){
+    header("location: ".$_SESSION["ref_loc"]."/");
+    
+  }else{
+    header("location: https://".$_SERVER['SERVER_NAME']."/");
+    
+  }
 
-  header("location: https://".$_SERVER['SERVER_NAME']."/");
-                                                                                                   
 }                 
 
                                                                                                                                                 
 }else{                                                                                                                                                         
    if($_SESSION['email']!=""){                                                                                                                  
-     header("location: https://".$_SERVER['SERVER_NAME']."/");
-
-
+     
+     if($_SESSION["ref_loc"]!=""){
+       header("location: ".$_SESSION["ref_loc"]."/");
+       
+     }else{
+       header("location: https://".$_SERVER['SERVER_NAME']."/");
+     }
+     
    }                                                                                                                                            
 
  }                                                    

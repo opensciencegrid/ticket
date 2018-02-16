@@ -6,11 +6,11 @@
 echo "<p>Logged in as <b>";
 if(user()->isGuest()) {
     echo "Guest";
-    $ticket_url = "http://ticket.grid.iu.edu/goc";
+    $ticket_url = "http://ticket.opensciencegrid.org/goc";
 } else {
     //echo user()->getDN()." (".user()->getTimeZone().")";
     echo user()->getDN();
-    $ticket_url = "https://ticket.grid.iu.edu/goc";
+    $ticket_url = "https://ticket.opensciencegrid.org/goc";
 }
 echo "</b></p>";
 

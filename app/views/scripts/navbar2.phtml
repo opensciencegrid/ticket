@@ -29,10 +29,9 @@ padding-top: 10px;
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="https://myosg.grid.iu.edu">MyOSG</a></li>
-                    <li><a href="https://oim.grid.iu.edu">OIM</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
                     <li class="active"><a href="index">Ticket</a></li>
-                    <li><a href="https://twiki.grid.iu.edu">TWiki</a></li>
-                    <li class="divider"></li>
+                                     <li class="divider"></li>
                     <li><a href="http://repo.grid.iu.edu">Repo</a></li>
                     <!--<li><a href="http://software.grid.iu.edu">Software Cache</a></li> -->
                     <li><a href="http://is.grid.iu.edu">OSG BDII</a></li>
@@ -96,7 +95,7 @@ padding-top: 10px;
                 echo "</li>";
             } else if(@$_SERVER['HTTPS'] == "on") {
                 if(Zend_Registry::isRegistered("unregistered_dn")) {
-                    echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                    echo "<li><a href=\"https://oim.opensciencegrid.org/oim/register\">Register</a></li>";
                 } else if(Zend_Registry::isRegistered("disabled_dn")) {
                     echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
                 } else {

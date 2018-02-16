@@ -235,7 +235,7 @@ class NotifyController extends BaseController
     {
 /*
 Please submit problems, requests, and questions at:
-https://ticket.grid.iu.edu/goc
+https://ticket.opensciencegrid.org/goc
 
 Thank You,
 */

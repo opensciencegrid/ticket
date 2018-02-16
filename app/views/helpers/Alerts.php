@@ -15,7 +15,7 @@ class Zend_View_Helper_Alerts extends Zend_View_Helper_Abstract {
             message("warning", "Simulation Mode - No email / ticket will be actually created");
         }
         if(config()->role_prefix == "itbticket_") {
-            message("warning", "This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.grid.iu.edu/goc\">go here</a>", true);
+            message("warning", "This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.opensciencegrid.org/goc\">go here</a>", true);
         }
 
 

@@ -181,10 +181,7 @@ color: #ccc;
     <?php 
 
 if(user()->isGuest()) { ?>
-        <!--
-        <p class="muted">You have not provided OIM registered x509 certificate.</p>
-        -->
-        <?=$this->element->recaptcha?>
+	<div class="g-recaptcha" data-sitekey=config()->captcha_public_key></div>
     <?php } else {?>
         <label>CC</label>
         <div class="ccarea">

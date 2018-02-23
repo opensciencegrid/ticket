@@ -127,24 +127,7 @@ class BaseController extends Zend_Controller_Action
             }
         }
 
-        if(user()->isguest()) {
-            //guest must answer captcha
-            $adapter = new Zend_Captcha_ReCaptcha(); 
-            $params = array();
-            if(isset($_SERVER["HTTPS"])) {
-                $params["ssl"] = true;
-            }
-            $recaptcha_service = new Zend_Service_ReCaptcha(config()->captcha_public_key, config()->captcha_private_key, $params);
-            $adapter->setService( $recaptcha_service ); 
-            // then set  the captcha element to use the ReCaptcha Adapter 
-            $recaptcha = new Zend_Form_Element_Captcha('recaptcha', array( 
-                            //'label' => "Are you a human?", 
-                            'captcha' => $adapter 
-            )); 
-            //Then only add the element to the form: 
-            $form->addElement ( $recaptcha ); 
 
-        }
 
         return $form;
     }

@@ -179,7 +179,7 @@ color: #ccc;
     <?php echo $this->element->detail?>
     
     <?php 
-
+    $key=config()->captcha_public_key;
 if(user()->isGuest()) { ?>
         <div class="g-recaptcha" data-sitekey="<?php echo $key; ?>"></div>
     <?php } else {?>

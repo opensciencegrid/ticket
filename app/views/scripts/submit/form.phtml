@@ -170,7 +170,7 @@ color: #ccc;
             <div id="campusvorequest_issue_area" style="display: none;">
                 Name of the new campus grid VO
                 <input type="text" name="campusvorequest_name" id="campusvorequest_name">
-                <p class="muted">* This is not a generic VO registration request form. To request for new VO registration, please visit <a href="https://oim.grid.iu.edu/oim/vo">OIM VO page</a></p>
+                <p class="muted">* This is not a generic VO registration request form. To request for new VO registration, please visit <a href="https://oim.opensciencegrid.org/oim/vo">OIM VO page</a></p>
             </div>
             </div><!--well-->
         </div><!--span-->
@@ -178,11 +178,10 @@ color: #ccc;
 
     <?php echo $this->element->detail?>
     
-    <?php if(user()->isguest()) { ?>
-        <!--
-        <p class="muted">You have not provided OIM registered x509 certificate.</p>
-        -->
-        <?=$this->element->recaptcha?>
+    <?php 
+    $key=config()->captcha_public_key;
+if(user()->isGuest()) { ?>
+        <div class="g-recaptcha" data-sitekey="<?php echo $key; ?>"></div>
     <?php } else {?>
         <label>CC</label>
         <div class="ccarea">

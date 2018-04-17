@@ -31,12 +31,16 @@
 
     </style>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
+   <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
@@ -45,7 +49,7 @@
     <script src="lib/jquery.cookie.js"></script>
 
     <link href="images/tag_orange.png" rel="icon" type="image/png"/>
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
   </head>
 
   <body>
@@ -62,15 +66,13 @@
             <ul class="nav">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo config()->app_name?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                    <li><a href="https://myosg.grid.iu.edu">MyOSG</a></li>
-                    <li><a href="https://oim.grid.iu.edu">OIM</a></li>
+                    <li><a href="https://my.opensciencegrid.org">MyOSG</a></li>
+                    <li><a href="https://oim.opensciencegrid.org">OIM</a></li>
                     <li class="active"><a href="index">Ticket</a></li>
-                    <li><a href="https://twiki.grid.iu.edu">TWiki</a></li>
-                    <li class="divider"></li>
-                    <li><a href="http://repo.grid.iu.edu">Repo</a></li>
-                    <li><a href="http://is.grid.iu.edu">OSG BDII</a></li>
-                    <li class="divider"></li>
-                    <li><a href="http://blogs.grid.iu.edu">Blog</a></li>
+	<li class="divider"></li>
+	<li><a href="http://repo.grid.iu.edu">Repo</a></li>
+	<li class="divider"></li>
+	<li><a href="http://blogs.grid.iu.edu">Blog</a></li>
                     <li><a href="http://display.grid.iu.edu">Display</a></li>
                     <li><a href="http://osggoc.blogspot.com/">News</a></li>
                     </ul>
@@ -80,8 +82,15 @@
                 <?php
                 if(!user()->isGuest()) {
                     echo "<li class=\"dropdown\">";
+
                     echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
                     echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+
+		    //echo "<a id=\"menu_user\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">";
+                    //echo user()->getPersonName()." <span class=\"caret\"></span></a>";
+
+
 
                     echo "<ul class=\"dropdown-menu\">";
                     if(user()->allows("admin") || user()->allows("notify")) {
@@ -115,20 +124,28 @@
                         echo "<li class=\"divider\"></li>";
                     }
 
-                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+		    //                    echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">Logoff</a></li>";
+                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/logout/\">Logout</a></li>";
+
                     echo "</ul>";//dropdown-menu
                     echo "</li>";//dropdown
                 } else if(@$_SERVER['HTTPS'] == "on") {
                     if(Zend_Registry::isRegistered("unregistered_dn")) {
-                        echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+		      //                       echo "<li><a href=\"https://oim.grid.iu.edu/oim/register\">Register</a></li>";
+                      //echo "<li><a href=\"https://cas.iu.edu/cas/login?cassvc=IU&casurl=https://".$_SERVER["SERVER_NAME"]."\">Login</a></li>";
+
                     } else if(Zend_Registry::isRegistered("disabled_dn")) {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
+                       // echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(Disabled)</a></li>";
                     } else {
-                        echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
+		      //echo "<li><a href=\"http://".$_SERVER["SERVER_NAME"].base()."\">(NoCert)</a></li>";
                     }
+                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/sso/\">Login</a></li>";
+
                 } else {
                     //probably via http
-                    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+                  //  echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]."\">Login</a></li>";
+		    echo "<li><a href=\"https://".$_SERVER["SERVER_NAME"]."/sso/\">Login</a></li>";
+
                 }
 
                 ?>

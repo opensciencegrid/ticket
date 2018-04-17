@@ -1,3 +1,32 @@
+<?php
+  /*  require "/usr/local/ticket/vendor/autoload.php";
+
+$oidc = new OpenIDConnectClient('https://accounts.google.com',
+				'860986807471-mce3pdl0odonb3nlmvquo32sr290objk.apps.googleusercontent.com',
+				'-S-qO025USlcfVVdAzaN9dxv');
+
+$oidc->addScope("email");
+$oidc->authenticate();
+
+$name = $oidc->requestUserInfo('email');
+if (isset($_REQUEST['code'])) {
+
+  $_SESSION['access_token'] = $oidc->getAccessToken();                                       
+  $_SESSION['name'] = $oidc->requestUserInfo('email');                                       
+
+  //header("Refresh:5; url=".$oidc->getRedirectURL()."");                                    
+       
+  print $_SESSION['access_token']." <-- session token";
+
+}
+
+
+print "session access token: ".$_SESSION['access_token'];
+print "<pre>";
+print_r($oidc);
+print "</pre>";
+  */
+?>
 <?php echo $this->render("bootheader.phtml", true);?>
 <div class="container">
 <?php echo $this->alerts();?>

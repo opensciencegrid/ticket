@@ -6,11 +6,11 @@
 echo "<p>Logged in as <b>";
 if(user()->isGuest()) {
     echo "Guest";
-    $ticket_url = "http://ticket.grid.iu.edu/goc";
+    $ticket_url = "http://ticket.opensciencegrid.org/goc";
 } else {
     //echo user()->getDN()." (".user()->getTimeZone().")";
     echo user()->getDN();
-    $ticket_url = "https://ticket.grid.iu.edu/goc";
+    $ticket_url = "https://ticket.opensciencegrid.org/goc";
 }
 echo "</b></p>";
 
@@ -23,7 +23,7 @@ if(config()->debug) {
 */
 ?>
  | <a href="<?php echo $ticket_url?>/submit?app_issue_check=on&amp;app_issue_type=goc&amp;app_goc_url=<?=urlencode(fullurl())?>">Report Bugs</a>
- | <a href="https://twiki.grid.iu.edu/bin/view/Operations/IUPrivacyPolicy">Privacy Policy</a>
+ | <a href="https://github.com/opensciencegrid/operations/blob/master/docs/privacy.md">Privacy Policy</a>
 </p>
 
 <p> <img align="top" src="<?=base()?>/images/tag_orange.png"/> <?=config()->copyright?></p>

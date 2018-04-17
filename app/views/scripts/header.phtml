@@ -10,6 +10,9 @@
 
     <link rel="search" type="application/opensearchdescription+xml" href="<?=base()?>/opensearch/id" title="GOC Ticket"/>
     <link rel="stylesheet" href="<?=base()?>/css/normal.css" type="text/css" media="screen"/>
+ <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
+
 
 <!--
     <link rel="stylesheet" href="<?=base()?>/lib/jquery-ui-1.8.1/css/smoothness/jquery-ui-1.8.1.custom.css" type="text/css" media="screen"/>
@@ -23,6 +26,7 @@
     <link rel="stylesheet" href="<?=base()?>/lib/jquery-ui-1.8.16/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css" media="screen"/>
     <script type="text/javascript" src="<?=base()?>/lib/jquery-ui-1.8.16/js/jquery-1.6.2.min.js"></script>
     <script type="text/javascript" src="<?=base()?>/lib/jquery-ui-1.8.16/js/jquery-ui-1.8.16.custom.min.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="<?=base()?>/lib/jquery-ui-1.8.16/plugins/jquery-autocomplete/jquery.autocomplete.goc.css" />
     <script type="text/javascript" src="<?=base()?>/lib/jquery-ui-1.8.16/plugins/jquery-autocomplete/jquery.autocomplete.min.js"></script>
@@ -78,8 +82,8 @@
     </div>
 
     <p id="links">
-        <a target="_blank" href="https://myosg.grid.iu.edu/">MyOSG</a> |
-        <a target="_blank" href="https://oim.grid.iu.edu/">OIM</a> |
+        <a target="_blank" href="https://my.opensciencegrid.org/">MyOSG</a> |
+        <a target="_blank" href="https://oim.opensciencegrid.org/">OIM</a> |
         <span class="active">Ticket</span> |
         <a target="_blank" href="http://software.grid.iu.edu/">Software Cache</a> |
         <a target="_blank" href="http://is.grid.iu.edu/documentation.html">BDII</a> |
@@ -135,7 +139,7 @@ if(config()->debug) {
 }
 
 if(config()->role_prefix == "itbticket_") {
-    echo "<p class=\"errors\">This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.grid.iu.edu/goc\">go here</a></p>";
+    echo "<p class=\"errors\">This is the ITB ticket system used by the OSG VTB/ITB teams. These tickets are NOT be handled by the GOC. If you are reporting a production issue please <a href=\"https://ticket.opensciencegrid.org/goc\">go here</a></p>";
 }
 
 $this->alerts();

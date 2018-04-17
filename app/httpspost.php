@@ -4,7 +4,7 @@
 //$path = "path/to/somewhere.php"
 function https_post($host, $path, $values)
 {
-    $headers = '';
+      $headers = '';
     $content = '';
     $flag = false;
     //$post_query = 'a=1&b=2'; // name-value pairs
@@ -39,6 +39,7 @@ function https_post($host, $path, $values)
             }
         }
         fclose($fp);
+  
     }
 /*
     //prepare

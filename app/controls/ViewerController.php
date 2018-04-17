@@ -410,6 +410,7 @@ class ViewerController extends BaseController
 
         //update ticket
         $footprint = new Footprint($ticket_id);
+        $footprint->suppress_submitter(); //don't want to send spam to submitter
         $agent = $this->getFPAgent(user()->getPersonName());
 
         if($agent !== null) {

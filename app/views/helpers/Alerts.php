@@ -11,6 +11,11 @@ class Zend_View_Helper_Alerts extends Zend_View_Helper_Abstract {
         if(config()->banner) {
             message("success", config()->banner, true);
         }
+
+	if(config()->announce) {
+	  message("danger", config()->announce, true);
+        }
+
         if(config()->simulate) {
             message("warning", "Simulation Mode - No email / ticket will be actually created");
         }
@@ -23,9 +28,11 @@ class Zend_View_Helper_Alerts extends Zend_View_Helper_Abstract {
         if(isset($message->alerts)) {
             foreach($message->alerts as $alert) {
                 $type = $alert["type"];
+		
+              $out .= "<div class=\"alert alert-$type\">";
 
-                $out .= "<div class=\"alert alert-$type\">";
                 $out .= "<a class=\"close\" href=\"#\" data-dismiss=\"alert\">&times;</a>";
+
                 $out .= $alert["html"]."</div>";
             }
         }

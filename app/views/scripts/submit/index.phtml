@@ -26,14 +26,16 @@ print "<pre>";
 print_r($oidc);
 print "</pre>";
   */
+header("Location: https://support.opensciencegrid.org/support/tickets/new?");
+exit();
 ?>
 <?php echo $this->render("bootheader.phtml", true);?>
 <div class="container">
 <?php echo $this->alerts();?>
 <div class="page-header"><h2><?php echo $this->page_title?></h2></div>
 <div class="form">
-<?=$this->form?>
+  <?=$this->form?>
 </div><!--form-->
-<?php echo $this->render("pagefooter.phtml", true);?>
+  <?php echo $this->render("pagefooter.phtml", true);?>
 </div><!--container-fluid-->
-<?php echo $this->render("bootfooter.phtml", true);?>
+  <?php echo $this->render("bootfooter.phtml", true);?>
